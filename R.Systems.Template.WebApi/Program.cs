@@ -8,7 +8,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+        var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
         logger.Debug("init main");
 
         try
@@ -40,7 +40,7 @@ public class Program
         }
         finally
         {
-            NLog.LogManager.Shutdown();
+            LogManager.Shutdown();
         }
     }
 }
