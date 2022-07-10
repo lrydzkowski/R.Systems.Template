@@ -1,6 +1,7 @@
 using NLog;
 using NLog.Web;
 using R.Systems.Template.Core;
+using R.Systems.Template.WebApi.Middleware;
 
 namespace R.Systems.Template.WebApi;
 
@@ -22,6 +23,7 @@ public class Program
 
             var app = builder.Build();
 
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseSwagger();
             if (app.Environment.IsDevelopment())
             {
