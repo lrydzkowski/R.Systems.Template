@@ -1,4 +1,5 @@
 ﻿using R.Systems.Template.Core.App.Queries.GetAppInfo;
+using R.Systems.Template.FunctionalTests.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
 
@@ -11,7 +12,7 @@ public class GetAppInfoTests : IClassFixture<WebApiFactory<Program>>
         RestClient = new RestClient(webApplicationFactory.CreateClient());
     }
 
-    public RestClient RestClient { get; }
+    private RestClient RestClient { get; }
 
     [Fact]
     public async Task GetAppInfo_CorrectData_ReturnsCorrectVersion()
