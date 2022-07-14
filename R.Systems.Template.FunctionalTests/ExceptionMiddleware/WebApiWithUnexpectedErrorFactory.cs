@@ -15,6 +15,6 @@ public class WebApiWithUnexpectedErrorFactory<TStartup> : WebApplicationFactory<
 
     private void ReplaceGetAppInfoQuery(IServiceCollection services)
     {
-        services.AddTransient<IRequestHandler<GetAppInfoQuery, AppInfo>, GetAppInfoHandlerWithException>();
+        services.AddTransient<IRequestHandler<GetAppInfoQuery, GetAppInfoResult>, GetAppInfoHandlerWithException>();
     }
 }

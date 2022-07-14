@@ -19,9 +19,8 @@ public class ExceptionMiddlewareTests : IClassFixture<WebApiWithUnexpectedErrorF
     {
         RestRequest request = new("/");
 
-        RestResponse response = await RestClient.ExecuteAsync<AppInfo>(request);
+        RestResponse response = await RestClient.ExecuteAsync<GetAppInfoResult>(request);
 
-        Assert.NotNull(response);
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         Assert.Equal("", response.Content);
     }

@@ -18,9 +18,10 @@ public class AppController : ControllerBase
     [HttpGet, Route("")]
     public async Task<IActionResult> GetAppInfo()
     {
-        AppInfo appInfo = await Mediator.Send(
+        GetAppInfoResult getAppInfoResult = await Mediator.Send(
             new GetAppInfoQuery { AppAssembly = Assembly.GetExecutingAssembly() }
         );
-        return Ok(appInfo);
+
+        return Ok(getAppInfoResult);
     }
 }
