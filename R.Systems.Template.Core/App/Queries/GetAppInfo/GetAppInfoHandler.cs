@@ -15,8 +15,8 @@ public class GetAppInfoHandler : IRequestHandler<GetAppInfoQuery, GetAppInfoResu
     public Task<GetAppInfoResult> Handle(GetAppInfoQuery request, CancellationToken cancellationToken)
     {
         GetAppInfoResult result = new(
-            AppVersion: GetAppVersion(request.AppAssembly),
-            AppName: GetAppName(request.AppAssembly)
+            AppName: GetAppName(request.AppAssembly),
+            AppVersion: GetAppVersion(request.AppAssembly)
         );
         return Task.FromResult(result);
     }
