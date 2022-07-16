@@ -1,13 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:9832",
-      "sslPort": 44313
-    }
-  },
   "profiles": {
     "R.Systems.Template.WebApi": {
       "commandName": "Project",
