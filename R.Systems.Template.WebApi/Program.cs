@@ -14,25 +14,11 @@ public class Program
 
         try
         {
-            var builder = WebApplication.CreateBuilder(args);
-            builder.Services.ConfigureServices();
-            builder.Services.ConfigureCoreServices();
-
-            builder.Logging.ClearProviders();
-            builder.Host.UseNLog();
-
-            var app = builder.Build();
-
-            app.UseMiddleware<ExceptionMiddleware>();
-            app.UseSwagger();
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwaggerUI();
-            }
-            app.UseHttpsRedirection();
-            app.UseAuthorization();
-            app.MapControllers();
-
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            ConfigureServices(builder);
+            ConfigureLogging(builder);
+            WebApplication app = builder.Build();
+            ConfigureRequestPipeline(app);
             app.Run();
         }
         catch (Exception exception)
@@ -44,5 +30,30 @@ public class Program
         {
             LogManager.Shutdown();
         }
+    }
+
+    private static void ConfigureServices(WebApplicationBuilder builder)
+    {
+        builder.Services.ConfigureServices();
+        builder.Services.ConfigureCoreServices();
+    }
+
+    private static void ConfigureLogging(WebApplicationBuilder builder)
+    {
+        builder.Logging.ClearProviders();
+        builder.Host.UseNLog();
+    }
+
+    private static void ConfigureRequestPipeline(WebApplication app)
+    {
+        app.UseMiddleware<ExceptionMiddleware>();
+        app.UseSwagger();
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwaggerUI();
+        }
+        app.UseHttpsRedirection();
+        app.UseAuthorization();
+        app.MapControllers();
     }
 }

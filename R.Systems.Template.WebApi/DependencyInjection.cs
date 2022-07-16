@@ -8,6 +8,11 @@ public static class DependencyInjection
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
+        services.ConfigureSwagger();
+    }
+
+    private static void ConfigureSwagger(this IServiceCollection services)
+    {
         services.AddSwaggerGen(
             options =>
             {
