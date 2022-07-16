@@ -9,6 +9,7 @@ public static class DependencyInjection
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.ConfigureSwagger();
+        services.ConfigureCors();
     }
 
     private static void ConfigureSwagger(this IServiceCollection services)
@@ -18,6 +19,19 @@ public static class DependencyInjection
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "R.Systems.Template.WebApi", Version = "1.0" });
                 options.EnableAnnotations();
+            }
+        );
+    }
+
+    private static void ConfigureCors(this IServiceCollection services)
+    {
+        services.AddCors(
+            options =>
+            {
+                options.AddPolicy(
+                    "CorsPolicy",
+                    builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+                );
             }
         );
     }

@@ -53,6 +53,7 @@ public class Program
             app.UseSwaggerUI();
         }
         app.UseHttpsRedirection();
+        app.UseCors("CorsPolicy");
         app.UseAuthorization();
         app.MapControllers();
     }
