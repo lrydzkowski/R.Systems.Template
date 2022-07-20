@@ -2,6 +2,7 @@ using NLog;
 using NLog.Web;
 using R.Systems.Template.Core;
 using R.Systems.Template.WebApi.Middleware;
+using R.Systems.Template.WebApi.Swagger;
 
 namespace R.Systems.Template.WebApi;
 
@@ -48,10 +49,6 @@ public class Program
     {
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseSwagger();
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwaggerUI();
-        }
         app.UseHttpsRedirection();
         app.UseCors("CorsPolicy");
         app.UseAuthorization();

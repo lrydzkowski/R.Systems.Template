@@ -1,4 +1,7 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using R.Systems.Template.WebApi.Swagger;
+using System.Reflection;
 
 namespace R.Systems.Template.WebApi;
 
@@ -6,19 +9,21 @@ public static class DependencyInjection
 {
     public static void ConfigureServices(this IServiceCollection services)
     {
-        services.AddControllers();
+        services.ConfigureControllers();
         services.AddEndpointsApiExplorer();
         services.ConfigureSwagger();
         services.ConfigureCors();
+        services.ConfigureVersioning();
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }
 
-    private static void ConfigureSwagger(this IServiceCollection services)
+    private static void ConfigureControllers(this IServiceCollection services)
     {
-        services.AddSwaggerGen(
-            options =>
+        services.AddControllers(
+            config =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "R.Systems.Template.WebApi", Version = "1.0" });
-                options.EnableAnnotations();
+                config.RespectBrowserAcceptHeader = true;
+                config.ReturnHttpNotAcceptable = true;
             }
         );
     }
@@ -34,5 +39,21 @@ public static class DependencyInjection
                 );
             }
         );
+    }
+
+    private static void ConfigureVersioning(this IServiceCollection services)
+    {
+        services.AddApiVersioning(opt =>
+        {
+            opt.ReportApiVersions = true;
+            opt.AssumeDefaultVersionWhenUnspecified = true;
+            opt.DefaultApiVersion = new ApiVersion(1, 0);
+            opt.ApiVersionReader = new UrlSegmentApiVersionReader();
+        });
+        services.AddVersionedApiExplorer(setup =>
+        {
+            setup.GroupNameFormat = "'v'VVV";
+            setup.SubstituteApiVersionInUrl = true;
+        });
     }
 }
