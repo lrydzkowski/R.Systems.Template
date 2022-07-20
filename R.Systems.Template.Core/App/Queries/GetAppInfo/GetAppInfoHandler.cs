@@ -8,16 +8,22 @@ public class GetAppInfoQuery : IRequest<GetAppInfoResult>
     public Assembly AppAssembly { get; init; } = Assembly.GetExecutingAssembly();
 }
 
-public record GetAppInfoResult(string AppName, string AppVersion);
+public record GetAppInfoResult()
+{
+    public string AppName { get; init; } = "";
+
+    public string AppVersion { get; init; } = "";
+}
 
 public class GetAppInfoHandler : IRequestHandler<GetAppInfoQuery, GetAppInfoResult>
 {
     public Task<GetAppInfoResult> Handle(GetAppInfoQuery request, CancellationToken cancellationToken)
     {
-        GetAppInfoResult result = new(
-            AppName: GetAppName(request.AppAssembly),
-            AppVersion: GetAppVersion(request.AppAssembly)
-        );
+        GetAppInfoResult result = new()
+        {
+            AppName = GetAppName(request.AppAssembly),
+            AppVersion = GetAppVersion(request.AppAssembly)
+        };
         return Task.FromResult(result);
     }
 
