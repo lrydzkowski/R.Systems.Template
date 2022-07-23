@@ -1,5 +1,4 @@
 ﻿using Microsoft.OpenApi.Models;
-using System.Reflection;
 
 namespace R.Systems.Template.WebApi;
 
@@ -11,7 +10,7 @@ public static class DependencyInjection
         services.AddEndpointsApiExplorer();
         services.ConfigureSwagger();
         services.ConfigureCors();
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(typeof(DependencyInjection).Assembly);
     }
 
     private static void ConfigureSwagger(this IServiceCollection services)
