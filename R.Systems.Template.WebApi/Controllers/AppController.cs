@@ -21,7 +21,12 @@ public class AppController : ControllerBase
     private IMapper Mapper { get; }
 
     [SwaggerOperation(Summary = "Get basic information about application")]
-    [SwaggerResponse(statusCode: 200, type: typeof(GetAppInfoResponse), contentTypes: new[] { "application/json" })]
+    [SwaggerResponse(
+        statusCode: 200,
+        description: "Correct response",
+        type: typeof(GetAppInfoResponse),
+        contentTypes: new[] { "application/json" }
+    )]
     [HttpGet, Route("")]
     public async Task<IActionResult> GetAppInfo()
     {
