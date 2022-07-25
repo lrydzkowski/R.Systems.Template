@@ -8,7 +8,7 @@ public class GetAppInfoQuery : IRequest<GetAppInfoResult>
     public Assembly AppAssembly { get; init; } = Assembly.GetExecutingAssembly();
 }
 
-public record GetAppInfoResult()
+public class GetAppInfoResult
 {
     public string AppName { get; init; } = "";
 
