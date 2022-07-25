@@ -1,14 +1,14 @@
-﻿using R.Systems.Template.Core.App.Queries.GetAppInfo;
-using R.Systems.Template.FunctionalTests.Common.Factories;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using R.Systems.Template.WebApi;
 using RestSharp;
 using System.Net;
 
 namespace R.Systems.Template.FunctionalTests.App.Queries.GetAppInfo;
 
-public class GetAppInfoTests : IClassFixture<WebApiFactory<Program>>
+public class GetAppInfoTests : IClassFixture<WebApplicationFactory<Program>>
 {
-    public GetAppInfoTests(WebApiFactory<Program> webApplicationFactory)
+    public GetAppInfoTests(WebApplicationFactory<Program> webApplicationFactory)
     {
         RestClient = new RestClient(webApplicationFactory.CreateClient());
     }

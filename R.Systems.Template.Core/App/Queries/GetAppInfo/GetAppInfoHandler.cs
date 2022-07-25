@@ -24,7 +24,13 @@ public class GetAppInfoHandler : IRequestHandler<GetAppInfoQuery, GetAppInfoResu
             AppName = GetAppName(request.AppAssembly),
             AppVersion = GetAppVersion(request.AppAssembly)
         };
+
         return Task.FromResult(result);
+    }
+
+    private string GetAppName(Assembly appAssembly)
+    {
+        return appAssembly.GetName().Name ?? "";
     }
 
     private string GetAppVersion(Assembly appAssembly)
@@ -32,10 +38,5 @@ public class GetAppInfoHandler : IRequestHandler<GetAppInfoQuery, GetAppInfoResu
         return appAssembly
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
             .InformationalVersion ?? "";
-    }
-
-    private string GetAppName(Assembly appAssembly)
-    {
-        return appAssembly.GetName().Name ?? "";
     }
 }
