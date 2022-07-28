@@ -1,6 +1,7 @@
 using NLog;
 using NLog.Web;
 using R.Systems.Template.Core;
+using R.Systems.Template.Persistence.Db;
 using R.Systems.Template.WebApi.Middleware;
 
 namespace R.Systems.Template.WebApi;
@@ -36,6 +37,7 @@ public class Program
     {
         builder.Services.ConfigureServices();
         builder.Services.ConfigureCoreServices();
+        builder.Services.AddPersistenceDbService(builder.Configuration);
     }
 
     private static void ConfigureLogging(WebApplicationBuilder builder)
@@ -55,5 +57,6 @@ public class Program
         app.UseCors("CorsPolicy");
         app.UseAuthorization();
         app.MapControllers();
+        app.DeployPersistenceDbMigration();
     }
 }

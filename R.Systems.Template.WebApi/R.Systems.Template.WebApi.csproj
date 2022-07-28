@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Persistence.Db\R.Systems.Template.Persistence.Db.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,31 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using R.Systems.Template.Core.App.Queries.GetAppInfo;
+﻿using FluentAssertions;
+using R.Systems.Template.FunctionalTests.Common.Factories;
 using R.Systems.Template.WebApi;
+using R.Systems.Template.WebApi.Responses;
 using RestSharp;
 using System.Net;
 
 namespace R.Systems.Template.FunctionalTests.App.Queries.GetAppInfo;
 
-public class GetAppInfoTests : IClassFixture<WebApplicationFactory<Program>>
+public class GetAppInfoTests : IClassFixture<WebApiFactory<Program>>
 {
-    public GetAppInfoTests(WebApplicationFactory<Program> webApplicationFactory)
+    public GetAppInfoTests(WebApiFactory<Program> webApiFactory)
     {
-        RestClient = new RestClient(webApplicationFactory.CreateClient());
+        RestClient = new RestClient(webApiFactory.CreateClient());
     }
 
     private RestClient RestClient { get; }
 
     [Fact]
-    public async Task GetAppInfo_CorrectData_ReturnsCorrectVersion()
+    public async Task GetAppInfo_ShouldReturnCorrectVersion_WhenCorrectDataIsPassed()
     {
+
         string expectedAppName = AppNameService.GetWebApiName();
         string semVerRegex = new SemVerRegex().Get();
         RestRequest request = new("/");
 
-        RestResponse<GetAppInfoResult> response = await RestClient.ExecuteAsync<GetAppInfoResult>(request);
+        RestResponse<GetAppInfoResponse> response = await RestClient.ExecuteAsync<GetAppInfoResponse>(request);
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(expectedAppName, response.Data?.AppName);
-        Assert.Matches(semVerRegex, response.Data?.AppVersion ?? "");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.Data.Should().NotBeNull();
+        response.Data?.AppName.Should().Be(expectedAppName);
+        response.Data?.AppVersion.Should().MatchRegex(semVerRegex);
     }
 }

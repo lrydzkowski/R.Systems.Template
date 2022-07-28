@@ -1,30 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using FluentAssertions;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
+using R.Systems.Template.FunctionalTests.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
 using System.Net;
 
 namespace R.Systems.Template.FunctionalTests.ExceptionMiddleware;
 
-public class ExceptionMiddlewareTests : IClassFixture<WebApplicationFactory<Program>>
+public class ExceptionMiddlewareTests : IClassFixture<WebApiFactory<Program>>
 {
-    public ExceptionMiddlewareTests(WebApplicationFactory<Program> webApplicationFactory)
+    public ExceptionMiddlewareTests(WebApiFactory<Program> webApiFactory)
     {
-        WebApplicationFactory = webApplicationFactory;
+        WebApiFactory = webApiFactory;
     }
 
-    private WebApplicationFactory<Program> WebApplicationFactory { get; }
+    private WebApiFactory<Program> WebApiFactory { get; }
 
     [Fact]
-    public async Task GetAppInfo_UnexpectedException_Returns500InternalServerError()
+    public async Task GetAppInfo_ShouldReturn500InternalServerError_WhenUnexpectedExceptionWasThrown()
     {
-        RestClient restClient = WebApplicationFactory.BuildWithCustomGetAppInfoHandler();
+        RestClient restClient = WebApiFactory.BuildWithCustomGetAppInfoHandler();
 
         RestRequest request = new("/");
 
         RestResponse response = await restClient.ExecuteAsync<GetAppInfoResult>(request);
 
-        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-        Assert.Equal("", response.Content);
+        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        response.Content.Should().Be("");
     }
 }
