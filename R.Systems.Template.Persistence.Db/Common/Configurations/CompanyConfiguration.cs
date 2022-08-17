@@ -11,6 +11,7 @@ internal class CompanyConfiguration : IEntityTypeConfiguration<CompanyEntity>
         SetTableName(builder);
         SetPrimaryKey(builder);
         ConfigureColumns(builder);
+        InitData(builder);
     }
 
     private void SetTableName(EntityTypeBuilder<CompanyEntity> builder)
@@ -34,5 +35,22 @@ internal class CompanyConfiguration : IEntityTypeConfiguration<CompanyEntity>
             .HasColumnName("name")
             .IsRequired()
             .HasMaxLength(200);
+    }
+
+    private void InitData(EntityTypeBuilder<CompanyEntity> builder)
+    {
+        builder.HasData(
+            new()
+            {
+                Id = 1,
+                Name = "Meta"
+            },
+            new()
+            {
+                Id = 2,
+                Name = "Google"
+            }
+        );
+        builder.Property(user => user.Id).HasIdentityOptions(startValue: 3);
     }
 }

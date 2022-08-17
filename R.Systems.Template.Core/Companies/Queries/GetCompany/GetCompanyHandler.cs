@@ -13,9 +13,9 @@ public class GetCompanyResult
     public CompanyDto? Company { get; set; }
 }
 
-public class GetAppInfoHandler : IRequestHandler<GetCompanyRequest, GetCompanyResult>
+public class GetCompanyHandler : IRequestHandler<GetCompanyRequest, GetCompanyResult>
 {
-    public GetAppInfoHandler(IGetCompanyRepository getCompanyRepository)
+    public GetCompanyHandler(IGetCompanyRepository getCompanyRepository)
     {
         GetCompanyRepository = getCompanyRepository;
     }

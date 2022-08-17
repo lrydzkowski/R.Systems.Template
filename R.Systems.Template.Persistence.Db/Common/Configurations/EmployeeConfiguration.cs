@@ -12,6 +12,7 @@ internal class EmployeeConfiguration : IEntityTypeConfiguration<EmployeeEntity>
         SetPrimaryKey(builder);
         ConfigureRelations(builder);
         ConfigureColumns(builder);
+        InitData(builder);
     }
 
     private void SetTableName(EntityTypeBuilder<EmployeeEntity> builder)
@@ -51,5 +52,33 @@ internal class EmployeeConfiguration : IEntityTypeConfiguration<EmployeeEntity>
 
         builder.Property(employee => employee.CompanyId)
             .HasColumnName("company_id");
+    }
+
+    private void InitData(EntityTypeBuilder<EmployeeEntity> builder)
+    {
+        builder.HasData(
+            new()
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                CompanyId = 1
+            },
+            new()
+            {
+                Id = 2,
+                FirstName = "Will",
+                LastName = "Smith",
+                CompanyId = 2
+            },
+            new()
+            {
+                Id = 3,
+                FirstName = "Jack",
+                LastName = "Parker",
+                CompanyId = 2
+            }
+        );
+        builder.Property(user => user.Id).HasIdentityOptions(startValue: 4);
     }
 }
