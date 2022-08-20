@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.FunctionalTests.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
@@ -51,9 +52,17 @@ public class GetCompanyTests : IClassFixture<WebApiFactory<Program>>
         int companyId = 5;
         RestRequest restRequest = new($"{_endpointUrlPath}/{companyId}");
 
-        RestResponse<Company> response = await RestClient.ExecuteAsync<Company>(restRequest);
+        RestResponse<ErrorInfo> response = await RestClient.ExecuteAsync<ErrorInfo>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        response.Data.Should().BeNull();
+        response.Data.Should().BeEquivalentTo(
+            new ErrorInfo
+            {
+                PropertyName = "Company",
+                ErrorMessage = "Company doesn't exist.",
+                ErrorCode = "NotExist"
+            },
+            options => options.Including(x => x.PropertyName).Including(x => x.ErrorMessage)
+        );
     }
 }

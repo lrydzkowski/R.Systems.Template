@@ -4,9 +4,9 @@ using R.Systems.Template.Persistence.Db.Common.Entities;
 
 namespace R.Systems.Template.Persistence.Db.Common.Profiles;
 
-internal class EmployeeProfile : Profile
+internal class EmployeeEntityProfile : Profile
 {
-    public EmployeeProfile()
+    public EmployeeEntityProfile()
     {
         CreateMap<EmployeeEntity, Employee>();
     }

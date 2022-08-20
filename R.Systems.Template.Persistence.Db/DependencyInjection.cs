@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
+using R.Systems.Template.Persistence.Db.Common.Entities;
 using R.Systems.Template.Persistence.Db.Common.Options;
+using R.Systems.Template.Persistence.Db.Companies.Commands;
 using R.Systems.Template.Persistence.Db.Companies.Queries;
 
 namespace R.Systems.Template.Persistence.Db;
@@ -16,19 +20,27 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
-        services.Configure<ConnectionString>(configuration.GetSection(ConnectionString.Position));
+        services.Configure<ConnectionStrings>(configuration.GetSection(ConnectionStrings.Position));
         services.AddDbContext<AppDbContext>((serviceProvider, options) =>
         {
-            ConnectionString connectionString = serviceProvider.GetRequiredService<IOptions<ConnectionString>>().Value;
-            options.UseNpgsql(connectionString.AppDb);
+            ConnectionStrings connectionStrings = serviceProvider.GetRequiredService<IOptions<ConnectionStrings>>().Value;
+            options.UseNpgsql(connectionStrings.AppDb);
         });
         services.AddAutoMapper(typeof(DependencyInjection));
+        services.AddValidators();
         services.AddRepositories();
+    }
+
+    private static void AddValidators(this IServiceCollection services)
+    {
+        services.AddScoped<IValidator<CompanyEntity>, CompanyValidator>();
     }
 
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IGetCompanyRepository, GetCompanyRepository>();
         services.AddScoped<IGetCompaniesRepository, GetCompaniesRepository>();
+        services.AddScoped<ICreateCompanyRepository, CreateCompanyRepository>();
+        services.AddScoped<ValidateCompanyRepository>();
     }
 }

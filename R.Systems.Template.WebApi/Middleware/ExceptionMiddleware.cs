@@ -1,4 +1,7 @@
-﻿using System.Net;
+﻿using FluentValidation;
+using R.Systems.Template.Core.Common.Errors;
+using System.Net;
+using System.Text.Json;
 
 namespace R.Systems.Template.WebApi.Middleware;
 
@@ -19,11 +22,38 @@ public class ExceptionMiddleware
         {
             await _next(httpContext);
         }
-        catch (Exception ex)
+        catch (ValidationException validationException)
         {
-            _logger.LogError($"Something went wrong: {ex}");
+            await HandleValidationExceptionAsync(httpContext, validationException);
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError($"Something went wrong: {exception}");
             HandleException(httpContext);
         }
+    }
+
+    private async Task HandleValidationExceptionAsync(HttpContext context, ValidationException validationException)
+    {
+        IEnumerable<ErrorInfo> errors = validationException.Errors.Select(
+                x => new ErrorInfo
+                {
+                    PropertyName = x.PropertyName,
+                    ErrorMessage = x.ErrorMessage,
+                    AttemptedValue = x.AttemptedValue,
+                    ErrorCode = x.ErrorCode
+                }
+            )
+            .AsEnumerable();
+        JsonSerializerOptions jsonSerializerOptions = new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+        string errorsSerialized = JsonSerializer.Serialize(errors, jsonSerializerOptions);
+
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+        await context.Response.WriteAsync(errorsSerialized);
     }
 
     private void HandleException(HttpContext context)

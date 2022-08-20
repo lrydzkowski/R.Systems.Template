@@ -1,6 +1,6 @@
 ﻿namespace R.Systems.Template.Persistence.Db.Common.Options;
 
-internal class ConnectionString
+internal class ConnectionStrings
 {
     public const string Position = "ConnectionStrings";
 

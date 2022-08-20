@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using R.Systems.Template.Core.Common.Errors;
+using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
 using Swashbuckle.AspNetCore.Annotations;
@@ -25,13 +27,21 @@ public class CompanyController : ControllerBase
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 404, description: "Company doesn't exist.")]
-    [HttpGet("{companyId}")]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpGet("{companyId}", Name = "GetCompany")]
     public async Task<IActionResult> GetCompany(int companyId)
     {
-        GetCompanyResult result = await Mediator.Send(new GetCompanyQuery { CompanyId = companyId });
+        GetCompanyQuery query = new() { CompanyId = companyId };
+        GetCompanyResult result = await Mediator.Send(query);
         if (result.Company == null)
         {
-            return NotFound(null);
+            return NotFound(new ErrorInfo
+            {
+                PropertyName = "Company",
+                ErrorMessage = "Company doesn't exist.",
+                ErrorCode = "NotExist",
+                AttemptedValue = query
+            });
         }
 
         return Ok(result.Company);
@@ -44,11 +54,28 @@ public class CompanyController : ControllerBase
         type: typeof(GetCompaniesResult),
         contentTypes: new[] { "application/json" }
     )]
+    [SwaggerResponse(statusCode: 500)]
     [HttpGet]
     public async Task<IActionResult> GetCompanies()
     {
         GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery());
 
         return Ok(result.Companies);
+    }
+
+    [SwaggerOperation(Summary = "Create a company")]
+    [SwaggerResponse(
+        statusCode: 201,
+        description: "Company created",
+        contentTypes: new[] { "application/json" }
+    )]
+    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpPost]
+    public async Task<IActionResult> CreateCompany(CreateCompanyCommand command)
+    {
+        CreateCompanyResult result = await Mediator.Send(command);
+
+        return CreatedAtAction(nameof(GetCompany), new { companyId = result.Company.CompanyId }, result.Company);
     }
 }
