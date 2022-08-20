@@ -1,8 +1,8 @@
-﻿using R.Systems.Template.Core.Common.DataTransferObjects;
+﻿using R.Systems.Template.Core.Common.Domain;
 
 namespace R.Systems.Template.Core.Companies.Queries.GetCompany;
 
 public interface IGetCompanyRepository
 {
-    Task<CompanyDto?> GetCompanyAsync(int companyId);
+    Task<Company?> GetCompanyAsync(int companyId);
 }

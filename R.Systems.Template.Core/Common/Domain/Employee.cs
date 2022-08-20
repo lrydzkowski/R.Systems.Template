@@ -1,6 +1,6 @@
-﻿namespace R.Systems.Template.Core.Common.DataTransferObjects;
+﻿namespace R.Systems.Template.Core.Common.Domain;
 
-public class EmployeeDto
+public class Employee
 {
     public int EmployeeId { get; set; }
 

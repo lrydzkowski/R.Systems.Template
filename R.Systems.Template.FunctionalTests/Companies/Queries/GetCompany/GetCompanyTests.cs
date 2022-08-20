@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using R.Systems.Template.Core.Common.DataTransferObjects;
+using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.FunctionalTests.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
@@ -22,11 +22,11 @@ public class GetCompanyTests : IClassFixture<WebApiFactory<Program>>
     public async Task GetCompany_ShouldReturnCompany_WhenCompanyExists()
     {
         int companyId = 1;
-        CompanyDto expectedCompany = new()
+        Company expectedCompany = new()
         {
             CompanyId = 1,
             Name = "Meta",
-            Employees = new List<EmployeeDto>()
+            Employees = new List<Employee>()
             {
                 new()
                 {
@@ -38,7 +38,7 @@ public class GetCompanyTests : IClassFixture<WebApiFactory<Program>>
         };
         RestRequest restRequest = new($"{_endpointUrlPath}/{companyId}");
 
-        RestResponse<CompanyDto> response = await RestClient.ExecuteAsync<CompanyDto>(restRequest);
+        RestResponse<Company> response = await RestClient.ExecuteAsync<Company>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
@@ -51,7 +51,7 @@ public class GetCompanyTests : IClassFixture<WebApiFactory<Program>>
         int companyId = 5;
         RestRequest restRequest = new($"{_endpointUrlPath}/{companyId}");
 
-        RestResponse<CompanyDto> response = await RestClient.ExecuteAsync<CompanyDto>(restRequest);
+        RestResponse<Company> response = await RestClient.ExecuteAsync<Company>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         response.Data.Should().BeNull();

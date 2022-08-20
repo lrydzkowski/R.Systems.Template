@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using R.Systems.Template.Core.Common.DataTransferObjects;
+using R.Systems.Template.Core.Common.Domain;
 
 namespace R.Systems.Template.Core.Companies.Queries.GetCompany;
 
@@ -10,7 +10,7 @@ public class GetCompanyRequest : IRequest<GetCompanyResult>
 
 public class GetCompanyResult
 {
-    public CompanyDto? Company { get; set; }
+    public Company? Company { get; set; }
 }
 
 public class GetCompanyHandler : IRequestHandler<GetCompanyRequest, GetCompanyResult>
@@ -24,7 +24,7 @@ public class GetCompanyHandler : IRequestHandler<GetCompanyRequest, GetCompanyRe
 
     public async Task<GetCompanyResult> Handle(GetCompanyRequest request, CancellationToken cancellationToken)
     {
-        CompanyDto? companyDto = await GetCompanyRepository.GetCompanyAsync(request.CompanyId);
+        Company? companyDto = await GetCompanyRepository.GetCompanyAsync(request.CompanyId);
 
         return new GetCompanyResult
         {
