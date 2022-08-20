@@ -27,7 +27,7 @@ public class CompanyController : ControllerBase
     [HttpGet("{companyId}")]
     public async Task<IActionResult> GetCompany(int companyId)
     {
-        GetCompanyResult result = await Mediator.Send(new GetCompanyRequest { CompanyId = companyId });
+        GetCompanyResult result = await Mediator.Send(new GetCompanyQuery { CompanyId = companyId });
         if (result.Company == null)
         {
             return NotFound(null);

@@ -3,7 +3,7 @@ using R.Systems.Template.Core.Common.Domain;
 
 namespace R.Systems.Template.Core.Companies.Queries.GetCompany;
 
-public class GetCompanyRequest : IRequest<GetCompanyResult>
+public class GetCompanyQuery : IRequest<GetCompanyResult>
 {
     public int CompanyId { get; init; }
 }
@@ -13,18 +13,18 @@ public class GetCompanyResult
     public Company? Company { get; set; }
 }
 
-public class GetCompanyHandler : IRequestHandler<GetCompanyRequest, GetCompanyResult>
+public class GetCompanyQueryHandler : IRequestHandler<GetCompanyQuery, GetCompanyResult>
 {
-    public GetCompanyHandler(IGetCompanyRepository getCompanyRepository)
+    public GetCompanyQueryHandler(IGetCompanyRepository getCompanyRepository)
     {
         GetCompanyRepository = getCompanyRepository;
     }
 
     private IGetCompanyRepository GetCompanyRepository { get; }
 
-    public async Task<GetCompanyResult> Handle(GetCompanyRequest request, CancellationToken cancellationToken)
+    public async Task<GetCompanyResult> Handle(GetCompanyQuery query, CancellationToken cancellationToken)
     {
-        Company? companyDto = await GetCompanyRepository.GetCompanyAsync(request.CompanyId);
+        Company? companyDto = await GetCompanyRepository.GetCompanyAsync(query.CompanyId);
 
         return new GetCompanyResult
         {
