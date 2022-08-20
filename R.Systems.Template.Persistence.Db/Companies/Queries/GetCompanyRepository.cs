@@ -2,7 +2,7 @@
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
 
-namespace R.Systems.Template.Persistence.Db.Companies.Queries.GetCompany;
+namespace R.Systems.Template.Persistence.Db.Companies.Queries;
 
 internal class GetCompanyRepository : IGetCompanyRepository
 {
