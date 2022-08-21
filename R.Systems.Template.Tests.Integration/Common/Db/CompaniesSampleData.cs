@@ -1,6 +1,6 @@
 ﻿using R.Systems.Template.Persistence.Db.Common.Entities;
 
-namespace R.Systems.Template.Tests.Integration.Common.SampleData;
+namespace R.Systems.Template.Tests.Integration.Common.Db;
 
 internal static class CompaniesSampleData
 {
@@ -20,6 +20,22 @@ internal static class CompaniesSampleData
             {
                 Id = 2,
                 Name = "Google"
+            }
+        },
+        {
+            "Microsoft",
+            new CompanyEntity
+            {
+                Id = 3,
+                Name = "Microsoft"
+            }
+        },
+        {
+            "Amazon",
+            new CompanyEntity
+            {
+                Id = 4,
+                Name = "Amazon"
             }
         }
     };

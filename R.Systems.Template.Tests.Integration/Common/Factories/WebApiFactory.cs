@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Persistence.Db;
+using R.Systems.Template.Tests.Integration.Common.Db;
 
 namespace R.Systems.Template.Tests.Integration.Common.Factories;
 
@@ -26,7 +27,9 @@ public class WebApiFactory<TStartup> : WebApplicationFactory<TStartup> where TSt
         using IServiceScope scope = serviceProvider.CreateScope();
         IServiceProvider scopedServiceProvider = scope.ServiceProvider;
         AppDbContext dbContext = GetService<AppDbContext>(scopedServiceProvider);
+
         dbContext.Database.EnsureCreated();
+        DbInitializer.Initialize(dbContext);
     }
 
     private void RemoveService(IServiceCollection services, Type serviceType)
