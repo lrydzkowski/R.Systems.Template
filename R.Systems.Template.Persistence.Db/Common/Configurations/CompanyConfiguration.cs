@@ -35,6 +35,9 @@ internal class CompanyConfiguration : IEntityTypeConfiguration<CompanyEntity>
             .HasColumnName("name")
             .IsRequired()
             .HasMaxLength(200);
+
+        builder.HasIndex(company => company.Name)
+            .IsUnique();
     }
 
     private void InitData(EntityTypeBuilder<CompanyEntity> builder)

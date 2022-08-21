@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Persistence.Db.Common.Entities;
@@ -8,25 +8,32 @@ namespace R.Systems.Template.Persistence.Db.Companies.Commands;
 
 internal class CreateCompanyRepository : ICreateCompanyRepository
 {
-    public CreateCompanyRepository(IMapper mapper, IValidator<CompanyToCreate> validator, AppDbContext dbContext)
+    public CreateCompanyRepository(IMapper mapper, AppDbContext dbContext, DbExceptionHandler dbExceptionHandler)
     {
         Mapper = mapper;
-        Validator = validator;
         DbContext = dbContext;
+        DbExceptionHandler = dbExceptionHandler;
     }
 
     private IMapper Mapper { get; }
-    private IValidator<CompanyToCreate> Validator { get; }
     private AppDbContext DbContext { get; }
+    private DbExceptionHandler DbExceptionHandler { get; }
 
     public async Task<Company> CreateCompanyAsync(CompanyToCreate companyToCreate)
     {
-        await Validator.ValidateAndThrowAsync(companyToCreate);
-
         CompanyEntity companyEntity = Mapper.Map<CompanyEntity>(companyToCreate);
 
         await DbContext.Companies.AddAsync(companyEntity);
-        await DbContext.SaveChangesAsync();
+
+        try
+        {
+            await DbContext.SaveChangesAsync();
+        }
+        catch (DbUpdateException exception)
+        {
+            DbExceptionHandler.Handle(exception, companyEntity);
+            throw;
+        }
 
         return Mapper.Map<Company>(companyEntity);
     }

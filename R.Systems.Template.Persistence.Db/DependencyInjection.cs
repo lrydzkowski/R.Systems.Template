@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -27,14 +26,8 @@ public static class DependencyInjection
             options.UseNpgsql(connectionStrings.AppDb);
         });
         services.AddAutoMapper(typeof(DependencyInjection));
-        services.AddValidators();
         services.AddRepositories();
-    }
-
-    private static void AddValidators(this IServiceCollection services)
-    {
-        services.AddScoped<IValidator<CompanyToCreate>, CreateCompanyValidator>();
-        services.AddScoped<IValidator<CompanyToUpdate>, UpdateCompanyValidator>();
+        services.AddScoped<DbExceptionHandler>();
     }
 
     private static void AddRepositories(this IServiceCollection services)
