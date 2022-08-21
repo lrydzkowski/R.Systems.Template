@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="R.Systems.Template.FunctionalTests" />
+    <InternalsVisibleTo Include="R.Systems.Template.Tests.Integration" />
   </ItemGroup>
 
 </Project>

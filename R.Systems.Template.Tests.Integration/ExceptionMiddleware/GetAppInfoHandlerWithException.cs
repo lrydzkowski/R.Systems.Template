@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 
-namespace R.Systems.Template.FunctionalTests.ExceptionMiddleware;
+namespace R.Systems.Template.Tests.Integration.ExceptionMiddleware;
 
 public class GetAppInfoHandlerWithException : IRequestHandler<GetAppInfoQuery, GetAppInfoResult>
 {

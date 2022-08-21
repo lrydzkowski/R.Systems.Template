@@ -5,7 +5,7 @@ using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using R.Systems.Template.WebApi;
 using RestSharp;
 
-namespace R.Systems.Template.FunctionalTests.ExceptionMiddleware;
+namespace R.Systems.Template.Tests.Integration.ExceptionMiddleware;
 
 internal static class RestClientBuilder
 {

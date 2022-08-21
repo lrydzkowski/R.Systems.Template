@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using R.Systems.Template.FunctionalTests.Common.Factories;
+using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
 using R.Systems.Template.WebApi.Api;
 using RestSharp;
 using System.Net;
 
-namespace R.Systems.Template.FunctionalTests.App.Queries.GetAppInfo;
+namespace R.Systems.Template.Tests.Integration.App.Queries.GetAppInfo;
 
 public class GetAppInfoTests : IClassFixture<WebApiFactory<Program>>
 {

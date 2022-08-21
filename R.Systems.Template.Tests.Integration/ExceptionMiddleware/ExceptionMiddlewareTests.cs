@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
-using R.Systems.Template.FunctionalTests.Common.Factories;
+using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
 using System.Net;
 
-namespace R.Systems.Template.FunctionalTests.ExceptionMiddleware;
+namespace R.Systems.Template.Tests.Integration.ExceptionMiddleware;
 
 public class ExceptionMiddlewareTests : IClassFixture<WebApiFactory<Program>>
 {

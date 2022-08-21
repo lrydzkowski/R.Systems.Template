@@ -1,12 +1,12 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
-using R.Systems.Template.FunctionalTests.Common.Factories;
+using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
 using System.Net;
 
-namespace R.Systems.Template.FunctionalTests.Companies.Queries.GetCompany;
+namespace R.Systems.Template.Tests.Integration.Companies.Queries.GetCompany;
 
 public class GetCompanyTests : IClassFixture<WebApiFactory<Program>>
 {

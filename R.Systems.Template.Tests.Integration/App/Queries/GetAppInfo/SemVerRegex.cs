@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.FunctionalTests.App.Queries.GetAppInfo;
+﻿namespace R.Systems.Template.Tests.Integration.App.Queries.GetAppInfo;
 
 internal class SemVerRegex
 {
