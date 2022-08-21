@@ -1,5 +1,4 @@
 ﻿using R.Systems.Template.Persistence.Db;
-using R.Systems.Template.Persistence.Db.Common.Entities;
 
 namespace R.Systems.Template.Tests.Integration.Common.Db;
 
@@ -27,17 +26,11 @@ internal static class DbInitializer
 
     private static void AddTestCompanies(AppDbContext dbContext)
     {
-        foreach (KeyValuePair<string, CompanyEntity> element in CompaniesSampleData.Data)
-        {
-            dbContext.Companies.Add(element.Value);
-        }
+        dbContext.Companies.AddRange(CompaniesSampleData.Data.Select(x => x.Value));
     }
 
     private static void AddTestEmployees(AppDbContext dbContext)
     {
-        foreach (EmployeeEntity employeeEntity in EmployeesSampleData.Data)
-        {
-            dbContext.Employees.Add(employeeEntity);
-        }
+        dbContext.Employees.AddRange(EmployeesSampleData.Data);
     }
 }

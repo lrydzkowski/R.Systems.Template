@@ -59,6 +59,4 @@ internal class UpdateCompanyRepository : IUpdateCompanyRepository
 
         return companyEntity;
     }
-
-
 }
