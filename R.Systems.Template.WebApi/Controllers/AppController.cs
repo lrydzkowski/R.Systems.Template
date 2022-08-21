@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
-using R.Systems.Template.WebApi.Responses;
+using R.Systems.Template.WebApi.Api;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Reflection;
 

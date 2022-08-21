@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Companies.Commands.CreateCompany;
+using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Persistence.Db.Common.Entities;
 
 namespace R.Systems.Template.Persistence.Db.Common.Profiles;
@@ -11,5 +13,7 @@ internal class CompanyEntityProfile : Profile
         CreateMap<CompanyEntity, Company>()
             .ForMember(company => company.CompanyId, options => options.MapFrom(companyEntity => companyEntity.Id));
         CreateMap<CompanyToCreate, CompanyEntity>();
+        CreateMap<CompanyToUpdate, CompanyEntity>()
+            .ForMember(companyEntity => companyEntity.Id, options => options.MapFrom(company => company.CompanyId));
     }
 }

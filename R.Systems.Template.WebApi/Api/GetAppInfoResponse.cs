@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.WebApi.Responses;
+﻿namespace R.Systems.Template.WebApi.Api;
 
 public record GetAppInfoResponse
 {

@@ -2,7 +2,7 @@
 
 namespace R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 
-internal interface IUpdateCompanyRepository
+public interface IUpdateCompanyRepository
 {
-    Task UpdateCompanyAsync(Company company);
+    Task<Company> UpdateCompanyAsync(CompanyToUpdate companyToUpdate);
 }

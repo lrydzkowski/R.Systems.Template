@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
-using R.Systems.Template.WebApi.Responses;
+using R.Systems.Template.WebApi.Api;
 
 namespace R.Systems.Template.WebApi.Profiles;
 

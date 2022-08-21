@@ -8,21 +8,22 @@ namespace R.Systems.Template.Persistence.Db.Companies.Commands;
 
 internal class CreateCompanyRepository : ICreateCompanyRepository
 {
-    public CreateCompanyRepository(AppDbContext dbContext, IMapper mapper, IValidator<CompanyEntity> validator)
+    public CreateCompanyRepository(IMapper mapper, IValidator<CompanyToCreate> validator, AppDbContext dbContext)
     {
-        DbContext = dbContext;
         Mapper = mapper;
         Validator = validator;
+        DbContext = dbContext;
     }
 
-    private AppDbContext DbContext { get; }
     private IMapper Mapper { get; }
-    private IValidator<CompanyEntity> Validator { get; }
+    private IValidator<CompanyToCreate> Validator { get; }
+    private AppDbContext DbContext { get; }
 
     public async Task<Company> CreateCompanyAsync(CompanyToCreate companyToCreate)
     {
+        await Validator.ValidateAndThrowAsync(companyToCreate);
+
         CompanyEntity companyEntity = Mapper.Map<CompanyEntity>(companyToCreate);
-        await Validator.ValidateAndThrowAsync(companyEntity);
 
         await DbContext.Companies.AddAsync(companyEntity);
         await DbContext.SaveChangesAsync();

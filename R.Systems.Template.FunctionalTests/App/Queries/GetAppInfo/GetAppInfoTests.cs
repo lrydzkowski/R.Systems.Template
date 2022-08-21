@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.FunctionalTests.Common.Factories;
 using R.Systems.Template.WebApi;
-using R.Systems.Template.WebApi.Responses;
+using R.Systems.Template.WebApi.Api;
 using RestSharp;
 using System.Net;
 
@@ -19,7 +19,6 @@ public class GetAppInfoTests : IClassFixture<WebApiFactory<Program>>
     [Fact]
     public async Task GetAppInfo_ShouldReturnCorrectVersion_WhenCorrectDataIsPassed()
     {
-
         string expectedAppName = AppNameService.GetWebApiName();
         string semVerRegex = new SemVerRegex().Get();
         RestRequest request = new("/");

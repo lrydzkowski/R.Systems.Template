@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Core.Common.Validation;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
+using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 
 namespace R.Systems.Template.Core;
 
@@ -20,5 +21,6 @@ public static class DependencyInjection
     private static void AddValidators(this IServiceCollection services)
     {
         services.AddScoped<IValidator<CreateCompanyCommand>, CreateCompanyCommandValidator>();
+        services.AddScoped<IValidator<UpdateCompanyCommand>, UpdateCompanyCommandValidator>();
     }
 }

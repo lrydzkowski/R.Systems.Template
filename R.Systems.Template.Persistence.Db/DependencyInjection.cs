@@ -4,9 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
+using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
-using R.Systems.Template.Persistence.Db.Common.Entities;
 using R.Systems.Template.Persistence.Db.Common.Options;
 using R.Systems.Template.Persistence.Db.Companies.Commands;
 using R.Systems.Template.Persistence.Db.Companies.Queries;
@@ -33,7 +33,8 @@ public static class DependencyInjection
 
     private static void AddValidators(this IServiceCollection services)
     {
-        services.AddScoped<IValidator<CompanyEntity>, CompanyValidator>();
+        services.AddScoped<IValidator<CompanyToCreate>, CreateCompanyValidator>();
+        services.AddScoped<IValidator<CompanyToUpdate>, UpdateCompanyValidator>();
     }
 
     private static void AddRepositories(this IServiceCollection services)
@@ -41,6 +42,6 @@ public static class DependencyInjection
         services.AddScoped<IGetCompanyRepository, GetCompanyRepository>();
         services.AddScoped<IGetCompaniesRepository, GetCompaniesRepository>();
         services.AddScoped<ICreateCompanyRepository, CreateCompanyRepository>();
-        services.AddScoped<ValidateCompanyRepository>();
+        services.AddScoped<IUpdateCompanyRepository, UpdateCompanyRepository>();
     }
 }

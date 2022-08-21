@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
+using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
+using R.Systems.Template.WebApi.Api;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Template.WebApi.Controllers;
@@ -19,7 +21,7 @@ public class CompanyController : ControllerBase
 
     private ISender Mediator { get; }
 
-    [SwaggerOperation(Summary = "Get company")]
+    [SwaggerOperation(Summary = "Get the company")]
     [SwaggerResponse(
         statusCode: 200,
         description: "Correct response",
@@ -63,7 +65,7 @@ public class CompanyController : ControllerBase
         return Ok(result.Companies);
     }
 
-    [SwaggerOperation(Summary = "Create a company")]
+    [SwaggerOperation(Summary = "Create the company")]
     [SwaggerResponse(
         statusCode: 201,
         description: "Company created",
@@ -75,6 +77,22 @@ public class CompanyController : ControllerBase
     public async Task<IActionResult> CreateCompany(CreateCompanyCommand command)
     {
         CreateCompanyResult result = await Mediator.Send(command);
+
+        return CreatedAtAction(nameof(GetCompany), new { companyId = result.Company.CompanyId }, result.Company);
+    }
+
+    [SwaggerOperation(Summary = "Update the company")]
+    [SwaggerResponse(
+        statusCode: 201,
+        description: "Company updated",
+        contentTypes: new[] { "application/json" }
+    )]
+    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpPut("{companyId}")]
+    public async Task<IActionResult> UpdateCompany(int companyId, UpdateCompanyRequest request)
+    {
+        UpdateCompanyResult result = await Mediator.Send(new UpdateCompanyCommand { CompanyId = companyId, Name = request.Name });
 
         return CreatedAtAction(nameof(GetCompany), new { companyId = result.Company.CompanyId }, result.Company);
     }
