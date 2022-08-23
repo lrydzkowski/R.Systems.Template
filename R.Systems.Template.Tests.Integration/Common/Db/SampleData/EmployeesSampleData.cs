@@ -1,6 +1,6 @@
 ﻿using R.Systems.Template.Persistence.Db.Common.Entities;
 
-namespace R.Systems.Template.Tests.Integration.Common.Db;
+namespace R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 
 internal static class EmployeesSampleData
 {

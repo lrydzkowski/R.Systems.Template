@@ -1,16 +1,19 @@
 ﻿using R.Systems.Template.Persistence.Db;
+using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 
 namespace R.Systems.Template.Tests.Integration.Common.Db;
 
 internal static class DbInitializer
 {
-    public static void Initialize(AppDbContext dbContext)
+    public static void InitializeData(AppDbContext dbContext)
     {
+        dbContext.Database.EnsureCreated();
+
         RemoveExistingData(dbContext);
         AddTestData(dbContext);
     }
 
-    private static void RemoveExistingData(AppDbContext dbContext)
+    public static void RemoveExistingData(AppDbContext dbContext)
     {
         dbContext.RemoveRange(dbContext.Employees);
         dbContext.RemoveRange(dbContext.Companies);
