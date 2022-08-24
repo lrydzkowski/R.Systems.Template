@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Persistence.Db;
 using R.Systems.Template.Tests.Integration.Common.Db;
+using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
 
-namespace R.Systems.Template.Tests.Integration.Common.Factories;
+namespace R.Systems.Template.Tests.Integration.Common.Builders;
 
-internal static class RestClientFactory
+internal static class RestClientBuilder
 {
     public static RestClient CreateRestClient(this WebApiFactory<Program> webApiFactory)
     {

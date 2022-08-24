@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
