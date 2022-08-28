@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
@@ -69,6 +70,7 @@ public class CompanyController : ControllerBase
     [SwaggerResponse(
         statusCode: 201,
         description: "Company created",
+        type: typeof(Company),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
@@ -83,8 +85,9 @@ public class CompanyController : ControllerBase
 
     [SwaggerOperation(Summary = "Update the company")]
     [SwaggerResponse(
-        statusCode: 201,
+        statusCode: 200,
         description: "Company updated",
+        type: typeof(Company),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
@@ -92,8 +95,9 @@ public class CompanyController : ControllerBase
     [HttpPut("{companyId}")]
     public async Task<IActionResult> UpdateCompany(int companyId, UpdateCompanyRequest request)
     {
-        UpdateCompanyResult result = await Mediator.Send(new UpdateCompanyCommand { CompanyId = companyId, Name = request.Name });
+        UpdateCompanyResult result =
+            await Mediator.Send(new UpdateCompanyCommand { CompanyId = companyId, Name = request.Name });
 
-        return CreatedAtAction(nameof(GetCompany), new { companyId = result.Company.CompanyId }, result.Company);
+        return Ok(result.Company);
     }
 }
