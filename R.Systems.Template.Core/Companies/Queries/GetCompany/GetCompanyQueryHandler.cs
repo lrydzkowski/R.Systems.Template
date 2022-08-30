@@ -24,11 +24,11 @@ public class GetCompanyQueryHandler : IRequestHandler<GetCompanyQuery, GetCompan
 
     public async Task<GetCompanyResult> Handle(GetCompanyQuery query, CancellationToken cancellationToken)
     {
-        Company? companyDto = await GetCompanyRepository.GetCompanyAsync(query.CompanyId);
+        Company? company = await GetCompanyRepository.GetCompanyAsync(query.CompanyId);
 
         return new GetCompanyResult
         {
-            Company = companyDto
+            Company = company
         };
     }
 }

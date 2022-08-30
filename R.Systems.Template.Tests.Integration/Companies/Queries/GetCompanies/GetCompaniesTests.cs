@@ -9,7 +9,7 @@ using System.Net;
 
 namespace R.Systems.Template.Tests.Integration.Companies.Queries.GetCompanies;
 
-public class GetCompaniesTests
+public class GetEmployeesTests
 {
     private readonly string _endpointUrlPath = "/companies";
 
@@ -49,7 +49,7 @@ public class GetCompaniesTests
     [Fact]
     public async Task GetCompanies_ShouldReturnEmptyList_WhenCompaniesNotExist()
     {
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClientWithoutCompanies();
+        RestClient restClient = new WebApiFactory<Program>().CreateRestClientWithoutData();
         RestRequest restRequest = new(_endpointUrlPath);
 
         RestResponse<List<Company>> response = await restClient.ExecuteAsync<List<Company>>(restRequest);

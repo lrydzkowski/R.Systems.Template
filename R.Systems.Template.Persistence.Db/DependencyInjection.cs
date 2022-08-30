@@ -6,9 +6,15 @@ using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
+using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
+using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
+using R.Systems.Template.Core.Employees.Queries.GetEmployee;
+using R.Systems.Template.Core.Employees.Queries.GetEmployees;
 using R.Systems.Template.Persistence.Db.Common.Options;
 using R.Systems.Template.Persistence.Db.Companies.Commands;
 using R.Systems.Template.Persistence.Db.Companies.Queries;
+using R.Systems.Template.Persistence.Db.Employees.Commands;
+using R.Systems.Template.Persistence.Db.Employees.Queries;
 
 namespace R.Systems.Template.Persistence.Db;
 
@@ -36,5 +42,10 @@ public static class DependencyInjection
         services.AddScoped<IGetCompaniesRepository, GetCompaniesRepository>();
         services.AddScoped<ICreateCompanyRepository, CreateCompanyRepository>();
         services.AddScoped<IUpdateCompanyRepository, UpdateCompanyRepository>();
+        services.AddScoped<EmployeeValidator>();
+        services.AddScoped<IGetEmployeeRepository, GetEmployeeRepository>();
+        services.AddScoped<IGetEmployeesRepository, GetEmployeesRepository>();
+        services.AddScoped<ICreateEmployeeRepository, CreateEmployeeRepository>();
+        services.AddScoped<IUpdateEmployeeRepository, UpdateEmployeeRepository>();
     }
 }

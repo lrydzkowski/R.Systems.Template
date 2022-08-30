@@ -14,7 +14,7 @@ internal static class RestClientBuilder
         return new RestClient(webApiFactory.CreateClient());
     }
 
-    public static RestClient CreateRestClientWithoutCompanies(this WebApiFactory<Program> webApiFactory)
+    public static RestClient CreateRestClientWithoutData(this WebApiFactory<Program> webApiFactory)
     {
         HttpClient httpClient = webApiFactory.WithWebHostBuilder(
             builder =>

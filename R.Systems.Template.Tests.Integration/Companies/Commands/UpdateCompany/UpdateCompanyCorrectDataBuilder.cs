@@ -3,7 +3,7 @@ using R.Systems.Template.WebApi.Api;
 
 namespace R.Systems.Template.Tests.Integration.Companies.Commands.UpdateCompany;
 
-internal static class UpdateCompanyCorrectDataBuilder
+internal static class UpdateEmployeeCorrectDataBuilder
 {
     public static IEnumerable<object[]> Build()
     {

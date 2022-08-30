@@ -8,11 +8,11 @@ using System.Net;
 
 namespace R.Systems.Template.Tests.Integration.Companies.Queries.GetCompany;
 
-public class GetCompanyTests : IClassFixture<WebApiFactory<Program>>
+public class GetEmployeeTests : IClassFixture<WebApiFactory<Program>>
 {
     private readonly string _endpointUrlPath = "/companies";
 
-    public GetCompanyTests(WebApiFactory<Program> webApiFactory)
+    public GetEmployeeTests(WebApiFactory<Program> webApiFactory)
     {
         RestClient = new RestClient(webApiFactory.CreateClient());
     }
