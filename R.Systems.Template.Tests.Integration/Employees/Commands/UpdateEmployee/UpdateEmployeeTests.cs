@@ -2,13 +2,12 @@
 using FluentValidation.Results;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Tests.Integration.Common.Factories;
-using R.Systems.Template.Tests.Integration.Employees.Commands.UpdateEmployee;
 using R.Systems.Template.WebApi;
 using R.Systems.Template.WebApi.Api;
 using RestSharp;
 using System.Net;
 
-namespace R.Systems.Template.Tests.Integration.Employees.Commands.UpdateCompany;
+namespace R.Systems.Template.Tests.Integration.Employees.Commands.UpdateEmployee;
 
 public class UpdateEmployeeTests : IClassFixture<WebApiFactory<Program>>
 {
