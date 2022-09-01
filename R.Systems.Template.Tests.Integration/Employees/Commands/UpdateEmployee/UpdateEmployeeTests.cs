@@ -6,6 +6,7 @@ using R.Systems.Template.WebApi;
 using R.Systems.Template.WebApi.Api;
 using RestSharp;
 using System.Net;
+using Xunit.Abstractions;
 
 namespace R.Systems.Template.Tests.Integration.Employees.Commands.UpdateEmployee;
 
@@ -13,12 +14,14 @@ public class UpdateEmployeeTests : IClassFixture<WebApiFactory<Program>>
 {
     private readonly string _endpointUrlPath = "/employees";
 
-    public UpdateEmployeeTests(WebApiFactory<Program> webApiFactory)
+    public UpdateEmployeeTests(WebApiFactory<Program> webApiFactory, ITestOutputHelper output)
     {
+        Output = output;
         RestClient = new RestClient(webApiFactory.CreateClient());
     }
 
     private RestClient RestClient { get; }
+    private ITestOutputHelper Output { get; }
 
     [Theory]
     [MemberData(
@@ -32,6 +35,8 @@ public class UpdateEmployeeTests : IClassFixture<WebApiFactory<Program>>
         HttpStatusCode expectedHttpStatus,
         IEnumerable<ValidationFailure> validationFailures)
     {
+        Output.WriteLine("Parameters set with id = {0}", id);
+
         string url = $"{_endpointUrlPath}/{employeeId}";
         var restRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
 
@@ -58,6 +63,8 @@ public class UpdateEmployeeTests : IClassFixture<WebApiFactory<Program>>
         UpdateEmployeeRequest request
     )
     {
+        Output.WriteLine("Parameters set with id = {0}", id);
+
         string url = $"{_endpointUrlPath}/{employeeId}";
         var updateRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
 

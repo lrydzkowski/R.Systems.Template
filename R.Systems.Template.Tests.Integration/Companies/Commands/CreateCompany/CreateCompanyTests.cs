@@ -6,6 +6,7 @@ using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
 using System.Net;
+using Xunit.Abstractions;
 
 namespace R.Systems.Template.Tests.Integration.Companies.Commands.CreateCompany;
 
@@ -13,12 +14,14 @@ public class CreateCompanyTests : IClassFixture<WebApiFactory<Program>>
 {
     private readonly string _endpointUrlPath = "/companies";
 
-    public CreateCompanyTests(WebApiFactory<Program> webApiFactory)
+    public CreateCompanyTests(WebApiFactory<Program> webApiFactory, ITestOutputHelper output)
     {
+        Output = output;
         RestClient = new RestClient(webApiFactory.CreateClient());
     }
 
     private RestClient RestClient { get; }
+    private ITestOutputHelper Output { get; }
 
     [Theory]
     [MemberData(
@@ -31,6 +34,8 @@ public class CreateCompanyTests : IClassFixture<WebApiFactory<Program>>
         HttpStatusCode expectedHttpStatus,
         IEnumerable<ValidationFailure> validationFailures)
     {
+        Output.WriteLine("Parameters set with id = {0}", id);
+
         var restRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
         RestResponse<List<ValidationFailure>> response = await RestClient.ExecuteAsync<List<ValidationFailure>>(
@@ -52,6 +57,8 @@ public class CreateCompanyTests : IClassFixture<WebApiFactory<Program>>
     [MemberData(nameof(CreateCompanyCorrectDataBuilder.Build), MemberType = typeof(CreateCompanyCorrectDataBuilder))]
     public async Task CreateCompany_ShouldCreateCompany_WhenDataIsCorrect(int id, CreateCompanyCommand command)
     {
+        Output.WriteLine("Parameters set with id = {0}", id);
+
         var createRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
         RestResponse<Company> createResponse = await RestClient.ExecuteAsync<Company>(createRequest);
