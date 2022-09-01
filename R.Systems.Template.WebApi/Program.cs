@@ -1,4 +1,3 @@
-using Microsoft.IdentityModel.Logging;
 using NLog;
 using NLog.Web;
 using R.Systems.Template.Core;

@@ -32,6 +32,7 @@ public class CompanyProtectedController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetCompaniesProtected()
     {
+        // ReSharper disable once UnusedVariable
         string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery());
