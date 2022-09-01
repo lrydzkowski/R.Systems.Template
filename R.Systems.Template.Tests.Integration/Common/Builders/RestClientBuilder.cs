@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Persistence.Db;
+using R.Systems.Template.Tests.Integration.Common.Authentication;
 using R.Systems.Template.Tests.Integration.Common.Db;
 using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
@@ -31,6 +33,20 @@ internal static class RestClientBuilder
                     }
                 );
             }
+        ).CreateClient();
+
+        return new RestClient(httpClient);
+    }
+
+    public static RestClient CreateRestClientWithoutAuthentication(this WebApiFactory<Program> webApiFactory)
+    {
+        HttpClient httpClient = webApiFactory.WithWebHostBuilder(
+            builder => builder.ConfigureServices(
+                services =>
+                {
+                    services.AddSingleton<IAuthorizationHandler, AllowAnonymous>();
+                }
+            )
         ).CreateClient();
 
         return new RestClient(httpClient);

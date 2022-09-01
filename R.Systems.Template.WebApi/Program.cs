@@ -1,3 +1,4 @@
+using Microsoft.IdentityModel.Logging;
 using NLog;
 using NLog.Web;
 using R.Systems.Template.Core;
@@ -35,7 +36,7 @@ public class Program
 
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
-        builder.Services.ConfigureServices();
+        builder.Services.ConfigureServices(builder.Configuration);
         builder.Services.ConfigureCoreServices();
         builder.Services.AddPersistenceDbService(builder.Configuration);
     }
@@ -55,6 +56,7 @@ public class Program
             app.UseSwaggerUI();
         }
         app.UseCors("CorsPolicy");
+        app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
         app.DeployPersistenceDbMigration();
