@@ -41,7 +41,7 @@ public class GetEmployeesTests
     [Fact]
     public async Task GetEmployees_ShouldReturnEmptyList_WhenEmployeesNotExist()
     {
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClientWithoutData();
+        RestClient restClient = new WebApiFactory<Program>().WithoutData().CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
 
         RestResponse<List<Employee>> response = await restClient.ExecuteAsync<List<Employee>>(restRequest);

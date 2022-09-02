@@ -48,7 +48,7 @@ public class GetCompaniesProtectedTests
                 }
             )
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClientWithoutAuthentication();
+        RestClient restClient = new WebApiFactory<Program>().WithoutAuthentication().CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
 
         RestResponse<List<Company>> response = await restClient.ExecuteAsync<List<Company>>(restRequest);

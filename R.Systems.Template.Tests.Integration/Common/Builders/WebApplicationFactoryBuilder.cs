@@ -1,24 +1,26 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Persistence.Db;
 using R.Systems.Template.Tests.Integration.Common.Authentication;
 using R.Systems.Template.Tests.Integration.Common.Db;
-using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
 
 namespace R.Systems.Template.Tests.Integration.Common.Builders;
 
-internal static class RestClientBuilder
+internal static class WebApplicationFactoryBuilder
 {
-    public static RestClient CreateRestClient(this WebApiFactory<Program> webApiFactory)
+    public static RestClient CreateRestClient(this WebApplicationFactory<Program> webApplicationFactory)
     {
-        return new RestClient(webApiFactory.CreateClient());
+        return new RestClient(webApplicationFactory.CreateClient());
     }
 
-    public static RestClient CreateRestClientWithoutData(this WebApiFactory<Program> webApiFactory)
+    public static WebApplicationFactory<Program> WithoutData(
+        this WebApplicationFactory<Program> webApplicationFactory
+    )
     {
-        HttpClient httpClient = webApiFactory.WithWebHostBuilder(
+        return webApplicationFactory.WithWebHostBuilder(
             builder =>
             {
                 builder.ConfigureServices(
@@ -33,22 +35,17 @@ internal static class RestClientBuilder
                     }
                 );
             }
-        ).CreateClient();
-
-        return new RestClient(httpClient);
+        );
     }
 
-    public static RestClient CreateRestClientWithoutAuthentication(this WebApiFactory<Program> webApiFactory)
+    public static WebApplicationFactory<Program> WithoutAuthentication(
+        this WebApplicationFactory<Program> webApplicationFactory
+    )
     {
-        HttpClient httpClient = webApiFactory.WithWebHostBuilder(
+        return webApplicationFactory.WithWebHostBuilder(
             builder => builder.ConfigureServices(
-                services =>
-                {
-                    services.AddSingleton<IAuthorizationHandler, AllowAnonymous>();
-                }
+                services => services.AddSingleton<IAuthorizationHandler, AllowAnonymous>()
             )
-        ).CreateClient();
-
-        return new RestClient(httpClient);
+        );
     }
 }
