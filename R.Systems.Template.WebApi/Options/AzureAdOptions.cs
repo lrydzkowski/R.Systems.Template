@@ -10,5 +10,5 @@ internal class AzureAdOptions
 
     public string Domain { get; init; } = "";
 
-    public string? SignUpSignInPolicyId { get; init; } = "";
+    public string SignUpSignInPolicyId { get; init; } = "";
 }
