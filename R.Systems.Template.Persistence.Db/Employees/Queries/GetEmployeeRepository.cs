@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Employees.Queries.GetEmployee;
+using R.Systems.Template.Persistence.Db.Common.Entities;
+using System.Linq.Expressions;
 
 namespace R.Systems.Template.Persistence.Db.Employees.Queries;
 
@@ -15,8 +17,20 @@ internal class GetEmployeeRepository : IGetEmployeeRepository
 
     public async Task<Employee?> GetEmployeeAsync(int employeeId)
     {
+        return await GetEmployeeFromDbAsync(employeeEntity => employeeEntity.Id == employeeId);
+    }
+
+    public async Task<Employee?> GetEmployeeAsync(int companyId, int employeeId)
+    {
+        return await GetEmployeeFromDbAsync(
+            employeeEntity => employeeEntity.CompanyId == companyId && employeeEntity.Id == employeeId
+        );
+    }
+
+    private async Task<Employee?> GetEmployeeFromDbAsync(Expression<Func<EmployeeEntity, bool>> wherePredicate)
+    {
         return await DbContext.Employees.AsNoTracking()
-            .Where(employeeEntity => employeeEntity.Id == employeeId)
+            .Where(wherePredicate)
             .Select(
                 employeeEntity => new Employee
                 {

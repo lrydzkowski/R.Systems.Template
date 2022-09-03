@@ -5,4 +5,6 @@ namespace R.Systems.Template.Core.Employees.Queries.GetEmployees;
 public interface IGetEmployeesRepository
 {
     Task<List<Employee>> GetEmployeesAsync();
+
+    Task<List<Employee>> GetEmployeesAsync(int companyId);
 }

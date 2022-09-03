@@ -5,6 +5,8 @@ namespace R.Systems.Template.Core.Employees.Queries.GetEmployee;
 
 public class GetEmployeeQuery : IRequest<GetEmployeeResult>
 {
+    public int? CompanyId { get; init; }
+
     public int EmployeeId { get; init; }
 }
 
@@ -24,7 +26,9 @@ public class GetEmployeeQueryHandler : IRequestHandler<GetEmployeeQuery, GetEmpl
 
     public async Task<GetEmployeeResult> Handle(GetEmployeeQuery query, CancellationToken cancellationToken)
     {
-        Employee? employee = await GetEmployeeRepository.GetEmployeeAsync(query.EmployeeId);
+        Employee? employee = query.CompanyId == null
+            ? await GetEmployeeRepository.GetEmployeeAsync(query.EmployeeId)
+            : await GetEmployeeRepository.GetEmployeeAsync((int)query.CompanyId, query.EmployeeId);
 
         return new GetEmployeeResult
         {
