@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErorrs>true</TreatWarningsAsErorrs>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Persistence.Db\R.Systems.Template.Persistence.Db.csproj" />
+  </ItemGroup>
+
+</Project>
