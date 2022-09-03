@@ -26,7 +26,7 @@ public class EmployeeController : ControllerBase
     [SwaggerResponse(
         statusCode: 200,
         description: "Correct response",
-        type: typeof(GetEmployeeResult),
+        type: typeof(Employee),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 404, description: "Employee doesn't exist.")]
@@ -54,7 +54,7 @@ public class EmployeeController : ControllerBase
     [SwaggerResponse(
         statusCode: 200,
         description: "Correct response",
-        type: typeof(GetEmployeesResult),
+        type: typeof(List<Employee>),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 500)]
@@ -91,7 +91,7 @@ public class EmployeeController : ControllerBase
     [SwaggerResponse(
         statusCode: 200,
         description: "Employee updated",
-        type: typeof(Company),
+        type: typeof(Employee),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]

@@ -26,7 +26,7 @@ public class CompanyController : ControllerBase
     [SwaggerResponse(
         statusCode: 200,
         description: "Correct response",
-        type: typeof(GetCompanyResult),
+        type: typeof(Company),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 404, description: "Company doesn't exist.")]
@@ -54,7 +54,7 @@ public class CompanyController : ControllerBase
     [SwaggerResponse(
         statusCode: 200,
         description: "Correct response",
-        type: typeof(GetCompaniesResult),
+        type: typeof(List<Company>),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 500)]
