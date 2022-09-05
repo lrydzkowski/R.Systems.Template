@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
+using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
@@ -8,16 +9,9 @@ using System.Net;
 
 namespace R.Systems.Template.Tests.Integration.Companies.Queries.GetCompany;
 
-public class GetEmployeeTests : IClassFixture<WebApiFactory<Program>>
+public class GetEmployeeTests
 {
     private readonly string _endpointUrlPath = "/companies";
-
-    public GetEmployeeTests(WebApiFactory<Program> webApiFactory)
-    {
-        RestClient = new RestClient(webApiFactory.CreateClient());
-    }
-
-    private RestClient RestClient { get; }
 
     [Fact]
     public async Task GetCompany_ShouldReturnCompany_WhenCompanyExists()
@@ -37,9 +31,10 @@ public class GetEmployeeTests : IClassFixture<WebApiFactory<Program>>
                 }
             }
         };
+        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         RestRequest restRequest = new($"{_endpointUrlPath}/{companyId}");
 
-        RestResponse<Company> response = await RestClient.ExecuteAsync<Company>(restRequest);
+        RestResponse<Company> response = await restClient.ExecuteAsync<Company>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
@@ -50,9 +45,10 @@ public class GetEmployeeTests : IClassFixture<WebApiFactory<Program>>
     public async Task GetCompany_ShouldReturn404_WhenCompanyNotExist()
     {
         int companyId = 5;
+        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         RestRequest restRequest = new($"{_endpointUrlPath}/{companyId}");
 
-        RestResponse<ErrorInfo> response = await RestClient.ExecuteAsync<ErrorInfo>(restRequest);
+        RestResponse<ErrorInfo> response = await restClient.ExecuteAsync<ErrorInfo>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         response.Data.Should().BeEquivalentTo(

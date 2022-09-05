@@ -2,6 +2,7 @@
 using FluentValidation.Results;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
+using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
@@ -10,17 +11,15 @@ using Xunit.Abstractions;
 
 namespace R.Systems.Template.Tests.Integration.Companies.Commands.CreateCompany;
 
-public class CreateCompanyTests : IClassFixture<WebApiFactory<Program>>
+public class CreateCompanyTests
 {
     private readonly string _endpointUrlPath = "/companies";
 
-    public CreateCompanyTests(WebApiFactory<Program> webApiFactory, ITestOutputHelper output)
+    public CreateCompanyTests(ITestOutputHelper output)
     {
         Output = output;
-        RestClient = new RestClient(webApiFactory.CreateClient());
     }
 
-    private RestClient RestClient { get; }
     private ITestOutputHelper Output { get; }
 
     [Theory]
@@ -36,9 +35,10 @@ public class CreateCompanyTests : IClassFixture<WebApiFactory<Program>>
     {
         Output.WriteLine("Parameters set with id = {0}", id);
 
+        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         var restRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
-        RestResponse<List<ValidationFailure>> response = await RestClient.ExecuteAsync<List<ValidationFailure>>(
+        RestResponse<List<ValidationFailure>> response = await restClient.ExecuteAsync<List<ValidationFailure>>(
             restRequest
         );
 
@@ -59,9 +59,10 @@ public class CreateCompanyTests : IClassFixture<WebApiFactory<Program>>
     {
         Output.WriteLine("Parameters set with id = {0}", id);
 
+        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         var createRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
-        RestResponse<Company> createResponse = await RestClient.ExecuteAsync<Company>(createRequest);
+        RestResponse<Company> createResponse = await restClient.ExecuteAsync<Company>(createRequest);
 
         createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
         createResponse.Data.Should().NotBeNull();
@@ -82,7 +83,7 @@ public class CreateCompanyTests : IClassFixture<WebApiFactory<Program>>
 
         var getRequest = new RestRequest(companyUrl);
 
-        RestResponse<Company> getResponse = await RestClient.ExecuteAsync<Company>(getRequest);
+        RestResponse<Company> getResponse = await restClient.ExecuteAsync<Company>(getRequest);
 
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         getResponse.Data.Should().NotBeNull();

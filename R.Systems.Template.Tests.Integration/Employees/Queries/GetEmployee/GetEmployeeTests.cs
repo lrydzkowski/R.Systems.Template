@@ -2,6 +2,7 @@
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Persistence.Db.Common.Entities;
+using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
@@ -10,16 +11,9 @@ using System.Net;
 
 namespace R.Systems.Template.Tests.Integration.Employees.Queries.GetEmployee;
 
-public class GetEmployeeTests : IClassFixture<WebApiFactory<Program>>
+public class GetEmployeeTests
 {
     private readonly string _endpointUrlPath = "/employees";
-
-    public GetEmployeeTests(WebApiFactory<Program> webApiFactory)
-    {
-        RestClient = new RestClient(webApiFactory.CreateClient());
-    }
-
-    private RestClient RestClient { get; }
 
     [Fact]
     public async Task GetEmployee_ShouldReturnEmployee_WhenEmployeeExists()
@@ -32,9 +26,10 @@ public class GetEmployeeTests : IClassFixture<WebApiFactory<Program>>
             LastName = expectedEmployeeEntity.LastName,
             CompanyId = expectedEmployeeEntity.CompanyId
         };
+        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         RestRequest restRequest = new($"{_endpointUrlPath}/{expectedEmployee.EmployeeId}");
 
-        RestResponse<Employee> response = await RestClient.ExecuteAsync<Employee>(restRequest);
+        RestResponse<Employee> response = await restClient.ExecuteAsync<Employee>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
@@ -45,9 +40,10 @@ public class GetEmployeeTests : IClassFixture<WebApiFactory<Program>>
     public async Task GetEmployee_ShouldReturn404_WhenEmployeeNotExist()
     {
         int employeeId = 5;
+        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         RestRequest restRequest = new($"{_endpointUrlPath}/{employeeId}");
 
-        RestResponse<ErrorInfo> response = await RestClient.ExecuteAsync<ErrorInfo>(restRequest);
+        RestResponse<ErrorInfo> response = await restClient.ExecuteAsync<ErrorInfo>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         response.Data.Should().BeEquivalentTo(

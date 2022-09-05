@@ -2,6 +2,7 @@
 using FluentValidation.Results;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
+using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Factories;
 using R.Systems.Template.WebApi;
 using RestSharp;
@@ -10,17 +11,15 @@ using Xunit.Abstractions;
 
 namespace R.Systems.Template.Tests.Integration.Employees.Commands.CreateEmployee;
 
-public class CreateEmployeeTests : IClassFixture<WebApiFactory<Program>>
+public class CreateEmployeeTests
 {
     private readonly string _endpointUrlPath = "/employees";
 
-    public CreateEmployeeTests(WebApiFactory<Program> webApiFactory, ITestOutputHelper output)
+    public CreateEmployeeTests(ITestOutputHelper output)
     {
         Output = output;
-        RestClient = new RestClient(webApiFactory.CreateClient());
     }
 
-    private RestClient RestClient { get; }
     private ITestOutputHelper Output { get; }
 
     [Theory]
@@ -36,9 +35,10 @@ public class CreateEmployeeTests : IClassFixture<WebApiFactory<Program>>
     {
         Output.WriteLine("Parameters set with id = {0}", id);
 
+        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         var restRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
-        RestResponse<List<ValidationFailure>> response = await RestClient.ExecuteAsync<List<ValidationFailure>>(
+        RestResponse<List<ValidationFailure>> response = await restClient.ExecuteAsync<List<ValidationFailure>>(
             restRequest
         );
 
@@ -59,9 +59,10 @@ public class CreateEmployeeTests : IClassFixture<WebApiFactory<Program>>
     {
         Output.WriteLine("Parameters set with id = {0}", id);
 
+        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         var createRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
-        RestResponse<Employee> createResponse = await RestClient.ExecuteAsync<Employee>(createRequest);
+        RestResponse<Employee> createResponse = await restClient.ExecuteAsync<Employee>(createRequest);
 
         createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
         createResponse.Data.Should().NotBeNull();
@@ -83,7 +84,7 @@ public class CreateEmployeeTests : IClassFixture<WebApiFactory<Program>>
 
         var getRequest = new RestRequest(employeeUrl);
 
-        RestResponse<Employee> getResponse = await RestClient.ExecuteAsync<Employee>(getRequest);
+        RestResponse<Employee> getResponse = await restClient.ExecuteAsync<Employee>(getRequest);
 
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         getResponse.Data.Should().NotBeNull();

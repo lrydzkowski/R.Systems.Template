@@ -7,19 +7,12 @@ using System.Net;
 
 namespace R.Systems.Template.Tests.Integration.ExceptionMiddleware;
 
-public class ExceptionMiddlewareTests : IClassFixture<WebApiFactory<Program>>
+public class ExceptionMiddlewareTests
 {
-    public ExceptionMiddlewareTests(WebApiFactory<Program> webApiFactory)
-    {
-        WebApiFactory = webApiFactory;
-    }
-
-    private WebApiFactory<Program> WebApiFactory { get; }
-
     [Fact]
     public async Task GetAppInfo_ShouldReturn500InternalServerError_WhenUnexpectedExceptionWasThrown()
     {
-        RestClient restClient = WebApiFactory.BuildWithCustomGetAppInfoHandler();
+        RestClient restClient = new WebApiFactory<Program>().BuildWithCustomGetAppInfoHandler();
 
         RestRequest request = new("/");
 
