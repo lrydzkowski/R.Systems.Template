@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="R.Systems.Template.Tests.Integration" />
+    <InternalsVisibleTo Include="R.Systems.Template.Persistence.Db.DataGenerator" />
   </ItemGroup>
 
 </Project>

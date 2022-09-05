@@ -6,6 +6,8 @@ namespace R.Systems.Template.Persistence.Db.Common.Configurations;
 
 internal class EmployeeConfiguration : IEntityTypeConfiguration<EmployeeEntity>
 {
+    public static readonly int FirstAvailableId = 4;
+
     public void Configure(EntityTypeBuilder<EmployeeEntity> builder)
     {
         SetTableName(builder);
@@ -79,6 +81,6 @@ internal class EmployeeConfiguration : IEntityTypeConfiguration<EmployeeEntity>
                 CompanyId = 2
             }
         );
-        builder.Property(user => user.Id).HasIdentityOptions(startValue: 4);
+        builder.Property(user => user.Id).HasIdentityOptions(startValue: FirstAvailableId);
     }
 }

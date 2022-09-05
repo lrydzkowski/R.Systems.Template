@@ -6,6 +6,8 @@ namespace R.Systems.Template.Persistence.Db.Common.Configurations;
 
 internal class CompanyConfiguration : IEntityTypeConfiguration<CompanyEntity>
 {
+    public static readonly int FirstAvailableId = 3;
+
     public void Configure(EntityTypeBuilder<CompanyEntity> builder)
     {
         SetTableName(builder);
@@ -54,6 +56,6 @@ internal class CompanyConfiguration : IEntityTypeConfiguration<CompanyEntity>
                 Name = "Google"
             }
         );
-        builder.Property(user => user.Id).HasIdentityOptions(startValue: 3);
+        builder.Property(user => user.Id).HasIdentityOptions(startValue: FirstAvailableId);
     }
 }
