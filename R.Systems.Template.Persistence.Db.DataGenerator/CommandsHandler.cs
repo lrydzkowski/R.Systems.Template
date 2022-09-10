@@ -16,6 +16,9 @@ internal class CommandsHandler
     [Subcommand]
     public GenerateCommand? GenerateCommand { get; set; }
 
+    [Subcommand]
+    public GetCommand? GetCommand { get; set; }
+
     public async Task<int> Interceptor(InterceptorExecutionDelegate next, CommandContext _)
     {
         int result = 1;

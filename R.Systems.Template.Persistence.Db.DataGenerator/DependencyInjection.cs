@@ -16,6 +16,8 @@ internal static class DependencyInjection
         services.AddScoped<CommandsHandler>();
         services.AddScoped<GenerateCommand>();
         services.AddScoped<GenerateCompaniesCommand>();
+        services.AddScoped<GetCommand>();
+        services.AddScoped<GetCompaniesCommand>();
         services.AddScoped<CompanyService>();
     }
 }

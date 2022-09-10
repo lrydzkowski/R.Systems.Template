@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using R.Systems.Template.Persistence.Db.Common.Configurations;
 using R.Systems.Template.Persistence.Db.Common.Entities;
@@ -21,6 +22,11 @@ internal class CompanyService
         List<int> companiesIds = await CreateCompaniesAsync(numberOfCompanies);
         await CreateEmployeesAsync(numberOfEmployees, companiesIds);
         await transaction.CommitAsync();
+    }
+
+    public async Task<List<CompanyEntity>> GetCompaniesAsync()
+    {
+        return await DbContext.Companies.AsNoTracking().Include(x => x.Employees).ToListAsync();
     }
 
     private async Task<List<int>> CreateCompaniesAsync(int numberOfCompanies)

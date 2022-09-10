@@ -22,9 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Persiste
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Tests.Integration", "R.Systems.Template.Tests.Integration\R.Systems.Template.Tests.Integration.csproj", "{02F542E7-C0FD-401E-8049-7E3F8AC80CAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.WebMinimalApi", "R.Systems.Template.WebMinimalApi\R.Systems.Template.WebMinimalApi.csproj", "{F4B2D28B-FAFF-4834-9C1F-6882AB0189BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.WebMinimalApi", "R.Systems.Template.WebMinimalApi\R.Systems.Template.WebMinimalApi.csproj", "{F4B2D28B-FAFF-4834-9C1F-6882AB0189BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.Persistence.Db.DataGenerator", "R.Systems.Template.Persistence.Db.DataGenerator\R.Systems.Template.Persistence.Db.DataGenerator.csproj", "{95484B35-7A67-46D1-BAED-B9B058AB2C51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Persistence.Db.DataGenerator", "R.Systems.Template.Persistence.Db.DataGenerator\R.Systems.Template.Persistence.Db.DataGenerator.csproj", "{95484B35-7A67-46D1-BAED-B9B058AB2C51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
