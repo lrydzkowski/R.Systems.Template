@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Łukasz Rydzkowski",
+  "classifications": [ "Clean Architecture", "ASP.NET Core", "Web API" ],
+  "identity": "R.Systems.Template",
+  "name": "Web API based on Clean Architecture",
+  "shortName": "r-systems-clean-architecture",
+  "sourceName": "R.Systems.Template",
+  "guids": [
+    "8e93c86f-a8f5-45db-ae81-43b6f7d4e689",
+    "a55c29dd-90df-47ba-b296-32a309938ecb",
+    "550b12e5-ddcc-4f6d-8851-4290d9ddd690"
+  ],
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "preferNameDirectory": true,
+  "symbols": {
+    "projectNameKebabCase": {
+      "type": "parameter",
+      "description": "The project name in kebab-case.",
+      "datatype": "string",
+      "replaces": "r-systems-template",
+      "isRequired": true
+    },
+    "copyrightYear": {
+      "type": "generated",
+      "generator": "now",
+      "replaces": "2021",
+      "parameters": {
+        "format": "yyyy"
+      }
+    }
+  },
+  "sources": [
+    {
+      "source": "./",
+      "target": "./",
+      "exclude": [
+        "**/[Bb]in/**", "**/[Oo]bj/**", ".template.config/**/*", "**/*.filelist", "**/*.user", "**/*.lock.json",
+        ".git/**", ".vs/**", ".nuspec"
+      ]
+    }
+  ]
+}
