@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>R.Systems.Template</id>
+        <version>1.1.0</version>
+        <title>R.Systems.Template</title>
+        <license type="file">LICENSE.md</license>
+        <description>Template for ASP.NET Core Web Api based on Clean Architecture.</description>
+        <authors>lrydzkowski</authors>
+        <owners>lrydzkowski</owners>
+        <language>en-US</language>
+        <tags>Clean Architecture ASP.NET Core Web API</tags>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <copyright>2022 lrydzkowski</copyright>
+        <projectUrl>https://github.com/lrydzkowski/R.Systems.Template</projectUrl>
+        <packageTypes>
+            <packageType name="Template" />
+        </packageTypes>
+    </metadata>
+    <files>
+        <file src=".\**" exclude=".\.git\**;.\.vs\**;.\**\bin\**;.\**\obj\**;.\R.Systems.Template.1.0.0.nupkg" />
+    </files>
+</package>

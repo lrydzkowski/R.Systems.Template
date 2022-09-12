@@ -39,7 +39,7 @@
       "target": "./",
       "exclude": [
         "**/[Bb]in/**", "**/[Oo]bj/**", ".template.config/**/*", "**/*.filelist", "**/*.user", "**/*.lock.json",
-        ".git/**", ".vs/**", ".nuspec"
+        ".git/**", ".vs/**", ".nuspec", "_rels", "package", ".signature.p7s", "[Content_Types].xml"
       ]
     }
   ]
