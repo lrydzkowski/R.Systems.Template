@@ -4,13 +4,15 @@ ASP.NET Core 6 Web API template project, created as a base for other projects.
 
 ## .NET CLI Template
 
-## Install from directory
+## Install
+
+### From directory
 
 ```powershell
 dotnet new --install C:\repo\Private\R.Systems\R.Systems.Template
 ```
 
-## Install from NuGet
+### From NuGet
 
 ```powershell
 dotnet new -i R.Systems.Template
@@ -18,8 +20,16 @@ dotnet new -i R.Systems.Template
 
 ## Uninstall
 
+### From directory
+
 ```powershell
 dotnet new --uninstall C:\repo\Private\R.Systems\R.Systems.Template
+```
+
+### From NuGet
+
+```powershell
+dotnet new --uninstall R.Systems.Template
 ```
 
 ## Show list of templates
