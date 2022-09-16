@@ -11,6 +11,8 @@ internal class EmployeeEntityProfile : Profile
     {
         CreateMap<EmployeeEntity, Employee>()
             .ForMember(employee => employee.EmployeeId, options => options.MapFrom(companyEntity => companyEntity.Id));
-        CreateMap<EmployeeToCreate, EmployeeEntity>();
+        CreateMap<EmployeeToCreate, EmployeeEntity>()
+            .ForMember(employeeEntity => employeeEntity.Id, options => options.Ignore())
+            .ForMember(employeeEntity => employeeEntity.Company, options => options.Ignore());
     }
 }

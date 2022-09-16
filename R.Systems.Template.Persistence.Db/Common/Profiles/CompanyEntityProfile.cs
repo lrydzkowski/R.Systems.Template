@@ -12,8 +12,11 @@ internal class CompanyEntityProfile : Profile
     {
         CreateMap<CompanyEntity, Company>()
             .ForMember(company => company.CompanyId, options => options.MapFrom(companyEntity => companyEntity.Id));
-        CreateMap<CompanyToCreate, CompanyEntity>();
+        CreateMap<CompanyToCreate, CompanyEntity>()
+            .ForMember(companyEntity => companyEntity.Id, options => options.Ignore())
+            .ForMember(companyEntity => companyEntity.Employees, options => options.Ignore());
         CreateMap<CompanyToUpdate, CompanyEntity>()
-            .ForMember(companyEntity => companyEntity.Id, options => options.MapFrom(company => company.CompanyId));
+            .ForMember(companyEntity => companyEntity.Id, options => options.MapFrom(company => company.CompanyId))
+            .ForMember(companyEntity => companyEntity.Employees, options => options.Ignore());
     }
 }
