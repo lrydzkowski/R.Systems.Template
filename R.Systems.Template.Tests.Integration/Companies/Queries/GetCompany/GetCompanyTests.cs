@@ -44,7 +44,7 @@ public class GetEmployeeTests
     [Fact]
     public async Task GetCompany_ShouldReturn404_WhenCompanyNotExist()
     {
-        int companyId = 5;
+        int companyId = 10;
         RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         RestRequest restRequest = new($"{_endpointUrlPath}/{companyId}");
 

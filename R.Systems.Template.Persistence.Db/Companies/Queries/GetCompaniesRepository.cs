@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Lists;
+using R.Systems.Template.Core.Common.Lists.Extensions;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 
 namespace R.Systems.Template.Persistence.Db.Companies.Queries;
@@ -13,9 +15,15 @@ internal class GetCompaniesRepository : IGetCompaniesRepository
 
     private AppDbContext DbContext { get; }
 
-    public async Task<List<Company>> GetCompaniesAsync()
+    public async Task<List<Company>> GetCompaniesAsync(ListParameters listParameters)
     {
+        List<string> fieldsAvailableToSort = new() { "id", "name" };
+        List<string> fieldsAvailableToFilter = new() { "name" };
+
         return await DbContext.Companies.AsNoTracking()
+            .Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
+            .Filter(fieldsAvailableToFilter, listParameters.Search)
+            .Paginate(listParameters.Pagination)
             .Select(
                 companyEntity => new Company
                 {

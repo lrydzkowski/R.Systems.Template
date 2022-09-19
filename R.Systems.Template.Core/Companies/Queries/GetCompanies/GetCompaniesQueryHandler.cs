@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Lists;
 
 namespace R.Systems.Template.Core.Companies.Queries.GetCompanies;
 
-public class GetCompaniesQuery : IRequest<GetCompaniesResult>
+public class GetCompaniesQuery : GetElementsQuery, IRequest<GetCompaniesResult>
 {
 }
 
@@ -23,7 +24,7 @@ public class GetCompaniesQueryHandler : IRequestHandler<GetCompaniesQuery, GetCo
 
     public async Task<GetCompaniesResult> Handle(GetCompaniesQuery query, CancellationToken cancellationToken)
     {
-        List<Company> companies = await GetCompaniesRepository.GetCompaniesAsync();
+        List<Company> companies = await GetCompaniesRepository.GetCompaniesAsync(query.ListParameters);
 
         return new GetCompaniesResult
         {

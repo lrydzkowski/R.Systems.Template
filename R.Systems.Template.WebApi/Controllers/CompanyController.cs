@@ -1,7 +1,9 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
+using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
@@ -15,12 +17,14 @@ namespace R.Systems.Template.WebApi.Controllers;
 [Route("companies")]
 public class CompanyController : ControllerBase
 {
-    public CompanyController(ISender mediator)
+    public CompanyController(ISender mediator, IMapper mapper)
     {
         Mediator = mediator;
+        Mapper = mapper;
     }
 
     private ISender Mediator { get; }
+    private IMapper Mapper { get; }
 
     [SwaggerOperation(Summary = "Get the company")]
     [SwaggerResponse(
@@ -59,9 +63,10 @@ public class CompanyController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 500)]
     [HttpGet]
-    public async Task<IActionResult> GetCompanies()
+    public async Task<IActionResult> GetCompanies([FromQuery] ListRequest listRequest)
     {
-        GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery());
+        ListParameters listParameters = Mapper.Map<ListParameters>(listRequest);
+        GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery { ListParameters = listParameters });
 
         return Ok(result.Companies);
     }
