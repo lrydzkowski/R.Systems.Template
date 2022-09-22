@@ -1,9 +1,12 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
+using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
+using R.Systems.Template.WebApi.Api;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Template.WebApi.Controllers;
@@ -12,12 +15,14 @@ namespace R.Systems.Template.WebApi.Controllers;
 [Route("companies")]
 public class EmployeeInCompanyController : ControllerBase
 {
-    public EmployeeInCompanyController(ISender mediator)
+    public EmployeeInCompanyController(ISender mediator, IMapper mapper)
     {
         Mediator = mediator;
+        Mapper = mapper;
     }
 
     private ISender Mediator { get; }
+    private IMapper Mapper { get; }
 
     [SwaggerOperation(Summary = "Get the employee in the company")]
     [SwaggerResponse(
@@ -56,9 +61,11 @@ public class EmployeeInCompanyController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 500)]
     [HttpGet("{companyId}/employees", Name = "GetEmployeesInCompany")]
-    public async Task<IActionResult> GetEmployeesInCompany(int companyId)
+    public async Task<IActionResult> GetEmployeesInCompany([FromQuery] ListRequest listRequest, int companyId)
     {
-        GetEmployeesResult result = await Mediator.Send(new GetEmployeesQuery { CompanyId = companyId });
+        ListParameters listParameters = Mapper.Map<ListParameters>(listRequest);
+        GetEmployeesResult result = await Mediator.Send(
+            new GetEmployeesQuery { ListParameters = listParameters, CompanyId = companyId });
 
         return Ok(result.Employees);
     }

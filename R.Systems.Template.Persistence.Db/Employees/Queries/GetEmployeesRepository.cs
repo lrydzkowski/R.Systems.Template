@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Lists;
+using R.Systems.Template.Core.Common.Lists.Extensions;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
 using R.Systems.Template.Persistence.Db.Common.Entities;
 using System.Linq.Expressions;
@@ -15,27 +17,34 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
 
     private AppDbContext DbContext { get; }
 
-    public async Task<List<Employee>> GetEmployeesAsync()
+    public async Task<List<Employee>> GetEmployeesAsync(ListParameters listParameters)
     {
-        return await GetEmployeeFromDbAsync();
+        return await GetEmployeeFromDbAsync(listParameters);
     }
 
-    public async Task<List<Employee>> GetEmployeesAsync(int companyId)
+    public async Task<List<Employee>> GetEmployeesAsync(ListParameters listParameters, int companyId)
     {
-        return await GetEmployeeFromDbAsync(employeeEntity => employeeEntity.CompanyId == companyId);
+        return await GetEmployeeFromDbAsync(listParameters, employeeEntity => employeeEntity.CompanyId == companyId);
     }
 
     private async Task<List<Employee>> GetEmployeeFromDbAsync(
+        ListParameters listParameters,
         Expression<Func<EmployeeEntity, bool>>? wherePredicate = null
     )
     {
+        List<string> fieldsAvailableToSort = new() { "id", "firstName", "lastName" };
+        List<string> fieldsAvailableToFilter = new() { "firstName", "lastName" };
+
         IQueryable<EmployeeEntity> query = DbContext.Employees.AsNoTracking();
         if (wherePredicate != null)
         {
             query = query.Where(wherePredicate);
         }
 
-        return await query
+        List<Employee> employees = await query
+            .Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
+            .Filter(fieldsAvailableToFilter, listParameters.Search)
+            .Paginate(listParameters.Pagination)
             .Select(
                 employeeEntity => new Employee
                 {
@@ -46,5 +55,7 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
                 }
             )
             .ToListAsync();
+
+        return employees;
     }
 }
