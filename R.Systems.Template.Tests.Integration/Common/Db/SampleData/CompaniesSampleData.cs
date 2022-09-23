@@ -57,6 +57,15 @@ internal static class CompaniesSampleData
         }
     };
 
+    public static CompanyEntity Clone(this CompanyEntity companyEntity)
+    {
+        return new CompanyEntity
+        {
+            Id = companyEntity.Id,
+            Name = companyEntity.Name
+        };
+    }
+
     public static List<Company> Companies
     {
         get

@@ -65,6 +65,17 @@ internal static class EmployeesSampleData
         }
     };
 
+    public static EmployeeEntity Clone(this EmployeeEntity employeeEntity)
+    {
+        return new EmployeeEntity
+        {
+            Id = employeeEntity.Id,
+            FirstName = employeeEntity.FirstName,
+            LastName = employeeEntity.LastName,
+            CompanyId = employeeEntity.CompanyId
+        };
+    }
+
     public static List<Employee> Employees
     {
         get
