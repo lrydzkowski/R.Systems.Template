@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Persistence.Db;
 using R.Systems.Template.Tests.Integration.Common.Authentication;
@@ -45,6 +46,18 @@ internal static class WebApplicationFactoryBuilder
         return webApplicationFactory.WithWebHostBuilder(
             builder => builder.ConfigureServices(
                 services => services.AddSingleton<IAuthorizationHandler, AllowAnonymous>()
+            )
+        );
+    }
+
+    public static WebApplicationFactory<Program> WithCustomOptions(
+        this WebApplicationFactory<Program> webApplicationFactory,
+        Dictionary<string, string?> customOptions
+    )
+    {
+        return webApplicationFactory.WithWebHostBuilder(
+            builder => builder.ConfigureAppConfiguration(
+                (_, configBuilder) => configBuilder.AddInMemoryCollection(customOptions)
             )
         );
     }

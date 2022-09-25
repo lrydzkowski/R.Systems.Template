@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using R.Systems.Template.Core;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
@@ -25,10 +26,14 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
-        services.Configure<ConnectionStrings>(configuration.GetSection(ConnectionStrings.Position));
+        services.Configure<ConnectionStringsOptions>(configuration.GetSection(ConnectionStringsOptions.Position));
+        services.ConfigureOptionsWithValidation<ConnectionStringsOptions, ConnectionStringsOptionsValidator>(
+            configuration,
+            ConnectionStringsOptions.Position
+        );
         services.AddDbContext<AppDbContext>((serviceProvider, options) =>
         {
-            ConnectionStrings connectionStrings = serviceProvider.GetRequiredService<IOptions<ConnectionStrings>>().Value;
+            ConnectionStringsOptions connectionStrings = serviceProvider.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
             options.UseNpgsql(connectionStrings.AppDb);
         });
         services.AddAutoMapper(typeof(DependencyInjection));

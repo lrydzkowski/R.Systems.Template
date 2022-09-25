@@ -6,9 +6,9 @@ internal class AzureAdOptions
 
     public string Instance { get; init; } = "";
 
-    public string ClientId { get; init; } = "";
-
     public string Domain { get; init; } = "";
+
+    public string ClientId { get; init; } = "";
 
     public string SignUpSignInPolicyId { get; init; } = "";
 }
