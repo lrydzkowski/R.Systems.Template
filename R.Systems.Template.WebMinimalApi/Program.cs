@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureCoreServices();
-builder.Services.AddPersistenceDbService(builder.Configuration);
+builder.Services.ConfigurePersistenceDbService(builder.Configuration);
 
 var app = builder.Build();
 

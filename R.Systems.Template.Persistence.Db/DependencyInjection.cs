@@ -21,7 +21,7 @@ namespace R.Systems.Template.Persistence.Db;
 
 public static class DependencyInjection
 {
-    public static void AddPersistenceDbService(
+    public static void ConfigurePersistenceDbService(
         this IServiceCollection services,
         IConfiguration configuration
     )

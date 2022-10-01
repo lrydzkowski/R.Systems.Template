@@ -37,7 +37,7 @@ public class Program
     {
         builder.Services.ConfigureServices(builder.Configuration);
         builder.Services.ConfigureCoreServices();
-        builder.Services.AddPersistenceDbService(builder.Configuration);
+        builder.Services.ConfigurePersistenceDbService(builder.Configuration);
     }
 
     private static void ConfigureLogging(WebApplicationBuilder builder)
