@@ -28,12 +28,13 @@ public class CompanyProtectedController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 500)]
     [Authorize]
-    [RequiredScope("companies.write")]
+    [RequiredScope("User.Access")]
     [HttpGet]
     public async Task<IActionResult> GetCompaniesProtected()
     {
         // ReSharper disable once UnusedVariable
         string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        string? email = User.FindFirstValue(ClaimTypes.Email);
 
         GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery());
 
