@@ -1,19 +1,15 @@
 ﻿using MediatR;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Lists;
+using R.Systems.Template.Core.Common.Validation;
 
 namespace R.Systems.Template.Core.Companies.Queries.GetCompanies;
 
-public class GetCompaniesQuery : GetElementsQuery, IRequest<GetCompaniesResult>
+public class GetCompaniesQuery : GetElementsQuery, IRequest<Result<List<Company>>>
 {
 }
 
-public class GetCompaniesResult
-{
-    public List<Company> Companies { get; init; } = new();
-}
-
-public class GetCompaniesQueryHandler : IRequestHandler<GetCompaniesQuery, GetCompaniesResult>
+public class GetCompaniesQueryHandler : IRequestHandler<GetCompaniesQuery, Result<List<Company>>>
 {
     public GetCompaniesQueryHandler(IGetCompaniesRepository getCompaniesRepository)
     {
@@ -22,13 +18,8 @@ public class GetCompaniesQueryHandler : IRequestHandler<GetCompaniesQuery, GetCo
 
     private IGetCompaniesRepository GetCompaniesRepository { get; }
 
-    public async Task<GetCompaniesResult> Handle(GetCompaniesQuery query, CancellationToken cancellationToken)
+    public async Task<Result<List<Company>>> Handle(GetCompaniesQuery query, CancellationToken cancellationToken)
     {
-        List<Company> companies = await GetCompaniesRepository.GetCompaniesAsync(query.ListParameters);
-
-        return new GetCompaniesResult
-        {
-            Companies = companies
-        };
+        return await GetCompaniesRepository.GetCompaniesAsync(query.ListParameters);
     }
 }

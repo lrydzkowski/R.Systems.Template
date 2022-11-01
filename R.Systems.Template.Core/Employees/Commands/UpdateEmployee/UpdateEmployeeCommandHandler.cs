@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Validation;
 
 namespace R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 
-public class UpdateEmployeeCommand : IRequest<UpdateEmployeeResult>
+public class UpdateEmployeeCommand : IRequest<Result<Employee>>
 {
     public int? EmployeeId { get; init; }
 
@@ -15,12 +16,7 @@ public class UpdateEmployeeCommand : IRequest<UpdateEmployeeResult>
     public int? CompanyId { get; init; }
 }
 
-public class UpdateEmployeeResult
-{
-    public Employee UpdatedEmployee { get; set; } = new();
-}
-
-public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand, UpdateEmployeeResult>
+public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand, Result<Employee>>
 {
     public UpdateEmployeeCommandHandler(IMapper mapper, IUpdateEmployeeRepository updateEmployeeRepository)
     {
@@ -31,14 +27,10 @@ public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeComman
     private IMapper Mapper { get; }
     private IUpdateEmployeeRepository UpdateEmployeeRepository { get; }
 
-    public async Task<UpdateEmployeeResult> Handle(UpdateEmployeeCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Employee>> Handle(UpdateEmployeeCommand command, CancellationToken cancellationToken)
     {
         EmployeeToUpdate employeeToUpdate = Mapper.Map<EmployeeToUpdate>(command);
-        Employee updatedEmployee = await UpdateEmployeeRepository.UpdateEmployeeAsync(employeeToUpdate);
 
-        return new UpdateEmployeeResult
-        {
-            UpdatedEmployee = updatedEmployee
-        };
+        return await UpdateEmployeeRepository.UpdateEmployeeAsync(employeeToUpdate);
     }
 }

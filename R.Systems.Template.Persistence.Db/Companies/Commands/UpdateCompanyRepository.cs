@@ -3,6 +3,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Validation;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Persistence.Db.Common.Entities;
 
@@ -21,9 +22,15 @@ internal class UpdateCompanyRepository : IUpdateCompanyRepository
     private AppDbContext DbContext { get; }
     private DbExceptionHandler DbExceptionHandler { get; }
 
-    public async Task<Company> UpdateCompanyAsync(CompanyToUpdate companyToUpdate)
+    public async Task<Result<Company>> UpdateCompanyAsync(CompanyToUpdate companyToUpdate)
     {
-        CompanyEntity companyEntity = await GetCompanyEntityAsync(companyToUpdate.CompanyId);
+        Result<CompanyEntity> getCompanyEntityResult = await GetCompanyEntityAsync(companyToUpdate.CompanyId);
+        if (getCompanyEntityResult.IsFaulted)
+        {
+            return getCompanyEntityResult.MapFaulted<Company>();
+        }
+
+        CompanyEntity companyEntity = getCompanyEntityResult.Value!;
         companyEntity.Name = companyToUpdate.Name;
 
         try
@@ -32,29 +39,38 @@ internal class UpdateCompanyRepository : IUpdateCompanyRepository
         }
         catch (DbUpdateException exception)
         {
-            DbExceptionHandler.Handle(exception, companyEntity);
-            throw;
+            List<ValidationFailure> validationFailures = DbExceptionHandler.Handle(exception, companyEntity);
+            if (validationFailures.Count == 0)
+            {
+                throw;
+            }
+
+            return new Result<Company>(new ValidationException(validationFailures));
         }
 
         return Mapper.Map<Company>(companyEntity);
     }
 
-    private async Task<CompanyEntity> GetCompanyEntityAsync(int companyId)
+    private async Task<Result<CompanyEntity>> GetCompanyEntityAsync(int companyId)
     {
         CompanyEntity? companyEntity = await DbContext.Companies.Where(x => x.Id == companyId)
             .FirstOrDefaultAsync();
         if (companyEntity == null)
         {
-            throw new ValidationException(new List<ValidationFailure>
-            {
-                new()
+            ValidationException validationException = new(
+                new List<ValidationFailure>
                 {
-                    PropertyName = "Company",
-                    ErrorMessage = $"Company with the given id doesn't exist ('{companyId}').",
-                    AttemptedValue = companyId,
-                    ErrorCode = "NotExist"
+                    new()
+                    {
+                        PropertyName = "Company",
+                        ErrorMessage = $"Company with the given id doesn't exist ('{companyId}').",
+                        AttemptedValue = companyId,
+                        ErrorCode = "NotExist"
+                    }
                 }
-            });
+            );
+
+            return new Result<CompanyEntity>(validationException);
         }
 
         return companyEntity;

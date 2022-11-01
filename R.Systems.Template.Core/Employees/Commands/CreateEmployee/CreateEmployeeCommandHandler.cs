@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Validation;
 
 namespace R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 
-public class CreateEmployeeCommand : IRequest<CreateEmployeeResult>
+public class CreateEmployeeCommand : IRequest<Result<Employee>>
 {
     public string? FirstName { get; init; }
 
@@ -13,12 +14,7 @@ public class CreateEmployeeCommand : IRequest<CreateEmployeeResult>
     public int? CompanyId { get; init; }
 }
 
-public class CreateEmployeeResult
-{
-    public Employee CreatedEmployee { get; init; } = new();
-}
-
-public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, CreateEmployeeResult>
+public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Result<Employee>>
 {
     public CreateEmployeeCommandHandler(IMapper mapper, ICreateEmployeeRepository createEmployeeRepository)
     {
@@ -29,14 +25,13 @@ public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeComman
     private IMapper Mapper { get; }
     private ICreateEmployeeRepository CreateEmployeeRepository { get; }
 
-    public async Task<CreateEmployeeResult> Handle(CreateEmployeeCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Employee>> Handle(
+        CreateEmployeeCommand command,
+        CancellationToken cancellationToken
+    )
     {
         EmployeeToCreate employeeToCreate = Mapper.Map<EmployeeToCreate>(command);
-        Employee createdEmployee = await CreateEmployeeRepository.CreateEmployeeAsync(employeeToCreate);
 
-        return new CreateEmployeeResult
-        {
-            CreatedEmployee = createdEmployee
-        };
+        return await CreateEmployeeRepository.CreateEmployeeAsync(employeeToCreate);
     }
 }

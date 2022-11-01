@@ -1,20 +1,16 @@
 ﻿using MediatR;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Lists;
+using R.Systems.Template.Core.Common.Validation;
 
 namespace R.Systems.Template.Core.Employees.Queries.GetEmployees;
 
-public class GetEmployeesQuery : GetElementsQuery, IRequest<GetEmployeesResult>
+public class GetEmployeesQuery : GetElementsQuery, IRequest<Result<List<Employee>>>
 {
     public int? CompanyId { get; init; }
 }
 
-public class GetEmployeesResult
-{
-    public List<Employee> Employees { get; init; } = new();
-}
-
-public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, GetEmployeesResult>
+public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, Result<List<Employee>>>
 {
     public GetEmployeesQueryHandler(IGetEmployeesRepository getCompaniesRepository)
     {
@@ -23,15 +19,10 @@ public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, GetEm
 
     private IGetEmployeesRepository GetEmployeesRepository { get; }
 
-    public async Task<GetEmployeesResult> Handle(GetEmployeesQuery query, CancellationToken cancellationToken)
+    public async Task<Result<List<Employee>>> Handle(GetEmployeesQuery query, CancellationToken cancellationToken)
     {
-        List<Employee> employees = query.CompanyId == null
+        return query.CompanyId == null
             ? await GetEmployeesRepository.GetEmployeesAsync(query.ListParameters)
             : await GetEmployeesRepository.GetEmployeesAsync(query.ListParameters, (int)query.CompanyId);
-
-        return new GetEmployeesResult
-        {
-            Employees = employees
-        };
     }
 }

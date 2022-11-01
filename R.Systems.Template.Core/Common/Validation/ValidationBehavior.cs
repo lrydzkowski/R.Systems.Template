@@ -33,7 +33,26 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
             .ToList();
         if (validationFailures.Count > 0)
         {
-            throw new ValidationException(validationFailures);
+            ValidationException validationException = new(validationFailures);
+
+            var responseType = typeof(TResponse);
+            var resultType = responseType.GetGenericArguments().FirstOrDefault();
+            if (resultType == null)
+            {
+                throw new InvalidOperationException("Mediatr return type has to by Result<T>.");
+            }
+
+            var invalidResponseType = typeof(Result<>).MakeGenericType(resultType);
+            var resultInstance = Activator.CreateInstance(
+                invalidResponseType,
+                validationException
+            );
+            if (resultInstance == null)
+            {
+                throw new InvalidOperationException("It was impossible to create Result<T> instance.");
+            }
+
+            return (TResponse)resultInstance;
         }
 
         return await next();

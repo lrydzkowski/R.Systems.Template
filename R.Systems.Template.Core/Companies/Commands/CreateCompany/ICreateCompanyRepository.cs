@@ -1,8 +1,9 @@
 ﻿using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Validation;
 
 namespace R.Systems.Template.Core.Companies.Commands.CreateCompany;
 
 public interface ICreateCompanyRepository
 {
-    Task<Company> CreateCompanyAsync(CompanyToCreate company);
+    Task<Result<Company>> CreateCompanyAsync(CompanyToCreate company);
 }

@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
+using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Validation;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
+using R.Systems.Template.WebApi.Extensions;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 
@@ -23,7 +26,7 @@ public class CompanyProtectedController : ControllerBase
     [SwaggerResponse(
         statusCode: 200,
         description: "Correct response",
-        type: typeof(GetCompaniesResult),
+        type: typeof(List<Company>),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 500)]
@@ -36,8 +39,8 @@ public class CompanyProtectedController : ControllerBase
         string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         string? email = User.FindFirstValue(ClaimTypes.Email);
 
-        GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery());
+        Result<List<Company>> result = await Mediator.Send(new GetCompaniesQuery());
 
-        return Ok(result.Companies);
+        return result.ToOk();
     }
 }

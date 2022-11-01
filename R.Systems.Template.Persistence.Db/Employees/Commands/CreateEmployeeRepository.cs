@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Validation;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 using R.Systems.Template.Persistence.Db.Common.Entities;
 
@@ -18,9 +19,14 @@ internal class CreateEmployeeRepository : ICreateEmployeeRepository
     private IMapper Mapper { get; }
     private AppDbContext DbContext { get; }
 
-    public async Task<Employee> CreateEmployeeAsync(EmployeeToCreate employeeToCreate)
+    public async Task<Result<Employee>> CreateEmployeeAsync(EmployeeToCreate employeeToCreate)
     {
-        await EmployeeValidator.VerifyCompanyExistenceAsync(employeeToCreate.CompanyId);
+        Result<bool> verifyCompanyExistenceResult =
+            await EmployeeValidator.VerifyCompanyExistenceAsync(employeeToCreate.CompanyId);
+        if (verifyCompanyExistenceResult.IsFaulted)
+        {
+            return verifyCompanyExistenceResult.MapFaulted<Employee>();
+        }
 
         EmployeeEntity employeeEntity = Mapper.Map<EmployeeEntity>(employeeToCreate);
         await DbContext.Employees.AddAsync(employeeEntity);

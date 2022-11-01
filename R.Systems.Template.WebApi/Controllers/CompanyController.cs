@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Core.Common.Lists;
+using R.Systems.Template.Core.Common.Validation;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
 using R.Systems.Template.WebApi.Api;
+using R.Systems.Template.WebApi.Extensions;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Template.WebApi.Controllers;
@@ -39,19 +41,16 @@ public class CompanyController : ControllerBase
     public async Task<IActionResult> GetCompany(int companyId)
     {
         GetCompanyQuery query = new() { CompanyId = companyId };
-        GetCompanyResult result = await Mediator.Send(query);
-        if (result.Company == null)
+        Result<Company?> result = await Mediator.Send(query);
+        ErrorInfo notFoundError = new ErrorInfo
         {
-            return NotFound(new ErrorInfo
-            {
-                PropertyName = "Company",
-                ErrorMessage = "Company doesn't exist.",
-                ErrorCode = "NotExist",
-                AttemptedValue = query
-            });
-        }
+            PropertyName = "Company",
+            ErrorMessage = "Company doesn't exist.",
+            ErrorCode = "NotExist",
+            AttemptedValue = query
+        };
 
-        return Ok(result.Company);
+        return result.ToOkOrNotFound(notFoundError);
     }
 
     [SwaggerOperation(Summary = "Get companies")]
@@ -66,9 +65,9 @@ public class CompanyController : ControllerBase
     public async Task<IActionResult> GetCompanies([FromQuery] ListRequest listRequest)
     {
         ListParameters listParameters = Mapper.Map<ListParameters>(listRequest);
-        GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery { ListParameters = listParameters });
+        Result<List<Company>> result = await Mediator.Send(new GetCompaniesQuery { ListParameters = listParameters });
 
-        return Ok(result.Companies);
+        return result.ToOk();
     }
 
     [SwaggerOperation(Summary = "Create the company")]
@@ -83,9 +82,16 @@ public class CompanyController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateCompany(CreateCompanyCommand command)
     {
-        CreateCompanyResult result = await Mediator.Send(command);
+        Result<Company> result = await Mediator.Send(command);
 
-        return CreatedAtAction(nameof(GetCompany), new { companyId = result.Company.CompanyId }, result.Company);
+        return result.ToActionResult(
+            company => new CreatedAtActionResult(
+                nameof(GetCompany),
+                this.GetControllerName(),
+                new { companyId = company?.CompanyId },
+                company
+            )
+        );
     }
 
     [SwaggerOperation(Summary = "Update the company")]
@@ -100,9 +106,9 @@ public class CompanyController : ControllerBase
     [HttpPut("{companyId}")]
     public async Task<IActionResult> UpdateCompany(int companyId, UpdateCompanyRequest request)
     {
-        UpdateCompanyResult result =
+        Result<Company> result =
             await Mediator.Send(new UpdateCompanyCommand { CompanyId = companyId, Name = request.Name });
 
-        return Ok(result.Company);
+        return result.ToOk();
     }
 }

@@ -3,6 +3,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Validation;
 using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 using R.Systems.Template.Persistence.Db.Common.Entities;
 
@@ -21,11 +22,22 @@ internal class UpdateEmployeeRepository : IUpdateEmployeeRepository
     private IMapper Mapper { get; }
     private AppDbContext DbContext { get; }
 
-    public async Task<Employee> UpdateEmployeeAsync(EmployeeToUpdate employeeToUpdate)
+    public async Task<Result<Employee>> UpdateEmployeeAsync(EmployeeToUpdate employeeToUpdate)
     {
-        await EmployeeValidator.VerifyCompanyExistenceAsync(employeeToUpdate.CompanyId);
+        Result<bool> verifyCompanyExistenceResult =
+            await EmployeeValidator.VerifyCompanyExistenceAsync(employeeToUpdate.CompanyId);
+        if (verifyCompanyExistenceResult.IsFaulted)
+        {
+            return verifyCompanyExistenceResult.MapFaulted<Employee>();
+        }
 
-        EmployeeEntity employeeEntity = await GetEmployeeEntityAsync(employeeToUpdate.EmployeeId);
+        Result<EmployeeEntity> getEmployeeEntityResult = await GetEmployeeEntityAsync(employeeToUpdate.EmployeeId);
+        if (getEmployeeEntityResult.IsFaulted)
+        {
+            return getEmployeeEntityResult.MapFaulted<Employee>();
+        }
+
+        EmployeeEntity employeeEntity = getEmployeeEntityResult.Value!;
         employeeEntity.FirstName = employeeToUpdate.FirstName;
         employeeEntity.LastName = employeeToUpdate.LastName;
         employeeEntity.CompanyId = employeeToUpdate.CompanyId;
@@ -35,22 +47,26 @@ internal class UpdateEmployeeRepository : IUpdateEmployeeRepository
         return Mapper.Map<Employee>(employeeEntity);
     }
 
-    private async Task<EmployeeEntity> GetEmployeeEntityAsync(int employeeId)
+    private async Task<Result<EmployeeEntity>> GetEmployeeEntityAsync(int employeeId)
     {
         EmployeeEntity? employeeEntity = await DbContext.Employees.Where(x => x.Id == employeeId)
             .FirstOrDefaultAsync();
         if (employeeEntity == null)
         {
-            throw new ValidationException(new List<ValidationFailure>
-            {
-                new()
+            ValidationException validationException = new(
+                new List<ValidationFailure>
                 {
-                    PropertyName = "Employee",
-                    ErrorMessage = $"Employee with the given id doesn't exist ('{employeeId}').",
-                    AttemptedValue = employeeId,
-                    ErrorCode = "NotExist"
+                    new()
+                    {
+                        PropertyName = "Employee",
+                        ErrorMessage = $"Employee with the given id doesn't exist ('{employeeId}').",
+                        AttemptedValue = employeeId,
+                        ErrorCode = "NotExist"
+                    }
                 }
-            });
+            );
+
+            return new Result<EmployeeEntity>(validationException);
         }
 
         return employeeEntity;

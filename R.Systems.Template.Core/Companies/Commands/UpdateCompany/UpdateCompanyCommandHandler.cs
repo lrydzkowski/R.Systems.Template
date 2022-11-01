@@ -1,22 +1,18 @@
 ﻿using AutoMapper;
 using MediatR;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Validation;
 
 namespace R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 
-public class UpdateCompanyCommand : IRequest<UpdateCompanyResult>
+public class UpdateCompanyCommand : IRequest<Result<Company>>
 {
     public int CompanyId { get; init; }
 
     public string? Name { get; init; }
 }
 
-public class UpdateCompanyResult
-{
-    public Company Company { get; init; } = new();
-}
-
-public class UpdateCompanyCommandHandler : IRequestHandler<UpdateCompanyCommand, UpdateCompanyResult>
+public class UpdateCompanyCommandHandler : IRequestHandler<UpdateCompanyCommand, Result<Company>>
 {
     public UpdateCompanyCommandHandler(IMapper mapper, IUpdateCompanyRepository updateCompanyRepository)
     {
@@ -27,14 +23,10 @@ public class UpdateCompanyCommandHandler : IRequestHandler<UpdateCompanyCommand,
     private IMapper Mapper { get; }
     private IUpdateCompanyRepository UpdateCompanyRepository { get; }
 
-    public async Task<UpdateCompanyResult> Handle(UpdateCompanyCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Company>> Handle(UpdateCompanyCommand command, CancellationToken cancellationToken)
     {
         CompanyToUpdate companyToUpdate = Mapper.Map<CompanyToUpdate>(command);
-        Company company = await UpdateCompanyRepository.UpdateCompanyAsync(companyToUpdate);
 
-        return new UpdateCompanyResult
-        {
-            Company = company
-        };
+        return await UpdateCompanyRepository.UpdateCompanyAsync(companyToUpdate);
     }
 }
