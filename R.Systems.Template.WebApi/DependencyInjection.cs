@@ -1,7 +1,4 @@
-﻿using Microsoft.Identity.Web;
-using Microsoft.OpenApi.Models;
-using R.Systems.Template.Core;
-using R.Systems.Template.WebApi.Options;
+﻿using Microsoft.OpenApi.Models;
 
 namespace R.Systems.Template.WebApi;
 
@@ -14,11 +11,6 @@ public static class DependencyInjection
         services.ConfigureSwagger();
         services.ConfigureCors();
         services.AddAutoMapper(typeof(DependencyInjection).Assembly);
-        services.ConfigureOptionsWithValidation<AzureAdOptions, AzureAdOptionsValidator>(
-            configuration,
-            AzureAdOptions.Position
-        );
-        services.AddMicrosoftIdentityWebApiAuthentication(configuration);
     }
 
     private static void ConfigureSwagger(this IServiceCollection services)

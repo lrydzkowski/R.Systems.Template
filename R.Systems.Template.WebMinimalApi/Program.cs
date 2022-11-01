@@ -1,16 +1,16 @@
+using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using R.Systems.Template.Persistence.Db;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureCoreServices();
-builder.Services.ConfigurePersistenceDbService(builder.Configuration);
+builder.Services.ConfigurePersistenceDbServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -20,9 +20,11 @@ app.UseHttpsRedirection();
 
 app.MapGet(
     "/",
-    async ([FromServices] ISender mediator) => Results.Ok(await mediator.Send(
-        new GetAppInfoQuery { AppAssembly = Assembly.GetExecutingAssembly() }
-    ))
+    async ([FromServices] ISender mediator) => Results.Ok(
+        await mediator.Send(
+            new GetAppInfoQuery { AppAssembly = Assembly.GetExecutingAssembly() }
+        )
+    )
 );
 
 app.Run();

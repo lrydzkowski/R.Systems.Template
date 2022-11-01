@@ -21,7 +21,7 @@ namespace R.Systems.Template.Persistence.Db;
 
 public static class DependencyInjection
 {
-    public static void ConfigurePersistenceDbService(
+    public static void ConfigurePersistenceDbServices(
         this IServiceCollection services,
         IConfiguration configuration
     )
@@ -31,11 +31,14 @@ public static class DependencyInjection
             configuration,
             ConnectionStringsOptions.Position
         );
-        services.AddDbContext<AppDbContext>((serviceProvider, options) =>
-        {
-            ConnectionStringsOptions connectionStrings = serviceProvider.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
-            options.UseNpgsql(connectionStrings.AppDb);
-        });
+        services.AddDbContext<AppDbContext>(
+            (serviceProvider, options) =>
+            {
+                ConnectionStringsOptions connectionStrings =
+                    serviceProvider.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
+                options.UseNpgsql(connectionStrings.AppDb);
+            }
+        );
         services.AddAutoMapper(typeof(DependencyInjection));
         services.AddRepositories();
         services.AddScoped<DbExceptionHandler>();

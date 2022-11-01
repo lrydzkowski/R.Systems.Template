@@ -11,7 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Identity.Web" Version="1.25.3" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="NLog.Schema" Version="5.0.4" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.4" />
@@ -21,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Infrastructure.Azure\R.Systems.Template.Infrastructure.Azure.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Persistence.Db\R.Systems.Template.Persistence.Db.csproj" />
   </ItemGroup>
 

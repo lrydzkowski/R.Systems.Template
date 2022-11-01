@@ -1,6 +1,7 @@
 using NLog;
 using NLog.Web;
 using R.Systems.Template.Core;
+using R.Systems.Template.Infrastructure.Azure;
 using R.Systems.Template.Persistence.Db;
 using R.Systems.Template.WebApi.Middleware;
 
@@ -37,7 +38,8 @@ public class Program
     {
         builder.Services.ConfigureServices(builder.Configuration);
         builder.Services.ConfigureCoreServices();
-        builder.Services.ConfigurePersistenceDbService(builder.Configuration);
+        builder.Services.ConfigurePersistenceDbServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
     }
 
     private static void ConfigureLogging(WebApplicationBuilder builder)
@@ -54,6 +56,7 @@ public class Program
         {
             app.UseSwaggerUI();
         }
+
         app.UseCors("CorsPolicy");
         app.UseAuthentication();
         app.UseAuthorization();

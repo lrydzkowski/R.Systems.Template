@@ -14,10 +14,12 @@ internal class AzureAdOptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Azu
                 {
                     Instance = null
                 },
-                GetExpectedExceptionMessage(new List<string>
-                {
-                    "AzureAd.Instance: 'Instance' must not be empty. Severity: Error"
-                })
+                GetExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        "AzureAd.Instance: 'Instance' must not be empty. Severity: Error"
+                    }
+                )
             ),
             BuildParameters(
                 2,
@@ -25,76 +27,90 @@ internal class AzureAdOptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Azu
                 {
                     Instance = "  "
                 },
-                GetExpectedExceptionMessage(new List<string>
-                {
-                    "AzureAd.Instance: 'Instance' must not be empty. Severity: Error"
-                })
+                GetExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        "AzureAd.Instance: 'Instance' must not be empty. Severity: Error"
+                    }
+                )
             ),
             BuildParameters(
                 3,
                 new AzureAdOptionsData
                 {
-                    Domain = null
+                    ClientId = null
                 },
-                GetExpectedExceptionMessage(new List<string>
-                {
-                    "AzureAd.Domain: 'Domain' must not be empty. Severity: Error"
-                })
+                GetExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        "AzureAd.ClientId: 'ClientId' must not be empty. Severity: Error"
+                    }
+                )
             ),
             BuildParameters(
                 4,
                 new AzureAdOptionsData
                 {
-                    Domain = "  "
+                    ClientId = "  "
                 },
-                GetExpectedExceptionMessage(new List<string>
-                {
-                    "AzureAd.Domain: 'Domain' must not be empty. Severity: Error"
-                })
+                GetExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        "AzureAd.ClientId: 'ClientId' must not be empty. Severity: Error"
+                    }
+                )
             ),
             BuildParameters(
                 5,
                 new AzureAdOptionsData
                 {
-                    ClientId = null
+                    TenantId = null
                 },
-                GetExpectedExceptionMessage(new List<string>
-                {
-                    "AzureAd.ClientId: 'ClientId' must not be empty. Severity: Error"
-                })
+                GetExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        "AzureAd.TenantId: 'TenantId' must not be empty. Severity: Error"
+                    }
+                )
             ),
             BuildParameters(
                 6,
                 new AzureAdOptionsData
                 {
-                    ClientId = "  "
+                    TenantId = "  "
                 },
-                GetExpectedExceptionMessage(new List<string>
-                {
-                    "AzureAd.ClientId: 'ClientId' must not be empty. Severity: Error"
-                })
+                GetExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        "AzureAd.TenantId: 'TenantId' must not be empty. Severity: Error"
+                    }
+                )
             ),
             BuildParameters(
                 7,
                 new AzureAdOptionsData
                 {
-                    SignUpSignInPolicyId = null
+                    Audience = null
                 },
-                GetExpectedExceptionMessage(new List<string>
-                {
-                    "AzureAd.SignUpSignInPolicyId: 'SignUpSignInPolicyId' must not be empty. Severity: Error"
-                })
+                GetExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        "AzureAd.Audience: 'Audience' must not be empty. Severity: Error"
+                    }
+                )
             ),
             BuildParameters(
                 8,
                 new AzureAdOptionsData
                 {
-                    SignUpSignInPolicyId = "  "
+                    Audience = "  "
                 },
-                GetExpectedExceptionMessage(new List<string>
-                {
-                    "AzureAd.SignUpSignInPolicyId: 'SignUpSignInPolicyId' must not be empty. Severity: Error"
-                })
+                GetExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        "AzureAd.Audience: 'Audience' must not be empty. Severity: Error"
+                    }
+                )
             )
         };
     }
