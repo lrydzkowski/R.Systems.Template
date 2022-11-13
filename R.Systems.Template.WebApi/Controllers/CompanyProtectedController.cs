@@ -34,6 +34,7 @@ public class CompanyProtectedController : ControllerBase
     {
         // ReSharper disable once UnusedVariable
         string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        // ReSharper disable once UnusedVariable
         string? email = User.FindFirstValue(ClaimTypes.Email);
 
         GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery());
