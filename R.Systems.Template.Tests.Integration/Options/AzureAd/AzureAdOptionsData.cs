@@ -3,16 +3,8 @@ using R.Systems.Template.Tests.Integration.Common.Options;
 
 namespace R.Systems.Template.Tests.Integration.Options.AzureAd;
 
-internal class AzureAdOptionsData : IOptionsData
+internal class AzureAdOptionsData : AzureAdOptions, IOptionsData
 {
-    public string? Instance { get; init; }
-
-    public string? ClientId { get; init; }
-
-    public string? TenantId { get; init; }
-
-    public string? Audience { get; init; }
-
     public AzureAdOptionsData()
     {
         Instance = "https://login.microsoftonline.com/";
@@ -25,10 +17,10 @@ internal class AzureAdOptionsData : IOptionsData
     {
         return new()
         {
-            [$"{AzureAdOptions.Position}:{nameof(AzureAdOptions.Instance)}"] = Instance,
-            [$"{AzureAdOptions.Position}:{nameof(AzureAdOptions.ClientId)}"] = ClientId,
-            [$"{AzureAdOptions.Position}:{nameof(AzureAdOptions.TenantId)}"] = TenantId,
-            [$"{AzureAdOptions.Position}:{nameof(AzureAdOptions.Audience)}"] = Audience
+            [$"{Position}:{nameof(Instance)}"] = Instance,
+            [$"{Position}:{nameof(ClientId)}"] = ClientId,
+            [$"{Position}:{nameof(TenantId)}"] = TenantId,
+            [$"{Position}:{nameof(Audience)}"] = Audience
         };
     }
 }

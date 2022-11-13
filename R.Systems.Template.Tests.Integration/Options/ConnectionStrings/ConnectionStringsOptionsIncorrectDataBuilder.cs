@@ -1,4 +1,5 @@
-﻿using R.Systems.Template.Tests.Integration.Common.Options;
+﻿using R.Systems.Template.Persistence.Db.Common.Options;
+using R.Systems.Template.Tests.Integration.Common.Options;
 
 namespace R.Systems.Template.Tests.Integration.Options.ConnectionStrings;
 
@@ -12,12 +13,15 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
                 1,
                 new ConnectionStringsOptionsData
                 {
-                    AppDb = null
+                    AppDb = ""
                 },
-                GetExpectedExceptionMessage(
+                BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        "ConnectionStrings.AppDb: 'AppDb' must not be empty. Severity: Error"
+                        BuildNotEmptyErrorMessage(
+                            ConnectionStringsOptions.Position,
+                            nameof(ConnectionStringsOptions.AppDb)
+                        )
                     }
                 )
             ),
@@ -27,10 +31,13 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
                 {
                     AppDb = "  "
                 },
-                GetExpectedExceptionMessage(
+                BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        "ConnectionStrings.AppDb: 'AppDb' must not be empty. Severity: Error"
+                        BuildNotEmptyErrorMessage(
+                            ConnectionStringsOptions.Position,
+                            nameof(ConnectionStringsOptions.AppDb)
+                        )
                     }
                 )
             )

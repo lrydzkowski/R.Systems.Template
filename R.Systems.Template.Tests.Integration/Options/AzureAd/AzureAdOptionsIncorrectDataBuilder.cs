@@ -1,4 +1,5 @@
-﻿using R.Systems.Template.Tests.Integration.Common.Options;
+﻿using R.Systems.Template.Infrastructure.Azure.Options;
+using R.Systems.Template.Tests.Integration.Common.Options;
 
 namespace R.Systems.Template.Tests.Integration.Options.AzureAd;
 
@@ -12,12 +13,12 @@ internal class AzureAdOptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Azu
                 1,
                 new AzureAdOptionsData
                 {
-                    Instance = null
+                    Instance = ""
                 },
-                GetExpectedExceptionMessage(
+                BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        "AzureAd.Instance: 'Instance' must not be empty. Severity: Error"
+                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Instance))
                     }
                 )
             ),
@@ -27,10 +28,10 @@ internal class AzureAdOptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Azu
                 {
                     Instance = "  "
                 },
-                GetExpectedExceptionMessage(
+                BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        "AzureAd.Instance: 'Instance' must not be empty. Severity: Error"
+                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Instance))
                     }
                 )
             ),
@@ -38,12 +39,12 @@ internal class AzureAdOptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Azu
                 3,
                 new AzureAdOptionsData
                 {
-                    ClientId = null
+                    ClientId = ""
                 },
-                GetExpectedExceptionMessage(
+                BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        "AzureAd.ClientId: 'ClientId' must not be empty. Severity: Error"
+                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.ClientId))
                     }
                 )
             ),
@@ -53,10 +54,10 @@ internal class AzureAdOptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Azu
                 {
                     ClientId = "  "
                 },
-                GetExpectedExceptionMessage(
+                BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        "AzureAd.ClientId: 'ClientId' must not be empty. Severity: Error"
+                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.ClientId))
                     }
                 )
             ),
@@ -64,12 +65,12 @@ internal class AzureAdOptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Azu
                 5,
                 new AzureAdOptionsData
                 {
-                    TenantId = null
+                    TenantId = ""
                 },
-                GetExpectedExceptionMessage(
+                BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        "AzureAd.TenantId: 'TenantId' must not be empty. Severity: Error"
+                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.TenantId))
                     }
                 )
             ),
@@ -79,10 +80,10 @@ internal class AzureAdOptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Azu
                 {
                     TenantId = "  "
                 },
-                GetExpectedExceptionMessage(
+                BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        "AzureAd.TenantId: 'TenantId' must not be empty. Severity: Error"
+                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.TenantId))
                     }
                 )
             ),
@@ -90,12 +91,12 @@ internal class AzureAdOptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Azu
                 7,
                 new AzureAdOptionsData
                 {
-                    Audience = null
+                    Audience = ""
                 },
-                GetExpectedExceptionMessage(
+                BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        "AzureAd.Audience: 'Audience' must not be empty. Severity: Error"
+                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Audience))
                     }
                 )
             ),
@@ -105,10 +106,10 @@ internal class AzureAdOptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Azu
                 {
                     Audience = "  "
                 },
-                GetExpectedExceptionMessage(
+                BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        "AzureAd.Audience: 'Audience' must not be empty. Severity: Error"
+                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Audience))
                     }
                 )
             )

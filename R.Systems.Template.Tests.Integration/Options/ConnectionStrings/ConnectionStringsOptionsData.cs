@@ -3,10 +3,8 @@ using R.Systems.Template.Tests.Integration.Common.Options;
 
 namespace R.Systems.Template.Tests.Integration.Options.ConnectionStrings;
 
-internal class ConnectionStringsOptionsData : IOptionsData
+internal class ConnectionStringsOptionsData : ConnectionStringsOptions, IOptionsData
 {
-    public string? AppDb { get; set; }
-
     public ConnectionStringsOptionsData()
     {
         AppDb =
@@ -17,7 +15,7 @@ internal class ConnectionStringsOptionsData : IOptionsData
     {
         return new()
         {
-            [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppDb)}"] = AppDb
+            [$"{Position}:{nameof(AppDb)}"] = AppDb
         };
     }
 }
