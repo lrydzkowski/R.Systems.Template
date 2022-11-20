@@ -7,9 +7,11 @@ namespace R.Systems.Template.Persistence.Db.DataGenerator;
 
 public class AppRunnerFactory
 {
-    private List<Action<IServiceCollection>> ConfigureServicesMethods { get; } = new();
+    protected List<Action<IConfigurationBuilder>> AddConfigurationMethods { get; } = new();
 
-    public IServiceProvider? ServiceProvider { get; private set; }
+    protected List<Action<IServiceCollection>> ConfigureServicesMethods { get; } = new();
+
+    protected IServiceProvider? ServiceProvider { get; private set; }
 
     public AppRunnerFactory WithConfigureServices(Action<IServiceCollection> configureServices)
     {
@@ -18,7 +20,7 @@ public class AppRunnerFactory
         return this;
     }
 
-    public AppRunner Create()
+    public virtual AppRunner Create()
     {
         IConfigurationRoot configuration = BuildConfiguration();
         ServiceProvider = BuildServiceProvider(configuration);
@@ -38,6 +40,11 @@ public class AppRunnerFactory
         if (environmentName == "Development")
         {
             confBuilder = confBuilder.AddUserSecrets<Program>();
+        }
+
+        foreach (Action<IConfigurationBuilder> addConfigurationBuilder in AddConfigurationMethods)
+        {
+            addConfigurationBuilder(confBuilder);
         }
 
         return confBuilder.Build();

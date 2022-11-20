@@ -1,19 +1,23 @@
 ﻿using CommandDotNet;
 using CommandDotNet.TestTools;
 using FluentAssertions;
-using R.Systems.Template.Persistence.Db.DataGenerator;
-using R.Systems.Template.Tests.Integration.Common.Builders;
+using R.Systems.Template.Tests.Integration.Common.ConsoleAppRunner;
 
 namespace R.Systems.Template.Tests.Integration.Db.DataGenerator.Commands;
 
-public class GenerateCompaniesCommandTests
+public class GenerateCompaniesCommandTests : IClassFixture<ConsoleAppRunnerFactory>
 {
+    public GenerateCompaniesCommandTests(ConsoleAppRunnerFactory consoleAppRunnerFactory)
+    {
+        ConsoleAppRunnerFactory = consoleAppRunnerFactory;
+    }
+
+    private ConsoleAppRunnerFactory ConsoleAppRunnerFactory { get; }
+
     [Fact]
     public void GenerateData_ShouldGenerateData_WhenCorrectArgumentArePassed()
     {
-        TestConsole testConsole = new();
-        AppRunnerFactory appRunnerFactory = new AppRunnerFactory().WithDatabaseInMemory().WithTestConsole(testConsole);
-        AppRunner appRunner = appRunnerFactory.Create();
+        AppRunner appRunner = ConsoleAppRunnerFactory.WithTestConsole(new TestConsole()).Create();
 
         AppRunnerResult generateResult = appRunner.RunInMem(
             "generate companies --number-of-companies 10 --number-of-employees 20"
