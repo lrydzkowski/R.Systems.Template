@@ -8,9 +8,9 @@ using R.Systems.Template.Tests.Integration.Common.Db;
 using R.Systems.Template.WebApi;
 using RestSharp;
 
-namespace R.Systems.Template.Tests.Integration.Common.Builders;
+namespace R.Systems.Template.Tests.Integration.Common.WebApplication;
 
-internal static class WebApplicationFactoryBuilder
+internal static class WebApiFactoryBuilder
 {
     public static RestClient CreateRestClient(this WebApplicationFactory<Program> webApplicationFactory)
     {

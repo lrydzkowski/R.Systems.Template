@@ -11,7 +11,7 @@ internal static class CompaniesSampleData
             "Meta",
             new CompanyEntity
             {
-                Id = 1,
+                Id = IdGenerator.GetCompanyId(1),
                 Name = "Meta"
             }
         },
@@ -19,7 +19,7 @@ internal static class CompaniesSampleData
             "Google",
             new CompanyEntity
             {
-                Id = 2,
+                Id = IdGenerator.GetCompanyId(2),
                 Name = "Google"
             }
         },
@@ -27,7 +27,7 @@ internal static class CompaniesSampleData
             "Microsoft",
             new CompanyEntity
             {
-                Id = 3,
+                Id = IdGenerator.GetCompanyId(3),
                 Name = "Microsoft"
             }
         },
@@ -35,7 +35,7 @@ internal static class CompaniesSampleData
             "Amazon",
             new CompanyEntity
             {
-                Id = 4,
+                Id = IdGenerator.GetCompanyId(4),
                 Name = "Amazon"
             }
         },
@@ -43,7 +43,7 @@ internal static class CompaniesSampleData
             "Alior",
             new CompanyEntity
             {
-                Id = 5,
+                Id = IdGenerator.GetCompanyId(5),
                 Name = "Alior"
             }
         },
@@ -51,7 +51,7 @@ internal static class CompaniesSampleData
             "Starbucks",
             new CompanyEntity
             {
-                Id = 6,
+                Id = IdGenerator.GetCompanyId(6),
                 Name = "Starbucks"
             }
         }
@@ -61,7 +61,6 @@ internal static class CompaniesSampleData
     {
         return new CompanyEntity
         {
-            Id = companyEntity.Id,
             Name = companyEntity.Name
         };
     }

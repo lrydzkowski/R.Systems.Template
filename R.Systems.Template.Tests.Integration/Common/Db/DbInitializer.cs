@@ -1,4 +1,5 @@
-﻿using R.Systems.Template.Persistence.Db;
+﻿using Microsoft.EntityFrameworkCore;
+using R.Systems.Template.Persistence.Db;
 using R.Systems.Template.Persistence.Db.Common.Entities;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 
@@ -8,8 +9,7 @@ internal static class DbInitializer
 {
     public static void InitializeData(AppDbContext dbContext)
     {
-        dbContext.Database.EnsureCreated();
-
+        dbContext.Database.Migrate();
         RemoveExistingData(dbContext);
         AddTestData(dbContext);
     }

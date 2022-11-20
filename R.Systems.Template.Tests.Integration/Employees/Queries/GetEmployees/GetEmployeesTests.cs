@@ -1,18 +1,25 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
-using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
-using R.Systems.Template.Tests.Integration.Common.Factories;
-using R.Systems.Template.WebApi;
+using R.Systems.Template.Tests.Integration.Common.TestsCollections;
+using R.Systems.Template.Tests.Integration.Common.WebApplication;
 using RestSharp;
 using System.Linq.Dynamic.Core;
 using System.Net;
 
 namespace R.Systems.Template.Tests.Integration.Employees.Queries.GetEmployees;
 
+[Collection(QueryTestsCollection.CollectionName)]
 public class GetEmployeesTests
 {
     private readonly string _endpointUrlPath = "/employees";
+
+    public GetEmployeesTests(WebApiFactory webApiFactory)
+    {
+        RestClient = webApiFactory.CreateRestClient();
+    }
+
+    private RestClient RestClient { get; }
 
     [Fact]
     public async Task GetEmployees_ShouldReturnEmployees_WhenEmployeesExist()
@@ -29,27 +36,13 @@ public class GetEmployeesTests
                 }
             )
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
 
-        RestResponse<List<Employee>> response = await restClient.ExecuteAsync<List<Employee>>(restRequest);
+        RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
         response.Data.Should().BeEquivalentTo(expectedEmployees);
-    }
-
-    [Fact]
-    public async Task GetEmployees_ShouldReturnEmptyList_WhenEmployeesNotExist()
-    {
-        RestClient restClient = new WebApiFactory<Program>().WithoutData().CreateRestClient();
-        RestRequest restRequest = new(_endpointUrlPath);
-
-        RestResponse<List<Employee>> response = await restClient.ExecuteAsync<List<Employee>>(restRequest);
-
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        response.Data.Should().NotBeNull();
-        response.Data.Should().BeEquivalentTo(new List<Employee>());
     }
 
     [Theory]
@@ -64,12 +57,11 @@ public class GetEmployeesTests
             .Skip(firstIndex)
             .Take(numberOfRows)
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
         restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);
 
-        RestResponse<List<Employee>> response = await restClient.ExecuteAsync<List<Employee>>(restRequest);
+        RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
@@ -89,12 +81,11 @@ public class GetEmployeesTests
         List<Employee> expectedEmployees = EmployeesSampleData.Employees.AsQueryable()
             .OrderBy($"{sortingFieldName} {sortingOrder}")
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(sortingFieldName), sortingFieldName);
         restRequest.AddQueryParameter(nameof(sortingOrder), sortingOrder);
 
-        RestResponse<List<Employee>> response = await restClient.ExecuteAsync<List<Employee>>(restRequest);
+        RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
@@ -113,11 +104,10 @@ public class GetEmployeesTests
                      || x.LastName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
             )
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(searchQuery), searchQuery);
 
-        RestResponse<List<Employee>> response = await restClient.ExecuteAsync<List<Employee>>(restRequest);
+        RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
@@ -142,7 +132,6 @@ public class GetEmployeesTests
             .Skip(firstIndex)
             .Take(numberOfRows)
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
         restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);
@@ -150,7 +139,7 @@ public class GetEmployeesTests
         restRequest.AddQueryParameter(nameof(sortingOrder), sortingOrder);
         restRequest.AddQueryParameter(nameof(searchQuery), searchQuery);
 
-        RestResponse<List<Employee>> response = await restClient.ExecuteAsync<List<Employee>>(restRequest);
+        RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();

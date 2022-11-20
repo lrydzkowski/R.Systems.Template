@@ -9,59 +9,66 @@ internal static class EmployeesSampleData
     {
         new EmployeeEntity
         {
-            Id = 1,
+            Id = IdGenerator.GetEmployeeId(1),
             FirstName = "John",
             LastName = "Doe",
-            CompanyId = 1
+            CompanyId = IdGenerator.GetCompanyId(1)
         },
         new EmployeeEntity
         {
-            Id = 2,
+            Id = IdGenerator.GetEmployeeId(2),
             FirstName = "Jack",
             LastName = "Parker",
-            CompanyId = 2
+            CompanyId = IdGenerator.GetCompanyId(2)
         },
         new EmployeeEntity
         {
-            Id = 3,
+            Id = IdGenerator.GetEmployeeId(3),
             FirstName = "Will",
             LastName = "Smith",
-            CompanyId = 2
+            CompanyId = IdGenerator.GetCompanyId(2)
         },
         new EmployeeEntity
         {
-            Id = 4,
+            Id = IdGenerator.GetEmployeeId(4),
             FirstName = "James",
             LastName = "Smith",
-            CompanyId = 2
+            CompanyId = IdGenerator.GetCompanyId(2)
         },
         new EmployeeEntity
         {
-            Id = 5,
+            Id = IdGenerator.GetEmployeeId(5),
             FirstName = "Maria",
             LastName = "Garcia",
-            CompanyId = 2
+            CompanyId = IdGenerator.GetCompanyId(2)
         },
         new EmployeeEntity
         {
-            Id = 6,
+            Id = IdGenerator.GetEmployeeId(6),
             FirstName = "Mary",
             LastName = "Smith",
-            CompanyId = 2
+            CompanyId = IdGenerator.GetCompanyId(2)
         },
         new EmployeeEntity
         {
-            Id = 7,
+            Id = IdGenerator.GetEmployeeId(7),
             FirstName = "Maria",
             LastName = "Hernandez",
-            CompanyId = 2
+            CompanyId = IdGenerator.GetCompanyId(2)
         },
         new EmployeeEntity
         {
-            Id = 8,
+            Id = IdGenerator.GetEmployeeId(8),
             FirstName = "James",
             LastName = "Johnson",
-            CompanyId = 2
+            CompanyId = IdGenerator.GetCompanyId(2)
+        },
+        new EmployeeEntity
+        {
+            Id = IdGenerator.GetEmployeeId(9),
+            FirstName = "Kate",
+            LastName = "Brown",
+            CompanyId = IdGenerator.GetCompanyId(2)
         }
     };
 
@@ -69,7 +76,6 @@ internal static class EmployeesSampleData
     {
         return new EmployeeEntity
         {
-            Id = employeeEntity.Id,
             FirstName = employeeEntity.FirstName,
             LastName = employeeEntity.LastName,
             CompanyId = employeeEntity.CompanyId

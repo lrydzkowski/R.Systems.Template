@@ -19,7 +19,7 @@ public static class SortExtensions
         }
 
         string sortOrderQuery = sorting.Order == SortingOrder.Ascending ? "" : " desc";
-        string sortQuery = $"{sorting.FieldName}{sortOrderQuery}";
+        string sortQuery = $"{sorting.FieldName}{sortOrderQuery}, {defaultSortingFieldName} asc";
         query = query.OrderBy(sortQuery);
 
         return query;
