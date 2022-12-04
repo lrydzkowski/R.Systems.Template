@@ -3,7 +3,6 @@ using FluentValidation.Results;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Factories;
-using R.Systems.Template.WebApi;
 using R.Systems.Template.WebApi.Api;
 using RestSharp;
 using System.Net;
@@ -11,16 +10,18 @@ using Xunit.Abstractions;
 
 namespace R.Systems.Template.Tests.Integration.Employees.Commands.UpdateEmployee;
 
-public class UpdateEmployeeTests
+public class UpdateEmployeeTests : IClassFixture<WebApiFactory>
 {
     private readonly string _endpointUrlPath = "/employees";
 
-    public UpdateEmployeeTests(ITestOutputHelper output)
+    public UpdateEmployeeTests(ITestOutputHelper output, WebApiFactory webApiFactory)
     {
         Output = output;
+        WebApiFactory = webApiFactory;
     }
 
     private ITestOutputHelper Output { get; }
+    private WebApiFactory WebApiFactory { get; }
 
     [Theory]
     [MemberData(
@@ -32,12 +33,13 @@ public class UpdateEmployeeTests
         int employeeId,
         UpdateEmployeeRequest request,
         HttpStatusCode expectedHttpStatus,
-        IEnumerable<ValidationFailure> validationFailures)
+        IEnumerable<ValidationFailure> validationFailures
+    )
     {
         Output.WriteLine("Parameters set with id = {0}", id);
 
         string url = $"{_endpointUrlPath}/{employeeId}";
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         var restRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
 
         RestResponse<List<ValidationFailure>> response = await restClient.ExecuteAsync<List<ValidationFailure>>(
@@ -66,22 +68,23 @@ public class UpdateEmployeeTests
         Output.WriteLine("Parameters set with id = {0}", id);
 
         string url = $"{_endpointUrlPath}/{employeeId}";
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         var updateRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
 
         RestResponse<Employee> updateResponse = await restClient.ExecuteAsync<Employee>(updateRequest);
 
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         updateResponse.Data.Should().NotBeNull();
-        updateResponse.Data.Should().BeEquivalentTo(
-            new Employee
-            {
-                EmployeeId = employeeId,
-                FirstName = request.FirstName!,
-                LastName = request.LastName!,
-                CompanyId = request.CompanyId
-            }
-        );
+        updateResponse.Data.Should()
+            .BeEquivalentTo(
+                new Employee
+                {
+                    EmployeeId = employeeId,
+                    FirstName = request.FirstName!,
+                    LastName = request.LastName!,
+                    CompanyId = request.CompanyId
+                }
+            );
 
         Employee employee = updateResponse.Data!;
 

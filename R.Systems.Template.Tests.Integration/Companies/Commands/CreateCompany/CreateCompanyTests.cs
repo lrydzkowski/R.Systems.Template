@@ -4,23 +4,24 @@ using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Factories;
-using R.Systems.Template.WebApi;
 using RestSharp;
 using System.Net;
 using Xunit.Abstractions;
 
 namespace R.Systems.Template.Tests.Integration.Companies.Commands.CreateCompany;
 
-public class CreateCompanyTests
+public class CreateCompanyTests : IClassFixture<WebApiFactory>
 {
     private readonly string _endpointUrlPath = "/companies";
 
-    public CreateCompanyTests(ITestOutputHelper output)
+    public CreateCompanyTests(ITestOutputHelper output, WebApiFactory webApiFactory)
     {
         Output = output;
+        WebApiFactory = webApiFactory;
     }
 
     private ITestOutputHelper Output { get; }
+    private WebApiFactory WebApiFactory { get; }
 
     [Theory]
     [MemberData(
@@ -31,11 +32,12 @@ public class CreateCompanyTests
         int id,
         CreateCompanyCommand command,
         HttpStatusCode expectedHttpStatus,
-        IEnumerable<ValidationFailure> validationFailures)
+        IEnumerable<ValidationFailure> validationFailures
+    )
     {
         Output.WriteLine("Parameters set with id = {0}", id);
 
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         var restRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
         RestResponse<List<ValidationFailure>> response = await restClient.ExecuteAsync<List<ValidationFailure>>(
@@ -59,21 +61,22 @@ public class CreateCompanyTests
     {
         Output.WriteLine("Parameters set with id = {0}", id);
 
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         var createRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
         RestResponse<Company> createResponse = await restClient.ExecuteAsync<Company>(createRequest);
 
         createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
         createResponse.Data.Should().NotBeNull();
-        createResponse.Data.Should().BeEquivalentTo(
-            new Company
-            {
-                Name = command.Name!,
-                Employees = new List<Employee>()
-            },
-            options => options.Excluding(ctx => ctx.CompanyId)
-        );
+        createResponse.Data.Should()
+            .BeEquivalentTo(
+                new Company
+                {
+                    Name = command.Name!,
+                    Employees = new List<Employee>()
+                },
+                options => options.Excluding(ctx => ctx.CompanyId)
+            );
         createResponse.Headers.Should().NotBeNullOrEmpty();
         createResponse.Headers.Should().Contain(x => x.Name == "Location");
 

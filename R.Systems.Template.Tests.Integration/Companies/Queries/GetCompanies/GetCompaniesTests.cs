@@ -3,22 +3,28 @@ using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.Factories;
-using R.Systems.Template.WebApi;
 using RestSharp;
 using System.Linq.Dynamic.Core;
 using System.Net;
 
 namespace R.Systems.Template.Tests.Integration.Companies.Queries.GetCompanies;
 
-public class GetEmployeesTests
+public class GetEmployeesTests : IClassFixture<WebApiFactory>
 {
     private readonly string _endpointUrlPath = "/companies";
+
+    public GetEmployeesTests(WebApiFactory webApiFactory)
+    {
+        WebApiFactory = webApiFactory;
+    }
+
+    private WebApiFactory WebApiFactory { get; }
 
     [Fact]
     public async Task GetCompanies_ShouldReturnCompanies_WhenCompaniesExist()
     {
         List<Company> expectedCompanies = CompaniesSampleData.Companies;
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
 
         RestResponse<List<Company>> response = await restClient.ExecuteAsync<List<Company>>(restRequest);
@@ -31,7 +37,7 @@ public class GetEmployeesTests
     [Fact]
     public async Task GetCompanies_ShouldReturnEmptyList_WhenCompaniesNotExist()
     {
-        RestClient restClient = new WebApiFactory<Program>().WithoutData().CreateRestClient();
+        RestClient restClient = WebApiFactory.WithoutData().CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
 
         RestResponse<List<Company>> response = await restClient.ExecuteAsync<List<Company>>(restRequest);
@@ -53,7 +59,7 @@ public class GetEmployeesTests
             .Skip(firstIndex)
             .Take(numberOfRows)
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
         restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);
@@ -83,7 +89,7 @@ public class GetEmployeesTests
         List<Company> expectedCompanies = CompaniesSampleData.Companies.AsQueryable()
             .OrderBy($"{sortingFieldName} {sortingOrder}")
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(sortingFieldName), sortingFieldName);
         restRequest.AddQueryParameter(nameof(sortingOrder), sortingOrder);
@@ -110,8 +116,9 @@ public class GetEmployeesTests
     public async Task GetCompanies_ShouldReturnFilteredCompanies_WhenSearchParametersArePassed(string searchQuery)
     {
         List<Company> expectedCompanies = CompaniesSampleData.Companies
-            .Where(x => x.Name.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)).ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+            .Where(x => x.Name.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase))
+            .ToList();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(searchQuery), searchQuery);
 
@@ -144,7 +151,7 @@ public class GetEmployeesTests
             .Skip(firstIndex)
             .Take(numberOfRows)
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
         restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);

@@ -3,16 +3,22 @@ using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.Factories;
-using R.Systems.Template.WebApi;
 using RestSharp;
 using System.Linq.Dynamic.Core;
 using System.Net;
 
 namespace R.Systems.Template.Tests.Integration.Employees.Queries.GetEmployees;
 
-public class GetEmployeesTests
+public class GetEmployeesTests : IClassFixture<WebApiFactory>
 {
     private readonly string _endpointUrlPath = "/employees";
+
+    public GetEmployeesTests(WebApiFactory webApiFactory)
+    {
+        WebApiFactory = webApiFactory;
+    }
+
+    private WebApiFactory WebApiFactory { get; }
 
     [Fact]
     public async Task GetEmployees_ShouldReturnEmployees_WhenEmployeesExist()
@@ -29,7 +35,7 @@ public class GetEmployeesTests
                 }
             )
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
 
         RestResponse<List<Employee>> response = await restClient.ExecuteAsync<List<Employee>>(restRequest);
@@ -42,7 +48,7 @@ public class GetEmployeesTests
     [Fact]
     public async Task GetEmployees_ShouldReturnEmptyList_WhenEmployeesNotExist()
     {
-        RestClient restClient = new WebApiFactory<Program>().WithoutData().CreateRestClient();
+        RestClient restClient = WebApiFactory.WithoutData().CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
 
         RestResponse<List<Employee>> response = await restClient.ExecuteAsync<List<Employee>>(restRequest);
@@ -64,7 +70,7 @@ public class GetEmployeesTests
             .Skip(firstIndex)
             .Take(numberOfRows)
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
         restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);
@@ -89,7 +95,7 @@ public class GetEmployeesTests
         List<Employee> expectedEmployees = EmployeesSampleData.Employees.AsQueryable()
             .OrderBy($"{sortingFieldName} {sortingOrder}")
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(sortingFieldName), sortingFieldName);
         restRequest.AddQueryParameter(nameof(sortingOrder), sortingOrder);
@@ -113,7 +119,7 @@ public class GetEmployeesTests
                      || x.LastName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
             )
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(searchQuery), searchQuery);
 
@@ -142,7 +148,7 @@ public class GetEmployeesTests
             .Skip(firstIndex)
             .Take(numberOfRows)
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
         restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);

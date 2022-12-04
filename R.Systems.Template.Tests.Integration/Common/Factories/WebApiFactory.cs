@@ -4,10 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Persistence.Db;
 using R.Systems.Template.Tests.Integration.Common.Db;
+using R.Systems.Template.WebApi;
 
 namespace R.Systems.Template.Tests.Integration.Common.Factories;
 
-public class WebApiFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
+public class WebApiFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
