@@ -1,18 +1,24 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using R.Systems.Template.Tests.Integration.Common.Factories;
-using R.Systems.Template.WebApi;
 using RestSharp;
 using System.Net;
 
 namespace R.Systems.Template.Tests.Integration.ExceptionMiddleware;
 
-public class ExceptionMiddlewareTests
+public class ExceptionMiddlewareTests : IClassFixture<WebApiFactory>
 {
+    public ExceptionMiddlewareTests(WebApiFactory webApiFactory)
+    {
+        WebApiFactory = webApiFactory;
+    }
+
+    private WebApiFactory WebApiFactory { get; }
+
     [Fact]
     public async Task GetAppInfo_ShouldReturn500InternalServerError_WhenUnexpectedExceptionWasThrown()
     {
-        RestClient restClient = new WebApiFactory<Program>().BuildWithCustomGetAppInfoHandler();
+        RestClient restClient = WebApiFactory.BuildWithCustomGetAppInfoHandler();
 
         RestRequest request = new("/");
 

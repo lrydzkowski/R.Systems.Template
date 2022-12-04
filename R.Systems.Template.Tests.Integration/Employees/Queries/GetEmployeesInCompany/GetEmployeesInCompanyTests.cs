@@ -3,15 +3,21 @@ using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.Factories;
-using R.Systems.Template.WebApi;
 using RestSharp;
 using System.Linq.Dynamic.Core;
 using System.Net;
 
 namespace R.Systems.Template.Tests.Integration.Employees.Queries.GetEmployeesInCompany;
 
-public class GetEmployeesInCompanyTests
+public class GetEmployeesInCompanyTests : IClassFixture<WebApiFactory>
 {
+    public GetEmployeesInCompanyTests(WebApiFactory webApiFactory)
+    {
+        WebApiFactory = webApiFactory;
+    }
+
+    private WebApiFactory WebApiFactory { get; }
+
     [Fact]
     public async Task GetEmployeesInCompany_ShouldReturnEmployees_WhenEmployeesExist()
     {
@@ -28,7 +34,7 @@ public class GetEmployeesInCompanyTests
                 }
             )
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new($"/companies/{companyId}/employees");
 
         RestResponse<List<Employee>> response = await restClient.ExecuteAsync<List<Employee>>(restRequest);
@@ -42,7 +48,7 @@ public class GetEmployeesInCompanyTests
     public async Task GetEmployeesInCompany_ShouldReturnEmptyList_WhenEmployeesNotExist()
     {
         int companyId = 1;
-        RestClient restClient = new WebApiFactory<Program>().WithoutData().CreateRestClient();
+        RestClient restClient = WebApiFactory.WithoutData().CreateRestClient();
         RestRequest restRequest = new($"/companies/{companyId}/employees");
 
         RestResponse<List<Employee>> response = await restClient.ExecuteAsync<List<Employee>>(restRequest);
@@ -67,7 +73,7 @@ public class GetEmployeesInCompanyTests
             .Skip(firstIndex)
             .Take(numberOfRows)
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new($"/companies/{companyId}/employees");
         restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
         restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);
@@ -94,7 +100,7 @@ public class GetEmployeesInCompanyTests
             .Where(x => x.CompanyId == companyId)
             .OrderBy($"{sortingFieldName} {sortingOrder}")
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new($"/companies/{companyId}/employees");
         restRequest.AddQueryParameter(nameof(sortingFieldName), sortingFieldName);
         restRequest.AddQueryParameter(nameof(sortingOrder), sortingOrder);
@@ -111,7 +117,9 @@ public class GetEmployeesInCompanyTests
     [InlineData("oh")]
     [InlineData("ohn")]
     [InlineData("dez")]
-    public async Task GetEmployeesInCompany_ShouldReturnFilteredEmployees_WhenSearchParametersArePassed(string searchQuery)
+    public async Task GetEmployeesInCompany_ShouldReturnFilteredEmployees_WhenSearchParametersArePassed(
+        string searchQuery
+    )
     {
         int companyId = 2;
         List<Employee> expectedEmployees = EmployeesSampleData.Employees
@@ -121,7 +129,7 @@ public class GetEmployeesInCompanyTests
                      || x.LastName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
             )
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new($"/companies/{companyId}/employees");
         restRequest.AddQueryParameter(nameof(searchQuery), searchQuery);
 
@@ -152,7 +160,7 @@ public class GetEmployeesInCompanyTests
             .Skip(firstIndex)
             .Take(numberOfRows)
             .ToList();
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new($"/companies/{companyId}/employees");
         restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
         restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);

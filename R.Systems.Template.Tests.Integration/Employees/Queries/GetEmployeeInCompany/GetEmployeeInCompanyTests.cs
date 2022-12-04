@@ -5,14 +5,20 @@ using R.Systems.Template.Persistence.Db.Common.Entities;
 using R.Systems.Template.Tests.Integration.Common.Builders;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.Factories;
-using R.Systems.Template.WebApi;
 using RestSharp;
 using System.Net;
 
 namespace R.Systems.Template.Tests.Integration.Employees.Queries.GetEmployeeInCompany;
 
-public class GetEmployeeInCompanyTests
+public class GetEmployeeInCompanyTests : IClassFixture<WebApiFactory>
 {
+    public GetEmployeeInCompanyTests(WebApiFactory webApiFactory)
+    {
+        WebApiFactory = webApiFactory;
+    }
+
+    private WebApiFactory WebApiFactory { get; }
+
     [Fact]
     public async Task GetEmployeeInCompany_ShouldReturnEmployee_WhenEmployeeExists()
     {
@@ -24,7 +30,7 @@ public class GetEmployeeInCompanyTests
             LastName = expectedEmployeeEntity.LastName,
             CompanyId = expectedEmployeeEntity.CompanyId
         };
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(
             $"/companies/{expectedEmployee.CompanyId}/employees/{expectedEmployee.EmployeeId}"
         );
@@ -40,7 +46,7 @@ public class GetEmployeeInCompanyTests
     public async Task GetEmployeeInCompany_ShouldReturn404_WhenEmployeeNotExist()
     {
         EmployeeEntity employeeEntity = EmployeesSampleData.Data[0];
-        RestClient restClient = new WebApiFactory<Program>().CreateRestClient();
+        RestClient restClient = WebApiFactory.CreateRestClient();
         RestRequest restRequest = new(
             $"/companies/{employeeEntity.CompanyId + 1}/employees/{employeeEntity.Id}"
         );
@@ -48,14 +54,15 @@ public class GetEmployeeInCompanyTests
         RestResponse<ErrorInfo> response = await restClient.ExecuteAsync<ErrorInfo>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        response.Data.Should().BeEquivalentTo(
-            new ErrorInfo
-            {
-                PropertyName = "Employee",
-                ErrorMessage = "Employee doesn't exist.",
-                ErrorCode = "NotExist"
-            },
-            options => options.Including(x => x.PropertyName).Including(x => x.ErrorMessage)
-        );
+        response.Data.Should()
+            .BeEquivalentTo(
+                new ErrorInfo
+                {
+                    PropertyName = "Employee",
+                    ErrorMessage = "Employee doesn't exist.",
+                    ErrorCode = "NotExist"
+                },
+                options => options.Including(x => x.PropertyName).Including(x => x.ErrorMessage)
+            );
     }
 }
