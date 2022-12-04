@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F11B6CF5-F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{5DD471C6-9E0E-4175-B15D-BDAB154410D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.AzureFunctionsApi", "R.Systems.Template.AzureFunctionsApi\R.Systems.Template.AzureFunctionsApi.csproj", "{01F06204-E646-48DF-8556-6D89F9B40850}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{BB75FF3A-CD24-4B9C-8894-3BE856910B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB75FF3A-CD24-4B9C-8894-3BE856910B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB75FF3A-CD24-4B9C-8894-3BE856910B58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01F06204-E646-48DF-8556-6D89F9B40850}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01F06204-E646-48DF-8556-6D89F9B40850}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01F06204-E646-48DF-8556-6D89F9B40850}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01F06204-E646-48DF-8556-6D89F9B40850}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{BB75FF3A-CD24-4B9C-8894-3BE856910B58} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{F11B6CF5-F77C-407E-9C60-20ABFAA20FD1} = {C1664B72-41A3-4029-8715-AF3B65AE44BC}
 		{5DD471C6-9E0E-4175-B15D-BDAB154410D1} = {C1664B72-41A3-4029-8715-AF3B65AE44BC}
+		{01F06204-E646-48DF-8556-6D89F9B40850} = {5DD471C6-9E0E-4175-B15D-BDAB154410D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}
