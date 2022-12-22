@@ -2,6 +2,7 @@
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Tests.Integration.Common;
+using R.Systems.Template.Tests.Integration.Common.Db;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
@@ -12,11 +13,11 @@ namespace R.Systems.Template.Tests.Integration.Companies.Queries.GetCompany;
 
 [Collection(QueryTestsCollection.CollectionName)]
 [Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
-public class GetEmployeeTests
+public class GetCompanyTests
 {
     private readonly string _endpointUrlPath = "/companies";
 
-    public GetEmployeeTests(WebApiFactory webApiFactory)
+    public GetCompanyTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
         RestClient = webApiFactory.CreateRestClient();
     }

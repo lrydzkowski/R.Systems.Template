@@ -36,7 +36,7 @@ public class Program
 
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
-        builder.Services.ConfigureServices(builder.Configuration);
+        builder.Services.ConfigureServices(builder.Environment);
         builder.Services.ConfigureCoreServices();
         builder.Services.ConfigurePersistenceDbServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
@@ -61,6 +61,5 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-        app.DeployPersistenceDbMigration();
     }
 }

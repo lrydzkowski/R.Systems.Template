@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Tests.Integration.Common;
+using R.Systems.Template.Tests.Integration.Common.Db;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
 using RestSharp;
@@ -14,9 +15,9 @@ public class GetCompaniesWithoutDataTests
 {
     private readonly string _endpointUrlPath = "/companies";
 
-    public GetCompaniesWithoutDataTests(WebApiFactory webApiFactory)
+    public GetCompaniesWithoutDataTests(WebApiFactoryWithDb<NoDataDbInitializer> webApiFactory)
     {
-        RestClient = webApiFactory.WithoutData().CreateRestClient();
+        RestClient = webApiFactory.CreateRestClient();
     }
 
     private RestClient RestClient { get; }

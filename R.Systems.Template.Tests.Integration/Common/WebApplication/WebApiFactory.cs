@@ -6,10 +6,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using R.Systems.Template.Persistence.Db;
 using R.Systems.Template.Persistence.Db.Common.Options;
-using R.Systems.Template.Tests.Integration.Common.Db;
 using R.Systems.Template.WebApi;
+using RunMethodsSequentially;
 
 namespace R.Systems.Template.Tests.Integration.Common.WebApplication;
 
@@ -28,8 +27,6 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         .WithCleanUp(true)
         .Build();
 
-    private static bool _isDatabaseInitialized;
-
     public async Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
@@ -43,7 +40,6 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureAppConfiguration((_, configBuilder) => SetDatabaseConnectionString(configBuilder));
-        builder.ConfigureTestServices(InitializeDatabase);
     }
 
     private void SetDatabaseConnectionString(IConfigurationBuilder configBuilder)
@@ -56,17 +52,22 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
             }
         );
     }
+}
 
-    private static void InitializeDatabase(IServiceCollection services)
+public class WebApiFactoryWithDb<TDbInitializer> : WebApiFactory
+    where TDbInitializer : class, IStartupServiceToRunSequentially
+{
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        if (_isDatabaseInitialized)
-        {
-            return;
-        }
+        base.ConfigureWebHost(builder);
+        builder.ConfigureTestServices(ConfigureDbInitializer);
+    }
 
-        using IServiceScope scope = services.BuildServiceProvider().CreateScope();
-        AppDbContext dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        DbInitializer.InitializeData(dbContext);
-        _isDatabaseInitialized = true;
+    private void ConfigureDbInitializer(IServiceCollection services)
+    {
+        services.RegisterRunMethodsSequentially(
+                options => options.AddFileSystemLockAndRunMethods(Environment.CurrentDirectory)
+            )
+            .RegisterServiceToRunInJob<TDbInitializer>();
     }
 }

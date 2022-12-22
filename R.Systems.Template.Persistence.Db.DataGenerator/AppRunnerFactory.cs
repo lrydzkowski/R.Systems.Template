@@ -2,6 +2,7 @@
 using CommandDotNet.IoC.MicrosoftDependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RunMethodsSequentially.LockAndRunCode;
 
 namespace R.Systems.Template.Persistence.Db.DataGenerator;
 
@@ -20,10 +21,15 @@ public class AppRunnerFactory
         return this;
     }
 
-    public virtual AppRunner Create()
+    public virtual async Task<AppRunner> CreateAsync()
     {
         IConfigurationRoot configuration = BuildConfiguration();
         ServiceProvider = BuildServiceProvider(configuration);
+        var service = ServiceProvider.GetService<IGetLockAndThenRunServices>();
+        if (service != null)
+        {
+            await service.LockAndLoadAsync();
+        }
 
         AppRunner appRunner = new(rootCommandType: typeof(CommandsHandler));
 

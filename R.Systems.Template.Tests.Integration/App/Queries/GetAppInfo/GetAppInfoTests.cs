@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Tests.Integration.Common;
+using R.Systems.Template.Tests.Integration.Common.Db;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
 using R.Systems.Template.WebApi.Api;
@@ -12,7 +13,7 @@ namespace R.Systems.Template.Tests.Integration.App.Queries.GetAppInfo;
 [Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class GetAppInfoTests
 {
-    public GetAppInfoTests(WebApiFactory webApiFactory)
+    public GetAppInfoTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
         RestClient = webApiFactory.CreateRestClient();
     }

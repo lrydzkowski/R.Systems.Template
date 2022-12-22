@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using R.Systems.Template.Tests.Integration.Common;
+using R.Systems.Template.Tests.Integration.Common.Db;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
 using RestSharp;
@@ -12,7 +13,7 @@ namespace R.Systems.Template.Tests.Integration.ExceptionMiddleware;
 [Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class ExceptionMiddlewareTests
 {
-    public ExceptionMiddlewareTests(WebApiFactory webApiFactory)
+    public ExceptionMiddlewareTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
         WebApiFactory = webApiFactory;
     }

@@ -1,16 +1,19 @@
 ﻿using Microsoft.OpenApi.Models;
+using R.Systems.Template.Persistence.Db;
+using RunMethodsSequentially;
 
 namespace R.Systems.Template.WebApi;
 
 public static class DependencyInjection
 {
-    public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureServices(this IServiceCollection services, IWebHostEnvironment environment)
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.ConfigureSwagger();
         services.ConfigureCors();
         services.AddAutoMapper(typeof(DependencyInjection).Assembly);
+        services.ConfigureSequentialServices(environment);
     }
 
     private static void ConfigureSwagger(this IServiceCollection services)
@@ -35,5 +38,13 @@ public static class DependencyInjection
                 );
             }
         );
+    }
+
+    private static void ConfigureSequentialServices(this IServiceCollection services, IWebHostEnvironment environment)
+    {
+        services.RegisterRunMethodsSequentially(
+                options => options.AddFileSystemLockAndRunMethods(environment.ContentRootPath)
+            )
+            .RegisterServiceToRunInJob<AppDbInitializer>();
     }
 }

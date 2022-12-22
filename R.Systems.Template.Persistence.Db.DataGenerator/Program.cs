@@ -1,12 +1,15 @@
-﻿namespace R.Systems.Template.Persistence.Db.DataGenerator;
+﻿using CommandDotNet;
+
+namespace R.Systems.Template.Persistence.Db.DataGenerator;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         try
         {
-            new AppRunnerFactory().Create().Run(args);
+            AppRunner runner = await new AppRunnerFactory().CreateAsync();
+            await runner.RunAsync(args);
         }
         catch (Exception ex)
         {

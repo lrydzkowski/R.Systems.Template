@@ -17,9 +17,9 @@ public class GenerateCompaniesCommandTests : IClassFixture<ConsoleAppRunnerFacto
     private ConsoleAppRunnerFactory ConsoleAppRunnerFactory { get; }
 
     [Fact]
-    public void GenerateData_ShouldGenerateData_WhenCorrectArgumentArePassed()
+    public async Task GenerateData_ShouldGenerateData_WhenCorrectArgumentArePassed()
     {
-        AppRunner appRunner = ConsoleAppRunnerFactory.WithTestConsole(new TestConsole()).Create();
+        AppRunner appRunner = await ConsoleAppRunnerFactory.WithTestConsole(new TestConsole()).CreateAsync();
 
         AppRunnerResult generateResult = appRunner.RunInMem(
             "generate companies --number-of-companies 10 --number-of-employees 20"

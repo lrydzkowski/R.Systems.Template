@@ -4,9 +4,8 @@ using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using R.Systems.Template.Persistence.Db;
 using R.Systems.Template.Persistence.Db.DataGenerator;
-using R.Systems.Template.Tests.Integration.Common.Db;
+using RunMethodsSequentially;
 
 namespace R.Systems.Template.Tests.Integration.Common.ConsoleAppRunner;
 
@@ -35,12 +34,12 @@ public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
         await _dbContainer.DisposeAsync();
     }
 
-    public override AppRunner Create()
+    public override async Task<AppRunner> CreateAsync()
     {
         AddConfigurationMethods.Add(SetDatabaseConnectionString);
         ConfigureServicesMethods.Add(InitializeDatabase);
 
-        return base.Create();
+        return await base.CreateAsync();
     }
 
     private void SetDatabaseConnectionString(IConfigurationBuilder configBuilder)
@@ -55,8 +54,13 @@ public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
 
     private static void InitializeDatabase(IServiceCollection services)
     {
-        using IServiceScope scope = services.BuildServiceProvider().CreateScope();
-        AppDbContext dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        DbInitializer.InitializeData(dbContext);
+        services.RegisterRunMethodsSequentially(
+                options =>
+                {
+                    options.RegisterAsHostedService = false;
+                    options.AddFileSystemLockAndRunMethods(Environment.CurrentDirectory);
+                }
+            )
+            .RegisterServiceToRunInJob<ConsoleSampleDataDbInitializer>();
     }
 }

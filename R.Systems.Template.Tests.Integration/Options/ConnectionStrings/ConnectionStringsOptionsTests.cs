@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using R.Systems.Template.Tests.Integration.Common;
+using R.Systems.Template.Tests.Integration.Common.Db;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
 using Xunit.Abstractions;
@@ -10,7 +11,10 @@ namespace R.Systems.Template.Tests.Integration.Options.ConnectionStrings;
 [Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class ConnectionStringsOptionsTests
 {
-    public ConnectionStringsOptionsTests(ITestOutputHelper output, WebApiFactory webApiFactory)
+    public ConnectionStringsOptionsTests(
+        ITestOutputHelper output,
+        WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory
+    )
     {
         Output = output;
         WebApiFactory = webApiFactory;

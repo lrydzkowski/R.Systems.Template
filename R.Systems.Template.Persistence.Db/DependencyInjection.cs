@@ -26,11 +26,23 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
+        services.ConfigureOptions(configuration);
+        services.ConfigureAppDbContext();
+        services.ConfigureAutoMapper();
+        services.ConfigureServices();
+    }
+
+    private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+    {
         services.Configure<ConnectionStringsOptions>(configuration.GetSection(ConnectionStringsOptions.Position));
         services.ConfigureOptionsWithValidation<ConnectionStringsOptions, ConnectionStringsOptionsValidator>(
             configuration,
             ConnectionStringsOptions.Position
         );
+    }
+
+    private static void ConfigureAppDbContext(this IServiceCollection services)
+    {
         services.AddDbContext<AppDbContext>(
             (serviceProvider, options) =>
             {
@@ -39,12 +51,14 @@ public static class DependencyInjection
                 options.UseNpgsql(connectionStrings.AppDb);
             }
         );
-        services.AddAutoMapper(typeof(DependencyInjection));
-        services.AddRepositories();
-        services.AddScoped<DbExceptionHandler>();
     }
 
-    private static void AddRepositories(this IServiceCollection services)
+    private static void ConfigureAutoMapper(this IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(DependencyInjection));
+    }
+
+    private static void ConfigureServices(this IServiceCollection services)
     {
         services.AddScoped<IGetCompanyRepository, GetCompanyRepository>();
         services.AddScoped<IGetCompaniesRepository, GetCompaniesRepository>();
@@ -55,5 +69,6 @@ public static class DependencyInjection
         services.AddScoped<IGetEmployeesRepository, GetEmployeesRepository>();
         services.AddScoped<ICreateEmployeeRepository, CreateEmployeeRepository>();
         services.AddScoped<IUpdateEmployeeRepository, UpdateEmployeeRepository>();
+        services.AddScoped<DbExceptionHandler>();
     }
 }

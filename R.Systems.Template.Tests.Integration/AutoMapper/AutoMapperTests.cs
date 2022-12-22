@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Tests.Integration.Common;
+using R.Systems.Template.Tests.Integration.Common.Db;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
 
@@ -10,7 +11,7 @@ namespace R.Systems.Template.Tests.Integration.AutoMapper;
 [Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class AutoMapperTests
 {
-    public AutoMapperTests(WebApiFactory webApiFactory)
+    public AutoMapperTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
         WebApiFactory = webApiFactory;
     }

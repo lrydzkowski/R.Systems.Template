@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Tests.Integration.Common;
+using R.Systems.Template.Tests.Integration.Common.Db;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
@@ -15,7 +16,7 @@ public class GetCompaniesProtectedTests
 {
     private readonly string _endpointUrlPath = "/companies-protected";
 
-    public GetCompaniesProtectedTests(WebApiFactory webApiFactory)
+    public GetCompaniesProtectedTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
         WebApiFactory = webApiFactory;
         RestClient = webApiFactory.CreateRestClient();
