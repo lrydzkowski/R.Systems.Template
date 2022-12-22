@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using R.Systems.Template.Tests.Integration.Common;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
 using R.Systems.Template.WebApi.Api;
@@ -8,6 +9,7 @@ using System.Net;
 namespace R.Systems.Template.Tests.Integration.App.Queries.GetAppInfo;
 
 [Collection(QueryTestsCollection.CollectionName)]
+[Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class GetAppInfoTests
 {
     public GetAppInfoTests(WebApiFactory webApiFactory)

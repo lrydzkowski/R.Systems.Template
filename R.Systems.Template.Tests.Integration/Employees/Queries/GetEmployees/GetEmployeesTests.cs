@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Tests.Integration.Common;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
@@ -10,6 +11,7 @@ using System.Net;
 namespace R.Systems.Template.Tests.Integration.Employees.Queries.GetEmployees;
 
 [Collection(QueryTestsCollection.CollectionName)]
+[Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class GetEmployeesTests
 {
     private readonly string _endpointUrlPath = "/employees";
@@ -46,20 +48,20 @@ public class GetEmployeesTests
     }
 
     [Theory]
-    [InlineData(1, 4)]
-    [InlineData(0, 10)]
+    [InlineData(2, 4)]
+    [InlineData(1, 10)]
     public async Task GetEmployees_ShouldReturnPaginatedEmployees_WhenPaginationParametersArePassed(
-        int firstIndex,
-        int numberOfRows
+        int page,
+        int pageSize
     )
     {
         List<Employee> expectedEmployees = EmployeesSampleData.Employees.OrderBy(x => x.EmployeeId)
-            .Skip(firstIndex)
-            .Take(numberOfRows)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToList();
         RestRequest restRequest = new(_endpointUrlPath);
-        restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
-        restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);
+        restRequest.AddQueryParameter(nameof(page), page);
+        restRequest.AddQueryParameter(nameof(pageSize), pageSize);
 
         RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
 
@@ -117,8 +119,8 @@ public class GetEmployeesTests
     [Fact]
     public async Task GetEmployees_ShouldReturnCorrectEmployees_WhenParametersArePassed()
     {
-        int firstIndex = 1;
-        int numberOfRows = 2;
+        int page = 1;
+        int pageSize = 2;
         string sortingFieldName = "firstName";
         string sortingOrder = "asc";
         string searchQuery = "o";
@@ -129,12 +131,12 @@ public class GetEmployeesTests
                 x => x.FirstName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
                      || x.LastName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
             )
-            .Skip(firstIndex)
-            .Take(numberOfRows)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToList();
         RestRequest restRequest = new(_endpointUrlPath);
-        restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
-        restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);
+        restRequest.AddQueryParameter(nameof(page), page);
+        restRequest.AddQueryParameter(nameof(pageSize), pageSize);
         restRequest.AddQueryParameter(nameof(sortingFieldName), sortingFieldName);
         restRequest.AddQueryParameter(nameof(sortingOrder), sortingOrder);
         restRequest.AddQueryParameter(nameof(searchQuery), searchQuery);

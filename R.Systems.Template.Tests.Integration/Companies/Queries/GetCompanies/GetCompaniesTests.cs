@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Tests.Integration.Common;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
@@ -10,6 +11,7 @@ using System.Net;
 namespace R.Systems.Template.Tests.Integration.Companies.Queries.GetCompanies;
 
 [Collection(QueryTestsCollection.CollectionName)]
+[Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class GetCompaniesTests
 {
     private readonly string _endpointUrlPath = "/companies";
@@ -35,20 +37,20 @@ public class GetCompaniesTests
     }
 
     [Theory]
-    [InlineData(1, 4)]
-    [InlineData(0, 10)]
+    [InlineData(2, 4)]
+    [InlineData(1, 10)]
     public async Task GetCompanies_ShouldReturnPaginatedCompanies_WhenPaginationParametersArePassed(
-        int firstIndex,
-        int numberOfRows
+        int page,
+        int pageSize
     )
     {
         List<Company> expectedCompanies = CompaniesSampleData.Companies.OrderBy(x => x.CompanyId)
-            .Skip(firstIndex)
-            .Take(numberOfRows)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToList();
         RestRequest restRequest = new(_endpointUrlPath);
-        restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
-        restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);
+        restRequest.AddQueryParameter(nameof(page), page);
+        restRequest.AddQueryParameter(nameof(pageSize), pageSize);
 
         RestResponse<List<Company>> response = await RestClient.ExecuteAsync<List<Company>>(restRequest);
 
@@ -123,8 +125,8 @@ public class GetCompaniesTests
     [Fact]
     public async Task GetCompanies_ShouldReturnCorrectCompanies_WhenParametersArePassed()
     {
-        int firstIndex = 1;
-        int numberOfRows = 2;
+        int page = 2;
+        int pageSize = 2;
         string sortingFieldName = "name";
         string sortingOrder = "asc";
         string searchQuery = "o";
@@ -132,12 +134,12 @@ public class GetCompaniesTests
         List<Company> expectedCompanies = CompaniesSampleData.Companies
             .OrderBy(x => x.Name)
             .Where(x => x.Name.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase))
-            .Skip(firstIndex)
-            .Take(numberOfRows)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToList();
         RestRequest restRequest = new(_endpointUrlPath);
-        restRequest.AddQueryParameter(nameof(firstIndex), firstIndex);
-        restRequest.AddQueryParameter(nameof(numberOfRows), numberOfRows);
+        restRequest.AddQueryParameter(nameof(page), page);
+        restRequest.AddQueryParameter(nameof(pageSize), pageSize);
         restRequest.AddQueryParameter(nameof(sortingFieldName), sortingFieldName);
         restRequest.AddQueryParameter(nameof(sortingOrder), sortingOrder);
         restRequest.AddQueryParameter(nameof(searchQuery), searchQuery);

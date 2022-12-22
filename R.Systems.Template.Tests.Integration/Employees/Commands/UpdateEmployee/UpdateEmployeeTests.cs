@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using FluentValidation.Results;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Tests.Integration.Common;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
 using R.Systems.Template.WebApi.Api;
@@ -11,6 +12,7 @@ using Xunit.Abstractions;
 namespace R.Systems.Template.Tests.Integration.Employees.Commands.UpdateEmployee;
 
 [Collection(CommandTestsCollection.CollectionName)]
+[Trait(TestConstants.Category, CommandTestsCollection.CollectionName)]
 public class UpdateEmployeeTests
 {
     private readonly string _endpointUrlPath = "/employees";

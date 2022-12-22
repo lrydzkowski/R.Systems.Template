@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Tests.Integration.Common;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
@@ -9,6 +10,7 @@ using System.Net;
 namespace R.Systems.Template.Tests.Integration.Companies.Queries.GetCompanies;
 
 [Collection(QueryTestsCollection.CollectionName)]
+[Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class GetCompaniesProtectedTests
 {
     private readonly string _endpointUrlPath = "/companies-protected";

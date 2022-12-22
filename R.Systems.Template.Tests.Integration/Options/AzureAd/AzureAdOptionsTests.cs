@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using R.Systems.Template.Tests.Integration.Common;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
 using Xunit.Abstractions;
@@ -6,6 +7,7 @@ using Xunit.Abstractions;
 namespace R.Systems.Template.Tests.Integration.Options.AzureAd;
 
 [Collection(QueryTestsCollection.CollectionName)]
+[Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class AzureAdOptionsTests
 {
     public AzureAdOptionsTests(ITestOutputHelper output, WebApiFactory webApiFactory)

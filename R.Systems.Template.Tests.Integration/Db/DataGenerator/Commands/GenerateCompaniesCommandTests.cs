@@ -1,10 +1,12 @@
 ﻿using CommandDotNet;
 using CommandDotNet.TestTools;
 using FluentAssertions;
+using R.Systems.Template.Tests.Integration.Common;
 using R.Systems.Template.Tests.Integration.Common.ConsoleAppRunner;
 
 namespace R.Systems.Template.Tests.Integration.Db.DataGenerator.Commands;
 
+[Trait(TestConstants.Category, "DataGenerator")]
 public class GenerateCompaniesCommandTests : IClassFixture<ConsoleAppRunnerFactory>
 {
     public GenerateCompaniesCommandTests(ConsoleAppRunnerFactory consoleAppRunnerFactory)

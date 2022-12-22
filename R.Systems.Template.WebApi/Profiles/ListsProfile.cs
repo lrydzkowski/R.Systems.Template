@@ -9,9 +9,35 @@ public class ListsProfile : Profile
     public ListsProfile()
     {
         CreateMap<ListRequest, ListParameters>()
-            .ForMember(parameters => parameters.Pagination, options => options.MapFrom(request => new Pagination { FirstIndex = request.FirstIndex, NumberOfRows = request.NumberOfRows }))
-            .ForMember(parameters => parameters.Search, options => options.MapFrom(request => new Search { Query = request.SearchQuery }))
-            .ForMember(parameters => parameters.Sorting, options => options.MapFrom(request => new Sorting { FieldName = request.SortingFieldName, Order = MapToSortingOrder(request.SortingOrder) }));
+            .ForMember(
+                parameters => parameters.Pagination,
+                options => options.MapFrom(
+                    request => new Pagination
+                    {
+                        Page = request.Page,
+                        PageSize = request.PageSize
+                    }
+                )
+            )
+            .ForMember(
+                parameters => parameters.Search,
+                options => options.MapFrom(
+                    request => new Search
+                    {
+                        Query = request.SearchQuery
+                    }
+                )
+            )
+            .ForMember(
+                parameters => parameters.Sorting,
+                options => options.MapFrom(
+                    request => new Sorting
+                    {
+                        FieldName = request.SortingFieldName,
+                        Order = MapToSortingOrder(request.SortingOrder)
+                    }
+                )
+            );
     }
 
     private SortingOrder MapToSortingOrder(string sortingOrder)

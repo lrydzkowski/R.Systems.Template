@@ -2,6 +2,7 @@
 using FluentValidation.Results;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
+using R.Systems.Template.Tests.Integration.Common;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
 using RestSharp;
@@ -11,6 +12,7 @@ using Xunit.Abstractions;
 namespace R.Systems.Template.Tests.Integration.Employees.Commands.CreateEmployee;
 
 [Collection(CommandTestsCollection.CollectionName)]
+[Trait(TestConstants.Category, CommandTestsCollection.CollectionName)]
 public class CreateEmployeeTests
 {
     private readonly string _endpointUrlPath = "/employees";

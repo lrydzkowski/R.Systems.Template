@@ -2,6 +2,7 @@
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Persistence.Db.Common.Entities;
+using R.Systems.Template.Tests.Integration.Common;
 using R.Systems.Template.Tests.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Integration.Common.WebApplication;
@@ -11,6 +12,7 @@ using System.Net;
 namespace R.Systems.Template.Tests.Integration.Employees.Queries.GetEmployee;
 
 [Collection(QueryTestsCollection.CollectionName)]
+[Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class GetEmployeeTests
 {
     private readonly string _endpointUrlPath = "/employees";
