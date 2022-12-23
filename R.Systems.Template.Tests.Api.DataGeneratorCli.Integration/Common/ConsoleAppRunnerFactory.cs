@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Api.DataGeneratorCli;
 using RunMethodsSequentially;
 
-namespace R.Systems.Template.Tests.Api.Web.Integration.Common.ConsoleAppRunner;
+namespace R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.Common;
 
 public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
 {

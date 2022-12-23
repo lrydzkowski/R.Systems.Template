@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Infrastructure.Db;
 using RunMethodsSequentially;
 
-namespace R.Systems.Template.Tests.Api.Web.Integration.Common.ConsoleAppRunner;
+namespace R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.Common;
 
 internal class ConsoleSampleDataDbInitializer : IStartupServiceToRunSequentially
 {

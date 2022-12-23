@@ -34,6 +34,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Api.WebM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Tests.Api.Web.Integration", "R.Systems.Template.Tests.Api.Web.Integration\R.Systems.Template.Tests.Api.Web.Integration.csproj", "{E556BB32-CF17-413A-8F53-4723248989AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.Tests.Api.DataGeneratorCli.Integration", "R.Systems.Template.Tests.Api.DataGeneratorCli.Integration\R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.csproj", "{839434F7-4E61-4C97-81A0-110404DE0A9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{E556BB32-CF17-413A-8F53-4723248989AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E556BB32-CF17-413A-8F53-4723248989AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E556BB32-CF17-413A-8F53-4723248989AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{839434F7-4E61-4C97-81A0-110404DE0A9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{839434F7-4E61-4C97-81A0-110404DE0A9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{839434F7-4E61-4C97-81A0-110404DE0A9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{839434F7-4E61-4C97-81A0-110404DE0A9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{5F3A832D-FBF5-42E3-8E9E-2EE27ECEA407} = {F1F14032-B02E-4494-AD73-4839A49CDEF7}
 		{7E81CA08-506F-42FF-B35E-92AD684E684F} = {F1F14032-B02E-4494-AD73-4839A49CDEF7}
 		{E556BB32-CF17-413A-8F53-4723248989AF} = {348E1E8F-5473-43FF-A448-6746DE652F54}
+		{839434F7-4E61-4C97-81A0-110404DE0A9F} = {348E1E8F-5473-43FF-A448-6746DE652F54}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}

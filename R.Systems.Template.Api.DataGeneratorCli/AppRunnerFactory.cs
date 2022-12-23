@@ -26,11 +26,7 @@ public class AppRunnerFactory
     {
         IConfigurationRoot configuration = BuildConfiguration();
         ServiceProvider = BuildServiceProvider(configuration);
-        var service = ServiceProvider.GetService<IGetLockAndThenRunServices>();
-        if (service != null)
-        {
-            await service.LockAndLoadAsync();
-        }
+        await RunStartupMethodsSequentially(ServiceProvider);
 
         AppRunner appRunner = new(rootCommandType: typeof(CommandsHandler));
 
@@ -68,5 +64,14 @@ public class AppRunnerFactory
         }
 
         return services.BuildServiceProvider();
+    }
+
+    private async Task RunStartupMethodsSequentially(IServiceProvider serviceProvider)
+    {
+        var service = serviceProvider.GetService<IGetLockAndThenRunServices>();
+        if (service != null)
+        {
+            await service.LockAndLoadAsync();
+        }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using CommandDotNet;
 using CommandDotNet.TestTools;
 using FluentAssertions;
-using R.Systems.Template.Tests.Api.Web.Integration.Common;
-using R.Systems.Template.Tests.Api.Web.Integration.Common.ConsoleAppRunner;
+using R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.Common;
 
-namespace R.Systems.Template.Tests.Api.Web.Integration.Db.DataGenerator.Commands;
+namespace R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.DataGenerator.Commands;
 
 [Trait(TestConstants.Category, "DataGenerator")]
 public class GenerateCompaniesCommandTests : IClassFixture<ConsoleAppRunnerFactory>
@@ -30,7 +29,5 @@ public class GenerateCompaniesCommandTests : IClassFixture<ConsoleAppRunnerFacto
         AppRunnerResult getResult = appRunner.RunInMem("get companies");
 
         getResult.ExitCode.Should().Be(0);
-
-        //IConsole? console = (IConsole?)appRunnerFactory.ServiceProvider?.GetService(typeof(IConsole));
     }
 }
