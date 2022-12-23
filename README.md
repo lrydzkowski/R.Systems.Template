@@ -1,6 +1,6 @@
 # R.Systems.Template
 
-ASP.NET Core 6 Web API template project, created as a base for other projects.
+ASP.NET Core 7 Web API template project, created as a base for other projects.
 
 ## .NET CLI Template
 
@@ -64,7 +64,7 @@ nuget push R.Systems.Template.1.0.0.nupkg -Source https://api.nuget.org/v3/index
 ### Build image
 
 ```powershell
-docker build -t r-systems-template -f .\R.Systems.Template.WebApi\Dockerfile .
+docker build -t r-systems-template -f .\R.Systems.Template.Api.Web\Dockerfile .
 ```
 
 ### Run container
