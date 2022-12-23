@@ -30,12 +30,15 @@ public static class FilterExtensions
             {
                 whereQueryPart = GetStringWhereQuery(fieldName, index);
             }
+
             if (whereQueryPart == null)
             {
                 continue;
             }
+
             whereQueryParts.Add(whereQueryPart);
         }
+
         if (whereQueryParts.Count == 0)
         {
             return query;

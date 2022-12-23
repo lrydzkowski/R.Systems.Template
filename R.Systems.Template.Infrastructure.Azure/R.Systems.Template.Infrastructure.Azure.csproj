@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
+    <InternalsVisibleTo Include="R.Systems.Template.Tests.Api.Web.Integration" />
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="R.Systems.Template.Tests.Integration" />
+    <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
   </ItemGroup>
 
 </Project>

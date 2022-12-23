@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "R.Systems.Template.Api.DataGeneratorCli": {
+      "commandName": "Project",
+      "commandLineArgs": "generate companies --number-of-companies 10 --number-of-employees 20",
+      "environmentVariables": {
+        "APP_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

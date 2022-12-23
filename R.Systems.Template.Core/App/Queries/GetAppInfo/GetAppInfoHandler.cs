@@ -36,7 +36,9 @@ public class GetAppInfoHandler : IRequestHandler<GetAppInfoQuery, GetAppInfoResu
     private string GetAppVersion(Assembly appAssembly)
     {
         return appAssembly
-            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-            .InformationalVersion ?? "";
+                   .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                   ?
+                   .InformationalVersion
+               ?? "";
     }
 }
