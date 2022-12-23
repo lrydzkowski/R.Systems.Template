@@ -57,7 +57,7 @@ public class AppRunnerFactory
     {
         IServiceCollection services = new ServiceCollection();
         services.ConfigureServices();
-        services.ConfigurePersistenceDbServices(configuration);
+        services.ConfigureInfrastructureDbServices(configuration);
         foreach (Action<IServiceCollection> configureServicesMethod in ConfigureServicesMethods)
         {
             configureServicesMethod(services);

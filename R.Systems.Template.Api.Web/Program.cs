@@ -38,7 +38,7 @@ public class Program
     {
         builder.Services.ConfigureServices(builder.Environment);
         builder.Services.ConfigureCoreServices();
-        builder.Services.ConfigurePersistenceDbServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
     }
 

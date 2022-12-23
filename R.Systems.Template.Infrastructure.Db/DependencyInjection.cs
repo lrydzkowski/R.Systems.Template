@@ -21,7 +21,7 @@ namespace R.Systems.Template.Infrastructure.Db;
 
 public static class DependencyInjection
 {
-    public static void ConfigurePersistenceDbServices(
+    public static void ConfigureInfrastructureDbServices(
         this IServiceCollection services,
         IConfiguration configuration
     )
