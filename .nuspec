@@ -18,6 +18,6 @@
         </packageTypes>
     </metadata>
     <files>
-        <file src=".\**" exclude=".\.git\**;.\.vs\**;.\**\bin\**;.\**\obj\**;.\R.Systems.Template.1.0.0.nupkg" />
+        <file src=".\**" exclude=".\.git\**;.\.vs\**;.\**\bin\**;.\**\obj\**;.\docker-compose.yml" />
     </files>
 </package>
