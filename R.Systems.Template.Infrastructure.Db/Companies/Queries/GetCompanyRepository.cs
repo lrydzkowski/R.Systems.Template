@@ -30,6 +30,7 @@ internal class GetCompanyRepository : IGetCompanyRepository
                                 LastName = employee.LastName
                             }
                         )
+                        .OrderBy(employee => employee.EmployeeId)
                         .ToList()
                 }
             )

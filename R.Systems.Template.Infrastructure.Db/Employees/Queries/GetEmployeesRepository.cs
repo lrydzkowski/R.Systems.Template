@@ -17,17 +17,17 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
 
     private AppDbContext DbContext { get; }
 
-    public async Task<List<Employee>> GetEmployeesAsync(ListParameters listParameters)
+    public async Task<ListInfo<Employee>> GetEmployeesAsync(ListParameters listParameters)
     {
         return await GetEmployeeFromDbAsync(listParameters);
     }
 
-    public async Task<List<Employee>> GetEmployeesAsync(ListParameters listParameters, int companyId)
+    public async Task<ListInfo<Employee>> GetEmployeesAsync(ListParameters listParameters, int companyId)
     {
         return await GetEmployeeFromDbAsync(listParameters, employeeEntity => employeeEntity.CompanyId == companyId);
     }
 
-    private async Task<List<Employee>> GetEmployeeFromDbAsync(
+    private async Task<ListInfo<Employee>> GetEmployeeFromDbAsync(
         ListParameters listParameters,
         Expression<Func<EmployeeEntity, bool>>? wherePredicate = null
     )
@@ -55,7 +55,18 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
                 }
             )
             .ToListAsync();
+        int count = await query
+            .Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
+            .Filter(fieldsAvailableToFilter, listParameters.Search)
+            .Select(
+                employeeEntity => (int)employeeEntity.Id!
+            )
+            .CountAsync();
 
-        return employees;
+        return new ListInfo<Employee>
+        {
+            Data = employees,
+            Count = count
+        };
     }
 }

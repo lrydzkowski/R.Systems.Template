@@ -15,12 +15,12 @@ internal class GetCompaniesRepository : IGetCompaniesRepository
 
     private AppDbContext DbContext { get; }
 
-    public async Task<List<Company>> GetCompaniesAsync(ListParameters listParameters)
+    public async Task<ListInfo<Company>> GetCompaniesAsync(ListParameters listParameters)
     {
         List<string> fieldsAvailableToSort = new() { "id", "name" };
         List<string> fieldsAvailableToFilter = new() { "name" };
 
-        return await DbContext.Companies.AsNoTracking()
+        List<Company> companies = await DbContext.Companies.AsNoTracking()
             .Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
             .Filter(fieldsAvailableToFilter, listParameters.Search)
             .Paginate(listParameters.Pagination)
@@ -37,9 +37,23 @@ internal class GetCompaniesRepository : IGetCompaniesRepository
                                 LastName = employeeEntity.LastName
                             }
                         )
+                        .OrderBy(employee => employee.EmployeeId)
                         .ToList()
                 }
             )
             .ToListAsync();
+        int count = await DbContext.Companies.AsNoTracking()
+            .Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
+            .Filter(fieldsAvailableToFilter, listParameters.Search)
+            .Select(
+                companyEntity => (int)companyEntity.Id!
+            )
+            .CountAsync();
+
+        return new ListInfo<Company>()
+        {
+            Data = companies,
+            Count = count
+        };
     }
 }

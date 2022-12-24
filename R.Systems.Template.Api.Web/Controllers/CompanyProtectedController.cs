@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
+using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
@@ -23,7 +25,7 @@ public class CompanyProtectedController : ControllerBase
     [SwaggerResponse(
         statusCode: 200,
         description: "Correct response",
-        type: typeof(GetCompaniesResult),
+        type: typeof(ListInfo<Company>),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 500)]

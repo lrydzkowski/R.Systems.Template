@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Api.AzureFunctions.Api;
+﻿namespace R.Systems.Template.Api.AzureFunctions.Models;
 
 public record GetAppInfoResponse
 {

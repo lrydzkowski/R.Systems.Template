@@ -60,7 +60,7 @@ public class CompanyController : ControllerBase
     [SwaggerResponse(
         statusCode: 200,
         description: "Correct response",
-        type: typeof(List<Company>),
+        type: typeof(ListInfo<Company>),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 500)]

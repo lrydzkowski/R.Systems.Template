@@ -11,7 +11,7 @@ public class GetEmployeesQuery : GetElementsQuery, IRequest<GetEmployeesResult>
 
 public class GetEmployeesResult
 {
-    public List<Employee> Employees { get; init; } = new();
+    public ListInfo<Employee> Employees { get; init; } = new();
 }
 
 public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, GetEmployeesResult>
@@ -25,7 +25,7 @@ public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, GetEm
 
     public async Task<GetEmployeesResult> Handle(GetEmployeesQuery query, CancellationToken cancellationToken)
     {
-        List<Employee> employees = query.CompanyId == null
+        ListInfo<Employee> employees = query.CompanyId == null
             ? await GetEmployeesRepository.GetEmployeesAsync(query.ListParameters)
             : await GetEmployeesRepository.GetEmployeesAsync(query.ListParameters, (int)query.CompanyId);
 

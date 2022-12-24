@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
@@ -39,33 +40,18 @@ public class GetCompaniesProtectedTests
     [Fact]
     public async Task GetCompanies_ShouldReturnCompanies_WhenCompaniesExist()
     {
-        List<Company> expectedCompanies = CompaniesSampleData.Data
-            .Where(x => x.Value.Id != null)
-            .Select(
-                x => new Company
-                {
-                    CompanyId = (int)x.Value.Id!,
-                    Name = x.Value.Name,
-                    Employees = EmployeesSampleData.Data.Where(y => y.CompanyId == x.Value.Id && y.Id != null)
-                        .Select(
-                            y => new Employee
-                            {
-                                EmployeeId = (int)y.Id!,
-                                FirstName = y.FirstName,
-                                LastName = y.LastName
-                            }
-                        )
-                        .ToList()
-                }
-            )
-            .ToList();
+        ListInfo<Company> expectedResponse = new ListInfo<Company>
+        {
+            Data = CompaniesSampleData.Companies,
+            Count = CompaniesSampleData.Companies.Count
+        };
         RestClient restClient = WebApiFactory.WithoutAuthentication().CreateRestClient();
         RestRequest restRequest = new(_endpointUrlPath);
 
-        RestResponse<List<Company>> response = await restClient.ExecuteAsync<List<Company>>(restRequest);
+        RestResponse<ListInfo<Company>> response = await restClient.ExecuteAsync<ListInfo<Company>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
-        response.Data.Should().BeEquivalentTo(expectedCompanies);
+        response.Data.Should().BeEquivalentTo(expectedResponse);
     }
 }

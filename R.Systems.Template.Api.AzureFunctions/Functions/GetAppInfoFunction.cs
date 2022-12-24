@@ -5,7 +5,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
-using R.Systems.Template.Api.AzureFunctions.Api;
+using R.Systems.Template.Api.AzureFunctions.Models;
 using R.Systems.Template.Api.AzureFunctions.Services;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using System.Net;

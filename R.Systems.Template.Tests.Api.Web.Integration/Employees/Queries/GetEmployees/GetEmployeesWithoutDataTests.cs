@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
@@ -27,10 +28,10 @@ public class GetEmployeesWithoutDataTests
     {
         RestRequest restRequest = new(_endpointUrlPath);
 
-        RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
+        RestResponse<ListInfo<Employee>> response = await RestClient.ExecuteAsync<ListInfo<Employee>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
-        response.Data.Should().BeEquivalentTo(new List<Employee>());
+        response.Data.Should().BeEquivalentTo(new ListInfo<Employee> { Count = 0, Data = new List<Employee>() });
     }
 }

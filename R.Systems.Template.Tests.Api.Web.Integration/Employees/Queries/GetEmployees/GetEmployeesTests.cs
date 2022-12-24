@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
@@ -27,25 +28,19 @@ public class GetEmployeesTests
     [Fact]
     public async Task GetEmployees_ShouldReturnEmployees_WhenEmployeesExist()
     {
-        List<Employee> expectedEmployees = EmployeesSampleData.Data
-            .Where(x => x.Id != null && x.CompanyId != null)
-            .Select(
-                x => new Employee
-                {
-                    EmployeeId = (int)x.Id!,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    CompanyId = (int)x.CompanyId!
-                }
-            )
-            .ToList();
+        IQueryable<Employee> expectedEmployees = EmployeesSampleData.Employees.AsQueryable();
+        ListInfo<Employee> expectedResponse = new()
+        {
+            Data = expectedEmployees.ToList(),
+            Count = expectedEmployees.Count()
+        };
         RestRequest restRequest = new(_endpointUrlPath);
 
-        RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
+        RestResponse<ListInfo<Employee>> response = await RestClient.ExecuteAsync<ListInfo<Employee>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
-        response.Data.Should().BeEquivalentTo(expectedEmployees);
+        response.Data.Should().BeEquivalentTo(expectedResponse);
     }
 
     [Theory]
@@ -56,19 +51,25 @@ public class GetEmployeesTests
         int pageSize
     )
     {
-        List<Employee> expectedEmployees = EmployeesSampleData.Employees.OrderBy(x => x.EmployeeId)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
+        IQueryable<Employee> expectedEmployees =
+            EmployeesSampleData.Employees.OrderBy(employee => employee.EmployeeId).AsQueryable();
+        ListInfo<Employee> expectedResponse = new()
+        {
+            Data = expectedEmployees
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList(),
+            Count = expectedEmployees.Count()
+        };
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(page), page);
         restRequest.AddQueryParameter(nameof(pageSize), pageSize);
 
-        RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
+        RestResponse<ListInfo<Employee>> response = await RestClient.ExecuteAsync<ListInfo<Employee>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
-        response.Data.Should().BeEquivalentTo(expectedEmployees, config => config.WithStrictOrdering());
+        response.Data.Should().BeEquivalentTo(expectedResponse, options => options.WithStrictOrdering());
     }
 
     [Theory]
@@ -81,18 +82,22 @@ public class GetEmployeesTests
         string sortingOrder
     )
     {
-        List<Employee> expectedEmployees = EmployeesSampleData.Employees.AsQueryable()
-            .OrderBy($"{sortingFieldName} {sortingOrder}")
-            .ToList();
+        IQueryable<Employee> expectedEmployees =
+            EmployeesSampleData.Employees.AsQueryable().OrderBy($"{sortingFieldName} {sortingOrder}");
+        ListInfo<Employee> expectedResponse = new()
+        {
+            Data = expectedEmployees.ToList(),
+            Count = expectedEmployees.Count()
+        };
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(sortingFieldName), sortingFieldName);
         restRequest.AddQueryParameter(nameof(sortingOrder), sortingOrder);
 
-        RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
+        RestResponse<ListInfo<Employee>> response = await RestClient.ExecuteAsync<ListInfo<Employee>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
-        response.Data.Should().BeEquivalentTo(expectedEmployees, config => config.WithStrictOrdering());
+        response.Data.Should().BeEquivalentTo(expectedResponse, options => options.WithStrictOrdering());
     }
 
     [Theory]
@@ -102,19 +107,24 @@ public class GetEmployeesTests
     [InlineData("dez")]
     public async Task GetEmployees_ShouldReturnFilteredEmployees_WhenSearchParametersArePassed(string searchQuery)
     {
-        List<Employee> expectedEmployees = EmployeesSampleData.Employees.Where(
+        IQueryable<Employee> expectedEmployees = EmployeesSampleData.Employees.Where(
                 x => x.FirstName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
                      || x.LastName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
             )
-            .ToList();
+            .AsQueryable();
+        ListInfo<Employee> expectedResponse = new()
+        {
+            Data = expectedEmployees.ToList(),
+            Count = expectedEmployees.Count()
+        };
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(searchQuery), searchQuery);
 
-        RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
+        RestResponse<ListInfo<Employee>> response = await RestClient.ExecuteAsync<ListInfo<Employee>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
-        response.Data.Should().BeEquivalentTo(expectedEmployees, config => config.WithStrictOrdering());
+        response.Data.Should().BeEquivalentTo(expectedResponse, options => options.WithStrictOrdering());
     }
 
     [Fact]
@@ -126,16 +136,22 @@ public class GetEmployeesTests
         string sortingOrder = "asc";
         string searchQuery = "o";
 
-        List<Employee> expectedEmployees = EmployeesSampleData.Employees
+        IQueryable<Employee> expectedEmployees = EmployeesSampleData.Employees
             .OrderBy(x => x.FirstName)
             .Where(
                 x => x.FirstName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
                      || x.LastName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
             )
-            // ReSharper disable once UselessBinaryOperation
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
+            .AsQueryable();
+        ListInfo<Employee> expectedResponse = new()
+        {
+            Data = expectedEmployees
+                // ReSharper disable once UselessBinaryOperation
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList(),
+            Count = expectedEmployees.Count()
+        };
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(page), page);
         restRequest.AddQueryParameter(nameof(pageSize), pageSize);
@@ -143,10 +159,10 @@ public class GetEmployeesTests
         restRequest.AddQueryParameter(nameof(sortingOrder), sortingOrder);
         restRequest.AddQueryParameter(nameof(searchQuery), searchQuery);
 
-        RestResponse<List<Employee>> response = await RestClient.ExecuteAsync<List<Employee>>(restRequest);
+        RestResponse<ListInfo<Employee>> response = await RestClient.ExecuteAsync<ListInfo<Employee>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
-        response.Data.Should().BeEquivalentTo(expectedEmployees, config => config.WithStrictOrdering());
+        response.Data.Should().BeEquivalentTo(expectedResponse, options => options.WithStrictOrdering());
     }
 }

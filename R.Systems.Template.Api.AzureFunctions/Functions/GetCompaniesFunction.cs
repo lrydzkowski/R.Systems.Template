@@ -33,7 +33,7 @@ internal class GetCompaniesFunction : FunctionBase<GetCompaniesFunction>
     [OpenApiResponseWithBody(
         statusCode: HttpStatusCode.OK,
         contentType: "application/json",
-        bodyType: typeof(List<Company>),
+        bodyType: typeof(ListInfo<Company>),
         Description = "The list of companies"
     )]
     [Function(nameof(GetCompanies))]
