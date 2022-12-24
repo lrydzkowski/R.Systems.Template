@@ -9,13 +9,13 @@ ASP.NET Core 7 Web API template project, created as a base for other projects.
 ### From directory
 
 ```powershell
-dotnet new --install C:\repo\Private\R.Systems\R.Systems.Template
+dotnet new install C:\repo\Private\R.Systems\R.Systems.Template
 ```
 
 ### From NuGet
 
 ```powershell
-dotnet new -i R.Systems.Template
+dotnet new install R.Systems.Template
 ```
 
 ## Uninstall
@@ -23,19 +23,19 @@ dotnet new -i R.Systems.Template
 ### From directory
 
 ```powershell
-dotnet new --uninstall C:\repo\Private\R.Systems\R.Systems.Template
+dotnet new uninstall C:\repo\Private\R.Systems\R.Systems.Template
 ```
 
 ### From NuGet
 
 ```powershell
-dotnet new --uninstall R.Systems.Template
+dotnet new uninstall R.Systems.Template
 ```
 
 ## Show list of templates
 
 ```powershell
-dotnet new --list
+dotnet new list --columns-all
 ```
 
 ## Create a new project from the template
