@@ -6,11 +6,11 @@ namespace R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 
 public class CreateEmployeeCommand : IRequest<CreateEmployeeResult>
 {
-    public string? FirstName { get; init; }
+    public string? FirstName { get; set; }
 
-    public string? LastName { get; init; }
+    public string? LastName { get; set; }
 
-    public int? CompanyId { get; init; }
+    public int? CompanyId { get; set; }
 }
 
 public class CreateEmployeeResult

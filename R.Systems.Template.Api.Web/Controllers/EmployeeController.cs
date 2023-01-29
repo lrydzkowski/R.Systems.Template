@@ -83,8 +83,9 @@ public class EmployeeController : ControllerBase
     [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
     [SwaggerResponse(statusCode: 500)]
     [HttpPost]
-    public async Task<IActionResult> CreateEmployee(CreateEmployeeCommand command)
+    public async Task<IActionResult> CreateEmployee(CreateEmployeeRequest request)
     {
+        CreateEmployeeCommand command = Mapper.Map<CreateEmployeeCommand>(request);
         CreateEmployeeResult result = await Mediator.Send(command);
 
         return CreatedAtAction(
@@ -106,15 +107,9 @@ public class EmployeeController : ControllerBase
     [HttpPut("{employeeId}")]
     public async Task<IActionResult> UpdateEmployee(int employeeId, UpdateEmployeeRequest request)
     {
-        UpdateEmployeeResult result = await Mediator.Send(
-            new UpdateEmployeeCommand
-            {
-                EmployeeId = employeeId,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                CompanyId = request.CompanyId
-            }
-        );
+        UpdateEmployeeCommand command = Mapper.Map<UpdateEmployeeCommand>(request);
+        command.EmployeeId = employeeId;
+        UpdateEmployeeResult result = await Mediator.Send(command);
 
         return Ok(result.UpdatedEmployee);
     }

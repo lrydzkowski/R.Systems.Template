@@ -2,7 +2,7 @@
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Core.Common.Lists;
 
-namespace R.Systems.Template.Api.Web.Profiles;
+namespace R.Systems.Template.Api.Web.AutoMapperProfiles;
 
 public class ListsProfile : Profile
 {

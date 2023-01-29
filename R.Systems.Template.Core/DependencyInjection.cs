@@ -15,10 +15,8 @@ public static class DependencyInjection
 {
     public static void ConfigureCoreServices(this IServiceCollection services)
     {
-        services.AddMediatR(typeof(DependencyInjection).Assembly);
+        services.AddMediatR();
         services.AddAutoMapper(typeof(DependencyInjection));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
         services.AddValidators();
     }
 
@@ -62,8 +60,15 @@ public static class DependencyInjection
             .ValidateOnStart();
     }
 
+    private static void AddMediatR(this IServiceCollection services)
+    {
+        services.AddMediatR(typeof(DependencyInjection).Assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+    }
+
     private static void AddValidators(this IServiceCollection services)
     {
+        services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
         services.AddScoped<IValidator<CreateCompanyCommand>, CreateCompanyCommandValidator>();
         services.AddScoped<IValidator<UpdateCompanyCommand>, UpdateCompanyCommandValidator>();
         services.AddScoped<IValidator<CreateEmployeeCommand>, CreateEmployeeCommandValidator>();

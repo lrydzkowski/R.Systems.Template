@@ -6,8 +6,8 @@ internal class CreateEmployeeCommandValidator : AbstractValidator<CreateEmployee
 {
     public CreateEmployeeCommandValidator()
     {
-        Transform(c => c.FirstName, x => x?.Trim()).NotEmpty().MaximumLength(100);
-        Transform(c => c.LastName, x => x?.Trim()).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.FirstName).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.LastName).NotEmpty().MaximumLength(100);
         RuleFor(c => c.CompanyId).NotEmpty();
     }
 }

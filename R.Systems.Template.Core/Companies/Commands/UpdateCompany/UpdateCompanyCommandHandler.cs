@@ -6,9 +6,9 @@ namespace R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 
 public class UpdateCompanyCommand : IRequest<UpdateCompanyResult>
 {
-    public int CompanyId { get; init; }
+    public int CompanyId { get; set; }
 
-    public string? Name { get; init; }
+    public string? Name { get; set; }
 }
 
 public class UpdateCompanyResult

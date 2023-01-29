@@ -6,13 +6,13 @@ namespace R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 
 public class UpdateEmployeeCommand : IRequest<UpdateEmployeeResult>
 {
-    public int? EmployeeId { get; init; }
+    public int? EmployeeId { get; set; }
 
-    public string? FirstName { get; init; }
+    public string? FirstName { get; set; }
 
-    public string? LastName { get; init; }
+    public string? LastName { get; set; }
 
-    public int? CompanyId { get; init; }
+    public int? CompanyId { get; set; }
 }
 
 public class UpdateEmployeeResult

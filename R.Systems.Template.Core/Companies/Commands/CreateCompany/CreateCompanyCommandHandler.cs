@@ -6,7 +6,7 @@ namespace R.Systems.Template.Core.Companies.Commands.CreateCompany;
 
 public class CreateCompanyCommand : IRequest<CreateCompanyResult>
 {
-    public string? Name { get; init; }
+    public string? Name { get; set; }
 }
 
 public class CreateCompanyResult

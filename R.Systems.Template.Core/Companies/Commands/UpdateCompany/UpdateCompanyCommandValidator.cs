@@ -6,6 +6,6 @@ internal class UpdateCompanyCommandValidator : AbstractValidator<UpdateCompanyCo
 {
     public UpdateCompanyCommandValidator()
     {
-        Transform(c => c.Name, x => x?.Trim()).NotEmpty().MaximumLength(200);
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(200);
     }
 }

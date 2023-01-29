@@ -83,8 +83,9 @@ public class CompanyController : ControllerBase
     [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
     [SwaggerResponse(statusCode: 500)]
     [HttpPost]
-    public async Task<IActionResult> CreateCompany(CreateCompanyCommand command)
+    public async Task<IActionResult> CreateCompany(CreateCompanyRequest request)
     {
+        CreateCompanyCommand command = Mapper.Map<CreateCompanyCommand>(request);
         CreateCompanyResult result = await Mediator.Send(command);
 
         return CreatedAtAction(nameof(GetCompany), new { companyId = result.Company.CompanyId }, result.Company);
@@ -102,8 +103,9 @@ public class CompanyController : ControllerBase
     [HttpPut("{companyId}")]
     public async Task<IActionResult> UpdateCompany(int companyId, UpdateCompanyRequest request)
     {
-        UpdateCompanyResult result =
-            await Mediator.Send(new UpdateCompanyCommand { CompanyId = companyId, Name = request.Name });
+        UpdateCompanyCommand command = Mapper.Map<UpdateCompanyCommand>(request);
+        command.CompanyId = companyId;
+        UpdateCompanyResult result = await Mediator.Send(command);
 
         return Ok(result.Company);
     }
