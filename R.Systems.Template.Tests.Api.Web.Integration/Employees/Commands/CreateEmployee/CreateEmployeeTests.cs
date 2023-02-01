@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Net;
+using FluentAssertions;
 using FluentValidation.Results;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
@@ -7,7 +8,6 @@ using R.Systems.Template.Tests.Api.Web.Integration.Common.Db;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 using RestSharp;
-using System.Net;
 using Xunit.Abstractions;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Employees.Commands.CreateEmployee;

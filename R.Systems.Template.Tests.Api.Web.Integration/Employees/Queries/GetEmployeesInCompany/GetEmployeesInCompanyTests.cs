@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Linq.Dynamic.Core;
+using System.Net;
+using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
@@ -7,8 +9,6 @@ using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 using RestSharp;
-using System.Linq.Dynamic.Core;
-using System.Net;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Employees.Queries.GetEmployeesInCompany;
 

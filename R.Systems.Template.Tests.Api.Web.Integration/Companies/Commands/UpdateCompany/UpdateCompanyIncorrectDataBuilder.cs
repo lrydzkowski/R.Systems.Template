@@ -1,9 +1,9 @@
-﻿using Bogus;
+﻿using System.Net;
+using Bogus;
 using FluentValidation.Results;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Builders;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
-using System.Net;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Companies.Commands.UpdateCompany;
 
@@ -78,7 +78,7 @@ internal static class UpdateCompanyIncorrectDataBuilder
                 HttpStatusCode.UnprocessableEntity,
                 new List<ValidationFailure>
                 {
-                    new ValidationFailure()
+                    new()
                     {
                         PropertyName = "Company",
                         ErrorMessage = "Company with the given id doesn't exist ('999').",

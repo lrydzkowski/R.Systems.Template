@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+﻿using System.Reflection;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Reflection;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 

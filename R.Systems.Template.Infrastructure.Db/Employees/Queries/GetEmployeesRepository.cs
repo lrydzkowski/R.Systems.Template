@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Common.Lists.Extensions;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
-using System.Linq.Expressions;
 
 namespace R.Systems.Template.Infrastructure.Db.Employees.Queries;
 

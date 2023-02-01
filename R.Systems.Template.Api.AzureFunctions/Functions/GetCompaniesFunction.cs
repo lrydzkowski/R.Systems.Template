@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -9,7 +10,6 @@ using R.Systems.Template.Api.AzureFunctions.Services;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
-using System.Net;
 
 namespace R.Systems.Template.Api.AzureFunctions.Functions;
 

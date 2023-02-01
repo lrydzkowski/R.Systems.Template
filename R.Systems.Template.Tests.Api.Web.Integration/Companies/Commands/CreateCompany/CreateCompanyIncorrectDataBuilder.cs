@@ -1,8 +1,8 @@
-﻿using Bogus;
+﻿using System.Net;
+using Bogus;
 using FluentValidation.Results;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Builders;
-using System.Net;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Companies.Commands.CreateCompany;
 

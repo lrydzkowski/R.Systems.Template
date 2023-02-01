@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System.Linq.Dynamic.Core;
+using System.Net;
+using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
@@ -7,8 +9,6 @@ using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 using RestSharp;
-using System.Linq.Dynamic.Core;
-using System.Net;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Companies.Queries.GetCompanies;
 
@@ -28,7 +28,7 @@ public class GetCompaniesTests
     [Fact]
     public async Task GetCompanies_ShouldReturnCompanies_WhenCompaniesExist()
     {
-        ListInfo<Company> expectedResponse = new ListInfo<Company>
+        ListInfo<Company> expectedResponse = new()
         {
             Data = CompaniesSampleData.Companies,
             Count = CompaniesSampleData.Companies.Count
@@ -51,7 +51,7 @@ public class GetCompaniesTests
     )
     {
         IQueryable<Company> expectedCompanies = CompaniesSampleData.Companies.OrderBy(x => x.CompanyId).AsQueryable();
-        ListInfo<Company> expectedResponse = new ListInfo<Company>
+        ListInfo<Company> expectedResponse = new()
         {
             Data = expectedCompanies
                 .Skip((page - 1) * pageSize)
@@ -84,7 +84,7 @@ public class GetCompaniesTests
     {
         IQueryable<Company> expectedCompanies =
             CompaniesSampleData.Companies.AsQueryable().OrderBy($"{sortingFieldName} {sortingOrder}");
-        ListInfo<Company> expectedResponse = new ListInfo<Company>
+        ListInfo<Company> expectedResponse = new()
         {
             Data = expectedCompanies.ToList(),
             Count = expectedCompanies.Count()
@@ -114,7 +114,7 @@ public class GetCompaniesTests
         IQueryable<Company> expectedCompanies = CompaniesSampleData.Companies
             .Where(x => x.Name.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase))
             .AsQueryable();
-        ListInfo<Company> expectedResponse = new ListInfo<Company>
+        ListInfo<Company> expectedResponse = new()
         {
             Data = expectedCompanies.ToList(),
             Count = expectedCompanies.Count()
@@ -146,7 +146,7 @@ public class GetCompaniesTests
             .OrderBy(x => x.Name)
             .Where(x => x.Name.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase))
             .AsQueryable();
-        ListInfo<Company> expectedResponse = new ListInfo<Company>
+        ListInfo<Company> expectedResponse = new()
         {
             Data = expectedCompanies
                 // ReSharper disable once UselessBinaryOperation

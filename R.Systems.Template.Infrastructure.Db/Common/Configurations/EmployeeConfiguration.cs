@@ -59,21 +59,21 @@ internal class EmployeeConfiguration : IEntityTypeConfiguration<EmployeeEntity>
     private void InitData(EntityTypeBuilder<EmployeeEntity> builder)
     {
         builder.HasData(
-            new()
+            new EmployeeEntity
             {
                 Id = 1,
                 FirstName = "John",
                 LastName = "Doe",
                 CompanyId = 1
             },
-            new()
+            new EmployeeEntity
             {
                 Id = 2,
                 FirstName = "Will",
                 LastName = "Smith",
                 CompanyId = 2
             },
-            new()
+            new EmployeeEntity
             {
                 Id = 3,
                 FirstName = "Jack",

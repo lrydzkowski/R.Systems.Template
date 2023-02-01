@@ -13,7 +13,7 @@ internal class ConnectionStringsOptionsData : ConnectionStringsOptions, IOptions
 
     public Dictionary<string, string?> ConvertToInMemoryCollection()
     {
-        return new()
+        return new Dictionary<string, string?>
         {
             [$"{Position}:{nameof(AppDb)}"] = AppDb
         };

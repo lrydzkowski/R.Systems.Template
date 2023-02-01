@@ -1,11 +1,11 @@
-﻿using FluentValidation;
+﻿using System.Net;
+using FluentValidation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
 using R.Systems.Template.Api.AzureFunctions.Services;
 using R.Systems.Template.Core.Common.Errors;
-using System.Net;
 
 namespace R.Systems.Template.Api.AzureFunctions.Middleware;
 

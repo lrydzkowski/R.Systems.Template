@@ -1,9 +1,9 @@
+using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using R.Systems.Template.Infrastructure.Db;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

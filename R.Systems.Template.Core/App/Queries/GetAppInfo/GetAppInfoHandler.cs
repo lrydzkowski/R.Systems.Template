@@ -1,5 +1,5 @@
-﻿using MediatR;
-using System.Reflection;
+﻿using System.Reflection;
+using MediatR;
 
 namespace R.Systems.Template.Core.App.Queries.GetAppInfo;
 

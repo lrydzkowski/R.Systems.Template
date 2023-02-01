@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using R.Systems.Template.Core.Common.Errors;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
+using FluentValidation;
+using R.Systems.Template.Core.Common.Errors;
 
 namespace R.Systems.Template.Api.Web.Middleware;
 

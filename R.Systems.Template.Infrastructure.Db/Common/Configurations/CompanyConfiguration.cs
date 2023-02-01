@@ -45,12 +45,12 @@ internal class CompanyConfiguration : IEntityTypeConfiguration<CompanyEntity>
     private void InitData(EntityTypeBuilder<CompanyEntity> builder)
     {
         builder.HasData(
-            new()
+            new CompanyEntity
             {
                 Id = 1,
                 Name = "Meta"
             },
-            new()
+            new CompanyEntity
             {
                 Id = 2,
                 Name = "Google"

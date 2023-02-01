@@ -1,11 +1,11 @@
-﻿using FluentAssertions;
+﻿using System.Net;
+using FluentAssertions;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 using RestSharp;
-using System.Net;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.App.Queries.GetAppInfo;
 

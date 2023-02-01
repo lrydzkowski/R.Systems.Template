@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Net;
+using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
@@ -7,7 +8,6 @@ using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 using RestSharp;
-using System.Net;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Companies.Queries.GetCompanies;
 
@@ -40,7 +40,7 @@ public class GetCompaniesProtectedTests
     [Fact]
     public async Task GetCompanies_ShouldReturnCompanies_WhenCompaniesExist()
     {
-        ListInfo<Company> expectedResponse = new ListInfo<Company>
+        ListInfo<Company> expectedResponse = new()
         {
             Data = CompaniesSampleData.Companies,
             Count = CompaniesSampleData.Companies.Count

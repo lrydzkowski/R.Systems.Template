@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
@@ -6,7 +7,6 @@ using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Security.Claims;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 

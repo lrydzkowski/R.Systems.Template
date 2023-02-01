@@ -15,7 +15,7 @@ internal class AzureAdOptionsData : AzureAdOptions, IOptionsData
 
     public Dictionary<string, string?> ConvertToInMemoryCollection()
     {
-        return new()
+        return new Dictionary<string, string?>
         {
             [$"{Position}:{nameof(Instance)}"] = Instance,
             [$"{Position}:{nameof(ClientId)}"] = ClientId,

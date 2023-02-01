@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
-using System.Reflection;
 
 namespace R.Systems.Template.Infrastructure.Db;
 
