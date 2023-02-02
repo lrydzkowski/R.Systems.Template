@@ -43,7 +43,7 @@ public class UpdateEmployeeTests
         Output.WriteLine("Parameters set with id = {0}", id);
 
         string url = $"{_endpointUrlPath}/{employeeId}";
-        RestRequest? restRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
+        RestRequest restRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
 
         RestResponse<List<ValidationFailure>> response = await RestClient.ExecuteAsync<List<ValidationFailure>>(
             restRequest
@@ -71,7 +71,7 @@ public class UpdateEmployeeTests
         Output.WriteLine("Parameters set with id = {0}", id);
 
         string url = $"{_endpointUrlPath}/{employeeId}";
-        RestRequest? updateRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
+        RestRequest updateRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
 
         RestResponse<Employee> updateResponse = await RestClient.ExecuteAsync<Employee>(updateRequest);
 
@@ -90,7 +90,7 @@ public class UpdateEmployeeTests
 
         Employee employee = updateResponse.Data!;
 
-        RestRequest? getRequest = new RestRequest(url);
+        RestRequest getRequest = new(url);
 
         RestResponse<Employee> getResponse = await RestClient.ExecuteAsync<Employee>(getRequest);
 

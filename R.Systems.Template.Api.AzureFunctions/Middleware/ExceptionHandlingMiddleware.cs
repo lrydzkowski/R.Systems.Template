@@ -65,13 +65,13 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
 
         if (httpReqData != null)
         {
-            HttpResponseData? newHttpResponse = httpReqData.CreateResponse(statusCode);
+            HttpResponseData newHttpResponse = httpReqData.CreateResponse(statusCode);
             if (response != null)
             {
                 await newHttpResponse.WriteStringAsync(response);
             }
 
-            InvocationResult? invocationResult = context.GetInvocationResult();
+            InvocationResult invocationResult = context.GetInvocationResult();
 
             OutputBindingData<HttpResponseData>? httpOutputBindingFromMultipleOutputBindings =
                 GetHttpOutputBindingFromMultipleOutputBinding(context);

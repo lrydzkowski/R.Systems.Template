@@ -41,7 +41,7 @@ public class CreateEmployeeTests
     {
         Output.WriteLine("Parameters set with id = {0}", id);
 
-        RestRequest? restRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
+        RestRequest restRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
         RestResponse<List<ValidationFailure>> response = await RestClient.ExecuteAsync<List<ValidationFailure>>(
             restRequest
@@ -64,7 +64,7 @@ public class CreateEmployeeTests
     {
         Output.WriteLine("Parameters set with id = {0}", id);
 
-        RestRequest? createRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
+        RestRequest createRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
         RestResponse<Employee> createResponse = await RestClient.ExecuteAsync<Employee>(createRequest);
 
@@ -87,7 +87,7 @@ public class CreateEmployeeTests
         string? employeeUrl = createResponse.Headers!.First(x => x.Name == "Location").Value?.ToString();
         employeeUrl.Should().NotBeNull();
 
-        RestRequest? getRequest = new RestRequest(employeeUrl);
+        RestRequest getRequest = new(employeeUrl);
 
         RestResponse<Employee> getResponse = await RestClient.ExecuteAsync<Employee>(getRequest);
 
