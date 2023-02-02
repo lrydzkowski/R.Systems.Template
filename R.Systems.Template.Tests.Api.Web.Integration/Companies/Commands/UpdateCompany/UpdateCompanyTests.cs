@@ -43,7 +43,7 @@ public class UpdateCompanyTests
         Output.WriteLine("Parameters set with id = {0}", id);
 
         string url = $"{_endpointUrlPath}/{companyId}";
-        var restRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
+        RestRequest? restRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
 
         RestResponse<List<ValidationFailure>> response = await RestClient.ExecuteAsync<List<ValidationFailure>>(
             restRequest
@@ -71,7 +71,7 @@ public class UpdateCompanyTests
         Output.WriteLine("Parameters set with id = {0}", id);
 
         string url = $"{_endpointUrlPath}/{companyId}";
-        var updateRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
+        RestRequest? updateRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
 
         RestResponse<Company> updateResponse = await RestClient.ExecuteAsync<Company>(updateRequest);
 
@@ -89,7 +89,7 @@ public class UpdateCompanyTests
 
         Company company = updateResponse.Data!;
 
-        var getRequest = new RestRequest(url);
+        RestRequest? getRequest = new RestRequest(url);
 
         RestResponse<Company> getResponse = await RestClient.ExecuteAsync<Company>(getRequest);
 

@@ -61,19 +61,20 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
 
     private async Task CreateResponse(FunctionContext context, HttpStatusCode statusCode, string? response = null)
     {
-        var httpReqData = await context.GetHttpRequestDataAsync();
+        HttpRequestData? httpReqData = await context.GetHttpRequestDataAsync();
 
         if (httpReqData != null)
         {
-            var newHttpResponse = httpReqData.CreateResponse(statusCode);
+            HttpResponseData? newHttpResponse = httpReqData.CreateResponse(statusCode);
             if (response != null)
             {
                 await newHttpResponse.WriteStringAsync(response);
             }
 
-            var invocationResult = context.GetInvocationResult();
+            InvocationResult? invocationResult = context.GetInvocationResult();
 
-            var httpOutputBindingFromMultipleOutputBindings = GetHttpOutputBindingFromMultipleOutputBinding(context);
+            OutputBindingData<HttpResponseData>? httpOutputBindingFromMultipleOutputBindings =
+                GetHttpOutputBindingFromMultipleOutputBinding(context);
             if (httpOutputBindingFromMultipleOutputBindings is not null)
             {
                 httpOutputBindingFromMultipleOutputBindings.Value = newHttpResponse;
@@ -87,7 +88,7 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
 
     private OutputBindingData<HttpResponseData>? GetHttpOutputBindingFromMultipleOutputBinding(FunctionContext context)
     {
-        var httpOutputBinding = context.GetOutputBindings<HttpResponseData>()
+        OutputBindingData<HttpResponseData>? httpOutputBinding = context.GetOutputBindings<HttpResponseData>()
             .FirstOrDefault(b => b.BindingType == "http" && b.Name != "$return");
 
         return httpOutputBinding;

@@ -22,7 +22,7 @@ internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         IConfigurationRoot config = new ConfigurationBuilder().AddUserSecrets<AppDbContext>().Build();
         IConfigurationProvider secretProvider = config.Providers.First();
-        if (!secretProvider.TryGet("ConnectionStrings:AppDb", out var connectionString)
+        if (!secretProvider.TryGet("ConnectionStrings:AppDb", out string? connectionString)
             || connectionString == null
             || connectionString.Length == 0)
         {

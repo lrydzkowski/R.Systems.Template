@@ -68,7 +68,7 @@ public class AppRunnerFactory
 
     private async Task RunStartupMethodsSequentially(IServiceProvider serviceProvider)
     {
-        var service = serviceProvider.GetService<IGetLockAndThenRunServices>();
+        IGetLockAndThenRunServices? service = serviceProvider.GetService<IGetLockAndThenRunServices>();
         if (service != null)
         {
             await service.LockAndLoadAsync();

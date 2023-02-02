@@ -5,14 +5,14 @@ using R.Systems.Template.Core;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using R.Systems.Template.Infrastructure.Db;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureCoreServices();
 builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();

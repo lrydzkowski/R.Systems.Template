@@ -41,7 +41,7 @@ public class CreateCompanyTests
     {
         Output.WriteLine("Parameters set with id = {0}", id);
 
-        var restRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
+        RestRequest? restRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
         RestResponse<List<ValidationFailure>> response = await RestClient.ExecuteAsync<List<ValidationFailure>>(
             restRequest
@@ -64,7 +64,7 @@ public class CreateCompanyTests
     {
         Output.WriteLine("Parameters set with id = {0}", id);
 
-        var createRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
+        RestRequest? createRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
 
         RestResponse<Company> createResponse = await RestClient.ExecuteAsync<Company>(createRequest);
 
@@ -86,7 +86,7 @@ public class CreateCompanyTests
         string? companyUrl = createResponse.Headers!.First(x => x.Name == "Location").Value?.ToString();
         companyUrl.Should().NotBeNull();
 
-        var getRequest = new RestRequest(companyUrl);
+        RestRequest? getRequest = new RestRequest(companyUrl);
 
         RestResponse<Company> getResponse = await RestClient.ExecuteAsync<Company>(getRequest);
 

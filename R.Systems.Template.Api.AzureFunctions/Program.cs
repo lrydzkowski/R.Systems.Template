@@ -11,7 +11,7 @@ public class Program
 {
     public static void Main()
     {
-        var host = new HostBuilder()
+        IHost? host = new HostBuilder()
             .ConfigureFunctionsWorkerDefaults(
                 builder => builder.UseMiddleware<ExceptionHandlingMiddleware>()
             )
