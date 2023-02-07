@@ -11,12 +11,13 @@ using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
+using R.Systems.Template.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(AuthenticationSchemes = AuthenticationSchemes.AzureAdB2C)]
 [RequiredScope("User.Access")]
 [Route("employees")]
 public class EmployeeController : ControllerBase

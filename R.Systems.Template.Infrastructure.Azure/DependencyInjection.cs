@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Web;
 using R.Systems.Template.Core;
@@ -13,10 +14,23 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
+        services.ConfigureOptions(configuration);
+        services.ConfigureAuthentication(configuration);
+    }
+
+    private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+    {
         services.ConfigureOptionsWithValidation<AzureAdOptions, AzureAdOptionsValidator>(
             configuration,
             AzureAdOptions.Position
         );
-        services.AddMicrosoftIdentityWebApiAuthentication(configuration);
+    }
+
+    private static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApi(configuration, "AzureAd", JwtBearerDefaults.AuthenticationScheme);
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApi(configuration, "AzureAdB2C", AuthenticationSchemes.AzureAdB2C);
     }
 }
