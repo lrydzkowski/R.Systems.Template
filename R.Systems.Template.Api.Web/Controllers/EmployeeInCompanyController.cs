@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
@@ -12,6 +14,8 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace R.Systems.Template.Api.Web.Controllers;
 
 [ApiController]
+[Authorize]
+[RequiredScope("User.Access")]
 [Route("companies")]
 public class EmployeeInCompanyController : ControllerBase
 {

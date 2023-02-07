@@ -19,7 +19,7 @@ public class GetCompanyTests
 
     public GetCompanyTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
-        RestClient = webApiFactory.CreateRestClient();
+        RestClient = webApiFactory.WithoutAuthentication().CreateRestClient();
     }
 
     private RestClient RestClient { get; }

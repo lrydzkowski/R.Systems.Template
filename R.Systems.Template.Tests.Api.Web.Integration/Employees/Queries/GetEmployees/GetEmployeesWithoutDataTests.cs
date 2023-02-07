@@ -18,7 +18,7 @@ public class GetEmployeesWithoutDataTests
 
     public GetEmployeesWithoutDataTests(WebApiFactoryWithDb<NoDataDbInitializer> webApiFactory)
     {
-        RestClient = webApiFactory.CreateRestClient();
+        RestClient = webApiFactory.WithoutAuthentication().CreateRestClient();
     }
 
     private RestClient RestClient { get; }

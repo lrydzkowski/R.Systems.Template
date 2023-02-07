@@ -20,7 +20,7 @@ public class GetEmployeeTests
 
     public GetEmployeeTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
-        RestClient = webApiFactory.CreateRestClient();
+        RestClient = webApiFactory.WithoutAuthentication().CreateRestClient();
     }
 
     private RestClient RestClient { get; }

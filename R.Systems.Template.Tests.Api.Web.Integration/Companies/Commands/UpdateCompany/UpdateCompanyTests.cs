@@ -21,7 +21,7 @@ public class UpdateCompanyTests
     public UpdateCompanyTests(ITestOutputHelper output, WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
         Output = output;
-        RestClient = webApiFactory.CreateRestClient();
+        RestClient = webApiFactory.WithoutAuthentication().CreateRestClient();
     }
 
     private ITestOutputHelper Output { get; }
