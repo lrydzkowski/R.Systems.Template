@@ -5,7 +5,6 @@ using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
-using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Enums;
 using Microsoft.Extensions.Logging;
 using R.Systems.Template.Api.AzureFunctions.Models;
 using R.Systems.Template.Api.AzureFunctions.Services;
@@ -17,18 +16,18 @@ public class GetAppInfoFunction : FunctionBase<GetAppInfoFunction>
 {
     public GetAppInfoFunction(
         ILogger<GetAppInfoFunction> logger,
+        RequestPayloadSerializer requestPayloadSerializer,
         HttpResponseBuilder httpResponseBuilder,
         ISender mediator,
         IMapper mapper
-    ) : base(logger, httpResponseBuilder, mediator, mapper)
+    ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator, mapper)
     {
     }
 
     [OpenApiOperation(
         operationId: "GetAppInfo",
         Summary = "GetAppInfo",
-        Description = "It returns name and version of the application.",
-        Visibility = OpenApiVisibilityType.Important
+        Description = "It returns name and version of the application."
     )]
     [OpenApiResponseWithBody(
         statusCode: HttpStatusCode.OK,
@@ -38,7 +37,7 @@ public class GetAppInfoFunction : FunctionBase<GetAppInfoFunction>
     )]
     [Function(nameof(GetAppInfo))]
     public async Task<HttpResponseData> GetAppInfo(
-        [HttpTrigger(AuthorizationLevel.Function, "get")]
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "app")]
         HttpRequestData request
     )
     {

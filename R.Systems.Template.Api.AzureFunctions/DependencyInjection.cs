@@ -10,5 +10,6 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(DependencyInjection).Assembly);
         services.AddSingleton<HttpResponseBuilder>();
         services.AddSingleton<CustomJsonSerializer>();
+        services.AddSingleton<RequestPayloadSerializer>();
     }
 }
