@@ -3,7 +3,14 @@ using Microsoft.Azure.Functions.Worker.Http;
 
 namespace R.Systems.Template.Api.AzureFunctions.Services;
 
+public interface IHttpResponseBuilder
+{
+    Task<HttpResponseData> BuildAsync<T>(HttpRequestData request, T data);
+    Task<HttpResponseData> BuildNotFoundAsync<T>(HttpRequestData request, T data);
+}
+
 public class HttpResponseBuilder
+    : IHttpResponseBuilder
 {
     public HttpResponseBuilder(CustomJsonSerializer customJsonSerializer)
     {

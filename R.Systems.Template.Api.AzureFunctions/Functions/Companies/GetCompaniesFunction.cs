@@ -18,8 +18,8 @@ internal class GetCompaniesFunction : FunctionBase<GetCompaniesFunction>
 {
     public GetCompaniesFunction(
         ILogger<GetCompaniesFunction> logger,
-        RequestPayloadSerializer requestPayloadSerializer,
-        HttpResponseBuilder httpResponseBuilder,
+        IRequestPayloadSerializer requestPayloadSerializer,
+        IHttpResponseBuilder httpResponseBuilder,
         ISender mediator,
         IMapper mapper
     ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator, mapper)
@@ -71,7 +71,7 @@ internal class GetCompaniesFunction : FunctionBase<GetCompaniesFunction>
     public async Task<HttpResponseData> GetCompanies(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies")]
         HttpRequestData request,
-        int page,
+        int page = 1,
         int pageSize = 100,
         string? sortingFieldName = null,
         string sortingOrder = "",

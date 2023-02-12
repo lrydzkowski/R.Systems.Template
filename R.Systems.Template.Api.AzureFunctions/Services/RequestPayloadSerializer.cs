@@ -3,7 +3,13 @@ using Microsoft.Azure.Functions.Worker.Http;
 
 namespace R.Systems.Template.Api.AzureFunctions.Services;
 
+public interface IRequestPayloadSerializer
+{
+    Task<T?> DeserializeAsync<T>(HttpRequestData request);
+}
+
 public class RequestPayloadSerializer
+    : IRequestPayloadSerializer
 {
     public async Task<T?> DeserializeAsync<T>(HttpRequestData request)
     {

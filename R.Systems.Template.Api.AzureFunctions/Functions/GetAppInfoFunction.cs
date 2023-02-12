@@ -16,8 +16,8 @@ public class GetAppInfoFunction : FunctionBase<GetAppInfoFunction>
 {
     public GetAppInfoFunction(
         ILogger<GetAppInfoFunction> logger,
-        RequestPayloadSerializer requestPayloadSerializer,
-        HttpResponseBuilder httpResponseBuilder,
+        IRequestPayloadSerializer requestPayloadSerializer,
+        IHttpResponseBuilder httpResponseBuilder,
         ISender mediator,
         IMapper mapper
     ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator, mapper)

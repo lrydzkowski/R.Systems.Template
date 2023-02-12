@@ -16,8 +16,8 @@ internal class UpdateCompanyFunction : FunctionBase<UpdateCompanyFunction>
 {
     public UpdateCompanyFunction(
         ILogger<UpdateCompanyFunction> logger,
-        RequestPayloadSerializer requestPayloadSerializer,
-        HttpResponseBuilder httpResponseBuilder,
+        IRequestPayloadSerializer requestPayloadSerializer,
+        IHttpResponseBuilder httpResponseBuilder,
         ISender mediator,
         IMapper mapper
     ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator, mapper)

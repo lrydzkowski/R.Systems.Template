@@ -7,10 +7,10 @@ namespace R.Systems.Template.Api.AzureFunctions.Functions;
 
 public class FunctionBase<T>
 {
-    protected FunctionBase(
+    public FunctionBase(
         ILogger<T> logger,
-        RequestPayloadSerializer requestPayloadSerializer,
-        HttpResponseBuilder httpResponseBuilder,
+        IRequestPayloadSerializer requestPayloadSerializer,
+        IHttpResponseBuilder httpResponseBuilder,
         ISender mediator,
         IMapper mapper
     )
@@ -23,8 +23,8 @@ public class FunctionBase<T>
     }
 
     protected ILogger<T> Logger { get; }
-    protected RequestPayloadSerializer RequestPayloadSerializer { get; }
-    protected HttpResponseBuilder HttpResponseBuilder { get; }
+    protected IRequestPayloadSerializer RequestPayloadSerializer { get; }
+    protected IHttpResponseBuilder HttpResponseBuilder { get; }
     protected ISender Mediator { get; }
     protected IMapper Mapper { get; }
 }

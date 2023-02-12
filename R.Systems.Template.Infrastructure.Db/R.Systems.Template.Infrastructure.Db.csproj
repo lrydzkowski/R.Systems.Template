@@ -21,6 +21,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="R.Systems.Template.Tests.Api.Web.Integration" />
     <InternalsVisibleTo Include="R.Systems.Template.Tests.Api.DataGeneratorCli.Integration" />
+    <InternalsVisibleTo Include="R.Systems.Template.Tests.Api.AzureFunctions.Integration" />
     <InternalsVisibleTo Include="R.Systems.Template.Api.DataGeneratorCli" />
   </ItemGroup>
 

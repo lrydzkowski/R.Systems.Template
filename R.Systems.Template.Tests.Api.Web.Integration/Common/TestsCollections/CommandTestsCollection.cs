@@ -6,5 +6,5 @@ namespace R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
 [CollectionDefinition(CollectionName)]
 public class CommandTestsCollection : ICollectionFixture<WebApiFactoryWithDb<SampleDataDbInitializer>>
 {
-    public const string CollectionName = "CommandTests";
+    public const string CollectionName = "WebApiCommandTests";
 }
