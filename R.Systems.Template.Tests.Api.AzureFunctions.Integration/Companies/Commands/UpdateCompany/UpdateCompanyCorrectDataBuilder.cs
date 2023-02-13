@@ -1,8 +1,8 @@
 ﻿using Bogus;
-using R.Systems.Template.Api.Web.Models;
-using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
+using R.Systems.Template.Api.AzureFunctions.Models;
+using R.Systems.Template.Tests.Api.AzureFunctions.Integration.Common.Db;
 
-namespace R.Systems.Template.Tests.Api.Web.Integration.Companies.Commands.UpdateCompany;
+namespace R.Systems.Template.Tests.Api.AzureFunctions.Integration.Companies.Commands.UpdateCompany;
 
 internal static class UpdateEmployeeCorrectDataBuilder
 {
@@ -14,7 +14,7 @@ internal static class UpdateEmployeeCorrectDataBuilder
         {
             BuildParameters(
                 1,
-                IdGenerator.GetCompanyId(1),
+                (int)CompaniesSampleData.Data["Meta"].Id!,
                 new UpdateCompanyRequest
                 {
                     Name = faker.Random.String2(100)
