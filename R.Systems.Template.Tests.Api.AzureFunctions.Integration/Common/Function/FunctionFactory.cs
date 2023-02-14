@@ -2,7 +2,6 @@
 using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Npgsql;
 using R.Systems.Template.Api.AzureFunctions;
 using R.Systems.Template.Infrastructure.Db.Common.Options;
@@ -32,7 +31,7 @@ public class FunctionFactory<TDbInitializer> : IAsyncLifetime
     {
         await _dbContainer.StartAsync();
         Services = new FunctionHostBuilder().WithAppConfiguration(SetDatabaseConnectionString).Build().Services;
-        await InitializeDatabaseAsync();
+        await InitializeDatabaseAsync(_dbContainer.ConnectionString);
     }
 
     public async Task DisposeAsync()
@@ -51,9 +50,9 @@ public class FunctionFactory<TDbInitializer> : IAsyncLifetime
         );
     }
 
-    private async Task InitializeDatabaseAsync()
+    private async Task InitializeDatabaseAsync(string connectionString)
     {
-        await using NpgsqlDataSource dataSource = NpgsqlDataSource.Create(_dbContainer.ConnectionString);
+        await using NpgsqlDataSource dataSource = NpgsqlDataSource.Create(connectionString);
         await using NpgsqlConnection connection = await dataSource.OpenConnectionAsync();
         await new TDbInitializer().InitializeAsync(connection);
     }

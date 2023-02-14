@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
@@ -17,11 +16,9 @@ public class GetCompanyTests
 {
     public GetCompanyTests(FunctionFactory<SampleDataDbInitializer> functionFactory)
     {
-        Mapper = functionFactory.Services!.GetRequiredService<IMapper>();
         Mediator = functionFactory.Services!.GetRequiredService<ISender>();
     }
 
-    private IMapper Mapper { get; }
     private ISender Mediator { get; }
 
     [Fact]

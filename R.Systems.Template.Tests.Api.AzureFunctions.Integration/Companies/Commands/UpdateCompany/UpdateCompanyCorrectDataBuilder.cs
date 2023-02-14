@@ -4,7 +4,7 @@ using R.Systems.Template.Tests.Api.AzureFunctions.Integration.Common.Db;
 
 namespace R.Systems.Template.Tests.Api.AzureFunctions.Integration.Companies.Commands.UpdateCompany;
 
-internal static class UpdateEmployeeCorrectDataBuilder
+internal static class UpdateCompanyCorrectDataBuilder
 {
     public static IEnumerable<object[]> Build()
     {

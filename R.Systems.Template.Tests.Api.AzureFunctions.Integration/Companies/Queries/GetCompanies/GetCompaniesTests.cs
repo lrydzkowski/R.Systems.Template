@@ -51,7 +51,7 @@ public class GetCompaniesTests
         );
         GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery { ListParameters = listParameters });
 
-        result.Should().BeEquivalentTo(expectedResult);
+        result.Should().BeEquivalentTo(expectedResult, options => options.WithStrictOrderingFor(x => x.Companies.Data));
     }
 
     [Theory]
@@ -87,7 +87,7 @@ public class GetCompaniesTests
         );
         GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery { ListParameters = listParameters });
 
-        result.Should().BeEquivalentTo(expectedResult);
+        result.Should().BeEquivalentTo(expectedResult, options => options.WithStrictOrderingFor(x => x.Companies.Data));
     }
 
     [Theory]
@@ -121,7 +121,7 @@ public class GetCompaniesTests
         );
         GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery { ListParameters = listParameters });
 
-        result.Should().BeEquivalentTo(expectedResult);
+        result.Should().BeEquivalentTo(expectedResult, options => options.WithStrictOrderingFor(x => x.Companies.Data));
     }
 
     [Theory]
@@ -155,7 +155,7 @@ public class GetCompaniesTests
         );
         GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery { ListParameters = listParameters });
 
-        result.Should().BeEquivalentTo(expectedResult);
+        result.Should().BeEquivalentTo(expectedResult, options => options.WithStrictOrderingFor(x => x.Companies.Data));
     }
 
     [Fact]
@@ -196,6 +196,6 @@ public class GetCompaniesTests
         );
         GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery { ListParameters = listParameters });
 
-        result.Should().BeEquivalentTo(expectedResult);
+        result.Should().BeEquivalentTo(expectedResult, options => options.WithStrictOrderingFor(x => x.Companies.Data));
     }
 }

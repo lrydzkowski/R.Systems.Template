@@ -32,32 +32,4 @@ internal static class ValidationFailureBuilder
             ErrorCode = "MaximumLengthValidator"
         };
     }
-
-    public static ValidationFailure BuildExactLengthFieldValidationError(
-        string fieldName,
-        int expectedLength,
-        int enteredLength,
-        string? fieldNameInMsg = null
-    )
-    {
-        fieldNameInMsg ??= fieldName;
-
-        return new ValidationFailure()
-        {
-            PropertyName = $"{fieldName}",
-            ErrorMessage =
-                $"'{fieldNameInMsg}' must be {expectedLength} characters in length. You entered {enteredLength} characters.",
-            ErrorCode = ""
-        };
-    }
-
-    public static ValidationFailure BuildEmailIsNotValidValidationError()
-    {
-        return new ValidationFailure()
-        {
-            PropertyName = "Email",
-            ErrorMessage = "'Email' is not a valid email address.",
-            ErrorCode = ""
-        };
-    }
 }

@@ -60,7 +60,7 @@ public class UpdateCompanyTests
     }
 
     [Theory]
-    [MemberData(nameof(UpdateEmployeeCorrectDataBuilder.Build), MemberType = typeof(UpdateEmployeeCorrectDataBuilder))]
+    [MemberData(nameof(UpdateCompanyCorrectDataBuilder.Build), MemberType = typeof(UpdateCompanyCorrectDataBuilder))]
     public async Task UpdateCompany_ShouldUpdateCompany_WhenDataIsCorrect(
         int id,
         int companyId,
