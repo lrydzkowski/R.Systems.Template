@@ -12,7 +12,10 @@ namespace R.Systems.Template.Tests.Api.AzureFunctions.Integration.Common.Functio
 public class FunctionFactory<TDbInitializer> : IAsyncLifetime
     where TDbInitializer : DbInitializerBase, new()
 {
+    // TODO: https://github.com/testcontainers/testcontainers-dotnet/issues/750#issuecomment-1412257694
+#pragma warning disable CS0618
     private readonly PostgreSqlTestcontainer _dbContainer = new TestcontainersBuilder<PostgreSqlTestcontainer>()
+#pragma warning restore CS0618
         .WithDatabase(
             new PostgreSqlTestcontainerConfiguration
             {
