@@ -35,4 +35,7 @@
   <ItemGroup>
     <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="R.Systems.Template.Tests.Api.AzureFunctions.Integration" />
+  </ItemGroup>
 </Project>

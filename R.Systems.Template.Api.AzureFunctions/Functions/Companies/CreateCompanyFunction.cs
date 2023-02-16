@@ -16,8 +16,8 @@ internal class CreateCompanyFunction : FunctionBase<CreateCompanyFunction>
 {
     public CreateCompanyFunction(
         ILogger<CreateCompanyFunction> logger,
-        RequestPayloadSerializer requestPayloadSerializer,
-        HttpResponseBuilder httpResponseBuilder,
+        IRequestPayloadSerializer requestPayloadSerializer,
+        IHttpResponseBuilder httpResponseBuilder,
         ISender mediator,
         IMapper mapper
     ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator, mapper)

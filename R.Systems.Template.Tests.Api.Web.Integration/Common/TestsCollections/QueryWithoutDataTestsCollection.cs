@@ -7,5 +7,5 @@ namespace R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
 public class QueryWithoutDataTestsCollection
     : ICollectionFixture<WebApiFactoryWithDb<NoDataDbInitializer>>
 {
-    public const string CollectionName = "QueryWithoutDataTests";
+    public const string CollectionName = "WebApiQueryWithoutDataTests";
 }
