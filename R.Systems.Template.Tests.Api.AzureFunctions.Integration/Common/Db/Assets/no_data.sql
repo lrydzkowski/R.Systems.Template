@@ -1,6 +1,0 @@
-﻿START TRANSACTION;
-
-DELETE FROM employee;
-DELETE FROM company;
-
-COMMIT;
