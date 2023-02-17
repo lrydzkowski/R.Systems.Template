@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Common\Db\Assets\no_data.sql" />
+    <None Remove="Common\Db\Assets\sample_data.sql" />
+    <None Remove="Common\Db\Assets\schema.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Common\Db\Assets\no_data.sql" />
+    <EmbeddedResource Include="Common\Db\Assets\sample_data.sql" />
+    <EmbeddedResource Include="Common\Db\Assets\schema.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="34.0.2" />
+    <PackageReference Include="FluentAssertions" Version="6.10.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+    <PackageReference Include="Testcontainers" Version="2.4.0" />
+    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Infrastructure.Azure\R.Systems.Template.Infrastructure.Azure.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj" />
+  </ItemGroup>
+
+</Project>
