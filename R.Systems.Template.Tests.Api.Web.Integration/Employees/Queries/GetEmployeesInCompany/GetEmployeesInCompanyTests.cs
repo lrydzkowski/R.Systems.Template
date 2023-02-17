@@ -119,10 +119,10 @@ public class GetEmployeesInCompanyTests
     {
         int companyId = IdGenerator.GetCompanyId(2);
         IQueryable<Employee> expectedEmployees = EmployeesSampleData.Employees
-            .Where(x => x.CompanyId == companyId)
             .Where(
-                x => x.FirstName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
-                     || x.LastName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
+                x => x.CompanyId == companyId
+                     && (x.FirstName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
+                         || x.LastName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase))
             )
             .AsQueryable();
         ListInfo<Employee> expectedResponse = new()
