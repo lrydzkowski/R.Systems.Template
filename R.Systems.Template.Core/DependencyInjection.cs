@@ -4,10 +4,6 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Core.Common.Validation;
-using R.Systems.Template.Core.Companies.Commands.CreateCompany;
-using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
-using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
-using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 
 namespace R.Systems.Template.Core;
 
@@ -17,7 +13,7 @@ public static class DependencyInjection
     {
         services.AddMediatR();
         services.AddAutoMapper(typeof(DependencyInjection));
-        services.AddValidators();
+        services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
     }
 
     public static void ConfigureOptionsWithValidation<TOptions, TValidator>(
@@ -64,14 +60,5 @@ public static class DependencyInjection
     {
         services.AddMediatR(typeof(DependencyInjection).Assembly);
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-    }
-
-    private static void AddValidators(this IServiceCollection services)
-    {
-        services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
-        services.AddScoped<IValidator<CreateCompanyCommand>, CreateCompanyCommandValidator>();
-        services.AddScoped<IValidator<UpdateCompanyCommand>, UpdateCompanyCommandValidator>();
-        services.AddScoped<IValidator<CreateEmployeeCommand>, CreateEmployeeCommandValidator>();
-        services.AddScoped<IValidator<UpdateEmployeeCommand>, UpdateEmployeeCommandValidator>();
     }
 }

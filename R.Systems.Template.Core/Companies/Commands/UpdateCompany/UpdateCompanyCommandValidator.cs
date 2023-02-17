@@ -2,7 +2,7 @@
 
 namespace R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 
-internal class UpdateCompanyCommandValidator : AbstractValidator<UpdateCompanyCommand>
+public class UpdateCompanyCommandValidator : AbstractValidator<UpdateCompanyCommand>
 {
     public UpdateCompanyCommandValidator()
     {

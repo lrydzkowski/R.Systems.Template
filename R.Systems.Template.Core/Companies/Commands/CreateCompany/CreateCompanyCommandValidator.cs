@@ -2,7 +2,7 @@
 
 namespace R.Systems.Template.Core.Companies.Commands.CreateCompany;
 
-internal class CreateCompanyCommandValidator : AbstractValidator<CreateCompanyCommand>
+public class CreateCompanyCommandValidator : AbstractValidator<CreateCompanyCommand>
 {
     public CreateCompanyCommandValidator()
     {

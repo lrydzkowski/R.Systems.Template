@@ -2,7 +2,7 @@
 
 namespace R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 
-internal class CreateEmployeeCommandValidator : AbstractValidator<CreateEmployeeCommand>
+public class CreateEmployeeCommandValidator : AbstractValidator<CreateEmployeeCommand>
 {
     public CreateEmployeeCommandValidator()
     {

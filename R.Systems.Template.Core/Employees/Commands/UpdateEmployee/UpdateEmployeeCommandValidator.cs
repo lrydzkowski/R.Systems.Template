@@ -2,7 +2,7 @@
 
 namespace R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 
-internal class UpdateEmployeeCommandValidator : AbstractValidator<UpdateEmployeeCommand>
+public class UpdateEmployeeCommandValidator : AbstractValidator<UpdateEmployeeCommand>
 {
     public UpdateEmployeeCommandValidator()
     {
