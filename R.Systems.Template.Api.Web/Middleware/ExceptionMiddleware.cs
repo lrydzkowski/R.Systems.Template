@@ -28,7 +28,7 @@ public class ExceptionMiddleware
         }
         catch (Exception exception)
         {
-            _logger.LogError($"Something went wrong: {exception}");
+            _logger.LogError("Something went wrong: {ExceptionMessage}", exception.Message);
             HandleException(httpContext);
         }
     }

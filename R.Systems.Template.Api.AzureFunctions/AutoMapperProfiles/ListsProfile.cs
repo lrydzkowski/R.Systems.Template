@@ -42,12 +42,10 @@ public class ListsProfile : Profile
 
     private SortingOrder MapToSortingOrder(string sortingOrder)
     {
-        switch (sortingOrder)
+        return sortingOrder switch
         {
-            case "desc":
-                return SortingOrder.Descending;
-            default:
-                return SortingOrder.Ascending;
-        }
+            "desc" => SortingOrder.Descending,
+            _ => SortingOrder.Ascending
+        };
     }
 }
