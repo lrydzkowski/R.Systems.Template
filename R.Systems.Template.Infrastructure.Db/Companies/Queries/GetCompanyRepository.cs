@@ -13,7 +13,7 @@ internal class GetCompanyRepository : IGetCompanyRepository
 
     private AppDbContext DbContext { get; }
 
-    public async Task<Company?> GetCompanyAsync(int companyId)
+    public async Task<Company?> GetCompanyAsync(int companyId, CancellationToken cancellationToken)
     {
         return await DbContext.Companies.AsNoTracking()
             .Where(company => company.Id == companyId)
@@ -34,6 +34,6 @@ internal class GetCompanyRepository : IGetCompanyRepository
                         .ToList()
                 }
             )
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

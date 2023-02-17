@@ -38,10 +38,14 @@ public class EmployeeInCompanyController : ControllerBase
     [SwaggerResponse(statusCode: 404, description: "Employee doesn't exist.")]
     [SwaggerResponse(statusCode: 500)]
     [HttpGet("{companyId}/employees/{employeeId}", Name = "GetEmployeeInCompany")]
-    public async Task<IActionResult> GetEmployeeInCompany(int companyId, int employeeId)
+    public async Task<IActionResult> GetEmployeeInCompany(
+        int companyId,
+        int employeeId,
+        CancellationToken cancellationToken
+    )
     {
         GetEmployeeQuery query = new() { CompanyId = companyId, EmployeeId = employeeId };
-        GetEmployeeResult result = await Mediator.Send(query);
+        GetEmployeeResult result = await Mediator.Send(query, cancellationToken);
         if (result.Employee == null)
         {
             return NotFound(
@@ -67,11 +71,16 @@ public class EmployeeInCompanyController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 500)]
     [HttpGet("{companyId}/employees", Name = "GetEmployeesInCompany")]
-    public async Task<IActionResult> GetEmployeesInCompany([FromQuery] ListRequest listRequest, int companyId)
+    public async Task<IActionResult> GetEmployeesInCompany(
+        [FromQuery] ListRequest listRequest,
+        int companyId,
+        CancellationToken cancellationToken
+    )
     {
         ListParameters listParameters = Mapper.Map<ListParameters>(listRequest);
         GetEmployeesResult result = await Mediator.Send(
-            new GetEmployeesQuery { ListParameters = listParameters, CompanyId = companyId }
+            new GetEmployeesQuery { ListParameters = listParameters, CompanyId = companyId },
+            cancellationToken
         );
 
         return Ok(result.Employees);

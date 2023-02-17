@@ -27,8 +27,8 @@ public class GetEmployeeQueryHandler : IRequestHandler<GetEmployeeQuery, GetEmpl
     public async Task<GetEmployeeResult> Handle(GetEmployeeQuery query, CancellationToken cancellationToken)
     {
         Employee? employee = query.CompanyId == null
-            ? await GetEmployeeRepository.GetEmployeeAsync(query.EmployeeId)
-            : await GetEmployeeRepository.GetEmployeeAsync((int)query.CompanyId, query.EmployeeId);
+            ? await GetEmployeeRepository.GetEmployeeAsync(query.EmployeeId, cancellationToken)
+            : await GetEmployeeRepository.GetEmployeeAsync((int)query.CompanyId, query.EmployeeId, cancellationToken);
 
         return new GetEmployeeResult
         {

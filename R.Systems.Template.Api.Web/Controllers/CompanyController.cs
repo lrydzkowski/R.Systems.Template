@@ -40,10 +40,10 @@ public class CompanyController : ControllerBase
     [SwaggerResponse(statusCode: 404, description: "Company doesn't exist.")]
     [SwaggerResponse(statusCode: 500)]
     [HttpGet("{companyId}", Name = "GetCompany")]
-    public async Task<IActionResult> GetCompany(int companyId)
+    public async Task<IActionResult> GetCompany(int companyId, CancellationToken cancellationToken)
     {
         GetCompanyQuery query = new() { CompanyId = companyId };
-        GetCompanyResult result = await Mediator.Send(query);
+        GetCompanyResult result = await Mediator.Send(query, cancellationToken);
         if (result.Company == null)
         {
             return NotFound(
@@ -69,10 +69,16 @@ public class CompanyController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 500)]
     [HttpGet]
-    public async Task<IActionResult> GetCompanies([FromQuery] ListRequest listRequest)
+    public async Task<IActionResult> GetCompanies(
+        [FromQuery] ListRequest listRequest,
+        CancellationToken cancellationToken
+    )
     {
         ListParameters listParameters = Mapper.Map<ListParameters>(listRequest);
-        GetCompaniesResult result = await Mediator.Send(new GetCompaniesQuery { ListParameters = listParameters });
+        GetCompaniesResult result = await Mediator.Send(
+            new GetCompaniesQuery { ListParameters = listParameters },
+            cancellationToken
+        );
 
         return Ok(result.Companies);
     }

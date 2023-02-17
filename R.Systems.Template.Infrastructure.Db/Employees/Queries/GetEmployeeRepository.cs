@@ -15,19 +15,23 @@ internal class GetEmployeeRepository : IGetEmployeeRepository
 
     private AppDbContext DbContext { get; }
 
-    public async Task<Employee?> GetEmployeeAsync(int employeeId)
+    public async Task<Employee?> GetEmployeeAsync(int employeeId, CancellationToken cancellationToken)
     {
-        return await GetEmployeeFromDbAsync(employeeEntity => employeeEntity.Id == employeeId);
+        return await GetEmployeeFromDbAsync(employeeEntity => employeeEntity.Id == employeeId, cancellationToken);
     }
 
-    public async Task<Employee?> GetEmployeeAsync(int companyId, int employeeId)
+    public async Task<Employee?> GetEmployeeAsync(int companyId, int employeeId, CancellationToken cancellationToken)
     {
         return await GetEmployeeFromDbAsync(
-            employeeEntity => employeeEntity.CompanyId == companyId && employeeEntity.Id == employeeId
+            employeeEntity => employeeEntity.CompanyId == companyId && employeeEntity.Id == employeeId,
+            cancellationToken
         );
     }
 
-    private async Task<Employee?> GetEmployeeFromDbAsync(Expression<Func<EmployeeEntity, bool>> wherePredicate)
+    private async Task<Employee?> GetEmployeeFromDbAsync(
+        Expression<Func<EmployeeEntity, bool>> wherePredicate,
+        CancellationToken cancellationToken
+    )
     {
         return await DbContext.Employees.AsNoTracking()
             .Where(wherePredicate)
@@ -40,6 +44,6 @@ internal class GetEmployeeRepository : IGetEmployeeRepository
                     CompanyId = employeeEntity.CompanyId
                 }
             )
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

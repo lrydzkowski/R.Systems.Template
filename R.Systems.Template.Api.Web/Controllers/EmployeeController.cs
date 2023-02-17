@@ -41,10 +41,10 @@ public class EmployeeController : ControllerBase
     [SwaggerResponse(statusCode: 404, description: "Employee doesn't exist.")]
     [SwaggerResponse(statusCode: 500)]
     [HttpGet("{employeeId}", Name = "GetEmployee")]
-    public async Task<IActionResult> GetEmployee(int employeeId)
+    public async Task<IActionResult> GetEmployee(int employeeId, CancellationToken cancellationToken)
     {
         GetEmployeeQuery query = new() { EmployeeId = employeeId };
-        GetEmployeeResult result = await Mediator.Send(query);
+        GetEmployeeResult result = await Mediator.Send(query, cancellationToken);
         if (result.Employee == null)
         {
             return NotFound(
@@ -70,10 +70,16 @@ public class EmployeeController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 500)]
     [HttpGet]
-    public async Task<IActionResult> GetEmployees([FromQuery] ListRequest listRequest)
+    public async Task<IActionResult> GetEmployees(
+        [FromQuery] ListRequest listRequest,
+        CancellationToken cancellationToken
+    )
     {
         ListParameters listParameters = Mapper.Map<ListParameters>(listRequest);
-        GetEmployeesResult result = await Mediator.Send(new GetEmployeesQuery { ListParameters = listParameters });
+        GetEmployeesResult result = await Mediator.Send(
+            new GetEmployeesQuery { ListParameters = listParameters },
+            cancellationToken
+        );
 
         return Ok(result.Employees);
     }

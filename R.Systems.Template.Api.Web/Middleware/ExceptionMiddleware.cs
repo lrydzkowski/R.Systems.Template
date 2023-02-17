@@ -26,6 +26,11 @@ public class ExceptionMiddleware
         {
             await HandleValidationExceptionAsync(httpContext, validationException);
         }
+        catch (OperationCanceledException)
+        {
+            _logger.LogWarning("Operation was cancelled");
+            HandleException(httpContext);
+        }
         catch (Exception exception)
         {
             _logger.LogError("Something went wrong: {ExceptionMessage}", exception.Message);
