@@ -39,18 +39,18 @@ internal class UpdateCompanyFunction : FunctionBase<UpdateCompanyFunction>
     [Function(nameof(UpdateCompany))]
     public async Task<HttpResponseData> UpdateCompany(
         [HttpTrigger(AuthorizationLevel.Function, "put", Route = "companies/{companyId:int}")]
-        HttpRequestData request,
+        HttpRequestData requestData,
         int companyId
     )
     {
         Logger.LogInformation($"C# Start processing {nameof(UpdateCompany)} function.");
 
-        UpdateCompanyCommand command = Mapper.Map<UpdateCompanyCommand>(
-            await RequestPayloadSerializer.DeserializeAsync<UpdateCompanyRequest>(request)
-        );
+        UpdateCompanyRequest? request =
+            await RequestPayloadSerializer.DeserializeAsync<UpdateCompanyRequest>(requestData);
+        UpdateCompanyCommand command = Mapper.Map<UpdateCompanyCommand>(request);
         command.CompanyId = companyId;
         UpdateCompanyResult result = await Mediator.Send(command);
 
-        return await HttpResponseBuilder.BuildAsync(request, result.Company);
+        return await HttpResponseBuilder.BuildAsync(requestData, result.Company);
     }
 }

@@ -26,12 +26,15 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
         {
             await next(context);
         }
-        catch (ValidationException validationException)
-        {
-            await HandleValidationExceptionAsync(context, validationException);
-        }
         catch (Exception exception)
         {
+            switch (exception.InnerException)
+            {
+                case ValidationException validationException:
+                    await HandleValidationExceptionAsync(context, validationException);
+                    return;
+            }
+
             _logger.LogError($"Something went wrong: {exception}");
             await HandleExceptionAsync(context);
         }
@@ -61,11 +64,12 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
 
     private async Task CreateResponse(FunctionContext context, HttpStatusCode statusCode, string? response = null)
     {
-        HttpRequestData? httpReqData = await context.GetHttpRequestDataAsync();
+        HttpRequestData? httpRequestData = await context.GetHttpRequestDataAsync();
 
-        if (httpReqData != null)
+        if (httpRequestData != null)
         {
-            HttpResponseData newHttpResponse = httpReqData.CreateResponse(statusCode);
+            HttpResponseData newHttpResponse = httpRequestData.CreateResponse(statusCode);
+            newHttpResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
             if (response != null)
             {
                 await newHttpResponse.WriteStringAsync(response);
@@ -88,9 +92,7 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
 
     private OutputBindingData<HttpResponseData>? GetHttpOutputBindingFromMultipleOutputBinding(FunctionContext context)
     {
-        OutputBindingData<HttpResponseData>? httpOutputBinding = context.GetOutputBindings<HttpResponseData>()
+        return context.GetOutputBindings<HttpResponseData>()
             .FirstOrDefault(b => b.BindingType == "http" && b.Name != "$return");
-
-        return httpOutputBinding;
     }
 }

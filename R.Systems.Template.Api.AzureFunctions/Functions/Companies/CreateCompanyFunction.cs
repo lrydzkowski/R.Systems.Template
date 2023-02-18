@@ -38,16 +38,16 @@ internal class CreateCompanyFunction : FunctionBase<CreateCompanyFunction>
     [Function(nameof(CreateCompany))]
     public async Task<HttpResponseData> CreateCompany(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "companies")]
-        HttpRequestData request
+        HttpRequestData requestData
     )
     {
         Logger.LogInformation($"C# Start processing {nameof(CreateCompany)} function.");
 
-        CreateCompanyCommand command = Mapper.Map<CreateCompanyCommand>(
-            await RequestPayloadSerializer.DeserializeAsync<CreateCompanyRequest>(request)
-        );
+        CreateCompanyRequest? request =
+            await RequestPayloadSerializer.DeserializeAsync<CreateCompanyRequest>(requestData);
+        CreateCompanyCommand command = Mapper.Map<CreateCompanyCommand>(request);
         CreateCompanyResult result = await Mediator.Send(command);
 
-        return await HttpResponseBuilder.BuildAsync(request, result.Company);
+        return await HttpResponseBuilder.BuildAsync(requestData, result.Company);
     }
 }
