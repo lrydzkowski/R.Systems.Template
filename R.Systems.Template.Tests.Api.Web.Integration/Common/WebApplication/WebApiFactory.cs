@@ -8,6 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Api.Web;
 using R.Systems.Template.Infrastructure.Db.Common.Options;
+using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
+using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAd;
+using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAdB2C;
+using R.Systems.Template.Tests.Api.Web.Integration.Options.ConnectionStrings;
 using RunMethodsSequentially;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
@@ -27,6 +31,9 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         .WithCleanUp(true)
         .Build();
 
+    private readonly List<IOptionsData> _defaultOptionsData = new()
+        { new AzureAdOptionsData(), new AzureAdB2COptionsData(), new ConnectionStringsOptionsData() };
+
     public async Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
@@ -39,7 +46,21 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureAppConfiguration((_, configBuilder) => SetDatabaseConnectionString(configBuilder));
+        builder.ConfigureAppConfiguration(
+            (_, configBuilder) =>
+            {
+                SetDefaultOptions(configBuilder);
+                SetDatabaseConnectionString(configBuilder);
+            }
+        );
+    }
+
+    private void SetDefaultOptions(IConfigurationBuilder configBuilder)
+    {
+        foreach (IOptionsData optionsData in _defaultOptionsData)
+        {
+            configBuilder.AddInMemoryCollection(optionsData.ConvertToInMemoryCollection());
+        }
     }
 
     private void SetDatabaseConnectionString(IConfigurationBuilder configBuilder)

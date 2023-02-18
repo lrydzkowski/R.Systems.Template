@@ -24,6 +24,10 @@ public static class DependencyInjection
             configuration,
             AzureAdOptions.Position
         );
+        services.ConfigureOptionsWithValidation<AzureAdB2COptions, AzureAdB2COptionsValidator>(
+            configuration,
+            AzureAdB2COptions.Position
+        );
     }
 
     private static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
