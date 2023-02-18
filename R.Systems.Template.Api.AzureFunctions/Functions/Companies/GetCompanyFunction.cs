@@ -40,13 +40,14 @@ internal class GetCompanyFunction : FunctionBase<GetCompanyFunction>
     public async Task<HttpResponseData> GetCompany(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies/{companyId:int}")]
         HttpRequestData request,
+        CancellationToken cancellationToken,
         int companyId
     )
     {
         Logger.LogInformation($"C# Start processing {nameof(GetCompany)} function.");
 
         GetCompanyQuery query = new() { CompanyId = companyId };
-        GetCompanyResult result = await Mediator.Send(query);
+        GetCompanyResult result = await Mediator.Send(query, cancellationToken);
         if (result.Company == null)
         {
             return await HttpResponseBuilder.BuildNotFoundAsync(

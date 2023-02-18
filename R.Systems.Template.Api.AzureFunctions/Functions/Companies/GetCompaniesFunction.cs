@@ -71,6 +71,7 @@ internal class GetCompaniesFunction : FunctionBase<GetCompaniesFunction>
     public async Task<HttpResponseData> GetCompanies(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies")]
         HttpRequestData request,
+        CancellationToken cancellationToken,
         int page = 1,
         int pageSize = 100,
         string? sortingFieldName = null,
@@ -91,7 +92,7 @@ internal class GetCompaniesFunction : FunctionBase<GetCompaniesFunction>
             }
         );
         GetCompaniesResult result =
-            await Mediator.Send(new GetCompaniesQuery { ListParameters = listParameters });
+            await Mediator.Send(new GetCompaniesQuery { ListParameters = listParameters }, cancellationToken);
 
         return await HttpResponseBuilder.BuildAsync(request, result.Companies);
     }
