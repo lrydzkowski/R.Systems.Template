@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,32 +26,7 @@ public static class DependencyInjection
         services.AddSingleton<IValidator<TOptions>, TValidator>();
         services.AddOptions<TOptions>()
             .Bind(configuration.GetSection(configurationPosition))
-            .Validate(
-                config =>
-                {
-                    ServiceProvider serviceProvider = services.BuildServiceProvider();
-                    using IServiceScope scope = serviceProvider.CreateScope();
-                    IValidator<TOptions>? validator = (IValidator<TOptions>?)scope.ServiceProvider.GetService(
-                        typeof(IValidator<TOptions>)
-                    );
-                    if (validator == null)
-                    {
-                        return true;
-                    }
-
-                    ValidationResult validationResult = validator.Validate(config);
-                    if (!validationResult.IsValid)
-                    {
-                        throw new ValidationException(
-                            "App settings -",
-                            validationResult.Errors,
-                            appendDefaultMessage: true
-                        );
-                    }
-
-                    return true;
-                }
-            )
+            .ValidateFluently()
             .ValidateOnStart();
     }
 

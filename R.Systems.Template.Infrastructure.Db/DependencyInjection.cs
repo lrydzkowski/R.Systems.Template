@@ -34,7 +34,6 @@ public static class DependencyInjection
 
     private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<ConnectionStringsOptions>(configuration.GetSection(ConnectionStringsOptions.Position));
         services.ConfigureOptionsWithValidation<ConnectionStringsOptions, ConnectionStringsOptionsValidator>(
             configuration,
             ConnectionStringsOptions.Position
