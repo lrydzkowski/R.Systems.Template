@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using R.Systems.Template.Infrastructure.Db;
-using R.Systems.Template.Infrastructure.Db.Common.Configurations;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
 
 namespace R.Systems.Template.Api.DataGeneratorCli.Services;
@@ -76,9 +75,7 @@ internal class CompanyService
 
     private List<EmployeeEntity> BuildEmployeeEntities(int numberOfEmployees, List<int> companiesIds)
     {
-        int employeeId = EmployeeConfiguration.FirstAvailableId;
-
-        return Enumerable.Range(employeeId, numberOfEmployees + employeeId)
+        return Enumerable.Range(1, numberOfEmployees)
             .Select(_ => BuildEmployeeEntityFaker(companiesIds).Generate())
             .ToList();
     }

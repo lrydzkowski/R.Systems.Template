@@ -18,10 +18,13 @@ public class GenerateCompaniesCommandTests : IClassFixture<ConsoleAppRunnerFacto
     [Fact]
     public async Task GenerateData_ShouldGenerateData_WhenCorrectArgumentArePassed()
     {
-        AppRunner appRunner = await ConsoleAppRunnerFactory.WithTestConsole(new TestConsole()).CreateAsync();
+        int numOfCompanies = 10;
+        int numOfEmployees = 20;
+        TestConsole testConsole = new();
+        AppRunner appRunner = await ConsoleAppRunnerFactory.WithTestConsole(testConsole).CreateAsync();
 
         AppRunnerResult generateResult = appRunner.RunInMem(
-            "generate companies --number-of-companies 10 --number-of-employees 20"
+            $"generate companies --number-of-companies {numOfCompanies} --number-of-employees {numOfEmployees}"
         );
 
         generateResult.ExitCode.Should().Be(0);
@@ -29,5 +32,10 @@ public class GenerateCompaniesCommandTests : IClassFixture<ConsoleAppRunnerFacto
         AppRunnerResult getResult = appRunner.RunInMem("get companies");
 
         getResult.ExitCode.Should().Be(0);
+
+        string? console = testConsole.Out.ToString();
+        List<string> consoleLines = console?.Split("\r\n").ToList() ?? new List<string>();
+
+        consoleLines.Should().HaveCount(numOfCompanies + numOfEmployees);
     }
 }

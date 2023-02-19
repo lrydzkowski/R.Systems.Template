@@ -13,5 +13,13 @@ internal class ConsoleSampleDataDbInitializer : IStartupServiceToRunSequentially
     {
         AppDbContext dbContext = scopedServices.GetRequiredService<AppDbContext>();
         await dbContext.Database.MigrateAsync();
+        await RemoveExistingDataAsync(dbContext);
+    }
+
+    private async Task RemoveExistingDataAsync(AppDbContext dbContext)
+    {
+        dbContext.RemoveRange(dbContext.Employees);
+        dbContext.RemoveRange(dbContext.Companies);
+        await dbContext.SaveChangesAsync();
     }
 }
