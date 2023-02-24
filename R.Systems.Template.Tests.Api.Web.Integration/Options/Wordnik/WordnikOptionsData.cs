@@ -8,7 +8,7 @@ internal class WordnikOptionsData : WordnikOptions, IOptionsData
     public WordnikOptionsData()
     {
         ApiBaseUrl = "https://test.com";
-        DefinitionsUrl = "/definitions";
+        DefinitionsUrl = "/words/{word}/definitions";
         ApiKey = "rgerg34tg34gbrrfb";
     }
 
