@@ -110,16 +110,30 @@ public class GetDefinitionsTests
     }
 
     [Fact]
-    public Task GetDefinitions_ShouldReturnInternalServerError_WhenWordnikApiReturnsError()
+    public async Task GetDefinitions_ShouldReturnInternalServerError_WhenWordnikApiReturnsError()
     {
-        return Task.CompletedTask;
+        string word = "penalty";
+        PrepareWireMock<object?>(word, HttpStatusCode.InternalServerError, null);
+        RestClient restClient = WebApiFactory.WithWordnikApiBaseUrl(WireMockServer.Url).CreateRestClient();
+
+        RestRequest restRequest = new(BuildUrl(word));
+        RestResponse<List<Definition>> response = await restClient.ExecuteAsync<List<Definition>>(restRequest);
+
+        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        response.Data.Should().BeNull();
     }
 
-    private void PrepareWireMock<T>(string word, HttpStatusCode expectedStatusCode, T response)
+    private void PrepareWireMock<T>(string word, HttpStatusCode expectedStatusCode, T? response)
     {
         WireMockServer.Reset();
+        IResponseBuilder responseBuilder = Response.Create().WithStatusCode(expectedStatusCode);
+        if (response != null)
+        {
+            responseBuilder.WithBodyAsJson(response);
+        }
+
         WireMockServer.Given(Request.Create().WithPath(BuildUrl(word)).UsingGet())
-            .RespondWith(Response.Create().WithStatusCode(expectedStatusCode).WithBodyAsJson(response!));
+            .RespondWith(responseBuilder);
     }
 
     private string BuildUrl(string word)
