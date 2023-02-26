@@ -15,4 +15,9 @@
     <InternalsVisibleTo Include="R.Systems.Template.Tests.Api.Web.Integration" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Polly" Version="7.2.3" />
+    <PackageReference Include="Polly.Caching.Memory" Version="3.0.2" />
+  </ItemGroup>
+
 </Project>

@@ -8,8 +8,6 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using R.Systems.Template.Api.Web;
 using R.Systems.Template.Tests.Api.Web.Integration.Words.Common;
-using WireMock.RequestBuilders;
-using WireMock.ResponseBuilders;
 using WireMock.Server;
 using R.Systems.Template.Core.Words.Queries.GetDefinitions;
 using R.Systems.Template.Infrastructure.Wordnik.Common.Models;
@@ -37,8 +35,9 @@ public class GetDefinitionsTests
     public async Task GetDefinitions_ShouldReturnEmptyList_WhenDefinitionsNotExist()
     {
         string word = "penalty";
-        PrepareWireMock(
-            word,
+        string url = BuildUrl(word);
+        WireMockServer.PrepareWireMock(
+            url,
             HttpStatusCode.NotFound,
             new ErrorResponse
             {
@@ -49,7 +48,7 @@ public class GetDefinitionsTests
         );
         RestClient restClient = WebApiFactory.WithWordnikApiBaseUrl(WireMockServer.Url).CreateRestClient();
 
-        RestRequest restRequest = new(BuildUrl(word));
+        RestRequest restRequest = new(url);
         RestResponse<List<Definition>> response = await restClient.ExecuteAsync<List<Definition>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -60,6 +59,7 @@ public class GetDefinitionsTests
     public async Task GetDefinitions_ShouldReturnDefinitions_WhenDefinitionsExist()
     {
         string word = "penalty";
+        string url = BuildUrl(word);
         List<Definition> expectedResponse = new()
         {
             new Definition
@@ -99,10 +99,10 @@ public class GetDefinitionsTests
                 }
             }
         };
-        PrepareWireMock(word, HttpStatusCode.OK, definitionDto);
+        WireMockServer.PrepareWireMock(url, HttpStatusCode.OK, definitionDto);
         RestClient restClient = WebApiFactory.WithWordnikApiBaseUrl(WireMockServer.Url).CreateRestClient();
 
-        RestRequest restRequest = new(BuildUrl(word));
+        RestRequest restRequest = new(url);
         RestResponse<List<Definition>> response = await restClient.ExecuteAsync<List<Definition>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -113,27 +113,104 @@ public class GetDefinitionsTests
     public async Task GetDefinitions_ShouldReturnInternalServerError_WhenWordnikApiReturnsError()
     {
         string word = "penalty";
-        PrepareWireMock<object?>(word, HttpStatusCode.InternalServerError, null);
+        string url = BuildUrl(word);
+        WireMockServer.PrepareWireMock<object?>(url, HttpStatusCode.InternalServerError, null);
         RestClient restClient = WebApiFactory.WithWordnikApiBaseUrl(WireMockServer.Url).CreateRestClient();
 
-        RestRequest restRequest = new(BuildUrl(word));
+        RestRequest restRequest = new(url);
         RestResponse<List<Definition>> response = await restClient.ExecuteAsync<List<Definition>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
         response.Data.Should().BeNull();
     }
 
-    private void PrepareWireMock<T>(string word, HttpStatusCode expectedStatusCode, T? response)
+    [Fact]
+    public async Task GetDefinitions_ShouldReturnDefinitions_WhenRetryPolicySuccess()
     {
-        WireMockServer.Reset();
-        IResponseBuilder responseBuilder = Response.Create().WithStatusCode(expectedStatusCode);
-        if (response != null)
+        string word = "oblivious";
+        string url = BuildUrl(word);
+        List<Definition> expectedResponse = new()
         {
-            responseBuilder.WithBodyAsJson(response);
-        }
+            new Definition
+            {
+                Word = word,
+                Text = "A punishment imposed for a violation of law.",
+                ExampleUses = new List<string>()
+            }
+        };
+        List<DefinitionDto> definitionDto = new()
+        {
+            new DefinitionDto
+            {
+                Word = word,
+                Text = expectedResponse[0].Text,
+                ExampleUses = new List<DefinitionExampleUsesDto>()
+            }
+        };
+        WireMockServer.PrepareWireMockScenario<List<DefinitionDto>>(
+            url,
+            "retryPolicy",
+            new List<ApiResponse<List<DefinitionDto>>>
+            {
+                new(HttpStatusCode.InternalServerError, null),
+                new(HttpStatusCode.RequestTimeout, null),
+                new(HttpStatusCode.RequestTimeout, null),
+                new(HttpStatusCode.OK, definitionDto)
+            }
+        );
+        RestClient restClient = WebApiFactory.WithWordnikApiBaseUrl(WireMockServer.Url).CreateRestClient();
 
-        WireMockServer.Given(Request.Create().WithPath(BuildUrl(word)).UsingGet())
-            .RespondWith(responseBuilder);
+        RestRequest restRequest = new(url);
+        RestResponse<List<Definition>> response = await restClient.ExecuteAsync<List<Definition>>(restRequest);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.Data.Should().BeEquivalentTo(expectedResponse, options => options.WithStrictOrdering());
+    }
+
+    [Fact]
+    public async Task GetDefinitions_ShouldReturnDefinitionsFromCache_WhenGetDefinitionsForTheSecondTime()
+    {
+        string word = "penalty";
+        string url = BuildUrl(word);
+        List<Definition> expectedResponse = new()
+        {
+            new Definition
+            {
+                Word = word,
+                Text = "A punishment imposed for a violation of law.",
+                ExampleUses = new List<string>()
+            }
+        };
+        List<DefinitionDto> definitionDto = new()
+        {
+            new DefinitionDto
+            {
+                Word = word,
+                Text = expectedResponse[0].Text,
+                ExampleUses = new List<DefinitionExampleUsesDto>()
+            }
+        };
+        WireMockServer.PrepareWireMockScenario<List<DefinitionDto>>(
+            url,
+            "cachePolicy",
+            new List<ApiResponse<List<DefinitionDto>>>
+            {
+                new(HttpStatusCode.OK, definitionDto),
+                new(HttpStatusCode.RequestTimeout, null)
+            }
+        );
+        RestClient restClient = WebApiFactory.WithWordnikApiBaseUrl(WireMockServer.Url).CreateRestClient();
+
+        RestRequest restRequest = new(url);
+        RestResponse<List<Definition>> firstResponse = await restClient.ExecuteAsync<List<Definition>>(restRequest);
+
+        firstResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        firstResponse.Data.Should().BeEquivalentTo(expectedResponse, options => options.WithStrictOrdering());
+
+        RestResponse<List<Definition>> secondResponse = await restClient.ExecuteAsync<List<Definition>>(restRequest);
+
+        secondResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        secondResponse.Data.Should().BeEquivalentTo(expectedResponse, options => options.WithStrictOrdering());
     }
 
     private string BuildUrl(string word)
@@ -141,3 +218,5 @@ public class GetDefinitionsTests
         return _endpointUrlPath.Replace("{word}", word);
     }
 }
+
+internal record ApiResponse<T>(HttpStatusCode HttpStatusCode, T? Data);

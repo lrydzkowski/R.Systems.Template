@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Polly.Caching;
+using Polly.Caching.Memory;
 using R.Systems.Template.Core;
 using R.Systems.Template.Core.Words.Queries.GetDefinitions;
 using R.Systems.Template.Infrastructure.Wordnik.Common.Api;
@@ -15,7 +17,10 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
-        services.AddAutoMapper(typeof(DependencyInjection)).ConfigureOptions(configuration).ConfigureServices();
+        services.AddAutoMapper(typeof(DependencyInjection))
+            .ConfigureOptions(configuration)
+            .AddMemoryCache()
+            .ConfigureServices();
     }
 
     private static IServiceCollection ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
@@ -30,8 +35,9 @@ public static class DependencyInjection
 
     private static IServiceCollection ConfigureServices(this IServiceCollection services)
     {
-        services.AddSingleton<WordApi>();
-        services.AddSingleton<IGetDefinitionsRepository, GetDefinitionsRepository>();
+        services.AddSingleton<WordApi>()
+            .AddSingleton<IGetDefinitionsRepository, GetDefinitionsRepository>()
+            .AddSingleton<IAsyncCacheProvider, MemoryCacheProvider>();
 
         return services;
     }
