@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using R.Systems.Template.Infrastructure.Db;
-using R.Systems.Template.Infrastructure.Db.Common.Entities;
+using R.Systems.Template.Infrastructure.Db.Postgres;
+using R.Systems.Template.Infrastructure.Db.Postgres.Common.Entities;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 using RunMethodsSequentially;
 

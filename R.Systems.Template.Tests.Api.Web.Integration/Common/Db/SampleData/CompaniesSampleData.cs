@@ -1,5 +1,5 @@
 ﻿using R.Systems.Template.Core.Common.Domain;
-using R.Systems.Template.Infrastructure.Db.Common.Entities;
+using R.Systems.Template.Infrastructure.Db.Postgres.Common.Entities;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 

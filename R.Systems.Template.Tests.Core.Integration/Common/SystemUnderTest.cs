@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
-using R.Systems.Template.Infrastructure.Db;
-using R.Systems.Template.Infrastructure.Db.Common.Options;
+using R.Systems.Template.Infrastructure.Db.Postgres;
+using R.Systems.Template.Infrastructure.Db.Postgres.Common.Options;
 using R.Systems.Template.Tests.Core.Integration.Common.Db;
 
 namespace R.Systems.Template.Tests.Core.Integration.Common;
@@ -50,7 +50,7 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
 
         IServiceCollection services = new ServiceCollection();
         services.ConfigureCoreServices();
-        services.ConfigureInfrastructureDbServices(configuration);
+        services.ConfigureInfrastructureDbPostgresServices(configuration);
         services.ConfigureInfrastructureAzureServices(configuration);
         configureServices?.Invoke(services);
 
