@@ -36,16 +36,14 @@ public class GetDefinitionsTests
     {
         string word = "penalty";
         string url = BuildUrl(word);
-        WireMockServer.PrepareWireMock(
-            url,
-            HttpStatusCode.NotFound,
-            new ErrorResponse
-            {
-                StatusCode = 404,
-                Error = "Not Found",
-                Message = "Not found"
-            }
-        );
+        HttpStatusCode httpStatusCode = HttpStatusCode.NotFound;
+        ErrorResponse apiResponse = new()
+        {
+            StatusCode = 404,
+            Error = "Not Found",
+            Message = "Not found"
+        };
+        WireMockServer.PrepareWireMock(url, httpStatusCode, apiResponse);
         RestClient restClient = WebApiFactory.WithWordnikApiBaseUrl(WireMockServer.Url).CreateRestClient();
 
         RestRequest restRequest = new(url);
@@ -147,9 +145,8 @@ public class GetDefinitionsTests
                 ExampleUses = new List<DefinitionExampleUsesDto>()
             }
         };
-        WireMockServer.PrepareWireMockScenario<List<DefinitionDto>>(
+        WireMockServer.PrepareWireMockScenario(
             url,
-            "retryPolicy",
             new List<ApiResponse<List<DefinitionDto>>>
             {
                 new(HttpStatusCode.InternalServerError, null),
@@ -190,9 +187,8 @@ public class GetDefinitionsTests
                 ExampleUses = new List<DefinitionExampleUsesDto>()
             }
         };
-        WireMockServer.PrepareWireMockScenario<List<DefinitionDto>>(
+        WireMockServer.PrepareWireMockScenario(
             url,
-            "cachePolicy",
             new List<ApiResponse<List<DefinitionDto>>>
             {
                 new(HttpStatusCode.OK, definitionDto),

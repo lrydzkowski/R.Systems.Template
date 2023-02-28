@@ -16,9 +16,9 @@ internal class GetDefinitionsRepository : IGetDefinitionsRepository
     private WordApi WordApi { get; }
     private IMapper Mapper { get; }
 
-    public async Task<List<Definition>> GetDefinitionsAsync(string word)
+    public async Task<List<Definition>> GetDefinitionsAsync(string word, CancellationToken cancellationToken)
     {
-        List<DefinitionDto> definitionsDto = await WordApi.GetDefinitionsAsync(word);
+        List<DefinitionDto> definitionsDto = await WordApi.GetDefinitionsAsync(word, cancellationToken);
 
         return Mapper.Map<List<Definition>>(definitionsDto);
     }

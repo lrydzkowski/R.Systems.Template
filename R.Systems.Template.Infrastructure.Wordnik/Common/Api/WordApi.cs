@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
@@ -13,6 +14,8 @@ namespace R.Systems.Template.Infrastructure.Wordnik.Common.Api;
 
 internal class WordApi
 {
+    public const int RetryCount = 3;
+
     private readonly string _sourceDictionaries = "ahd-5";
 
     public WordApi(ILogger<WordApi> logger, IAsyncCacheProvider asyncCacheProvider, IOptions<WordnikOptions> options)
@@ -24,13 +27,12 @@ internal class WordApi
         RestClient.Options.ThrowOnDeserializationError = false;
     }
 
-
     private ILogger<WordApi> Logger { get; }
     private IAsyncCacheProvider AsyncCacheProvider { get; }
     private WordnikOptions WordnikOptions { get; }
     private RestClient RestClient { get; init; }
 
-    public async Task<List<DefinitionDto>> GetDefinitionsAsync(string word)
+    public async Task<List<DefinitionDto>> GetDefinitionsAsync(string word, CancellationToken cancellationToken)
     {
         RestRequest restRequest = new(WordnikOptions.DefinitionsUrl.Replace("{word}", word));
         restRequest.AddQueryParameter("limit", "10");
@@ -40,7 +42,11 @@ internal class WordApi
         restRequest.AddQueryParameter("includeTags", false);
         restRequest.AddQueryParameter("api_key", WordnikOptions.ApiKey);
 
-        RestResponse<List<DefinitionDto>?> response = await ExecuteWithPoliciesAsync(restRequest, word);
+        RestResponse<List<DefinitionDto>?> response = await ExecuteWithPoliciesAsync(
+            restRequest,
+            word,
+            cancellationToken
+        );
 
         if (response.StatusCode == HttpStatusCode.NotFound)
         {
@@ -54,15 +60,17 @@ internal class WordApi
 
     private async Task<RestResponse<List<DefinitionDto>?>> ExecuteWithPoliciesAsync(
         RestRequest restRequest,
-        string word
+        string word,
+        CancellationToken cancellationToken
     )
     {
         AsyncPolicyWrap<RestResponse<List<DefinitionDto>?>> policyWrap =
             Policy.WrapAsync(DefineCachePolicy(), DefineRetryPolicy());
 
         return await policyWrap.ExecuteAsync(
-            async (_) => await RestClient.ExecuteAsync<List<DefinitionDto>?>(restRequest),
-            new Context($"definitions_{word}")
+            async (_, c) => await RestClient.ExecuteAsync<List<DefinitionDto>?>(restRequest, c),
+            new Context($"definitions_{word}"),
+            cancellationToken
         );
     }
 
@@ -79,9 +87,9 @@ internal class WordApi
         return Policy
             .HandleResult<RestResponse<List<DefinitionDto>?>>(x => !x.IsSuccessful)
             .WaitAndRetryAsync(
-                3,
-                x => TimeSpan.FromSeconds(3),
-                (response, timeSpan, retryCount, context) =>
+                RetryCount,
+                _ => TimeSpan.FromSeconds(3),
+                (response, timeSpan, retryCount, _) =>
                 {
                     Logger.LogWarning(
                         "Wordnik API request failed. HttpStatusCode = {StatusCode}. Waiting {TimeSpan} seconds before retry. Number attempt {RetryCount}. Uri = {Uri}. RequestResponse = {RequestResponse}.",

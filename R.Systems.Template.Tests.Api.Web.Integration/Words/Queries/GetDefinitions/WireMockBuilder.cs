@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using R.Systems.Template.Infrastructure.Wordnik.Common.Api;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
@@ -15,26 +16,24 @@ internal static class WireMockBuilder
     )
     {
         wireMockServer.Reset();
-        IResponseBuilder responseBuilder = Response.Create().WithStatusCode(expectedStatusCode);
-        if (response != null)
+
+        List<ApiResponse<T>> responses = new();
+        for (int i = 0; i < WordApi.RetryCount + 1; i++)
         {
-            responseBuilder.WithBodyAsJson(response);
+            responses.Add(new ApiResponse<T>(expectedStatusCode, response));
         }
 
-        wireMockServer.Given(Request.Create().WithPath(getDefinitionsUrl).UsingGet())
-            .RespondWith(responseBuilder);
-
-        return wireMockServer;
+        return wireMockServer.PrepareWireMockScenario(getDefinitionsUrl, responses);
     }
 
     public static WireMockServer PrepareWireMockScenario<T>(
         this WireMockServer wireMockServer,
         string getDefinitionsUrl,
-        string scenarioName,
         List<ApiResponse<T>> responses
     )
     {
         wireMockServer.Reset();
+        string scenarioName = Guid.NewGuid().ToString();
         for (int i = 0; i < responses.Count; i++)
         {
             ApiResponse<T> response = responses[i];

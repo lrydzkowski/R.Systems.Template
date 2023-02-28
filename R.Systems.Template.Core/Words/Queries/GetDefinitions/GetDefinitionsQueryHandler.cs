@@ -23,7 +23,8 @@ public class GetDefinitionsQueryHandler : IRequestHandler<GetDefinitionsQuery, G
 
     public async Task<GetDefinitionsResult> Handle(GetDefinitionsQuery query, CancellationToken cancellationToken)
     {
-        List<Definition> definitions = await GetDefinitionsRepository.GetDefinitionsAsync(query.Word);
+        List<Definition> definitions =
+            await GetDefinitionsRepository.GetDefinitionsAsync(query.Word, cancellationToken);
 
         return new GetDefinitionsResult
         {

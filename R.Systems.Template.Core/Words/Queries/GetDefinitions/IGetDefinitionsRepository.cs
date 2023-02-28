@@ -2,5 +2,5 @@
 
 public interface IGetDefinitionsRepository
 {
-    Task<List<Definition>> GetDefinitionsAsync(string word);
+    Task<List<Definition>> GetDefinitionsAsync(string word, CancellationToken cancellationToken);
 }
