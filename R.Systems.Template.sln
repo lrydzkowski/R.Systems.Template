@@ -40,6 +40,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Api.Azur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Tests.Core.Integration", "R.Systems.Template.Tests.Core.Integration\R.Systems.Template.Tests.Core.Integration.csproj", "{4AD22595-32AA-4106-9520-0FEF657CA6AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.Infrastructure.Wordnik", "R.Systems.Template.Infrastructure.Wordnik\R.Systems.Template.Infrastructure.Wordnik.csproj", "{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 		{4AD22595-32AA-4106-9520-0FEF657CA6AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AD22595-32AA-4106-9520-0FEF657CA6AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AD22595-32AA-4106-9520-0FEF657CA6AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{839434F7-4E61-4C97-81A0-110404DE0A9F} = {348E1E8F-5473-43FF-A448-6746DE652F54}
 		{9B852E79-D360-4F79-B35D-566E55D1D91C} = {F1F14032-B02E-4494-AD73-4839A49CDEF7}
 		{4AD22595-32AA-4106-9520-0FEF657CA6AA} = {348E1E8F-5473-43FF-A448-6746DE652F54}
+		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}

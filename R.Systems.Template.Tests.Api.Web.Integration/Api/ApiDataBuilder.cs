@@ -17,7 +17,8 @@ internal class ApiDataBuilder
             new object?[] { "/employees", Method.Post },
             new object?[] { "/employees/1", Method.Put },
             new object?[] { "/companies/1/employees/1", Method.Get },
-            new object?[] { "/companies/1/employees", Method.Get }
+            new object?[] { "/companies/1/employees", Method.Get },
+            new object?[] { "/words/test/definitions", Method.Get }
         };
     }
 }

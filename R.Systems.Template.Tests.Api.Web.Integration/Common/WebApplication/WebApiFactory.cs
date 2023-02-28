@@ -12,7 +12,9 @@ using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAd;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAdB2C;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.ConnectionStrings;
+using R.Systems.Template.Tests.Api.Web.Integration.Options.Wordnik;
 using RunMethodsSequentially;
+using WireMock.Server;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 
@@ -32,7 +34,17 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         .Build();
 
     private readonly List<IOptionsData> _defaultOptionsData = new()
-        { new AzureAdOptionsData(), new AzureAdB2COptionsData(), new ConnectionStringsOptionsData() };
+    {
+        new AzureAdOptionsData(), new AzureAdB2COptionsData(), new ConnectionStringsOptionsData(),
+        new WordnikOptionsData()
+    };
+
+    public WireMockServer WireMockServer { get; }
+
+    public WebApiFactory()
+    {
+        WireMockServer = WireMockServer.Start();
+    }
 
     public async Task InitializeAsync()
     {
@@ -41,6 +53,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     public new async Task DisposeAsync()
     {
+        WireMockServer.Dispose();
         await _dbContainer.DisposeAsync();
     }
 

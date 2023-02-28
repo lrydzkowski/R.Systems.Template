@@ -9,6 +9,6 @@ internal class ConnectionStringsOptionsValidator : AbstractValidator<ConnectionS
         RuleFor(x => x.AppDb)
             .NotEmpty()
             .WithName("AppDb")
-            .OverridePropertyName($"{ConnectionStringsOptions.Position}.AppDb");
+            .OverridePropertyName($"{ConnectionStringsOptions.Position}.{nameof(ConnectionStringsOptions.AppDb)}");
     }
 }
