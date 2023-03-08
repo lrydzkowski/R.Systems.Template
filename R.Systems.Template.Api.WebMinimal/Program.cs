@@ -3,14 +3,14 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
-using R.Systems.Template.Infrastructure.Db.Postgres;
+using R.Systems.Template.Infrastructure.Db;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureCoreServices();
-builder.Services.ConfigureInfrastructureDbPostgresServices(builder.Configuration);
+builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
 
 WebApplication app = builder.Build();
 

@@ -1,13 +1,14 @@
 ﻿using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
-using R.Systems.Template.Infrastructure.Db.Postgres;
-using R.Systems.Template.Infrastructure.Db.Postgres.Common.Options;
+using R.Systems.Template.Infrastructure.Db;
+using R.Systems.Template.Infrastructure.Db.Common.Options;
 using R.Systems.Template.Tests.Core.Integration.Common.Db;
 
 namespace R.Systems.Template.Tests.Core.Integration.Common;
@@ -16,24 +17,23 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
 {
     // TODO: https://github.com/testcontainers/testcontainers-dotnet/issues/750#issuecomment-1412257694
 #pragma warning disable CS0618
-    private readonly PostgreSqlTestcontainer _dbContainer = new TestcontainersBuilder<PostgreSqlTestcontainer>()
+    private readonly MsSqlTestcontainer _dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
 #pragma warning restore CS0618
         .WithDatabase(
-            new PostgreSqlTestcontainerConfiguration
+            new MsSqlTestcontainerConfiguration()
             {
-                Database = "r-systems-template",
-                Username = "postgres",
+                Database = "r_systems_template",
                 Password = Guid.NewGuid().ToString()
             }
         )
-        .WithImage("postgres:14-alpine")
+        .WithImage("mcr.microsoft.com/mssql/server:2019-latest")
         .WithCleanUp(true)
         .Build();
 
     public async Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
-        await InitializeDatabaseAsync(_dbContainer.ConnectionString);
+        await InitializeDatabaseAsync(BuildConnectionString());
     }
 
     public async Task DisposeAsync()
@@ -50,7 +50,7 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
 
         IServiceCollection services = new ServiceCollection();
         services.ConfigureCoreServices();
-        services.ConfigureInfrastructureDbPostgresServices(configuration);
+        services.ConfigureInfrastructureDbServices(configuration);
         services.ConfigureInfrastructureAzureServices(configuration);
         configureServices?.Invoke(services);
 
@@ -79,8 +79,13 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
 
     private async Task InitializeDatabaseAsync(string connectionString)
     {
-        await using NpgsqlDataSource dataSource = NpgsqlDataSource.Create(connectionString);
-        await using NpgsqlConnection connection = await dataSource.OpenConnectionAsync();
+        await using SqlConnection connection = new(connectionString);
+        await connection.OpenAsync();
         await new TDbInitializer().InitializeAsync(connection);
+    }
+
+    private string BuildConnectionString()
+    {
+        return _dbContainer.ConnectionString + ";Trust Server Certificate=true";
     }
 }

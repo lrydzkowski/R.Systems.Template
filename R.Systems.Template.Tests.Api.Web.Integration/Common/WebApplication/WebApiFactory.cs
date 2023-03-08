@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Api.Web;
-using R.Systems.Template.Infrastructure.Db.Postgres.Common.Options;
+using R.Systems.Template.Infrastructure.Db.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAd;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAdB2C;
@@ -20,16 +20,15 @@ namespace R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 
 public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly PostgreSqlTestcontainer _dbContainer = new TestcontainersBuilder<PostgreSqlTestcontainer>()
+    private readonly MsSqlTestcontainer _dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
         .WithDatabase(
-            new PostgreSqlTestcontainerConfiguration
+            new MsSqlTestcontainerConfiguration()
             {
-                Database = "r-systems-template",
-                Username = "postgres",
+                Database = "r_systems_template",
                 Password = Guid.NewGuid().ToString()
             }
         )
-        .WithImage("postgres:14-alpine")
+        .WithImage("mcr.microsoft.com/mssql/server:2019-latest")
         .WithCleanUp(true)
         .Build();
 
@@ -82,9 +81,14 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
             new Dictionary<string, string?>
             {
                 [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppDb)}"] =
-                    _dbContainer.ConnectionString
+                    BuildConnectionString()
             }
         );
+    }
+
+    private string BuildConnectionString()
+    {
+        return _dbContainer.ConnectionString + ";Trust Server Certificate=true";
     }
 }
 

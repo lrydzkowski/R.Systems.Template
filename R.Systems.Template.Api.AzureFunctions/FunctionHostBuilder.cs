@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using R.Systems.Template.Api.AzureFunctions.Middleware;
 using R.Systems.Template.Core;
-using R.Systems.Template.Infrastructure.Db.Postgres;
+using R.Systems.Template.Infrastructure.Db;
 
 namespace R.Systems.Template.Api.AzureFunctions;
 
@@ -32,7 +32,7 @@ public class FunctionHostBuilder
                 {
                     services.ConfigureServices();
                     services.ConfigureCoreServices();
-                    services.ConfigureInfrastructureDbPostgresServices(builder.Configuration);
+                    services.ConfigureInfrastructureDbServices(builder.Configuration);
                 }
             );
     }

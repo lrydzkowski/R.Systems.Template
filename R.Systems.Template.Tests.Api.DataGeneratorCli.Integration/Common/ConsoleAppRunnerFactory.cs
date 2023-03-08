@@ -11,16 +11,15 @@ namespace R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.Common;
 
 public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
 {
-    private readonly PostgreSqlTestcontainer _dbContainer = new TestcontainersBuilder<PostgreSqlTestcontainer>()
+    private readonly MsSqlTestcontainer _dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
         .WithDatabase(
-            new PostgreSqlTestcontainerConfiguration
+            new MsSqlTestcontainerConfiguration()
             {
-                Database = "r-systems-template",
-                Username = "postgres",
+                Database = "r_systems_template",
                 Password = Guid.NewGuid().ToString()
             }
         )
-        .WithImage("postgres:14-alpine")
+        .WithImage("mcr.microsoft.com/mssql/server:2019-latest")
         .WithCleanUp(true)
         .Build();
 
@@ -47,7 +46,7 @@ public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                ["ConnectionStrings:AppDb"] = _dbContainer.ConnectionString
+                ["ConnectionStrings:AppDb"] = BuildConnectionString()
             }
         );
     }
@@ -62,5 +61,10 @@ public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
                 }
             )
             .RegisterServiceToRunInJob<ConsoleSampleDataDbInitializer>();
+    }
+
+    private string BuildConnectionString()
+    {
+        return _dbContainer.ConnectionString + ";Trust Server Certificate=true";
     }
 }

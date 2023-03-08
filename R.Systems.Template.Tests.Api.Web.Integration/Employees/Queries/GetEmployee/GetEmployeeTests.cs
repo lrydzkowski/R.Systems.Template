@@ -2,7 +2,7 @@
 using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
-using R.Systems.Template.Infrastructure.Db.Postgres.Common.Entities;
+using R.Systems.Template.Infrastructure.Db.Common.Entities;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;

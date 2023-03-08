@@ -1,5 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
-using R.Systems.Template.Infrastructure.Db.Postgres;
+using R.Systems.Template.Infrastructure.Db;
 using RunMethodsSequentially;
 
 namespace R.Systems.Template.Api.Web;

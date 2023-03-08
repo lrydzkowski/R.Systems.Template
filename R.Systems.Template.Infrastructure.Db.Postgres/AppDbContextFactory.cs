@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using R.Systems.Template.Infrastructure.Db.Postgres.Common.Options;
 
 namespace R.Systems.Template.Infrastructure.Db.Postgres;
 
@@ -22,11 +23,16 @@ internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         IConfigurationRoot config = new ConfigurationBuilder().AddUserSecrets<AppDbContext>().Build();
         IConfigurationProvider secretProvider = config.Providers.First();
-        if (!secretProvider.TryGet("ConnectionStrings:AppDb", out string? connectionString)
+        if (!secretProvider.TryGet(
+                $"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppDb)}",
+                out string? connectionString
+            )
             || connectionString == null
             || connectionString.Length == 0)
         {
-            throw new Exception("There is no ConnectionStrings:AppDb in user secrets.");
+            throw new Exception(
+                $"There is no {ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppDb)} in user secrets."
+            );
         }
 
         return connectionString;

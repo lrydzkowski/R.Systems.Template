@@ -2,7 +2,7 @@
 using CommandDotNet.IoC.MicrosoftDependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using R.Systems.Template.Infrastructure.Db.Postgres;
+using R.Systems.Template.Infrastructure.Db;
 using RunMethodsSequentially.LockAndRunCode;
 
 namespace R.Systems.Template.Api.DataGeneratorCli;
@@ -57,7 +57,7 @@ public class AppRunnerFactory
     {
         IServiceCollection services = new ServiceCollection();
         services.ConfigureServices();
-        services.ConfigureInfrastructureDbPostgresServices(configuration);
+        services.ConfigureInfrastructureDbServices(configuration);
         foreach (Action<IServiceCollection> configureServicesMethod in ConfigureServicesMethods)
         {
             configureServicesMethod(services);
