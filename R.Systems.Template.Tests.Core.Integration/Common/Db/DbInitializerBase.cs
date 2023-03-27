@@ -6,11 +6,11 @@ public abstract class DbInitializerBase
 {
     protected virtual IReadOnlyCollection<DbInitializerBase> Initializers { get; } = new List<DbInitializerBase>();
 
-    public virtual async Task InitializeAsync(SqlConnection connection)
+    public virtual void Initialize(SqlConnection connection)
     {
         foreach (DbInitializerBase initializer in Initializers)
         {
-            await initializer.InitializeAsync(connection);
+            initializer.Initialize(connection);
         }
     }
 }

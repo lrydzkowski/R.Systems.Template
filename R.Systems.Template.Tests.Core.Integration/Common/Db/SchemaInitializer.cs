@@ -1,16 +1,20 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
 
 namespace R.Systems.Template.Tests.Core.Integration.Common.Db;
 
 public class SchemaInitializer : DbInitializerBase
 {
-    public override async Task InitializeAsync(SqlConnection connection)
+    public override void Initialize(SqlConnection connection)
     {
-        await base.InitializeAsync(connection);
+        base.Initialize(connection);
 
-        string schemaSql = EmbeddedFilesReader.GetContent("Common/Db/Assets/schema.sql");
+        string sql = EmbeddedFilesReader.GetContent("Common/Db/Assets/schema.sql");
 
-        await using SqlCommand command = new(schemaSql, connection);
-        await command.ExecuteNonQueryAsync();
+        ServerConnection serverConnection = new(connection);
+        Server server = new(serverConnection);
+
+        server.ConnectionContext.ExecuteNonQuery(sql);
     }
 }

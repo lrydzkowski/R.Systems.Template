@@ -4,7 +4,6 @@ using DotNet.Testcontainers.Containers;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Npgsql;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
 using R.Systems.Template.Infrastructure.Db;
@@ -72,7 +71,7 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
             new Dictionary<string, string?>
             {
                 [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppDb)}"] =
-                    _dbContainer.ConnectionString
+                    BuildConnectionString()
             }
         );
     }
@@ -81,7 +80,7 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
     {
         await using SqlConnection connection = new(connectionString);
         await connection.OpenAsync();
-        await new TDbInitializer().InitializeAsync(connection);
+        new TDbInitializer().Initialize(connection);
     }
 
     private string BuildConnectionString()
