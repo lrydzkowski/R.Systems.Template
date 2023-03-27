@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
     "R.Systems.Template.Api.Web": {
       "commandName": "Project",
@@ -18,5 +17,6 @@
       "publishAllPorts": true,
       "useSSL": true
     }
-  }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json"
 }

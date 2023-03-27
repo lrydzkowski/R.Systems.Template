@@ -4,25 +4,18 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>8e93c86f-a8f5-45db-ae81-43b6f7d4e689</UserSecretsId>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <UserSecretsId>f9916da7-b348-4033-9ff7-7cbc521b873c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.3">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +24,10 @@
     <InternalsVisibleTo Include="R.Systems.Template.Tests.Api.AzureFunctions.Integration" />
     <InternalsVisibleTo Include="R.Systems.Template.Tests.Core.Integration" />
     <InternalsVisibleTo Include="R.Systems.Template.Api.DataGeneratorCli" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
   </ItemGroup>
 
 </Project>

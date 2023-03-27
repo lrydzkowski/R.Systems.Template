@@ -1,4 +1,6 @@
-﻿using Npgsql;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
 
 namespace R.Systems.Template.Tests.Core.Integration.Common.Db;
 
@@ -7,13 +9,15 @@ public class SampleDataDbInitializer : DbInitializerBase
     protected override IReadOnlyCollection<DbInitializerBase> Initializers { get; } =
         new List<DbInitializerBase> { new SchemaInitializer() };
 
-    public override async Task InitializeAsync(NpgsqlConnection connection)
+    public override void Initialize(SqlConnection connection)
     {
-        await base.InitializeAsync(connection);
+        base.Initialize(connection);
 
-        string schemaSql = EmbeddedFilesReader.GetContent("Common/Db/Assets/sample_data.sql");
+        string sql = EmbeddedFilesReader.GetContent("Common/Db/Assets/sample_data.sql");
 
-        await using NpgsqlCommand command = new(schemaSql, connection);
-        await command.ExecuteNonQueryAsync();
+        ServerConnection serverConnection = new(connection);
+        Server server = new(serverConnection);
+
+        server.ConnectionContext.ExecuteNonQuery(sql);
     }
 }

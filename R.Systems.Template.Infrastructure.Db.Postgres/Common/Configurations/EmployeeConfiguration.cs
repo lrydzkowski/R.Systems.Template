@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using R.Systems.Template.Infrastructure.Db.Common.Entities;
+using R.Systems.Template.Infrastructure.Db.Postgres.Common.Entities;
 
-namespace R.Systems.Template.Infrastructure.Db.Common.Configurations;
+namespace R.Systems.Template.Infrastructure.Db.Postgres.Common.Configurations;
 
 internal class EmployeeConfiguration : IEntityTypeConfiguration<EmployeeEntity>
 {
@@ -81,6 +81,6 @@ internal class EmployeeConfiguration : IEntityTypeConfiguration<EmployeeEntity>
                 CompanyId = 2
             }
         );
-        builder.Property(user => user.Id).UseIdentityColumn(FirstAvailableId);
+        builder.Property(user => user.Id).HasIdentityOptions(startValue: FirstAvailableId);
     }
 }

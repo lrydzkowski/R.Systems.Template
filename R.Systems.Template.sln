@@ -24,8 +24,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Core", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Azure", "R.Systems.Template.Infrastructure.Azure\R.Systems.Template.Infrastructure.Azure.csproj", "{8EDE1B87-B09C-4403-9822-92C83F8B394D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Db", "R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj", "{2B76BA7E-E233-4158-9178-E475E2FF0FE9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Api.DataGeneratorCli", "R.Systems.Template.Api.DataGeneratorCli\R.Systems.Template.Api.DataGeneratorCli.csproj", "{AB577520-4A4C-4844-AF6D-15F119A93D72}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Api.Web", "R.Systems.Template.Api.Web\R.Systems.Template.Api.Web.csproj", "{5F3A832D-FBF5-42E3-8E9E-2EE27ECEA407}"
@@ -40,7 +38,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Api.Azur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Tests.Core.Integration", "R.Systems.Template.Tests.Core.Integration\R.Systems.Template.Tests.Core.Integration.csproj", "{4AD22595-32AA-4106-9520-0FEF657CA6AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.Infrastructure.Wordnik", "R.Systems.Template.Infrastructure.Wordnik\R.Systems.Template.Infrastructure.Wordnik.csproj", "{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Wordnik", "R.Systems.Template.Infrastructure.Wordnik\R.Systems.Template.Infrastructure.Wordnik.csproj", "{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Db.Postgres", "R.Systems.Template.Infrastructure.Db.Postgres\R.Systems.Template.Infrastructure.Db.Postgres.csproj", "{2B9DDD82-59BF-47C6-A06F-D0F59818FB75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.Infrastructure.Db", "R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj", "{E0F262E3-C407-4091-B01A-CBEF33EF33FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,10 +58,6 @@ Global
 		{8EDE1B87-B09C-4403-9822-92C83F8B394D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EDE1B87-B09C-4403-9822-92C83F8B394D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EDE1B87-B09C-4403-9822-92C83F8B394D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B76BA7E-E233-4158-9178-E475E2FF0FE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B76BA7E-E233-4158-9178-E475E2FF0FE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B76BA7E-E233-4158-9178-E475E2FF0FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B76BA7E-E233-4158-9178-E475E2FF0FE9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB577520-4A4C-4844-AF6D-15F119A93D72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AB577520-4A4C-4844-AF6D-15F119A93D72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB577520-4A4C-4844-AF6D-15F119A93D72}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -92,6 +90,14 @@ Global
 		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B9DDD82-59BF-47C6-A06F-D0F59818FB75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B9DDD82-59BF-47C6-A06F-D0F59818FB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B9DDD82-59BF-47C6-A06F-D0F59818FB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B9DDD82-59BF-47C6-A06F-D0F59818FB75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0F262E3-C407-4091-B01A-CBEF33EF33FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0F262E3-C407-4091-B01A-CBEF33EF33FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0F262E3-C407-4091-B01A-CBEF33EF33FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0F262E3-C407-4091-B01A-CBEF33EF33FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,7 +108,6 @@ Global
 		{F1F14032-B02E-4494-AD73-4839A49CDEF7} = {C1664B72-41A3-4029-8715-AF3B65AE44BC}
 		{AEC3BC5D-4391-4A5D-B72D-364028919FFB} = {0EA84822-8C66-4704-ABB5-7E621106A8AC}
 		{8EDE1B87-B09C-4403-9822-92C83F8B394D} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
-		{2B76BA7E-E233-4158-9178-E475E2FF0FE9} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{AB577520-4A4C-4844-AF6D-15F119A93D72} = {F1F14032-B02E-4494-AD73-4839A49CDEF7}
 		{5F3A832D-FBF5-42E3-8E9E-2EE27ECEA407} = {F1F14032-B02E-4494-AD73-4839A49CDEF7}
 		{7E81CA08-506F-42FF-B35E-92AD684E684F} = {F1F14032-B02E-4494-AD73-4839A49CDEF7}
@@ -111,6 +116,8 @@ Global
 		{9B852E79-D360-4F79-B35D-566E55D1D91C} = {F1F14032-B02E-4494-AD73-4839A49CDEF7}
 		{4AD22595-32AA-4106-9520-0FEF657CA6AA} = {348E1E8F-5473-43FF-A448-6746DE652F54}
 		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
+		{2B9DDD82-59BF-47C6-A06F-D0F59818FB75} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
+		{E0F262E3-C407-4091-B01A-CBEF33EF33FA} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}

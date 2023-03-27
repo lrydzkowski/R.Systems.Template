@@ -11,17 +11,17 @@ using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
-using R.Systems.Template.Infrastructure.Db.Common.Options;
-using R.Systems.Template.Infrastructure.Db.Companies.Commands;
-using R.Systems.Template.Infrastructure.Db.Companies.Queries;
-using R.Systems.Template.Infrastructure.Db.Employees.Commands;
-using R.Systems.Template.Infrastructure.Db.Employees.Queries;
+using R.Systems.Template.Infrastructure.Db.Postgres.Common.Options;
+using R.Systems.Template.Infrastructure.Db.Postgres.Companies.Commands;
+using R.Systems.Template.Infrastructure.Db.Postgres.Companies.Queries;
+using R.Systems.Template.Infrastructure.Db.Postgres.Employees.Commands;
+using R.Systems.Template.Infrastructure.Db.Postgres.Employees.Queries;
 
-namespace R.Systems.Template.Infrastructure.Db;
+namespace R.Systems.Template.Infrastructure.Db.Postgres;
 
 public static class DependencyInjection
 {
-    public static void ConfigureInfrastructureDbServices(
+    public static void ConfigureInfrastructureDbPostgresServices(
         this IServiceCollection services,
         IConfiguration configuration
     )
@@ -47,7 +47,7 @@ public static class DependencyInjection
             {
                 ConnectionStringsOptions connectionStrings =
                     serviceProvider.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
-                options.UseSqlServer(connectionStrings.AppDb);
+                options.UseNpgsql(connectionStrings.AppDb);
             }
         );
     }

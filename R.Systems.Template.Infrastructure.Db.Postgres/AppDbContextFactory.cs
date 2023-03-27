@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using R.Systems.Template.Infrastructure.Db.Common.Options;
+using R.Systems.Template.Infrastructure.Db.Postgres.Common.Options;
 
-namespace R.Systems.Template.Infrastructure.Db;
+namespace R.Systems.Template.Infrastructure.Db.Postgres;
 
 internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
@@ -11,7 +11,7 @@ internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         string connectionString = GetConnectionStringFromUserSecrets();
         DbContextOptionsBuilder<AppDbContext> builder = new();
-        builder.UseSqlServer(
+        builder.UseNpgsql(
             connectionString,
             x => x.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
         );

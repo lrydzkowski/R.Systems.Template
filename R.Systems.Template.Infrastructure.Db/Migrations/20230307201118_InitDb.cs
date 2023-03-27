@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -17,10 +16,9 @@ namespace R.Systems.Template.Infrastructure.Db.Migrations
                 name: "company",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:IdentitySequenceOptions", "'3', '1', '', '', 'False', '1'")
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "3, 1"),
+                    name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,19 +29,18 @@ namespace R.Systems.Template.Infrastructure.Db.Migrations
                 name: "employee",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:IdentitySequenceOptions", "'4', '1', '', '', 'False', '1'")
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    firstname = table.Column<string>(name: "first_name", type: "character varying(100)", maxLength: 100, nullable: false),
-                    lastname = table.Column<string>(name: "last_name", type: "character varying(100)", maxLength: 100, nullable: false),
-                    companyid = table.Column<int>(name: "company_id", type: "integer", nullable: true)
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "4, 1"),
+                    first_name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    last_name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    company_id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_employee", x => x.id);
                     table.ForeignKey(
                         name: "FK_employee_company_company_id",
-                        column: x => x.companyid,
+                        column: x => x.company_id,
                         principalTable: "company",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
