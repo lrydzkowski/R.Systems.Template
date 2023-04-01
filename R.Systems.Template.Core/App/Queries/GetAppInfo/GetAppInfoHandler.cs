@@ -15,15 +15,17 @@ public class GetAppInfoResult
     public string AppVersion { get; init; } = "";
 }
 
-public class GetAppInfoHandler : RequestHandler<GetAppInfoQuery, GetAppInfoResult>
+public class GetAppInfoHandler : IRequestHandler<GetAppInfoQuery, GetAppInfoResult>
 {
-    protected override GetAppInfoResult Handle(GetAppInfoQuery request)
+    public Task<GetAppInfoResult> Handle(GetAppInfoQuery request, CancellationToken cancellationToken)
     {
-        return new GetAppInfoResult
+        GetAppInfoResult result = new()
         {
             AppName = GetAppName(request.AppAssembly),
             AppVersion = GetAppVersion(request.AppAssembly)
         };
+
+        return Task.FromResult(result);
     }
 
     private string GetAppName(Assembly appAssembly)

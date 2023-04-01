@@ -1,24 +1,15 @@
 ﻿using CommandDotNet;
-using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Configurations;
-using DotNet.Testcontainers.Containers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Api.DataGeneratorCli;
 using RunMethodsSequentially;
+using Testcontainers.MsSql;
 
 namespace R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.Common;
 
 public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
 {
-    private readonly MsSqlTestcontainer _dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
-        .WithDatabase(
-            new MsSqlTestcontainerConfiguration()
-            {
-                Database = "r_systems_template",
-                Password = Guid.NewGuid().ToString()
-            }
-        )
+    private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
         .WithImage("mcr.microsoft.com/mssql/server:2019-latest")
         .WithCleanUp(true)
         .Build();
@@ -65,6 +56,6 @@ public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
 
     private string BuildConnectionString()
     {
-        return _dbContainer.ConnectionString + ";Trust Server Certificate=true";
+        return _dbContainer.GetConnectionString() + ";Trust Server Certificate=true";
     }
 }

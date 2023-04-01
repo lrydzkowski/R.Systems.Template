@@ -1,7 +1,4 @@
-﻿using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Configurations;
-using DotNet.Testcontainers.Containers;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Core;
@@ -9,22 +6,13 @@ using R.Systems.Template.Infrastructure.Azure;
 using R.Systems.Template.Infrastructure.Db;
 using R.Systems.Template.Infrastructure.Db.Common.Options;
 using R.Systems.Template.Tests.Core.Integration.Common.Db;
+using Testcontainers.MsSql;
 
 namespace R.Systems.Template.Tests.Core.Integration.Common;
 
 public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializer : DbInitializerBase, new()
 {
-    // TODO: https://github.com/testcontainers/testcontainers-dotnet/issues/750#issuecomment-1412257694
-#pragma warning disable CS0618
-    private readonly MsSqlTestcontainer _dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
-#pragma warning restore CS0618
-        .WithDatabase(
-            new MsSqlTestcontainerConfiguration()
-            {
-                Database = "r_systems_template",
-                Password = Guid.NewGuid().ToString()
-            }
-        )
+    private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
         .WithImage("mcr.microsoft.com/mssql/server:2019-latest")
         .WithCleanUp(true)
         .Build();
@@ -85,6 +73,6 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
 
     private string BuildConnectionString()
     {
-        return _dbContainer.ConnectionString + ";Trust Server Certificate=true";
+        return _dbContainer.GetConnectionString() + ";Trust Server Certificate=true";
     }
 }

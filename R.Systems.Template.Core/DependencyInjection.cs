@@ -31,7 +31,7 @@ public static class DependencyInjection
 
     private static void AddMediatR(this IServiceCollection services)
     {
-        services.AddMediatR(typeof(DependencyInjection).Assembly);
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
     }
 }

@@ -1,7 +1,4 @@
-﻿using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Configurations;
-using DotNet.Testcontainers.Containers;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
@@ -14,20 +11,14 @@ using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAdB2C;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.ConnectionStrings;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.Wordnik;
 using RunMethodsSequentially;
+using Testcontainers.MsSql;
 using WireMock.Server;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 
 public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly MsSqlTestcontainer _dbContainer = new TestcontainersBuilder<MsSqlTestcontainer>()
-        .WithDatabase(
-            new MsSqlTestcontainerConfiguration()
-            {
-                Database = "r_systems_template",
-                Password = Guid.NewGuid().ToString()
-            }
-        )
+    private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
         .WithImage("mcr.microsoft.com/mssql/server:2019-latest")
         .WithCleanUp(true)
         .Build();
@@ -88,7 +79,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     private string BuildConnectionString()
     {
-        return _dbContainer.ConnectionString + ";Trust Server Certificate=true";
+        return _dbContainer.GetConnectionString() + ";Trust Server Certificate=true";
     }
 }
 

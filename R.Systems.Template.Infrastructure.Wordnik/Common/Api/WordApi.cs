@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Threading;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Caching;
@@ -9,6 +7,7 @@ using Polly.Wrap;
 using R.Systems.Template.Infrastructure.Wordnik.Common.Models;
 using R.Systems.Template.Infrastructure.Wordnik.Common.Options;
 using RestSharp;
+using System.Net;
 
 namespace R.Systems.Template.Infrastructure.Wordnik.Common.Api;
 
@@ -23,8 +22,9 @@ internal class WordApi
         Logger = logger;
         AsyncCacheProvider = asyncCacheProvider;
         WordnikOptions = options.Value;
-        RestClient = new RestClient(WordnikOptions.ApiBaseUrl);
-        RestClient.Options.ThrowOnDeserializationError = false;
+        RestClient = new RestClient(
+            new RestClientOptions(WordnikOptions.ApiBaseUrl) { ThrowOnDeserializationError = false }
+        );
     }
 
     private ILogger<WordApi> Logger { get; }
