@@ -12,7 +12,6 @@ public static class DependencyInjection
         services.AddEndpointsApiExplorer();
         services.ConfigureSwagger();
         services.ConfigureCors();
-        services.AddAutoMapper(typeof(DependencyInjection).Assembly);
         services.ConfigureSequentialServices(environment);
     }
 

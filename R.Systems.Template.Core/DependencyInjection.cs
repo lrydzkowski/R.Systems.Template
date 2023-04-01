@@ -11,7 +11,6 @@ public static class DependencyInjection
     public static void ConfigureCoreServices(this IServiceCollection services)
     {
         services.AddMediatR();
-        services.AddAutoMapper(typeof(DependencyInjection));
         services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
     }
 

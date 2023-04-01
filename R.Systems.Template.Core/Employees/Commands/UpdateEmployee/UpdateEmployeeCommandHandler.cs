@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using R.Systems.Template.Core.Common.Domain;
 
 namespace R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
@@ -22,18 +21,17 @@ public class UpdateEmployeeResult
 
 public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand, UpdateEmployeeResult>
 {
-    public UpdateEmployeeCommandHandler(IMapper mapper, IUpdateEmployeeRepository updateEmployeeRepository)
+    public UpdateEmployeeCommandHandler(IUpdateEmployeeRepository updateEmployeeRepository)
     {
-        Mapper = mapper;
         UpdateEmployeeRepository = updateEmployeeRepository;
     }
 
-    private IMapper Mapper { get; }
     private IUpdateEmployeeRepository UpdateEmployeeRepository { get; }
 
     public async Task<UpdateEmployeeResult> Handle(UpdateEmployeeCommand command, CancellationToken cancellationToken)
     {
-        EmployeeToUpdate employeeToUpdate = Mapper.Map<EmployeeToUpdate>(command);
+        UpdateEmployeeCommandMapper mapper = new();
+        EmployeeToUpdate employeeToUpdate = mapper.ToEmployeeToUpdate(command);
         Employee updatedEmployee = await UpdateEmployeeRepository.UpdateEmployeeAsync(employeeToUpdate);
 
         return new UpdateEmployeeResult

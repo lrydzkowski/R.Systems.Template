@@ -17,8 +17,7 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
-        services.AddAutoMapper(typeof(DependencyInjection))
-            .ConfigureOptions(configuration)
+        services.ConfigureOptions(configuration)
             .AddMemoryCache()
             .ConfigureServices();
     }

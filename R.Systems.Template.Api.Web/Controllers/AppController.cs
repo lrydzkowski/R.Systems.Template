@@ -1,24 +1,22 @@
-﻿using System.Reflection;
-using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using R.Systems.Template.Api.Web.Mappers;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Reflection;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
 [ApiController]
 public class AppController : ControllerBase
 {
-    public AppController(ISender mediator, IMapper mapper)
+    public AppController(ISender mediator)
     {
         Mediator = mediator;
-        Mapper = mapper;
     }
 
     private ISender Mediator { get; }
-    private IMapper Mapper { get; }
 
     [SwaggerOperation(Summary = "Get basic information about application")]
     [SwaggerResponse(
@@ -33,7 +31,8 @@ public class AppController : ControllerBase
         GetAppInfoResult result = await Mediator.Send(
             new GetAppInfoQuery { AppAssembly = Assembly.GetExecutingAssembly() }
         );
-        GetAppInfoResponse response = Mapper.Map<GetAppInfoResponse>(result);
+        GetAppInfoMapper mapper = new();
+        GetAppInfoResponse response = mapper.ToResponse(result);
 
         return Ok(response);
     }

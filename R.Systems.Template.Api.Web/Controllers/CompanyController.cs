@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
+using R.Systems.Template.Api.Web.Mappers;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
@@ -21,14 +21,12 @@ namespace R.Systems.Template.Api.Web.Controllers;
 [Route("companies")]
 public class CompanyController : ControllerBase
 {
-    public CompanyController(ISender mediator, IMapper mapper)
+    public CompanyController(ISender mediator)
     {
         Mediator = mediator;
-        Mapper = mapper;
     }
 
     private ISender Mediator { get; }
-    private IMapper Mapper { get; }
 
     [SwaggerOperation(Summary = "Get the company")]
     [SwaggerResponse(
@@ -74,7 +72,8 @@ public class CompanyController : ControllerBase
         CancellationToken cancellationToken
     )
     {
-        ListParameters listParameters = Mapper.Map<ListParameters>(listRequest);
+        ListMapper mapper = new();
+        ListParameters listParameters = mapper.ToListParameter(listRequest);
         GetCompaniesResult result = await Mediator.Send(
             new GetCompaniesQuery { ListParameters = listParameters },
             cancellationToken
@@ -95,7 +94,8 @@ public class CompanyController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateCompany(CreateCompanyRequest request)
     {
-        CreateCompanyCommand command = Mapper.Map<CreateCompanyCommand>(request);
+        CompanyMapper companyMapper = new();
+        CreateCompanyCommand command = companyMapper.ToCreateCommand(request);
         CreateCompanyResult result = await Mediator.Send(command);
 
         return CreatedAtAction(nameof(GetCompany), new { companyId = result.Company.CompanyId }, result.Company);
@@ -113,7 +113,8 @@ public class CompanyController : ControllerBase
     [HttpPut("{companyId}")]
     public async Task<IActionResult> UpdateCompany(int companyId, UpdateCompanyRequest request)
     {
-        UpdateCompanyCommand command = Mapper.Map<UpdateCompanyCommand>(request);
+        CompanyMapper companyMapper = new();
+        UpdateCompanyCommand command = companyMapper.ToUpdateCommand(request);
         command.CompanyId = companyId;
         UpdateCompanyResult result = await Mediator.Send(command);
 

@@ -1,7 +1,4 @@
-﻿using System.Drawing.Printing;
-using System.Linq.Dynamic.Core;
-using AutoMapper;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Core.Common.Domain;
@@ -10,6 +7,7 @@ using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Tests.Core.Integration.Common;
 using R.Systems.Template.Tests.Core.Integration.Common.Db;
 using R.Systems.Template.Tests.Core.Integration.Common.TestsCollections;
+using System.Linq.Dynamic.Core;
 
 namespace R.Systems.Template.Tests.Core.Integration.Companies.Queries.GetCompanies;
 

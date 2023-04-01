@@ -1,28 +1,27 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Infrastructure.Db.Postgres.Common.Entities;
+using R.Systems.Template.Infrastructure.Db.Postgres.Common.Mappers;
 
 namespace R.Systems.Template.Infrastructure.Db.Postgres.Companies.Commands;
 
 internal class UpdateCompanyRepository : IUpdateCompanyRepository
 {
-    public UpdateCompanyRepository(IMapper mapper, AppDbContext dbContext, DbExceptionHandler dbExceptionHandler)
+    public UpdateCompanyRepository(AppDbContext dbContext, DbExceptionHandler dbExceptionHandler)
     {
-        Mapper = mapper;
         DbContext = dbContext;
         DbExceptionHandler = dbExceptionHandler;
     }
 
-    private IMapper Mapper { get; }
     private AppDbContext DbContext { get; }
     private DbExceptionHandler DbExceptionHandler { get; }
 
     public async Task<Company> UpdateCompanyAsync(CompanyToUpdate companyToUpdate)
     {
+        CompanyEntityMapper mapper = new();
         CompanyEntity companyEntity = await GetCompanyEntityAsync(companyToUpdate.CompanyId);
         companyEntity.Name = companyToUpdate.Name;
 
@@ -36,7 +35,7 @@ internal class UpdateCompanyRepository : IUpdateCompanyRepository
             throw;
         }
 
-        return Mapper.Map<Company>(companyEntity);
+        return mapper.ToCompany(companyEntity);
     }
 
     private async Task<CompanyEntity> GetCompanyEntityAsync(int companyId)

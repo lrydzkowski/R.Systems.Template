@@ -1,16 +1,16 @@
-﻿using System.Net;
-using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using R.Systems.Template.Api.AzureFunctions.Mappers;
 using R.Systems.Template.Api.AzureFunctions.Models;
 using R.Systems.Template.Api.AzureFunctions.Services;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
+using System.Net;
 
 namespace R.Systems.Template.Api.AzureFunctions.Functions.Companies;
 
@@ -20,9 +20,8 @@ internal class GetCompaniesFunction : FunctionBase<GetCompaniesFunction>
         ILogger<GetCompaniesFunction> logger,
         IRequestPayloadSerializer requestPayloadSerializer,
         IHttpResponseBuilder httpResponseBuilder,
-        ISender mediator,
-        IMapper mapper
-    ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator, mapper)
+        ISender mediator
+    ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator)
     {
     }
 
@@ -81,7 +80,8 @@ internal class GetCompaniesFunction : FunctionBase<GetCompaniesFunction>
     {
         Logger.LogInformation($"C# Start processing {nameof(GetCompanies)} function.");
 
-        ListParameters listParameters = Mapper.Map<ListParameters>(
+        ListMapper mapper = new();
+        ListParameters listParameters = mapper.ToListParameter(
             new ListRequest
             {
                 Page = page,

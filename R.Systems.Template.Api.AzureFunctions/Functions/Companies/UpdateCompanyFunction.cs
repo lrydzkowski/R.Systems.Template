@@ -1,10 +1,10 @@
 ﻿using System.Net;
-using AutoMapper;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using R.Systems.Template.Api.AzureFunctions.Mappers;
 using R.Systems.Template.Api.AzureFunctions.Models;
 using R.Systems.Template.Api.AzureFunctions.Services;
 using R.Systems.Template.Core.Common.Domain;
@@ -18,9 +18,8 @@ internal class UpdateCompanyFunction : FunctionBase<UpdateCompanyFunction>
         ILogger<UpdateCompanyFunction> logger,
         IRequestPayloadSerializer requestPayloadSerializer,
         IHttpResponseBuilder httpResponseBuilder,
-        ISender mediator,
-        IMapper mapper
-    ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator, mapper)
+        ISender mediator
+    ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator)
     {
     }
 
@@ -45,9 +44,10 @@ internal class UpdateCompanyFunction : FunctionBase<UpdateCompanyFunction>
     {
         Logger.LogInformation($"C# Start processing {nameof(UpdateCompany)} function.");
 
+        CompanyMapper mapper = new();
         UpdateCompanyRequest? request =
             await RequestPayloadSerializer.DeserializeAsync<UpdateCompanyRequest>(requestData);
-        UpdateCompanyCommand command = Mapper.Map<UpdateCompanyCommand>(request);
+        UpdateCompanyCommand command = mapper.ToUpdateCommand(request);
         command.CompanyId = companyId;
         UpdateCompanyResult result = await Mediator.Send(command);
 

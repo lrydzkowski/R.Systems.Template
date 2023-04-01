@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
+using R.Systems.Template.Api.Web.Mappers;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
@@ -22,14 +22,12 @@ namespace R.Systems.Template.Api.Web.Controllers;
 [Route("employees")]
 public class EmployeeController : ControllerBase
 {
-    public EmployeeController(ISender mediator, IMapper mapper)
+    public EmployeeController(ISender mediator)
     {
         Mediator = mediator;
-        Mapper = mapper;
     }
 
     private ISender Mediator { get; }
-    private IMapper Mapper { get; }
 
     [SwaggerOperation(Summary = "Get the employee")]
     [SwaggerResponse(
@@ -75,7 +73,8 @@ public class EmployeeController : ControllerBase
         CancellationToken cancellationToken
     )
     {
-        ListParameters listParameters = Mapper.Map<ListParameters>(listRequest);
+        ListMapper mapper = new();
+        ListParameters listParameters = mapper.ToListParameter(listRequest);
         GetEmployeesResult result = await Mediator.Send(
             new GetEmployeesQuery { ListParameters = listParameters },
             cancellationToken
@@ -96,7 +95,8 @@ public class EmployeeController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateEmployee(CreateEmployeeRequest request)
     {
-        CreateEmployeeCommand command = Mapper.Map<CreateEmployeeCommand>(request);
+        EmployeeMapper mapper = new();
+        CreateEmployeeCommand command = mapper.ToCreateCommand(request);
         CreateEmployeeResult result = await Mediator.Send(command);
 
         return CreatedAtAction(
@@ -118,7 +118,8 @@ public class EmployeeController : ControllerBase
     [HttpPut("{employeeId}")]
     public async Task<IActionResult> UpdateEmployee(int employeeId, UpdateEmployeeRequest request)
     {
-        UpdateEmployeeCommand command = Mapper.Map<UpdateEmployeeCommand>(request);
+        EmployeeMapper mapper = new();
+        UpdateEmployeeCommand command = mapper.ToUpdateCommand(request);
         command.EmployeeId = employeeId;
         UpdateEmployeeResult result = await Mediator.Send(command);
 

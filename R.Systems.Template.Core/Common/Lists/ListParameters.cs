@@ -2,25 +2,25 @@
 
 public class ListParameters
 {
-    public Pagination Pagination { get; init; } = new();
+    public Pagination Pagination { get; set; } = new();
 
-    public Sorting Sorting { get; init; } = new();
+    public Sorting Sorting { get; set; } = new();
 
-    public Search Search { get; init; } = new();
+    public Search Search { get; set; } = new();
 }
 
 public class Pagination
 {
-    public int Page { get; init; } = 1;
+    public int Page { get; set; } = 1;
 
-    public int PageSize { get; init; } = 100;
+    public int PageSize { get; set; } = 100;
 }
 
 public class Sorting
 {
-    public string? FieldName { get; init; }
+    public string? FieldName { get; set; }
 
-    public SortingOrder Order { get; init; } = SortingOrder.Ascending;
+    public SortingOrder Order { get; set; } = SortingOrder.Ascending;
 }
 
 public enum SortingOrder
@@ -31,5 +31,5 @@ public enum SortingOrder
 
 public class Search
 {
-    public string? Query { get; init; }
+    public string? Query { get; set; }
 }

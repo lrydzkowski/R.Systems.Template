@@ -1,27 +1,26 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
+using R.Systems.Template.Infrastructure.Db.Common.Mappers;
 
 namespace R.Systems.Template.Infrastructure.Db.Companies.Commands;
 
 internal class CreateCompanyRepository : ICreateCompanyRepository
 {
-    public CreateCompanyRepository(IMapper mapper, AppDbContext dbContext, DbExceptionHandler dbExceptionHandler)
+    public CreateCompanyRepository(AppDbContext dbContext, DbExceptionHandler dbExceptionHandler)
     {
-        Mapper = mapper;
         DbContext = dbContext;
         DbExceptionHandler = dbExceptionHandler;
     }
 
-    private IMapper Mapper { get; }
     private AppDbContext DbContext { get; }
     private DbExceptionHandler DbExceptionHandler { get; }
 
     public async Task<Company> CreateCompanyAsync(CompanyToCreate companyToCreate)
     {
-        CompanyEntity companyEntity = Mapper.Map<CompanyEntity>(companyToCreate);
+        CompanyEntityMapper mapper = new();
+        CompanyEntity companyEntity = mapper.ToCompanyEntity(companyToCreate);
 
         await DbContext.Companies.AddAsync(companyEntity);
 
@@ -35,6 +34,6 @@ internal class CreateCompanyRepository : ICreateCompanyRepository
             throw;
         }
 
-        return Mapper.Map<Company>(companyEntity);
+        return mapper.ToCompany(companyEntity);
     }
 }

@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
+using R.Systems.Template.Api.Web.Mappers;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
@@ -19,14 +19,12 @@ namespace R.Systems.Template.Api.Web.Controllers;
 [Route("companies")]
 public class EmployeeInCompanyController : ControllerBase
 {
-    public EmployeeInCompanyController(ISender mediator, IMapper mapper)
+    public EmployeeInCompanyController(ISender mediator)
     {
         Mediator = mediator;
-        Mapper = mapper;
     }
 
     private ISender Mediator { get; }
-    private IMapper Mapper { get; }
 
     [SwaggerOperation(Summary = "Get the employee in the company")]
     [SwaggerResponse(
@@ -77,7 +75,8 @@ public class EmployeeInCompanyController : ControllerBase
         CancellationToken cancellationToken
     )
     {
-        ListParameters listParameters = Mapper.Map<ListParameters>(listRequest);
+        ListMapper mapper = new();
+        ListParameters listParameters = mapper.ToListParameter(listRequest);
         GetEmployeesResult result = await Mediator.Send(
             new GetEmployeesQuery { ListParameters = listParameters, CompanyId = companyId },
             cancellationToken

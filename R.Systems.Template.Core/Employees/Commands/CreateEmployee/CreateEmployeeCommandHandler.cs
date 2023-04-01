@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using R.Systems.Template.Core.Common.Domain;
 
 namespace R.Systems.Template.Core.Employees.Commands.CreateEmployee;
@@ -20,18 +19,17 @@ public class CreateEmployeeResult
 
 public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, CreateEmployeeResult>
 {
-    public CreateEmployeeCommandHandler(IMapper mapper, ICreateEmployeeRepository createEmployeeRepository)
+    public CreateEmployeeCommandHandler(ICreateEmployeeRepository createEmployeeRepository)
     {
-        Mapper = mapper;
         CreateEmployeeRepository = createEmployeeRepository;
     }
 
-    private IMapper Mapper { get; }
     private ICreateEmployeeRepository CreateEmployeeRepository { get; }
 
     public async Task<CreateEmployeeResult> Handle(CreateEmployeeCommand command, CancellationToken cancellationToken)
     {
-        EmployeeToCreate employeeToCreate = Mapper.Map<EmployeeToCreate>(command);
+        CreateEmployeeCommandMapper mapper = new();
+        EmployeeToCreate employeeToCreate = mapper.ToEmployeeToCreate(command);
         Employee createdEmployee = await CreateEmployeeRepository.CreateEmployeeAsync(employeeToCreate);
 
         return new CreateEmployeeResult

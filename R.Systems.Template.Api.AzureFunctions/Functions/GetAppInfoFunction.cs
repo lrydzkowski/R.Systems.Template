@@ -1,6 +1,3 @@
-using System.Net;
-using System.Reflection;
-using AutoMapper;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -9,6 +6,9 @@ using Microsoft.Extensions.Logging;
 using R.Systems.Template.Api.AzureFunctions.Models;
 using R.Systems.Template.Api.AzureFunctions.Services;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
+using System.Net;
+using System.Reflection;
+using R.Systems.Template.Api.AzureFunctions.Mappers;
 
 namespace R.Systems.Template.Api.AzureFunctions.Functions;
 
@@ -18,9 +18,8 @@ public class GetAppInfoFunction : FunctionBase<GetAppInfoFunction>
         ILogger<GetAppInfoFunction> logger,
         IRequestPayloadSerializer requestPayloadSerializer,
         IHttpResponseBuilder httpResponseBuilder,
-        ISender mediator,
-        IMapper mapper
-    ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator, mapper)
+        ISender mediator
+    ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator)
     {
     }
 
@@ -43,10 +42,11 @@ public class GetAppInfoFunction : FunctionBase<GetAppInfoFunction>
     {
         Logger.LogInformation("C# Start processing GetAppInfo function.");
 
+        GetAppInfoMapper mapper = new();
         GetAppInfoResult result = await Mediator.Send(
             new GetAppInfoQuery { AppAssembly = Assembly.GetExecutingAssembly() }
         );
-        GetAppInfoResponse response = Mapper.Map<GetAppInfoResponse>(result);
+        GetAppInfoResponse response = mapper.ToResponse(result);
 
         return await HttpResponseBuilder.BuildAsync(request, response);
     }

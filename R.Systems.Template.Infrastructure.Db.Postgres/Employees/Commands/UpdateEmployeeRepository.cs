@@ -1,28 +1,27 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 using R.Systems.Template.Infrastructure.Db.Postgres.Common.Entities;
+using R.Systems.Template.Infrastructure.Db.Postgres.Common.Mappers;
 
 namespace R.Systems.Template.Infrastructure.Db.Postgres.Employees.Commands;
 
 internal class UpdateEmployeeRepository : IUpdateEmployeeRepository
 {
-    public UpdateEmployeeRepository(EmployeeValidator employeeValidator, IMapper mapper, AppDbContext dbContext)
+    public UpdateEmployeeRepository(EmployeeValidator employeeValidator, AppDbContext dbContext)
     {
         EmployeeValidator = employeeValidator;
-        Mapper = mapper;
         DbContext = dbContext;
     }
 
     private EmployeeValidator EmployeeValidator { get; }
-    private IMapper Mapper { get; }
     private AppDbContext DbContext { get; }
 
     public async Task<Employee> UpdateEmployeeAsync(EmployeeToUpdate employeeToUpdate)
     {
+        EmployeeEntityMapper mapper = new();
         await EmployeeValidator.VerifyCompanyExistenceAsync(employeeToUpdate.CompanyId);
 
         EmployeeEntity employeeEntity = await GetEmployeeEntityAsync(employeeToUpdate.EmployeeId);
@@ -32,7 +31,7 @@ internal class UpdateEmployeeRepository : IUpdateEmployeeRepository
 
         await DbContext.SaveChangesAsync();
 
-        return Mapper.Map<Employee>(employeeEntity);
+        return mapper.ToEmployee(employeeEntity);
     }
 
     private async Task<EmployeeEntity> GetEmployeeEntityAsync(int employeeId)

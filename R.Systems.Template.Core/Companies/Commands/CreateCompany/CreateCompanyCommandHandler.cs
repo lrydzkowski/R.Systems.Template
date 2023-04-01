@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using R.Systems.Template.Core.Common.Domain;
 
 namespace R.Systems.Template.Core.Companies.Commands.CreateCompany;
@@ -16,18 +15,17 @@ public class CreateCompanyResult
 
 public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand, CreateCompanyResult>
 {
-    public CreateCompanyCommandHandler(IMapper mapper, ICreateCompanyRepository createCompanyRepository)
+    public CreateCompanyCommandHandler(ICreateCompanyRepository createCompanyRepository)
     {
-        Mapper = mapper;
         CreateCompanyRepository = createCompanyRepository;
     }
 
-    private IMapper Mapper { get; }
     private ICreateCompanyRepository CreateCompanyRepository { get; }
 
     public async Task<CreateCompanyResult> Handle(CreateCompanyCommand command, CancellationToken cancellationToken)
     {
-        CompanyToCreate companyToCreate = Mapper.Map<CompanyToCreate>(command);
+        CreateCompanyCommandMapper mapper = new();
+        CompanyToCreate companyToCreate = mapper.ToCompanyToCreate(command);
         Company companyCreated = await CreateCompanyRepository.CreateCompanyAsync(companyToCreate);
 
         return new CreateCompanyResult

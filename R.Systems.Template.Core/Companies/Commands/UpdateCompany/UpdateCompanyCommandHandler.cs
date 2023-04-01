@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using R.Systems.Template.Core.Common.Domain;
 
 namespace R.Systems.Template.Core.Companies.Commands.UpdateCompany;
@@ -18,18 +17,17 @@ public class UpdateCompanyResult
 
 public class UpdateCompanyCommandHandler : IRequestHandler<UpdateCompanyCommand, UpdateCompanyResult>
 {
-    public UpdateCompanyCommandHandler(IMapper mapper, IUpdateCompanyRepository updateCompanyRepository)
+    public UpdateCompanyCommandHandler(IUpdateCompanyRepository updateCompanyRepository)
     {
-        Mapper = mapper;
         UpdateCompanyRepository = updateCompanyRepository;
     }
 
-    private IMapper Mapper { get; }
     private IUpdateCompanyRepository UpdateCompanyRepository { get; }
 
     public async Task<UpdateCompanyResult> Handle(UpdateCompanyCommand command, CancellationToken cancellationToken)
     {
-        CompanyToUpdate companyToUpdate = Mapper.Map<CompanyToUpdate>(command);
+        UpdateCompanyCommandMapper mapper = new();
+        CompanyToUpdate companyToUpdate = mapper.ToCompanyToUpdate(command);
         Company company = await UpdateCompanyRepository.UpdateCompanyAsync(companyToUpdate);
 
         return new UpdateCompanyResult

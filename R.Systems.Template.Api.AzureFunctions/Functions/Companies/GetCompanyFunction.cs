@@ -1,6 +1,4 @@
-﻿using System.Net;
-using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
@@ -9,6 +7,7 @@ using R.Systems.Template.Api.AzureFunctions.Services;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
+using System.Net;
 
 namespace R.Systems.Template.Api.AzureFunctions.Functions.Companies;
 
@@ -18,9 +17,8 @@ internal class GetCompanyFunction : FunctionBase<GetCompanyFunction>
         ILogger<GetCompanyFunction> logger,
         IRequestPayloadSerializer requestPayloadSerializer,
         IHttpResponseBuilder httpResponseBuilder,
-        ISender mediator,
-        IMapper mapper
-    ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator, mapper)
+        ISender mediator
+    ) : base(logger, requestPayloadSerializer, httpResponseBuilder, mediator)
     {
     }
 

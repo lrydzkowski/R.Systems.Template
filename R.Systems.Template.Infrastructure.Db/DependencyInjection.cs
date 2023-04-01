@@ -28,7 +28,6 @@ public static class DependencyInjection
     {
         services.ConfigureOptions(configuration);
         services.ConfigureAppDbContext();
-        services.ConfigureAutoMapper();
         services.ConfigureServices();
     }
 
@@ -50,11 +49,6 @@ public static class DependencyInjection
                 options.UseSqlServer(connectionStrings.AppDb);
             }
         );
-    }
-
-    private static void ConfigureAutoMapper(this IServiceCollection services)
-    {
-        services.AddAutoMapper(typeof(DependencyInjection));
     }
 
     private static void ConfigureServices(this IServiceCollection services)
