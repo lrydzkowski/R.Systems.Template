@@ -8,6 +8,7 @@ using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
+using R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
@@ -98,7 +99,11 @@ public class CompanyController : ControllerBase
         CreateCompanyCommand command = companyMapper.ToCreateCommand(request);
         CreateCompanyResult result = await Mediator.Send(command);
 
-        return CreatedAtAction(nameof(GetCompany), new { companyId = result.Company.CompanyId }, result.Company);
+        return CreatedAtAction(
+            nameof(GetCompany),
+            new CreateCompanyResponse { CompanyId = result.Company.CompanyId },
+            result.Company
+        );
     }
 
     [SwaggerOperation(Summary = "Update the company")]
@@ -119,5 +124,18 @@ public class CompanyController : ControllerBase
         UpdateCompanyResult result = await Mediator.Send(command);
 
         return Ok(result.Company);
+    }
+
+    [SwaggerOperation(Summary = "Delete the company")]
+    [SwaggerResponse(statusCode: 204, description: "Company deleted")]
+    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpDelete("{companyId}")]
+    public async Task<IActionResult> DeleteCompany(int companyId)
+    {
+        DeleteCompanyCommand command = new() { CompanyId = companyId };
+        await Mediator.Send(command);
+
+        return NoContent();
     }
 }

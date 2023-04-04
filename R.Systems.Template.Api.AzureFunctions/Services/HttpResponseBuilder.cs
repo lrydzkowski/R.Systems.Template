@@ -7,6 +7,7 @@ public interface IHttpResponseBuilder
 {
     Task<HttpResponseData> BuildAsync<T>(HttpRequestData request, T data);
     Task<HttpResponseData> BuildNotFoundAsync<T>(HttpRequestData request, T data);
+    HttpResponseData BuildNoContent(HttpRequestData request);
 }
 
 public class HttpResponseBuilder
@@ -27,6 +28,13 @@ public class HttpResponseBuilder
     public async Task<HttpResponseData> BuildNotFoundAsync<T>(HttpRequestData request, T data)
     {
         return await BuildAsync(request, data, HttpStatusCode.NotFound);
+    }
+
+    public HttpResponseData BuildNoContent(HttpRequestData request)
+    {
+        HttpResponseData httpResponse = request.CreateResponse(HttpStatusCode.NoContent);
+
+        return httpResponse;
     }
 
     private async Task<HttpResponseData> BuildAsync<T>(HttpRequestData request, T data, HttpStatusCode statusCode)

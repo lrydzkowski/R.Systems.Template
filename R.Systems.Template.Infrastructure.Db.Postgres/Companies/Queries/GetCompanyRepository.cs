@@ -21,17 +21,7 @@ internal class GetCompanyRepository : IGetCompanyRepository
                 company => new Company
                 {
                     CompanyId = (int)company.Id!,
-                    Name = company.Name,
-                    Employees = company.Employees.Select(
-                            employee => new Employee
-                            {
-                                EmployeeId = (int)employee.Id!,
-                                FirstName = employee.FirstName,
-                                LastName = employee.LastName
-                            }
-                        )
-                        .OrderBy(employee => employee.EmployeeId)
-                        .ToList()
+                    Name = company.Name
                 }
             )
             .FirstOrDefaultAsync(cancellationToken);

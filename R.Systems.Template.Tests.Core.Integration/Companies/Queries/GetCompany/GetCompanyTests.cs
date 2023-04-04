@@ -30,8 +30,7 @@ public class GetCompanyTests
             Company = new Company
             {
                 CompanyId = 3,
-                Name = "Meta",
-                Employees = new List<Employee>()
+                Name = "Meta"
             }
         };
         GetCompanyQuery query = new() { CompanyId = 3 };

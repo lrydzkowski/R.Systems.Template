@@ -75,18 +75,7 @@ internal static class CompaniesSampleData
                     x => new Company
                     {
                         CompanyId = (int)x.Value.Id!,
-                        Name = x.Value.Name,
-                        Employees = EmployeesSampleData.Data
-                            .Where(y => y.CompanyId == x.Value.Id && y.Id != null)
-                            .Select(
-                                y => new Employee
-                                {
-                                    EmployeeId = (int)y.Id!,
-                                    FirstName = y.FirstName,
-                                    LastName = y.LastName
-                                }
-                            )
-                            .ToList()
+                        Name = x.Value.Name
                     }
                 )
                 .ToList();

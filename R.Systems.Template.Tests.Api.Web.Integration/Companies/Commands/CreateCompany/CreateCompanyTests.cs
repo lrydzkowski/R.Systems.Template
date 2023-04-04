@@ -74,8 +74,7 @@ public class CreateCompanyTests
             .BeEquivalentTo(
                 new Company
                 {
-                    Name = command.Name!,
-                    Employees = new List<Employee>()
+                    Name = command.Name!
                 },
                 options => options.Excluding(ctx => ctx.CompanyId)
             );

@@ -2,15 +2,17 @@
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Companies.Commands.CreateCompany;
+using R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
 using R.Systems.Template.Infrastructure.Db.Common.Mappers;
 
 namespace R.Systems.Template.Infrastructure.Db.Companies.Commands;
 
-internal class UpdateCompanyRepository : IUpdateCompanyRepository
+internal class CompanyRepository : ICreateCompanyRepository, IUpdateCompanyRepository, IDeleteCompanyRepository
 {
-    public UpdateCompanyRepository(AppDbContext dbContext, DbExceptionHandler dbExceptionHandler)
+    public CompanyRepository(AppDbContext dbContext, DbExceptionHandler dbExceptionHandler)
     {
         DbContext = dbContext;
         DbExceptionHandler = dbExceptionHandler;
@@ -18,6 +20,26 @@ internal class UpdateCompanyRepository : IUpdateCompanyRepository
 
     private AppDbContext DbContext { get; }
     private DbExceptionHandler DbExceptionHandler { get; }
+
+    public async Task<Company> CreateCompanyAsync(CompanyToCreate companyToCreate)
+    {
+        CompanyEntityMapper mapper = new();
+        CompanyEntity companyEntity = mapper.ToCompanyEntity(companyToCreate);
+
+        await DbContext.Companies.AddAsync(companyEntity);
+
+        try
+        {
+            await DbContext.SaveChangesAsync();
+        }
+        catch (DbUpdateException exception)
+        {
+            DbExceptionHandler.Handle(exception, companyEntity);
+            throw;
+        }
+
+        return mapper.ToCompany(companyEntity);
+    }
 
     public async Task<Company> UpdateCompanyAsync(CompanyToUpdate companyToUpdate)
     {
@@ -36,6 +58,14 @@ internal class UpdateCompanyRepository : IUpdateCompanyRepository
         }
 
         return mapper.ToCompany(companyEntity);
+    }
+
+    public async Task DeleteAsync(int companyId)
+    {
+        CompanyEntity company = await GetCompanyEntityAsync(companyId);
+
+        DbContext.Companies.Remove(company);
+        await DbContext.SaveChangesAsync();
     }
 
     private async Task<CompanyEntity> GetCompanyEntityAsync(int companyId)

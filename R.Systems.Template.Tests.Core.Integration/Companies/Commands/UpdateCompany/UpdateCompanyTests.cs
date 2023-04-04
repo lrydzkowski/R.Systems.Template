@@ -65,8 +65,7 @@ public class UpdateCompanyTests
             Company = new Company
             {
                 CompanyId = command.CompanyId,
-                Name = command.Name!,
-                Employees = new List<Employee>()
+                Name = command.Name!
             }
         };
 

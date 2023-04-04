@@ -4,11 +4,14 @@ namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Builders;
 
 internal static class ValidationFailureBuilder
 {
-    public static ValidationFailure BuildEmptyFieldValidationError(string fieldName, string? fieldNameInMsg = null)
+    public static ValidationFailure BuildEmptyFieldValidationError(
+        string fieldName,
+        string? fieldNameInMsg = null
+    )
     {
         fieldNameInMsg ??= fieldName;
 
-        return new ValidationFailure()
+        return new ValidationFailure
         {
             PropertyName = $"{fieldName}",
             ErrorMessage = $"'{fieldNameInMsg}' must not be empty.",
@@ -24,7 +27,7 @@ internal static class ValidationFailureBuilder
     {
         fieldNameInMsg ??= fieldName;
 
-        return new ValidationFailure()
+        return new ValidationFailure
         {
             PropertyName = $"{fieldName}",
             ErrorMessage =
@@ -42,7 +45,7 @@ internal static class ValidationFailureBuilder
     {
         fieldNameInMsg ??= fieldName;
 
-        return new ValidationFailure()
+        return new ValidationFailure
         {
             PropertyName = $"{fieldName}",
             ErrorMessage =
@@ -53,7 +56,7 @@ internal static class ValidationFailureBuilder
 
     public static ValidationFailure BuildEmailIsNotValidValidationError()
     {
-        return new ValidationFailure()
+        return new ValidationFailure
         {
             PropertyName = "Email",
             ErrorMessage = "'Email' is not a valid email address.",

@@ -67,8 +67,7 @@ internal static class CompaniesSampleData
                     x => new Company
                     {
                         CompanyId = (int)x.Value.Id!,
-                        Name = x.Value.Name,
-                        Employees = new List<Employee>()
+                        Name = x.Value.Name
                     }
                 )
                 .ToList();

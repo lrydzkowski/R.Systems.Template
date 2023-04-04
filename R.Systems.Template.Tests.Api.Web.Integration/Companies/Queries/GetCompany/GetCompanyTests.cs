@@ -32,16 +32,7 @@ public class GetCompanyTests
         Company expectedCompany = new()
         {
             CompanyId = companyId,
-            Name = "Meta",
-            Employees = new List<Employee>()
-            {
-                new()
-                {
-                    EmployeeId = employeeId,
-                    FirstName = "John",
-                    LastName = "Doe"
-                }
-            }
+            Name = "Meta"
         };
         RestRequest restRequest = new($"{_endpointUrlPath}/{companyId}");
 

@@ -45,9 +45,8 @@ public class UpdateCompanyTests
         string url = $"{_endpointUrlPath}/{companyId}";
         RestRequest restRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
 
-        RestResponse<List<ValidationFailure>> response = await RestClient.ExecuteAsync<List<ValidationFailure>>(
-            restRequest
-        );
+        RestResponse<List<ValidationFailure>> response =
+            await RestClient.ExecuteAsync<List<ValidationFailure>>(restRequest);
 
         response.StatusCode.Should().Be(expectedHttpStatus);
         response.Data.Should().NotBeNull();
@@ -77,15 +76,7 @@ public class UpdateCompanyTests
 
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         updateResponse.Data.Should().NotBeNull();
-        updateResponse.Data.Should()
-            .BeEquivalentTo(
-                new Company
-                {
-                    CompanyId = companyId,
-                    Name = request.Name!
-                },
-                options => options.Excluding(ctx => ctx.Employees)
-            );
+        updateResponse.Data.Should().BeEquivalentTo(new Company { CompanyId = companyId, Name = request.Name! });
 
         Company company = updateResponse.Data!;
 
@@ -95,10 +86,6 @@ public class UpdateCompanyTests
 
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         getResponse.Data.Should().NotBeNull();
-        getResponse.Data.Should()
-            .BeEquivalentTo(
-                company,
-                options => options.Excluding(ctx => ctx.Employees)
-            );
+        getResponse.Data.Should().BeEquivalentTo(company);
     }
 }

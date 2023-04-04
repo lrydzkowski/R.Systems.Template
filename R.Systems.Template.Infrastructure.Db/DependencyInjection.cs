@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using R.Systems.Template.Core;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
+using R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
@@ -55,8 +56,9 @@ public static class DependencyInjection
     {
         services.AddScoped<IGetCompanyRepository, GetCompanyRepository>();
         services.AddScoped<IGetCompaniesRepository, GetCompaniesRepository>();
-        services.AddScoped<ICreateCompanyRepository, CreateCompanyRepository>();
-        services.AddScoped<IUpdateCompanyRepository, UpdateCompanyRepository>();
+        services.AddScoped<ICreateCompanyRepository, CompanyRepository>();
+        services.AddScoped<IUpdateCompanyRepository, CompanyRepository>();
+        services.AddScoped<IDeleteCompanyRepository, CompanyRepository>();
         services.AddScoped<EmployeeValidator>();
         services.AddScoped<IGetEmployeeRepository, GetEmployeeRepository>();
         services.AddScoped<IGetEmployeesRepository, GetEmployeesRepository>();

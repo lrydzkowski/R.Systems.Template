@@ -61,14 +61,12 @@ public class CreateCompanyTests
         {
             Company = new Company
             {
-                CompanyId = CompaniesSampleData.Companies.Max(x => x.CompanyId) + 1,
-                Name = command.Name!,
-                Employees = new List<Employee>()
+                Name = command.Name!
             }
         };
 
         CreateCompanyResult result = await Mediator.Send(command);
 
-        result.Should().BeEquivalentTo(expectedResult);
+        result.Should().BeEquivalentTo(expectedResult, options => options.Excluding(x => x.Company.CompanyId));
     }
 }

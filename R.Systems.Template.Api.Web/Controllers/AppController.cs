@@ -25,6 +25,7 @@ public class AppController : ControllerBase
         type: typeof(GetAppInfoResponse),
         contentTypes: new[] { "application/json" }
     )]
+    [SwaggerResponse(statusCode: 500)]
     [HttpGet, Route("")]
     public async Task<IActionResult> GetAppInfo()
     {
