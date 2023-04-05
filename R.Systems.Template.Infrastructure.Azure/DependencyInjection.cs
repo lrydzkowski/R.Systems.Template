@@ -33,7 +33,7 @@ public static class DependencyInjection
     private static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApi(configuration, "AzureAd", JwtBearerDefaults.AuthenticationScheme);
+            .AddMicrosoftIdentityWebApi(configuration, "AzureAd", AuthenticationSchemes.AzureAd);
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApi(configuration, "AzureAdB2C", AuthenticationSchemes.AzureAdB2C);
     }

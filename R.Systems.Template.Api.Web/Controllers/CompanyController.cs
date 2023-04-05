@@ -12,12 +12,13 @@ using R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
+using R.Systems.Template.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(AuthenticationSchemes = AuthenticationSchemes.AzureAd)]
 [RequiredScope("User.Access")]
 [Route("companies")]
 public class CompanyController : ControllerBase

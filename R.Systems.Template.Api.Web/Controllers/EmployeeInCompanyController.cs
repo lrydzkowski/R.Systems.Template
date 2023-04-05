@@ -9,12 +9,13 @@ using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
+using R.Systems.Template.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(AuthenticationSchemes = AuthenticationSchemes.AzureAd)]
 [RequiredScope("User.Access")]
 [Route("companies")]
 public class EmployeeInCompanyController : ControllerBase

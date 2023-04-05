@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using R.Systems.Template.Core.Words.Queries.GetDefinitions;
+using R.Systems.Template.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(AuthenticationSchemes = AuthenticationSchemes.AzureAd)]
 [RequiredScope("User.Access")]
 [Route("words")]
 public class WordsController : ControllerBase
