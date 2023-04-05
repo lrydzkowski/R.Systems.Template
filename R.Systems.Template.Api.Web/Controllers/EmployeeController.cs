@@ -8,6 +8,7 @@ using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
+using R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
 using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
@@ -124,5 +125,18 @@ public class EmployeeController : ControllerBase
         UpdateEmployeeResult result = await Mediator.Send(command);
 
         return Ok(result.UpdatedEmployee);
+    }
+
+    [SwaggerOperation(Summary = "Delete the employee")]
+    [SwaggerResponse(statusCode: 204, description: "Employee deleted")]
+    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpDelete("{employeeId}")]
+    public async Task<IActionResult> DeleteEmployee(int employeeId)
+    {
+        DeleteEmployeeCommand command = new() { EmployeeId = employeeId };
+        await Mediator.Send(command);
+
+        return NoContent();
     }
 }

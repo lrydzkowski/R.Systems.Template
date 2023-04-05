@@ -101,7 +101,7 @@ public class CompanyController : ControllerBase
 
         return CreatedAtAction(
             nameof(GetCompany),
-            new CreateCompanyResponse { CompanyId = result.Company.CompanyId },
+            new { companyId = result.Company.CompanyId },
             result.Company
         );
     }

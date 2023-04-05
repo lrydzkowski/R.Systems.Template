@@ -2,15 +2,17 @@
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
+using R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
 using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
-using R.Systems.Template.Infrastructure.Db.Postgres.Common.Entities;
-using R.Systems.Template.Infrastructure.Db.Postgres.Common.Mappers;
+using R.Systems.Template.Infrastructure.Db.Common.Entities;
+using R.Systems.Template.Infrastructure.Db.Common.Mappers;
 
-namespace R.Systems.Template.Infrastructure.Db.Postgres.Employees.Commands;
+namespace R.Systems.Template.Infrastructure.Db.Employees.Commands;
 
-internal class UpdateEmployeeRepository : IUpdateEmployeeRepository
+internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRepository, IDeleteEmployeeRepository
 {
-    public UpdateEmployeeRepository(EmployeeValidator employeeValidator, AppDbContext dbContext)
+    public EmployeeRepository(EmployeeValidator employeeValidator, AppDbContext dbContext)
     {
         EmployeeValidator = employeeValidator;
         DbContext = dbContext;
@@ -18,6 +20,18 @@ internal class UpdateEmployeeRepository : IUpdateEmployeeRepository
 
     private EmployeeValidator EmployeeValidator { get; }
     private AppDbContext DbContext { get; }
+
+    public async Task<Employee> CreateEmployeeAsync(EmployeeToCreate employeeToCreate)
+    {
+        await EmployeeValidator.VerifyCompanyExistenceAsync(employeeToCreate.CompanyId);
+
+        EmployeeEntityMapper mapper = new();
+        EmployeeEntity employeeEntity = mapper.ToEmployeeEntity(employeeToCreate);
+        await DbContext.Employees.AddAsync(employeeEntity);
+        await DbContext.SaveChangesAsync();
+
+        return mapper.ToEmployee(employeeEntity);
+    }
 
     public async Task<Employee> UpdateEmployeeAsync(EmployeeToUpdate employeeToUpdate)
     {
@@ -32,6 +46,14 @@ internal class UpdateEmployeeRepository : IUpdateEmployeeRepository
         await DbContext.SaveChangesAsync();
 
         return mapper.ToEmployee(employeeEntity);
+    }
+
+    public async Task DeleteEmployeeAsync(int employeeId)
+    {
+        EmployeeEntity employeeEntity = await GetEmployeeEntityAsync(employeeId);
+
+        DbContext.Employees.Remove(employeeEntity);
+        await DbContext.SaveChangesAsync();
     }
 
     private async Task<EmployeeEntity> GetEmployeeEntityAsync(int employeeId)
