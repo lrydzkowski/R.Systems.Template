@@ -1,10 +1,9 @@
-using NLog;
-using NLog.Web;
 using R.Systems.Template.Api.Web.Middleware;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
 using R.Systems.Template.Infrastructure.Db;
 using R.Systems.Template.Infrastructure.Wordnik;
+using Serilog;
 
 namespace R.Systems.Template.Api.Web;
 
@@ -12,12 +11,16 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Logger? logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-        logger.Debug("init main");
+        Log.Logger = new LoggerConfiguration()
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .WriteTo.File("Logs/startup-.log", rollingInterval: RollingInterval.Day)
+            .CreateBootstrapLogger();
 
         try
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            ConfigureSettings(builder);
             ConfigureServices(builder);
             ConfigureLogging(builder);
             WebApplication app = builder.Build();
@@ -26,13 +29,23 @@ public class Program
         }
         catch (Exception exception)
         {
-            logger.Error(exception, "Stopped program because of exception");
+            Log.Fatal(exception, "Application terminated unexpectedly");
             throw;
         }
         finally
         {
-            LogManager.Shutdown();
+            Log.CloseAndFlush();
         }
+    }
+
+    private static void ConfigureSettings(WebApplicationBuilder builder)
+    {
+        builder.Configuration.AddJsonFile("serilog.json", optional: true, reloadOnChange: true);
+        builder.Configuration.AddJsonFile(
+            $"serilog.{builder.Environment.EnvironmentName}.json",
+            optional: true,
+            reloadOnChange: true
+        );
     }
 
     private static void ConfigureServices(WebApplicationBuilder builder)
@@ -46,8 +59,11 @@ public class Program
 
     private static void ConfigureLogging(WebApplicationBuilder builder)
     {
-        builder.Logging.ClearProviders();
-        builder.Host.UseNLog();
+        builder.Host.UseSerilog(
+            (context, services, configuration) => configuration
+                .ReadFrom.Configuration(context.Configuration)
+                .ReadFrom.Services(services)
+        );
     }
 
     private static void ConfigureRequestPipeline(WebApplication app)

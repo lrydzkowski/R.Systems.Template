@@ -11,9 +11,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="C:\Users\lukas\.nuget\packages\nlog.schema\5.1.3\contentFiles\any\any\NLog.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="NLog.Schema" Version="5.1.3" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.3" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+    <PackageReference Include="Serilog.Expressions" Version="3.4.1" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
   </ItemGroup>
@@ -22,6 +31,15 @@
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Azure\R.Systems.Template.Infrastructure.Azure.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Wordnik\R.Systems.Template.Infrastructure.Wordnik.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="serilog.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="serilog.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

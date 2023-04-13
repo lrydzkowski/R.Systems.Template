@@ -1,0 +1,46 @@
+﻿{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Information",
+        "System": "Information"
+      }
+    },
+    "WriteTo:Async": {
+      "Name": "Async",
+      "Args": {
+        "configure": [
+          {
+            "Name": "File",
+            "Args": {
+              "path": "Logs/all-.log",
+              "outputTemplate": "{Timestamp:HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}]{NewLine}{Message:lj}{NewLine}{Exception}------------------------------------------------------------------------------------------------------------------------{NewLine}",
+              "rollingInterval": "Day",
+              "fileSizeLimitBytes": "10000000",
+              "retainedFileCountLimit": 7
+            }
+          }
+        ]
+      }
+    },
+    "WriteTo:ConditionalSink": {
+      "Name": "Conditional",
+      "Args": {
+        "expression": "@l in ['Error', 'Fatal', 'Warning']",
+        "configureSink": [
+          {
+            "Name": "File",
+            "Args": {
+              "path": "Logs/errors-.log",
+              "outputTemplate": "{Timestamp:HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}]{NewLine}{Message:lj}{NewLine}{Exception}------------------------------------------------------------------------------------------------------------------------{NewLine}",
+              "rollingInterval": "Day",
+              "fileSizeLimitBytes": "10000000",
+              "retainedFileCountLimit": 7
+            }
+          }
+        ]
+      }
+    }
+  }
+}

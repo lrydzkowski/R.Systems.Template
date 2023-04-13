@@ -1,0 +1,19 @@
+﻿{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "System": "Warning"
+      }
+    },
+    "WriteTo:Console": {
+      "Name": "Console",
+      "Args": {
+        "outputTemplate": "{Timestamp:HH:mm:ss.fff zzz} [{Level}] [{SourceContext}]{NewLine}{Message:lj}{NewLine}{Exception}------------------------------------------------------------------------------------------------------------------------{NewLine}",
+        "theme": "Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme::Code, Serilog.Sinks.Console"
+      }
+    },
+    "Enrich": [ "FromLogContext" ]
+  }
+}

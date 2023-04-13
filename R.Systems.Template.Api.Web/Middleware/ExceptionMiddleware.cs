@@ -33,7 +33,7 @@ public class ExceptionMiddleware
         }
         catch (Exception exception)
         {
-            _logger.LogError("Something went wrong: {ExceptionMessage}", exception.Message);
+            _logger.LogError(exception, "Something went wrong");
             HandleException(httpContext);
         }
     }
