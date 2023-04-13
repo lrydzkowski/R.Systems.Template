@@ -69,6 +69,11 @@ public class Program
                     services.GetRequiredService<TelemetryConfiguration>(),
                     TelemetryConverter.Traces
                 )
+                .WriteTo.AzureBlobStorage(
+                    connectionStringName: "StorageAccount",
+                    context.Configuration,
+                    storageFileName: "r-systems-template-api-logs/{yyyy}-{MM}-{dd}.log"
+                )
         );
     }
 
