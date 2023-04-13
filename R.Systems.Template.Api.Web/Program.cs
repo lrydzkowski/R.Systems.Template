@@ -1,3 +1,4 @@
+using Microsoft.ApplicationInsights.Extensibility;
 using R.Systems.Template.Api.Web.Middleware;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
@@ -59,10 +60,15 @@ public class Program
 
     private static void ConfigureLogging(WebApplicationBuilder builder)
     {
+        builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
         builder.Host.UseSerilog(
             (context, services, configuration) => configuration
                 .ReadFrom.Configuration(context.Configuration)
                 .ReadFrom.Services(services)
+                .WriteTo.ApplicationInsights(
+                    services.GetRequiredService<TelemetryConfiguration>(),
+                    TelemetryConverter.Traces
+                )
         );
     }
 
