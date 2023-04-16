@@ -10,6 +10,7 @@ namespace R.Systems.Template.Infrastructure.Db.Postgres.Common.Mappers;
 internal partial class CompanyEntityMapper
 {
     [MapProperty(nameof(CompanyEntity.Id), nameof(Company.CompanyId))]
+    [MapperIgnoreSource(nameof(CompanyEntity.Employees))]
     public partial Company ToCompany(CompanyEntity entity);
 
     [MapperIgnoreTarget(nameof(CompanyEntity.Id))]
@@ -18,5 +19,6 @@ internal partial class CompanyEntityMapper
 
     [MapperIgnoreTarget(nameof(CompanyEntity.Id))]
     [MapperIgnoreTarget(nameof(CompanyEntity.Employees))]
+    [MapperIgnoreSource(nameof(CompanyToUpdate.CompanyId))]
     public partial CompanyEntity ToCompanyEntity(CompanyToUpdate companyToUpdate);
 }

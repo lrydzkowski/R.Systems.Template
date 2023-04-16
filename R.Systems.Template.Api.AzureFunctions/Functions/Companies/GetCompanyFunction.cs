@@ -38,8 +38,8 @@ internal class GetCompanyFunction : FunctionBase<GetCompanyFunction>
     public async Task<HttpResponseData> GetCompany(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies/{companyId:int}")]
         HttpRequestData request,
-        CancellationToken cancellationToken,
-        int companyId
+        int companyId,
+        CancellationToken cancellationToken
     )
     {
         Logger.LogInformation($"C# Start processing {nameof(GetCompany)} function.");

@@ -20,13 +20,11 @@ public class DeleteEmployeeTests
 {
     private readonly string _endpointUrlPath = "/employees";
 
-    public DeleteEmployeeTests(ITestOutputHelper output, WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
+    public DeleteEmployeeTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
-        Output = output;
         RestClient = webApiFactory.WithoutAuthentication().CreateRestClient();
     }
 
-    private ITestOutputHelper Output { get; }
     private RestClient RestClient { get; }
 
     [Fact]
