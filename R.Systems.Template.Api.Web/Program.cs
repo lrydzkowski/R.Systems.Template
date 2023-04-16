@@ -1,4 +1,3 @@
-using Microsoft.ApplicationInsights.Extensibility;
 using R.Systems.Template.Api.Web.Middleware;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
@@ -12,16 +11,11 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Log.Logger = new LoggerConfiguration()
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.File("Logs/startup-.log", rollingInterval: RollingInterval.Day)
-            .CreateBootstrapLogger();
+        Log.Logger = Serilog.CreateBootstrapLogger();
 
         try
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-            ConfigureSettings(builder);
             ConfigureServices(builder);
             ConfigureLogging(builder);
             WebApplication app = builder.Build();
@@ -39,16 +33,6 @@ public class Program
         }
     }
 
-    private static void ConfigureSettings(WebApplicationBuilder builder)
-    {
-        builder.Configuration.AddJsonFile("serilog.json", optional: true, reloadOnChange: true);
-        builder.Configuration.AddJsonFile(
-            $"serilog.{builder.Environment.EnvironmentName}.json",
-            optional: true,
-            reloadOnChange: true
-        );
-    }
-
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
         builder.Services.ConfigureServices(builder.Environment);
@@ -61,20 +45,7 @@ public class Program
     private static void ConfigureLogging(WebApplicationBuilder builder)
     {
         builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
-        builder.Host.UseSerilog(
-            (context, services, configuration) => configuration
-                .ReadFrom.Configuration(context.Configuration)
-                .ReadFrom.Services(services)
-                .WriteTo.ApplicationInsights(
-                    services.GetRequiredService<TelemetryConfiguration>(),
-                    TelemetryConverter.Traces
-                )
-                .WriteTo.AzureBlobStorage(
-                    connectionStringName: "StorageAccount",
-                    context.Configuration,
-                    storageFileName: "r-systems-template-api-logs/{yyyy}-{MM}-{dd}.log"
-                )
-        );
+        builder.Host.UseSerilog(Serilog.CreateLogger, true);
     }
 
     private static void ConfigureRequestPipeline(WebApplication app)

@@ -54,6 +54,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
             {
                 SetDefaultOptions(configBuilder);
                 SetDatabaseConnectionString(configBuilder);
+                DisableLogging(configBuilder);
             }
         );
     }
@@ -80,6 +81,18 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     private string BuildConnectionString()
     {
         return _dbContainer.GetConnectionString() + ";Trust Server Certificate=true";
+    }
+
+    private void DisableLogging(IConfigurationBuilder configBuilder)
+    {
+        configBuilder.AddInMemoryCollection(
+            new Dictionary<string, string?>
+            {
+                ["Serilog:MinimumLevel:Default"] = "6",
+                ["Serilog:MinimumLevel:Override:Microsoft"] = "6",
+                ["Serilog:MinimumLevel:Override:System"] = "6"
+            }
+        );
     }
 }
 
