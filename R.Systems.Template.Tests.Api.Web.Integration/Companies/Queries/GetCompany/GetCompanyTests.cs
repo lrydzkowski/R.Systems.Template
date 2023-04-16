@@ -28,7 +28,6 @@ public class GetCompanyTests
     public async Task GetCompany_ShouldReturnCompany_WhenCompanyExists()
     {
         int companyId = IdGenerator.GetCompanyId(1);
-        int employeeId = IdGenerator.GetEmployeeId(1);
         Company expectedCompany = new()
         {
             CompanyId = companyId,

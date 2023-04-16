@@ -23,12 +23,10 @@ public class GetDefinitionsTests
     public GetDefinitionsTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
         WebApiFactory = webApiFactory.WithoutAuthentication();
-        RestClient = webApiFactory.WithoutAuthentication().CreateRestClient();
         WireMockServer = webApiFactory.WireMockServer;
     }
 
     private WebApplicationFactory<Program> WebApiFactory { get; }
-    private RestClient RestClient { get; }
     private WireMockServer WireMockServer { get; }
 
     [Fact]

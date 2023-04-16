@@ -9,6 +9,7 @@ namespace R.Systems.Template.Infrastructure.Db.Common.Mappers;
 internal partial class EmployeeEntityMapper
 {
     [MapProperty(nameof(EmployeeEntity.Id), nameof(Employee.EmployeeId))]
+    [MapperIgnoreSource(nameof(EmployeeEntity.Company))]
     public partial Employee ToEmployee(EmployeeEntity entity);
 
     [MapperIgnoreTarget(nameof(EmployeeEntity.Id))]

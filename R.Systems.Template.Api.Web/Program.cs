@@ -1,10 +1,9 @@
-using NLog;
-using NLog.Web;
 using R.Systems.Template.Api.Web.Middleware;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
 using R.Systems.Template.Infrastructure.Db;
 using R.Systems.Template.Infrastructure.Wordnik;
+using Serilog;
 
 namespace R.Systems.Template.Api.Web;
 
@@ -12,8 +11,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Logger? logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-        logger.Debug("init main");
+        Log.Logger = Serilog.CreateBootstrapLogger();
 
         try
         {
@@ -26,12 +24,12 @@ public class Program
         }
         catch (Exception exception)
         {
-            logger.Error(exception, "Stopped program because of exception");
+            Log.Fatal(exception, "Application terminated unexpectedly");
             throw;
         }
         finally
         {
-            LogManager.Shutdown();
+            Log.CloseAndFlush();
         }
     }
 
@@ -46,8 +44,8 @@ public class Program
 
     private static void ConfigureLogging(WebApplicationBuilder builder)
     {
-        builder.Logging.ClearProviders();
-        builder.Host.UseNLog();
+        builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
+        builder.Host.UseSerilog(Serilog.CreateLogger, true);
     }
 
     private static void ConfigureRequestPipeline(WebApplication app)

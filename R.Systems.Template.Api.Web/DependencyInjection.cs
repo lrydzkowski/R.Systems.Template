@@ -46,7 +46,7 @@ public static class DependencyInjection
                                     Id = "Bearer"
                                 }
                             },
-                            new string[] { }
+                            Array.Empty<string>()
                         }
                     }
                 );
