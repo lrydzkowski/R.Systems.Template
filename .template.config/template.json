@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "Łukasz Rydzkowski",
-  "classifications": [ "Clean Architecture", "ASP.NET Core", "Web API" ],
+  "classifications": [ "Clean Architecture", "WebAPI" ],
   "identity": "R.Systems.Template",
   "name": "Web API based on Clean Architecture",
   "shortName": "r-systems-clean-architecture",
@@ -27,7 +27,7 @@
     "copyrightYear": {
       "type": "generated",
       "generator": "now",
-      "replaces": "2021",
+      "replaces": "2023",
       "parameters": {
         "format": "yyyy"
       }
