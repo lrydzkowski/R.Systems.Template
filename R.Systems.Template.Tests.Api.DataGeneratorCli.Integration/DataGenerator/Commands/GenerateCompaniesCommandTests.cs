@@ -34,7 +34,7 @@ public class GenerateCompaniesCommandTests : IClassFixture<ConsoleAppRunnerFacto
         getResult.ExitCode.Should().Be(0);
 
         string? console = testConsole.Out.ToString();
-        List<string> consoleLines = console?.Split("\r\n").ToList() ?? new List<string>();
+        List<string> consoleLines = console?.Split("\n").Select(x => x.Trim()).ToList() ?? new List<string>();
 
         consoleLines.Should().HaveCount(numOfCompanies + numOfEmployees);
     }
