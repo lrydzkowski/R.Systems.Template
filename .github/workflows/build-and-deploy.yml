@@ -1,0 +1,65 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+      
+env:
+  REGISTRY: ghcr.io
+  APP_IMAGE_NAME: lrydzkowski/r-systems-template
+  
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+    
+    steps:
+      - name: Generate version tag
+        run: echo "VERSION_TAG=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+        
+      - name: Show the version tag
+        run: echo ${{ env.VERSION_TAG }}
+        
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET Core SDK 7
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test --no-restore --verbosity normal
+        
+      - name: Sign in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Build an application docker image
+        id: docker_app_build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./R.Systems.Template.Api.Web/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:latest,${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:${{ env.VERSION_TAG }}
+          
+      - uses: mathieudutour/github-tag-action@v6.1
+        with:
+          custom_tag: ${{ env.VERSION_TAG }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: ""
