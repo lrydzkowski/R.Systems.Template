@@ -72,3 +72,17 @@ docker build -t r-systems-template -f .\R.Systems.Template.Api.Web\Dockerfile .
 ```powershell
 docker run -it --rm -p 8080:80 r-systems-template /bin/bash
 ```
+
+## Benchmarks
+
+### Run benchmarks
+
+```powershell
+cd .\R.Systems.Template.Benchmarks.Api.Web\
+dotnet run -c Release -- `
+    --filter R.Systems.Template.Benchmarks.Api.Web.* `
+    --envVars `
+    ACCESS_TOKEN_AZURE_AD:"<access_token_for_azure_ad>" `
+    ACCESS_TOKEN_AZURE_AD_B2C:"<access_token_for_azure_ad_b2c>" `
+    API_BASE_URL:"http://192.168.50.50:8095"
+```
