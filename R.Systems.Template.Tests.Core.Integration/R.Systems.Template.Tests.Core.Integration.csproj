@@ -42,7 +42,7 @@
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Azure\R.Systems.Template.Infrastructure.Azure.csproj" />
-    <ProjectReference Include="..\R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Infrastructure.Db.SqlServer\R.Systems.Template.Infrastructure.Db.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>

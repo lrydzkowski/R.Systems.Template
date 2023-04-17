@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Infrastructure.Db;
+using R.Systems.Template.Infrastructure.Db.SqlServer;
 using RunMethodsSequentially;
 
 namespace R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.Common;

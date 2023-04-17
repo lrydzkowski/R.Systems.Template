@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Infrastructure.Db.Common.Configurations;
+﻿using R.Systems.Template.Infrastructure.Db.SqlServer.Common.Configurations;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 
