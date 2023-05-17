@@ -60,7 +60,7 @@ public static class Serilog
                     restrictedToMinimumLevel: LogEventLevel.Warning
                 )
             )
-            .WriteTo.DefineApplicationInsightsSing(
+            .WriteTo.DefineApplicationInsightsSink(
                 serviceProvider
             );
     }
@@ -107,7 +107,7 @@ public static class Serilog
         );
     }
 
-    private static LoggerConfiguration DefineApplicationInsightsSing(
+    private static LoggerConfiguration DefineApplicationInsightsSink(
         this LoggerSinkConfiguration sinkConfiguration,
         IServiceProvider services
     )
