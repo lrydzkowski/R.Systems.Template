@@ -38,8 +38,8 @@ public class EmployeeInCompanyController : ControllerBase
     [SwaggerResponse(statusCode: 500)]
     [HttpGet("{companyId}/employees/{employeeId}", Name = "GetEmployeeInCompany")]
     public async Task<IActionResult> GetEmployeeInCompany(
-        int companyId,
-        int employeeId,
+        int? companyId,
+        int? employeeId,
         CancellationToken cancellationToken
     )
     {
@@ -72,7 +72,7 @@ public class EmployeeInCompanyController : ControllerBase
     [HttpGet("{companyId}/employees", Name = "GetEmployeesInCompany")]
     public async Task<IActionResult> GetEmployeesInCompany(
         [FromQuery] ListRequest listRequest,
-        int companyId,
+        int? companyId,
         CancellationToken cancellationToken
     )
     {

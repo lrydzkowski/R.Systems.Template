@@ -40,7 +40,7 @@ public class CompanyController : ControllerBase
     [SwaggerResponse(statusCode: 404, description: "Company doesn't exist.")]
     [SwaggerResponse(statusCode: 500)]
     [HttpGet("{companyId}", Name = "GetCompany")]
-    public async Task<IActionResult> GetCompany(int companyId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetCompany(int? companyId, CancellationToken cancellationToken)
     {
         GetCompanyQuery query = new() { CompanyId = companyId };
         GetCompanyResult result = await Mediator.Send(query, cancellationToken);
@@ -132,7 +132,7 @@ public class CompanyController : ControllerBase
     [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
     [SwaggerResponse(statusCode: 500)]
     [HttpDelete("{companyId}")]
-    public async Task<IActionResult> DeleteCompany(int companyId)
+    public async Task<IActionResult> DeleteCompany(int? companyId)
     {
         DeleteCompanyCommand command = new() { CompanyId = companyId };
         await Mediator.Send(command);

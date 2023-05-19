@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 using R.Systems.Template.Infrastructure.Db.SqlServer;
 using RunMethodsSequentially;
 
@@ -13,6 +14,7 @@ public static class DependencyInjection
         services.ConfigureSwagger();
         services.ConfigureCors();
         services.ConfigureSequentialServices(environment);
+        services.DisableApiControllerModelValidation();
     }
 
     private static void ConfigureSwagger(this IServiceCollection services)
@@ -73,5 +75,10 @@ public static class DependencyInjection
                 options => options.AddFileSystemLockAndRunMethods(environment.ContentRootPath)
             )
             .RegisterServiceToRunInJob<AppDbInitializer>();
+    }
+
+    private static void DisableApiControllerModelValidation(this IServiceCollection services)
+    {
+        services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
     }
 }

@@ -32,7 +32,7 @@ public class WordsController : ControllerBase
     [Route("{word}/definitions")]
     [HttpGet]
     public async Task<IActionResult> GetDefinitions(
-        string word,
+        string? word,
         CancellationToken cancellationToken
     )
     {

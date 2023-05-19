@@ -6,9 +6,9 @@ public class UpdateEmployeeCommandValidator : AbstractValidator<UpdateEmployeeCo
 {
     public UpdateEmployeeCommandValidator()
     {
-        RuleFor(c => c.EmployeeId).NotEmpty();
-        RuleFor(x => x.FirstName).NotEmpty().MaximumLength(100);
-        RuleFor(x => x.LastName).NotEmpty().MaximumLength(100);
-        RuleFor(c => c.CompanyId).NotEmpty();
+        RuleFor(c => c.EmployeeId).NotEmpty().WithName(nameof(UpdateEmployeeCommand.EmployeeId));
+        RuleFor(x => x.FirstName).NotEmpty().MaximumLength(100).WithName(nameof(UpdateEmployeeCommand.FirstName));
+        RuleFor(x => x.LastName).NotEmpty().MaximumLength(100).WithName(nameof(UpdateEmployeeCommand.LastName));
+        RuleFor(c => c.CompanyId).NotEmpty().WithName(nameof(UpdateEmployeeCommand.CompanyId));
     }
 }

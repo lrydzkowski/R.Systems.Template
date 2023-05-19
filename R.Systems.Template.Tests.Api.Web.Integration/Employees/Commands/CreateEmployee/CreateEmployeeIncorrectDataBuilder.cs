@@ -27,8 +27,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
                 new List<ValidationFailure>
                 {
                     ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "FirstName",
-                        fieldNameInMsg: "First Name"
+                        fieldName: "FirstName"
                     )
                 }
             ),
@@ -44,8 +43,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
                 new List<ValidationFailure>
                 {
                     ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "FirstName",
-                        fieldNameInMsg: "First Name"
+                        fieldName: "FirstName"
                     )
                 }
             ),
@@ -61,8 +59,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
                 new List<ValidationFailure>
                 {
                     ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "FirstName",
-                        fieldNameInMsg: "First Name"
+                        fieldName: "FirstName"
                     )
                 }
             ),
@@ -79,8 +76,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
                 {
                     ValidationFailureBuilder.BuildTooLongFieldValidationError(
                         fieldName: "FirstName",
-                        maxLength: 100,
-                        fieldNameInMsg: "First Name"
+                        maxLength: 100
                     )
                 }
             ),
@@ -96,8 +92,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
                 new List<ValidationFailure>
                 {
                     ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "LastName",
-                        fieldNameInMsg: "Last Name"
+                        fieldName: "LastName"
                     )
                 }
             ),
@@ -113,8 +108,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
                 new List<ValidationFailure>
                 {
                     ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "LastName",
-                        fieldNameInMsg: "Last Name"
+                        fieldName: "LastName"
                     )
                 }
             ),
@@ -130,8 +124,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
                 new List<ValidationFailure>
                 {
                     ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "LastName",
-                        fieldNameInMsg: "Last Name"
+                        fieldName: "LastName"
                     )
                 }
             ),
@@ -148,8 +141,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
                 {
                     ValidationFailureBuilder.BuildTooLongFieldValidationError(
                         fieldName: "LastName",
-                        maxLength: 100,
-                        fieldNameInMsg: "Last Name"
+                        maxLength: 100
                     )
                 }
             ),

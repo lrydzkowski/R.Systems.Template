@@ -4,7 +4,7 @@ namespace R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 
 public class DeleteCompanyCommand : IRequest
 {
-    public int CompanyId { get; init; }
+    public int? CompanyId { get; init; }
 }
 
 public class DeleteCompanyCommandHandler : IRequestHandler<DeleteCompanyCommand>
@@ -18,6 +18,7 @@ public class DeleteCompanyCommandHandler : IRequestHandler<DeleteCompanyCommand>
 
     public async Task Handle(DeleteCompanyCommand command, CancellationToken cancellationToken)
     {
-        await _deleteCompanyRepository.DeleteAsync(command.CompanyId);
+        int companyId = command.CompanyId ?? 0;
+        await _deleteCompanyRepository.DeleteAsync(companyId);
     }
 }

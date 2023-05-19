@@ -6,6 +6,7 @@ public class UpdateCompanyCommandValidator : AbstractValidator<UpdateCompanyComm
 {
     public UpdateCompanyCommandValidator()
     {
+        RuleFor(x => x.CompanyId).NotEmpty().WithName(nameof(UpdateCompanyCommand.CompanyId));
         RuleFor(x => x.Name).NotEmpty().MaximumLength(200);
     }
 }

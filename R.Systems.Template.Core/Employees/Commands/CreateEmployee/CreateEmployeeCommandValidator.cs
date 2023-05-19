@@ -6,8 +6,8 @@ public class CreateEmployeeCommandValidator : AbstractValidator<CreateEmployeeCo
 {
     public CreateEmployeeCommandValidator()
     {
-        RuleFor(x => x.FirstName).NotEmpty().MaximumLength(100);
-        RuleFor(x => x.LastName).NotEmpty().MaximumLength(100);
-        RuleFor(c => c.CompanyId).NotEmpty();
+        RuleFor(x => x.FirstName).NotEmpty().MaximumLength(100).WithName(nameof(CreateEmployeeCommand.FirstName));
+        RuleFor(x => x.LastName).NotEmpty().MaximumLength(100).WithName(nameof(CreateEmployeeCommand.LastName));
+        RuleFor(c => c.CompanyId).NotEmpty().WithName(nameof(CreateEmployeeCommand.CompanyId));
     }
 }

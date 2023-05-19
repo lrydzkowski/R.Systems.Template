@@ -40,7 +40,7 @@ public class EmployeeController : ControllerBase
     [SwaggerResponse(statusCode: 404, description: "Employee doesn't exist.")]
     [SwaggerResponse(statusCode: 500)]
     [HttpGet("{employeeId}", Name = "GetEmployee")]
-    public async Task<IActionResult> GetEmployee(int employeeId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetEmployee(int? employeeId, CancellationToken cancellationToken)
     {
         GetEmployeeQuery query = new() { EmployeeId = employeeId };
         GetEmployeeResult result = await Mediator.Send(query, cancellationToken);
@@ -117,7 +117,7 @@ public class EmployeeController : ControllerBase
     [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
     [SwaggerResponse(statusCode: 500)]
     [HttpPut("{employeeId}")]
-    public async Task<IActionResult> UpdateEmployee(int employeeId, UpdateEmployeeRequest request)
+    public async Task<IActionResult> UpdateEmployee(int? employeeId, UpdateEmployeeRequest request)
     {
         EmployeeMapper mapper = new();
         UpdateEmployeeCommand command = mapper.ToUpdateCommand(request);
@@ -132,7 +132,7 @@ public class EmployeeController : ControllerBase
     [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
     [SwaggerResponse(statusCode: 500)]
     [HttpDelete("{employeeId}")]
-    public async Task<IActionResult> DeleteEmployee(int employeeId)
+    public async Task<IActionResult> DeleteEmployee(int? employeeId)
     {
         DeleteEmployeeCommand command = new() { EmployeeId = employeeId };
         await Mediator.Send(command);

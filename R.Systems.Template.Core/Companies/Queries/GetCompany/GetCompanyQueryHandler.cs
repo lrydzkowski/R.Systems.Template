@@ -5,7 +5,7 @@ namespace R.Systems.Template.Core.Companies.Queries.GetCompany;
 
 public class GetCompanyQuery : IRequest<GetCompanyResult>
 {
-    public int CompanyId { get; init; }
+    public int? CompanyId { get; init; }
 }
 
 public class GetCompanyResult
@@ -24,7 +24,8 @@ public class GetCompanyQueryHandler : IRequestHandler<GetCompanyQuery, GetCompan
 
     public async Task<GetCompanyResult> Handle(GetCompanyQuery query, CancellationToken cancellationToken)
     {
-        Company? company = await GetCompanyRepository.GetCompanyAsync(query.CompanyId, cancellationToken);
+        int companyId = query.CompanyId ?? 0;
+        Company? company = await GetCompanyRepository.GetCompanyAsync(companyId, cancellationToken);
 
         return new GetCompanyResult
         {

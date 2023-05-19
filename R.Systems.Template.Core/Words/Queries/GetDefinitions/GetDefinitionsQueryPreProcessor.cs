@@ -6,7 +6,7 @@ internal class GetDefinitionsQueryPreProcessor : IRequestPreProcessor<GetDefinit
 {
     public Task Process(GetDefinitionsQuery request, CancellationToken cancellationToken)
     {
-        request.Word = request.Word.Trim();
+        request.Word = request.Word?.Trim();
 
         return Task.CompletedTask;
     }

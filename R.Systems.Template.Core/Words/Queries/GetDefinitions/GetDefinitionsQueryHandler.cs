@@ -4,7 +4,7 @@ namespace R.Systems.Template.Core.Words.Queries.GetDefinitions;
 
 public class GetDefinitionsQuery : IRequest<GetDefinitionsResult>
 {
-    public string Word { get; set; } = "";
+    public string? Word { get; set; } = "";
 }
 
 public class GetDefinitionsResult
@@ -23,8 +23,9 @@ public class GetDefinitionsQueryHandler : IRequestHandler<GetDefinitionsQuery, G
 
     public async Task<GetDefinitionsResult> Handle(GetDefinitionsQuery query, CancellationToken cancellationToken)
     {
+        string word = query.Word ?? "";
         List<Definition> definitions =
-            await GetDefinitionsRepository.GetDefinitionsAsync(query.Word, cancellationToken);
+            await GetDefinitionsRepository.GetDefinitionsAsync(word, cancellationToken);
 
         return new GetDefinitionsResult
         {
