@@ -29,12 +29,12 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         new WordnikOptionsData()
     };
 
-    public WireMockServer WireMockServer { get; }
-
     public WebApiFactory()
     {
         WireMockServer = WireMockServer.Start();
     }
+
+    public WireMockServer WireMockServer { get; }
 
     public async Task InitializeAsync()
     {
@@ -80,7 +80,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     private string BuildConnectionString()
     {
-        return _dbContainer.GetConnectionString() + ";Trust Server Certificate=true";
+        return _dbContainer.GetConnectionString().Replace("localhost", "127.0.0.1");
     }
 
     private void DisableLogging(IConfigurationBuilder configBuilder)

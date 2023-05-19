@@ -56,6 +56,6 @@ public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
 
     private string BuildConnectionString()
     {
-        return _dbContainer.GetConnectionString() + ";Trust Server Certificate=true";
+        return _dbContainer.GetConnectionString().Replace("localhost", "127.0.0.1");
     }
 }
