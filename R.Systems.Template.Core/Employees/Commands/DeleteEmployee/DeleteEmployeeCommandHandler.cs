@@ -4,7 +4,7 @@ namespace R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
 
 public class DeleteEmployeeCommand : IRequest
 {
-    public int? EmployeeId { get; init; }
+    public int EmployeeId { get; init; }
 }
 
 public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand>
@@ -18,7 +18,6 @@ public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeComman
 
     public async Task Handle(DeleteEmployeeCommand command, CancellationToken cancellationToken)
     {
-        int employeeId = command.EmployeeId ?? 0;
-        await _deleteEmployeeRepository.DeleteEmployeeAsync(employeeId);
+        await _deleteEmployeeRepository.DeleteEmployeeAsync(command.EmployeeId);
     }
 }

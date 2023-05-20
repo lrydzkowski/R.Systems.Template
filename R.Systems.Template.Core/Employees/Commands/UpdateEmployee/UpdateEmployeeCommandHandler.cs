@@ -5,7 +5,7 @@ namespace R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 
 public class UpdateEmployeeCommand : IRequest<UpdateEmployeeResult>
 {
-    public int? EmployeeId { get; set; }
+    public int EmployeeId { get; set; }
 
     public string? FirstName { get; set; }
 

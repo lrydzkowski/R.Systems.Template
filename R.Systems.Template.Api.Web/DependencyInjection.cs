@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using R.Systems.Template.Api.Web.Services;
 using R.Systems.Template.Infrastructure.Db.SqlServer;
 using RunMethodsSequentially;
 
@@ -14,7 +15,7 @@ public static class DependencyInjection
         services.ConfigureSwagger();
         services.ConfigureCors();
         services.ConfigureSequentialServices(environment);
-        services.DisableApiControllerModelValidation();
+        services.ChangeApiControllerModelValidationResponse();
     }
 
     private static void ConfigureSwagger(this IServiceCollection services)
@@ -77,8 +78,11 @@ public static class DependencyInjection
             .RegisterServiceToRunInJob<AppDbInitializer>();
     }
 
-    private static void DisableApiControllerModelValidation(this IServiceCollection services)
+    private static void ChangeApiControllerModelValidationResponse(this IServiceCollection services)
     {
-        services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
+        services.Configure<ApiBehaviorOptions>(
+            options => options.InvalidModelStateResponseFactory =
+                InvalidModelStateService.InvalidModelStateResponseFactory
+        );
     }
 }
