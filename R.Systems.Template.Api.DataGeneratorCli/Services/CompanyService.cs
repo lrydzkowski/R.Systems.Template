@@ -1,8 +1,8 @@
 ﻿using Bogus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using R.Systems.Template.Infrastructure.Db.SqlServer;
-using R.Systems.Template.Infrastructure.Db.SqlServer.Common.Entities;
+using R.Systems.Template.Infrastructure.Db;
+using R.Systems.Template.Infrastructure.Db.Common.Entities;
 
 namespace R.Systems.Template.Api.DataGeneratorCli.Services;
 

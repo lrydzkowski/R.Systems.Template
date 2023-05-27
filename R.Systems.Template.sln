@@ -40,13 +40,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Tests.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Wordnik", "R.Systems.Template.Infrastructure.Wordnik\R.Systems.Template.Infrastructure.Wordnik.csproj", "{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Db.Postgres", "R.Systems.Template.Infrastructure.Db.Postgres\R.Systems.Template.Infrastructure.Db.Postgres.csproj", "{2B9DDD82-59BF-47C6-A06F-D0F59818FB75}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{2CAD7464-F38B-4665-9621-58A092B2BD81}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Benchmarks.Api.Web", "R.Systems.Template.Benchmarks.Api.Web\R.Systems.Template.Benchmarks.Api.Web.csproj", "{B9104281-C654-4DB9-8BBF-BBAFEE97E312}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Db.SqlServer", "R.Systems.Template.Infrastructure.Db.SqlServer\R.Systems.Template.Infrastructure.Db.SqlServer.csproj", "{2EDBF925-05F7-402F-82A6-D9806A8A69C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Db", "R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj", "{C97F17BC-9F02-4968-8E42-921CFC606DF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,18 +92,14 @@ Global
 		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B9DDD82-59BF-47C6-A06F-D0F59818FB75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B9DDD82-59BF-47C6-A06F-D0F59818FB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B9DDD82-59BF-47C6-A06F-D0F59818FB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B9DDD82-59BF-47C6-A06F-D0F59818FB75}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B9104281-C654-4DB9-8BBF-BBAFEE97E312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B9104281-C654-4DB9-8BBF-BBAFEE97E312}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9104281-C654-4DB9-8BBF-BBAFEE97E312}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9104281-C654-4DB9-8BBF-BBAFEE97E312}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2EDBF925-05F7-402F-82A6-D9806A8A69C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2EDBF925-05F7-402F-82A6-D9806A8A69C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2EDBF925-05F7-402F-82A6-D9806A8A69C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2EDBF925-05F7-402F-82A6-D9806A8A69C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C97F17BC-9F02-4968-8E42-921CFC606DF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C97F17BC-9F02-4968-8E42-921CFC606DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C97F17BC-9F02-4968-8E42-921CFC606DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C97F17BC-9F02-4968-8E42-921CFC606DF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,9 +118,8 @@ Global
 		{9B852E79-D360-4F79-B35D-566E55D1D91C} = {F1F14032-B02E-4494-AD73-4839A49CDEF7}
 		{4AD22595-32AA-4106-9520-0FEF657CA6AA} = {348E1E8F-5473-43FF-A448-6746DE652F54}
 		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
-		{2B9DDD82-59BF-47C6-A06F-D0F59818FB75} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{B9104281-C654-4DB9-8BBF-BBAFEE97E312} = {2CAD7464-F38B-4665-9621-58A092B2BD81}
-		{2EDBF925-05F7-402F-82A6-D9806A8A69C6} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
+		{C97F17BC-9F02-4968-8E42-921CFC606DF8} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}

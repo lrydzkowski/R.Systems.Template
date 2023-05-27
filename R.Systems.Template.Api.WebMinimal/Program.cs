@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
-using R.Systems.Template.Infrastructure.Db.SqlServer;
+using R.Systems.Template.Infrastructure.Db;
 using System.Reflection;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -10,7 +10,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureCoreServices();
-builder.Services.ConfigureInfrastructureDbSqlServerServices(builder.Configuration);
+builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
 
 WebApplication app = builder.Build();
 

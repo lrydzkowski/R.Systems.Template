@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using R.Systems.Template.Api.Web.Services;
-using R.Systems.Template.Infrastructure.Db.SqlServer;
+using R.Systems.Template.Infrastructure.Db;
 using RunMethodsSequentially;
 
 namespace R.Systems.Template.Api.Web;

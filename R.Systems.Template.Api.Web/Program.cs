@@ -1,7 +1,7 @@
 using R.Systems.Template.Api.Web.Middleware;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
-using R.Systems.Template.Infrastructure.Db.SqlServer;
+using R.Systems.Template.Infrastructure.Db;
 using R.Systems.Template.Infrastructure.Wordnik;
 using Serilog;
 
@@ -37,7 +37,7 @@ public class Program
     {
         builder.Services.ConfigureServices(builder.Environment);
         builder.Services.ConfigureCoreServices();
-        builder.Services.ConfigureInfrastructureDbSqlServerServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);
     }

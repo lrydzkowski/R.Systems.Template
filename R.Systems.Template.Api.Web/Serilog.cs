@@ -98,8 +98,7 @@ public static class Serilog
     )
     {
         return sinkConfiguration.AzureBlobStorage(
-            connectionStringName: StorageAccountConnectionStringName,
-            configuration,
+            connectionString: configuration.GetConnectionString(StorageAccountConnectionStringName),
             storageContainerName: storageContainerName,
             storageFileName: storageFileName,
             outputTemplate: OutputTemplate,

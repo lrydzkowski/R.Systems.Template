@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Infrastructure.Db.SqlServer.Common.Options;
+﻿using R.Systems.Template.Infrastructure.Db.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Options.ConnectionStrings;
@@ -13,14 +13,15 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
                 1,
                 new ConnectionStringsOptionsData
                 {
-                    AppDb = ""
+                    AppSqlServerDb = "",
+                    AppPostgresDb = ""
                 },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
                         BuildNotEmptyErrorMessage(
                             ConnectionStringsOptions.Position,
-                            nameof(ConnectionStringsOptions.AppDb)
+                            nameof(ConnectionStringsOptions.AppSqlServerDb)
                         )
                     }
                 )
@@ -29,14 +30,32 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
                 2,
                 new ConnectionStringsOptionsData
                 {
-                    AppDb = "  "
+                    AppSqlServerDb = "  ",
+                    AppPostgresDb = " "
                 },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
                         BuildNotEmptyErrorMessage(
                             ConnectionStringsOptions.Position,
-                            nameof(ConnectionStringsOptions.AppDb)
+                            nameof(ConnectionStringsOptions.AppSqlServerDb)
+                        )
+                    }
+                )
+            ),
+            BuildParameters(
+                3,
+                new ConnectionStringsOptionsData
+                {
+                    AppSqlServerDb = null,
+                    AppPostgresDb = null
+                },
+                BuildExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        BuildNotEmptyErrorMessage(
+                            ConnectionStringsOptions.Position,
+                            nameof(ConnectionStringsOptions.AppSqlServerDb)
                         )
                     }
                 )

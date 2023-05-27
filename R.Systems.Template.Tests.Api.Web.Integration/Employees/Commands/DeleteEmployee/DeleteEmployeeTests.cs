@@ -2,7 +2,7 @@
 using FluentValidation.Results;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
-using R.Systems.Template.Infrastructure.Db.SqlServer.Common.Configurations;
+using R.Systems.Template.Infrastructure.Db.Common.Configurations;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;

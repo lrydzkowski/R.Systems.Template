@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Api.Web;
-using R.Systems.Template.Infrastructure.Db.SqlServer.Common.Options;
+using R.Systems.Template.Infrastructure.Db.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAd;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAdB2C;
@@ -72,7 +72,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppDb)}"] =
+                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppSqlServerDb)}"] =
                     BuildConnectionString()
             }
         );

@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
-    <ProjectReference Include="..\R.Systems.Template.Infrastructure.Db.SqlServer\R.Systems.Template.Infrastructure.Db.SqlServer.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj" />
   </ItemGroup>
 
 </Project>

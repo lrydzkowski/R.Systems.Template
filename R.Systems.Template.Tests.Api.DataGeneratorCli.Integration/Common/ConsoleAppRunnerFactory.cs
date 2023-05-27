@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Api.DataGeneratorCli;
+using R.Systems.Template.Infrastructure.Db.Common.Options;
 using RunMethodsSequentially;
 using Testcontainers.MsSql;
 
@@ -37,7 +38,8 @@ public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                ["ConnectionStrings:AppDb"] = BuildConnectionString()
+                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppSqlServerDb)}"] =
+                    BuildConnectionString()
             }
         );
     }
