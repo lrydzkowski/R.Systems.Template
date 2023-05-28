@@ -8,6 +8,9 @@ internal class ConnectionStringsOptionsValidator : AbstractValidator<ConnectionS
     {
         RuleFor(x => x)
             .Must(x => !string.IsNullOrWhiteSpace(x.AppSqlServerDb) || !string.IsNullOrWhiteSpace(x.AppPostgresDb))
-            .WithMessage("123");
+            .WithName(ConnectionStringsOptions.Position)
+            .WithMessage(
+                $"Either '{nameof(ConnectionStringsOptions.AppSqlServerDb)}' or '{nameof(ConnectionStringsOptions.AppPostgresDb)}' must not be empty."
+            );
     }
 }

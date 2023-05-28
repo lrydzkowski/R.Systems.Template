@@ -7,6 +7,9 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
 {
     public static IEnumerable<object[]> Build()
     {
+        string errorMessage =
+            $"Either '{nameof(ConnectionStringsOptions.AppSqlServerDb)}' or '{nameof(ConnectionStringsOptions.AppPostgresDb)}' must not be empty.";
+
         return new List<object[]>
         {
             BuildParameters(
@@ -19,10 +22,7 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        BuildNotEmptyErrorMessage(
-                            ConnectionStringsOptions.Position,
-                            nameof(ConnectionStringsOptions.AppSqlServerDb)
-                        )
+                        BuildErrorMessage(ConnectionStringsOptions.Position, errorMessage)
                     }
                 )
             ),
@@ -36,10 +36,7 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        BuildNotEmptyErrorMessage(
-                            ConnectionStringsOptions.Position,
-                            nameof(ConnectionStringsOptions.AppSqlServerDb)
-                        )
+                        BuildErrorMessage(ConnectionStringsOptions.Position, errorMessage)
                     }
                 )
             ),
@@ -53,10 +50,7 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        BuildNotEmptyErrorMessage(
-                            ConnectionStringsOptions.Position,
-                            nameof(ConnectionStringsOptions.AppSqlServerDb)
-                        )
+                        BuildErrorMessage(ConnectionStringsOptions.Position, errorMessage)
                     }
                 )
             )

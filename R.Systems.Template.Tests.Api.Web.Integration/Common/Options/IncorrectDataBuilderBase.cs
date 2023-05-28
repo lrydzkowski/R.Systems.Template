@@ -1,4 +1,6 @@
-﻿namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
+namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 
 internal abstract class IncorrectDataBuilderBase<T> where T : IOptionsData
 {
@@ -18,5 +20,10 @@ internal abstract class IncorrectDataBuilderBase<T> where T : IOptionsData
     protected static string BuildNotEmptyErrorMessage(string position, string propertyName)
     {
         return $"{position}.{propertyName}: '{propertyName}' must not be empty. Severity: Error";
+    }
+
+    protected static string BuildErrorMessage(string property, string errorMsg)
+    {
+        return $"{property}: {errorMsg} Severity: Error";
     }
 }
