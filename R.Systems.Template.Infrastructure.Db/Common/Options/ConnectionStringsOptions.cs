@@ -7,4 +7,6 @@ internal class ConnectionStringsOptions
     public string? AppSqlServerDb { get; set; }
 
     public string? AppPostgresDb { get; set; }
+
+    public string? StorageAccount { get; init; }
 }
