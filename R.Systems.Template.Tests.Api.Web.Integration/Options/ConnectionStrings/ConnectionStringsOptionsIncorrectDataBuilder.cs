@@ -7,22 +7,21 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
 {
     public static IEnumerable<object[]> Build()
     {
-        string errorMessage =
-            $"Either '{nameof(ConnectionStringsOptions.AppSqlServerDb)}' or '{nameof(ConnectionStringsOptions.AppPostgresDb)}' must not be empty.";
-
         return new List<object[]>
         {
             BuildParameters(
                 1,
                 new ConnectionStringsOptionsData
                 {
-                    AppSqlServerDb = "",
                     AppPostgresDb = ""
                 },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        BuildErrorMessage(ConnectionStringsOptions.Position, errorMessage)
+                        BuildNotEmptyErrorMessage(
+                            ConnectionStringsOptions.Position,
+                            nameof(ConnectionStringsOptions.AppPostgresDb)
+                        )
                     }
                 )
             ),
@@ -30,13 +29,15 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
                 2,
                 new ConnectionStringsOptionsData
                 {
-                    AppSqlServerDb = "  ",
                     AppPostgresDb = " "
                 },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        BuildErrorMessage(ConnectionStringsOptions.Position, errorMessage)
+                        BuildNotEmptyErrorMessage(
+                            ConnectionStringsOptions.Position,
+                            nameof(ConnectionStringsOptions.AppPostgresDb)
+                        )
                     }
                 )
             ),
@@ -44,13 +45,15 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
                 3,
                 new ConnectionStringsOptionsData
                 {
-                    AppSqlServerDb = null,
                     AppPostgresDb = null
                 },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
-                        BuildErrorMessage(ConnectionStringsOptions.Position, errorMessage)
+                        BuildNotEmptyErrorMessage(
+                            ConnectionStringsOptions.Position,
+                            nameof(ConnectionStringsOptions.AppPostgresDb)
+                        )
                     }
                 )
             )

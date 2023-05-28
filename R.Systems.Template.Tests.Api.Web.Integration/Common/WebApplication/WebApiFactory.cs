@@ -11,15 +11,15 @@ using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAdB2C;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.ConnectionStrings;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.Wordnik;
 using RunMethodsSequentially;
-using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 using WireMock.Server;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 
 public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
-        .WithImage("mcr.microsoft.com/mssql/server:2019-latest")
+    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
+        .WithImage("postgres:15-alpine")
         .WithCleanUp(true)
         .Build();
 
@@ -72,7 +72,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppSqlServerDb)}"] =
+                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppPostgresDb)}"] =
                     BuildConnectionString()
             }
         );
@@ -80,7 +80,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     private string BuildConnectionString()
     {
-        return _dbContainer.GetConnectionString().Replace("localhost", "127.0.0.1");
+        return _dbContainer.GetConnectionString();
     }
 
     private void DisableLogging(IConfigurationBuilder configBuilder)

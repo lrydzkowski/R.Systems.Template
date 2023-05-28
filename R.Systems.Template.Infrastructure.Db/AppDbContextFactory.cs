@@ -20,20 +20,6 @@ internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         IConfigurationProvider secretProvider = config.Providers.First();
         DbContextOptionsBuilder<AppDbContext> builder = new();
 
-        string? sqlServerConnectionString = GetConnectionString(
-            secretProvider,
-            nameof(ConnectionStringsOptions.AppSqlServerDb)
-        );
-        if (IsConnectionStringCorrect(sqlServerConnectionString))
-        {
-            builder.UseSqlServer(
-                sqlServerConnectionString,
-                x => x.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
-            );
-
-            return builder;
-        }
-
         string? postgresConnectionString = GetConnectionString(
             secretProvider,
             nameof(ConnectionStringsOptions.AppPostgresDb)

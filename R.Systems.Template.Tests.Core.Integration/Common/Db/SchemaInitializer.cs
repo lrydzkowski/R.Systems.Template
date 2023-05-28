@@ -1,20 +1,16 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.SqlServer.Management.Common;
-using Microsoft.SqlServer.Management.Smo;
+﻿using Npgsql;
 
 namespace R.Systems.Template.Tests.Core.Integration.Common.Db;
 
 public class SchemaInitializer : DbInitializerBase
 {
-    public override void Initialize(SqlConnection connection)
+    public override async Task InitializeAsync(NpgsqlConnection connection)
     {
-        base.Initialize(connection);
+        await base.InitializeAsync(connection);
 
         string sql = EmbeddedFilesReader.GetContent("Common/Db/Assets/schema.sql");
 
-        ServerConnection serverConnection = new(connection);
-        Server server = new(serverConnection);
-
-        server.ConnectionContext.ExecuteNonQuery(sql);
+        await using NpgsqlCommand command = new(sql, connection);
+        await command.ExecuteNonQueryAsync();
     }
 }

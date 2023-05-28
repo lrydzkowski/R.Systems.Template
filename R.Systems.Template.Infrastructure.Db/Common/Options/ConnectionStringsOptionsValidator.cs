@@ -6,11 +6,11 @@ internal class ConnectionStringsOptionsValidator : AbstractValidator<ConnectionS
 {
     public ConnectionStringsOptionsValidator()
     {
-        RuleFor(x => x)
-            .Must(x => !string.IsNullOrWhiteSpace(x.AppSqlServerDb) || !string.IsNullOrWhiteSpace(x.AppPostgresDb))
-            .WithName(ConnectionStringsOptions.Position)
-            .WithMessage(
-                $"Either '{nameof(ConnectionStringsOptions.AppSqlServerDb)}' or '{nameof(ConnectionStringsOptions.AppPostgresDb)}' must not be empty."
+        RuleFor(x => x.AppPostgresDb)
+            .NotEmpty()
+            .WithName(nameof(ConnectionStringsOptions.AppPostgresDb))
+            .OverridePropertyName(
+                $"{ConnectionStringsOptions.Position}.{nameof(ConnectionStringsOptions.AppPostgresDb)}"
             );
     }
 }

@@ -48,13 +48,6 @@ public static class DependencyInjection
             {
                 ConnectionStringsOptions connectionStrings =
                     serviceProvider.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
-                if (!string.IsNullOrEmpty(connectionStrings.AppSqlServerDb))
-                {
-                    options.UseSqlServer(connectionStrings.AppSqlServerDb);
-
-                    return;
-                }
-
                 options.UseNpgsql(connectionStrings.AppPostgresDb);
             }
         );

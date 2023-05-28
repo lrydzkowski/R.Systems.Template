@@ -1,19 +1,19 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
 using R.Systems.Template.Infrastructure.Db;
 using R.Systems.Template.Infrastructure.Db.Common.Options;
 using R.Systems.Template.Tests.Core.Integration.Common.Db;
-using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 
 namespace R.Systems.Template.Tests.Core.Integration.Common;
 
 public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializer : DbInitializerBase, new()
 {
-    private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
-        .WithImage("mcr.microsoft.com/mssql/server:2019-latest")
+    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
+        .WithImage("postgres:15-alpine")
         .WithCleanUp(true)
         .Build();
 
@@ -58,7 +58,7 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppSqlServerDb)}"] =
+                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppPostgresDb)}"] =
                     BuildConnectionString()
             }
         );
@@ -66,13 +66,13 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
 
     private async Task InitializeDatabaseAsync(string connectionString)
     {
-        await using SqlConnection connection = new(connectionString);
-        await connection.OpenAsync();
-        new TDbInitializer().Initialize(connection);
+        await using NpgsqlDataSource dataSource = NpgsqlDataSource.Create(connectionString);
+        await using NpgsqlConnection connection = await dataSource.OpenConnectionAsync();
+        await new TDbInitializer().InitializeAsync(connection);
     }
 
     private string BuildConnectionString()
     {
-        return _dbContainer.GetConnectionString().Replace("localhost", "127.0.0.1");
+        return _dbContainer.GetConnectionString();
     }
 }
