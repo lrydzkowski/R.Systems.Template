@@ -1,3 +1,5 @@
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using R.Systems.Template.Api.Web.Middleware;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
@@ -57,6 +59,13 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.MapHealthChecks(
+            "/health",
+            new HealthCheckOptions
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            }
+        );
         app.UseCors("CorsPolicy");
         app.UseAuthentication();
         app.UseAuthorization();

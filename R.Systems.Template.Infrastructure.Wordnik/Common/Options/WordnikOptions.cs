@@ -8,5 +8,7 @@ internal class WordnikOptions
 
     public string DefinitionsUrl { get; init; } = "";
 
+    public string RandomWordUrl { get; init; } = "";
+
     public string ApiKey { get; init; } = "";
 }

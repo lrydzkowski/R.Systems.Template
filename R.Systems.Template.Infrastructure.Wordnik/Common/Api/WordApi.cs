@@ -58,6 +58,19 @@ internal class WordApi
         return response.Data!;
     }
 
+    public async Task<string?> GetRandomWordAsync(CancellationToken cancellationToken)
+    {
+        RestRequest restRequest = new(WordnikOptions.RandomWordUrl);
+        restRequest.AddQueryParameter("api_key", WordnikOptions.ApiKey);
+
+        RestResponse<RandomWordDto> response =
+            await RestClient.ExecuteAsync<RandomWordDto>(restRequest, cancellationToken);
+
+        HandleUnexpectedError(response);
+
+        return response.Data?.Word;
+    }
+
     private async Task<RestResponse<List<DefinitionDto>?>> ExecuteWithPoliciesAsync(
         RestRequest restRequest,
         string word,

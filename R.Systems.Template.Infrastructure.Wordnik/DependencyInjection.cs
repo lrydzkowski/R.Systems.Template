@@ -6,6 +6,7 @@ using R.Systems.Template.Core;
 using R.Systems.Template.Core.Words.Queries.GetDefinitions;
 using R.Systems.Template.Infrastructure.Wordnik.Common.Api;
 using R.Systems.Template.Infrastructure.Wordnik.Common.Options;
+using R.Systems.Template.Infrastructure.Wordnik.Health;
 using R.Systems.Template.Infrastructure.Wordnik.Words.Queries.GetDefinitions;
 
 namespace R.Systems.Template.Infrastructure.Wordnik;
@@ -20,6 +21,7 @@ public static class DependencyInjection
         services.ConfigureOptions(configuration)
             .AddMemoryCache()
             .ConfigureServices();
+        services.AddHealthChecks().AddCheck<WordnikHealthCheck>(nameof(WordnikHealthCheck));
     }
 
     private static IServiceCollection ConfigureOptions(this IServiceCollection services, IConfiguration configuration)

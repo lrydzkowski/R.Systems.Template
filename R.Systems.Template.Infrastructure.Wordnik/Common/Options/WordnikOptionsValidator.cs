@@ -8,6 +8,7 @@ internal class WordnikOptionsValidator : AbstractValidator<WordnikOptions>
     {
         DefineApiBaseUrlValidator();
         DefineDefinitionsUrlValidator();
+        DefineRandomWordUrlValidator();
         DefineApiKeyValidator();
     }
 
@@ -25,6 +26,14 @@ internal class WordnikOptionsValidator : AbstractValidator<WordnikOptions>
             .NotEmpty()
             .WithName(nameof(WordnikOptions.DefinitionsUrl))
             .OverridePropertyName($"{WordnikOptions.Position}.{nameof(WordnikOptions.DefinitionsUrl)}");
+    }
+
+    private void DefineRandomWordUrlValidator()
+    {
+        RuleFor(x => x.RandomWordUrl)
+            .NotEmpty()
+            .WithName(nameof(WordnikOptions.RandomWordUrl))
+            .OverridePropertyName($"{WordnikOptions.Position}.{nameof(WordnikOptions.RandomWordUrl)}");
     }
 
     private void DefineApiKeyValidator()

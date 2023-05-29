@@ -18,6 +18,7 @@ using R.Systems.Template.Infrastructure.Db.Companies.Commands;
 using R.Systems.Template.Infrastructure.Db.Companies.Queries;
 using R.Systems.Template.Infrastructure.Db.Employees.Commands;
 using R.Systems.Template.Infrastructure.Db.Employees.Queries;
+using R.Systems.Template.Infrastructure.Db.Health;
 
 namespace R.Systems.Template.Infrastructure.Db;
 
@@ -31,6 +32,7 @@ public static class DependencyInjection
         services.ConfigureOptions(configuration);
         services.ConfigureAppDbContext();
         services.ConfigureServices();
+        services.AddHealthChecks().AddCheck<DbHealthCheck>(nameof(DbHealthCheck));
     }
 
     private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)

@@ -12,6 +12,7 @@ public static class DependencyInjection
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
+        services.AddHealthChecks();
         services.ConfigureSwagger();
         services.ConfigureCors();
         services.ConfigureSequentialServices(environment);
