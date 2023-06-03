@@ -19,7 +19,10 @@ internal class DbHealthCheck : IHealthCheck
     {
         try
         {
-            await _appDbContext.Database.ExecuteSqlRawAsync("SELECT 1", cancellationToken);
+            await _appDbContext.Companies.Select(company => company.Id)
+                .OrderBy(id => id)
+                .Take(10)
+                .ToListAsync(cancellationToken);
 
             return HealthCheckResult.Healthy();
         }
