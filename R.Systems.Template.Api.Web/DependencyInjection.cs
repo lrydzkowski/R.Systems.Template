@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using R.Systems.Template.Api.Web.Auth;
+using R.Systems.Template.Api.Web.Options;
 using R.Systems.Template.Api.Web.Services;
+using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Db;
 using RunMethodsSequentially;
 
@@ -8,7 +12,11 @@ namespace R.Systems.Template.Api.Web;
 
 public static class DependencyInjection
 {
-    public static void ConfigureServices(this IServiceCollection services, IWebHostEnvironment environment)
+    public static void ConfigureServices(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IWebHostEnvironment environment
+    )
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
@@ -17,6 +25,8 @@ public static class DependencyInjection
         services.ConfigureCors();
         services.ConfigureSequentialServices(environment);
         services.ChangeApiControllerModelValidationResponse();
+        services.ConfigureOptions(configuration);
+        services.ConfigureAuth();
     }
 
     private static void ConfigureSwagger(this IServiceCollection services)
@@ -85,5 +95,22 @@ public static class DependencyInjection
             options => options.InvalidModelStateResponseFactory =
                 InvalidModelStateService.InvalidModelStateResponseFactory
         );
+    }
+
+    private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.ConfigureOptionsWithValidation<HealthCheckOptions, HealthCheckOptionsValidator>(
+            configuration,
+            HealthCheckOptions.Position
+        );
+    }
+
+    private static void ConfigureAuth(this IServiceCollection services)
+    {
+        services.AddAuthentication()
+            .AddScheme<ApiKeyAuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(
+                ApiKeyAuthenticationSchemeOptions.Name,
+                null
+            );
     }
 }

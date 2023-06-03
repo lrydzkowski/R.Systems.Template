@@ -1,5 +1,6 @@
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using R.Systems.Template.Api.Web.Auth;
 using R.Systems.Template.Api.Web.Middleware;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
@@ -37,7 +38,7 @@ public class Program
 
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
-        builder.Services.ConfigureServices(builder.Environment);
+        builder.Services.ConfigureServices(builder.Configuration, builder.Environment);
         builder.Services.ConfigureCoreServices();
         builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
@@ -59,16 +60,25 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        app.MapHealthChecks(
-            "/health",
-            new HealthCheckOptions
-            {
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            }
-        );
+        UseHealthChecks(app);
         app.UseCors("CorsPolicy");
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+    }
+
+    private static void UseHealthChecks(WebApplication app)
+    {
+        app.MapHealthChecks(
+                "/health",
+                new HealthCheckOptions
+                {
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                }
+            )
+            .RequireAuthorization(
+                builder => builder.AddAuthenticationSchemes(ApiKeyAuthenticationSchemeOptions.Name)
+                    .RequireAuthenticatedUser()
+            );
     }
 }

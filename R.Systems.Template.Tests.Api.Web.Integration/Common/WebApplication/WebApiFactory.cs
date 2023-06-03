@@ -9,6 +9,7 @@ using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAd;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAdB2C;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.ConnectionStrings;
+using R.Systems.Template.Tests.Api.Web.Integration.Options.HealthCheck;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.Wordnik;
 using RunMethodsSequentially;
 using Testcontainers.PostgreSql;
@@ -26,7 +27,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     private readonly List<IOptionsData> _defaultOptionsData = new()
     {
         new AzureAdOptionsData(), new AzureAdB2COptionsData(), new ConnectionStringsOptionsData(),
-        new WordnikOptionsData()
+        new WordnikOptionsData(), new HealthCheckOptionsData()
     };
 
     public WebApiFactory()
