@@ -7,6 +7,7 @@ using R.Systems.Template.Infrastructure.Azure;
 using R.Systems.Template.Infrastructure.Db;
 using R.Systems.Template.Infrastructure.Wordnik;
 using Serilog;
+using Serilog.Debugging;
 
 namespace R.Systems.Template.Api.Web;
 
@@ -15,6 +16,7 @@ public class Program
     public static void Main(string[] args)
     {
         Log.Logger = Serilog.CreateBootstrapLogger();
+        SelfLog.Enable(Console.Error);
 
         try
         {
