@@ -9,16 +9,13 @@ internal class ConnectionStringsOptionsData : ConnectionStringsOptions, IOptions
     {
         AppPostgresDb =
             "Server=127.0.0.1;Database=r_systems_template;Port=5502;User Id=r_systems_template_user;Password=123";
-        StorageAccount =
-            "DefaultEndpointsProtocol=https;AccountName=rsystemscommonst;AccountKey=123;EndpointSuffix=core.windows.net";
     }
 
     public Dictionary<string, string?> ConvertToInMemoryCollection()
     {
         return new Dictionary<string, string?>
         {
-            [$"{Position}:{nameof(AppPostgresDb)}"] = AppPostgresDb,
-            [$"{Position}:{nameof(StorageAccount)}"] = StorageAccount
+            [$"{Position}:{nameof(AppPostgresDb)}"] = AppPostgresDb
         };
     }
 }

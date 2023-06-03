@@ -17,7 +17,9 @@ public static class Serilog
 
     private static readonly ConsoleTheme Theme = AnsiConsoleTheme.Code;
 
-    private static readonly string StorageAccountConnectionStringName = "StorageAccount";
+    private static readonly string StorageAccountConnectionStringPath = "Serilog:StorageAccount:ConnectionString";
+
+    private static readonly string StorageAccountContainerNamePath = "Serilog:StorageAccount:ContainerName";
 
     public static ReloadableLogger CreateBootstrapLogger()
     {
@@ -48,14 +50,14 @@ public static class Serilog
             .WriteTo.Async(
                 configuration => configuration.DefineAzureBlobStorageSink(
                     context.Configuration,
-                    "r-systems-template-api-logs",
+                    context.Configuration[StorageAccountContainerNamePath] ?? "",
                     "all-{yyyy}-{MM}-{dd}.log"
                 )
             )
             .WriteTo.Async(
                 configuration => configuration.DefineAzureBlobStorageSink(
                     context.Configuration,
-                    "r-systems-template-api-logs",
+                    context.Configuration[StorageAccountContainerNamePath] ?? "",
                     "errors-{yyyy}-{MM}-{dd}.log",
                     restrictedToMinimumLevel: LogEventLevel.Warning
                 )
@@ -98,7 +100,7 @@ public static class Serilog
     )
     {
         return sinkConfiguration.AzureBlobStorage(
-            connectionString: configuration.GetConnectionString(StorageAccountConnectionStringName),
+            connectionString: configuration[StorageAccountConnectionStringPath],
             storageContainerName: storageContainerName,
             storageFileName: storageFileName,
             outputTemplate: OutputTemplate,
