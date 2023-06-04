@@ -25,12 +25,19 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
             return await next();
         }
 
+        List<ValidationFailure> validationFailures = new();
         ValidationContext<TRequest> context = new(request);
-        List<ValidationFailure> validationFailures = Validators
-            .Select(x => x.Validate(context))
-            .SelectMany(x => x.Errors)
-            .Where(x => x != null)
-            .ToList();
+        foreach (IValidator<TRequest> validator in Validators)
+        {
+            ValidationResult result = await validator.ValidateAsync(context, cancellationToken);
+            if (result.Errors.Count == 0)
+            {
+                continue;
+            }
+
+            validationFailures.AddRange(result.Errors);
+        }
+
         if (validationFailures.Count > 0)
         {
             throw new ValidationException(validationFailures);
