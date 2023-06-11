@@ -17,10 +17,6 @@ public static class Serilog
 
     private static readonly ConsoleTheme Theme = AnsiConsoleTheme.Code;
 
-    private static readonly string StorageAccountConnectionStringPath = "Serilog:StorageAccount:ConnectionString";
-
-    private static readonly string StorageAccountContainerNamePath = "Serilog:StorageAccount:ContainerName";
-
     public static ReloadableLogger CreateBootstrapLogger()
     {
         return new LoggerConfiguration()
@@ -47,21 +43,6 @@ public static class Serilog
             .WriteTo.Async(
                 configuration => configuration.DefineFileSink("Logs/errors-.log", LogEventLevel.Warning)
             )
-            .WriteTo.Async(
-                configuration => configuration.DefineAzureBlobStorageSink(
-                    context.Configuration,
-                    context.Configuration[StorageAccountContainerNamePath] ?? "",
-                    "all-{yyyy}-{MM}-{dd}.log"
-                )
-            )
-            .WriteTo.Async(
-                configuration => configuration.DefineAzureBlobStorageSink(
-                    context.Configuration,
-                    context.Configuration[StorageAccountContainerNamePath] ?? "",
-                    "errors-{yyyy}-{MM}-{dd}.log",
-                    restrictedToMinimumLevel: LogEventLevel.Warning
-                )
-            )
             .WriteTo.DefineApplicationInsightsSink(
                 serviceProvider
             );
@@ -86,23 +67,6 @@ public static class Serilog
             rollingInterval: RollingInterval.Day,
             fileSizeLimitBytes: 10000000,
             retainedFileCountLimit: 10,
-            outputTemplate: OutputTemplate,
-            restrictedToMinimumLevel: restrictedToMinimumLevel
-        );
-    }
-
-    private static LoggerConfiguration DefineAzureBlobStorageSink(
-        this LoggerSinkConfiguration sinkConfiguration,
-        IConfiguration configuration,
-        string storageContainerName,
-        string storageFileName,
-        LogEventLevel restrictedToMinimumLevel = LogEventLevel.Verbose
-    )
-    {
-        return sinkConfiguration.AzureBlobStorage(
-            connectionString: configuration[StorageAccountConnectionStringPath],
-            storageContainerName: storageContainerName,
-            storageFileName: storageFileName,
             outputTemplate: OutputTemplate,
             restrictedToMinimumLevel: restrictedToMinimumLevel
         );
