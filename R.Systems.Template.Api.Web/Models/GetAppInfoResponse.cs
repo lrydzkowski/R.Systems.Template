@@ -7,4 +7,6 @@ public record GetAppInfoResponse
     public string AppVersion { get; init; } = "";
 
     public string Test { get; init; } = ":)";
+
+    public string Test2 { get; init; } = ":) 2";
 }
