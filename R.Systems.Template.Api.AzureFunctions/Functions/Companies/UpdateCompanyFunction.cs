@@ -42,7 +42,7 @@ internal class UpdateCompanyFunction : FunctionBase<UpdateCompanyFunction>
         int companyId
     )
     {
-        Logger.LogInformation($"C# Start processing {nameof(UpdateCompany)} function.");
+        Logger.LogInformation("C# Start processing {FunctionName} function.", nameof(UpdateCompany));
 
         CompanyMapper mapper = new();
         UpdateCompanyRequest? request =

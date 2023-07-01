@@ -40,7 +40,7 @@ public class GetAppInfoFunction : FunctionBase<GetAppInfoFunction>
         HttpRequestData request
     )
     {
-        Logger.LogInformation("C# Start processing GetAppInfo function.");
+        Logger.LogInformation("C# Start processing {FunctionName} function.", nameof(GetAppInfo));
 
         GetAppInfoMapper mapper = new();
         GetAppInfoResult result = await Mediator.Send(

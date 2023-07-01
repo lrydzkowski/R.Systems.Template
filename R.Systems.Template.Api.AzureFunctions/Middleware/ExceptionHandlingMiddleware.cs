@@ -35,7 +35,7 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
                     return;
             }
 
-            _logger.LogError($"Something went wrong: {exception}");
+            _logger.LogError(exception, "Something went wrong");
             await HandleExceptionAsync(context);
         }
     }

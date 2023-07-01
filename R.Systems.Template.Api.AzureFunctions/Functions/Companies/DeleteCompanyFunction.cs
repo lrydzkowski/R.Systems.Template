@@ -37,7 +37,7 @@ public class DeleteCompanyFunction : FunctionBase<DeleteCompanyFunction>
         int companyId
     )
     {
-        Logger.LogInformation($"C# Start processing {nameof(DeleteCompany)} function.");
+        Logger.LogInformation("C# Start processing {FunctionName} function.", nameof(DeleteCompany));
 
         DeleteCompanyCommand command = new() { CompanyId = companyId };
         await Mediator.Send(command);

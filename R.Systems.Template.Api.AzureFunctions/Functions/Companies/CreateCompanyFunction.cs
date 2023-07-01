@@ -40,7 +40,7 @@ internal class CreateCompanyFunction : FunctionBase<CreateCompanyFunction>
         HttpRequestData requestData
     )
     {
-        Logger.LogInformation($"C# Start processing {nameof(CreateCompany)} function.");
+        Logger.LogInformation("C# Start processing {FunctionName} function.", nameof(CreateCompany));
 
         CompanyMapper mapper = new();
         CreateCompanyRequest? request =

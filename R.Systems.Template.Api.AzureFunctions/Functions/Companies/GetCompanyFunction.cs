@@ -42,7 +42,7 @@ internal class GetCompanyFunction : FunctionBase<GetCompanyFunction>
         CancellationToken cancellationToken
     )
     {
-        Logger.LogInformation($"C# Start processing {nameof(GetCompany)} function.");
+        Logger.LogInformation("C# Start processing {FunctionName} function.", nameof(GetCompany));
 
         GetCompanyQuery query = new() { CompanyId = companyId };
         GetCompanyResult result = await Mediator.Send(query, cancellationToken);

@@ -78,7 +78,7 @@ internal class GetCompaniesFunction : FunctionBase<GetCompaniesFunction>
         string? searchQuery = null
     )
     {
-        Logger.LogInformation($"C# Start processing {nameof(GetCompanies)} function.");
+        Logger.LogInformation("C# Start processing {FunctionName} function.", nameof(GetCompanies));
 
         ListMapper mapper = new();
         ListParameters listParameters = mapper.ToListParameter(
