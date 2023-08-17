@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Mime;
 using System.Text.Json;
 using FluentValidation;
 using R.Systems.Template.Core.Common.Errors;
@@ -26,9 +27,9 @@ public class ExceptionMiddleware
         {
             await HandleValidationExceptionAsync(httpContext, validationException);
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException exception)
         {
-            _logger.LogWarning("Operation was cancelled");
+            _logger.LogWarning(exception, "Operation was cancelled");
             HandleException(httpContext);
         }
         catch (Exception exception)
@@ -50,20 +51,18 @@ public class ExceptionMiddleware
                 }
             )
             .AsEnumerable();
+        context.Response.ContentType = MediaTypeNames.Application.Json;
+        context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
         JsonSerializerOptions jsonSerializerOptions = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
-        string errorsSerialized = JsonSerializer.Serialize(errors, jsonSerializerOptions);
-
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
-        await context.Response.WriteAsync(errorsSerialized);
+        await context.Response.WriteAsJsonAsync(errors, jsonSerializerOptions);
     }
 
     private void HandleException(HttpContext context)
     {
-        context.Response.ContentType = "application/json";
+        context.Response.ContentType = MediaTypeNames.Application.Json;
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
     }
 }
