@@ -15,187 +15,213 @@ internal static class UpdateEmployeeIncorrectDataBuilder
         int employeeId = (int)EmployeesSampleData.Data[0].Id!;
         int companyId = (int)CompaniesSampleData.Data["Meta"].Id!;
 
-        return new List<object[]>
-        {
-            BuildParameters(
-                1,
-                employeeId,
-                new UpdateEmployeeRequest
+        string? firstNameAttemptedValue = "";
+        yield return BuildParameters(
+            1,
+            employeeId,
+            new UpdateEmployeeRequest
+            {
+                FirstName = firstNameAttemptedValue,
+                LastName = faker.Name.LastName(),
+                CompanyId = companyId
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "FirstName",
+                    firstNameAttemptedValue
+                )
+            }
+        );
+
+        firstNameAttemptedValue = "  ";
+        yield return BuildParameters(
+            2,
+            employeeId,
+            new UpdateEmployeeRequest
+            {
+                FirstName = firstNameAttemptedValue,
+                LastName = faker.Name.LastName(),
+                CompanyId = companyId
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "FirstName",
+                    firstNameAttemptedValue.Trim()
+                )
+            }
+        );
+
+        firstNameAttemptedValue = null;
+        yield return BuildParameters(
+            3,
+            employeeId,
+            new UpdateEmployeeRequest
+            {
+                FirstName = firstNameAttemptedValue,
+                LastName = faker.Name.LastName(),
+                CompanyId = companyId
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "FirstName",
+                    firstNameAttemptedValue
+                )
+            }
+        );
+
+        firstNameAttemptedValue = faker.Random.String2(101);
+        yield return BuildParameters(
+            4,
+            employeeId,
+            new UpdateEmployeeRequest
+            {
+                FirstName = firstNameAttemptedValue,
+                LastName = faker.Name.LastName(),
+                CompanyId = companyId
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildTooLongFieldValidationError(
+                    fieldName: "FirstName",
+                    maxLength: 100,
+                    firstNameAttemptedValue
+                )
+            }
+        );
+
+        string? lastNameAttemptedValue = "";
+        yield return BuildParameters(
+            5,
+            employeeId,
+            new UpdateEmployeeRequest
+            {
+                FirstName = faker.Name.FirstName(),
+                LastName = lastNameAttemptedValue,
+                CompanyId = companyId
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "LastName",
+                    lastNameAttemptedValue
+                )
+            }
+        );
+
+        lastNameAttemptedValue = "  ";
+        yield return BuildParameters(
+            6,
+            employeeId,
+            new UpdateEmployeeRequest
+            {
+                FirstName = faker.Name.FirstName(),
+                LastName = lastNameAttemptedValue,
+                CompanyId = companyId
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "LastName",
+                    lastNameAttemptedValue.Trim()
+                )
+            }
+        );
+
+        lastNameAttemptedValue = null;
+        yield return BuildParameters(
+            7,
+            employeeId,
+            new UpdateEmployeeRequest
+            {
+                FirstName = faker.Name.FirstName(),
+                LastName = lastNameAttemptedValue,
+                CompanyId = companyId
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "LastName",
+                    lastNameAttemptedValue
+                )
+            }
+        );
+
+        lastNameAttemptedValue = faker.Random.String2(101);
+        yield return BuildParameters(
+            8,
+            employeeId,
+            new UpdateEmployeeRequest
+            {
+                FirstName = faker.Name.FirstName(),
+                LastName = lastNameAttemptedValue,
+                CompanyId = companyId
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildTooLongFieldValidationError(
+                    fieldName: "LastName",
+                    maxLength: 100,
+                    lastNameAttemptedValue
+                )
+            }
+        );
+
+        int companyIdAttemptedValue = 998;
+        yield return BuildParameters(
+            9,
+            employeeId,
+            new UpdateEmployeeRequest
+            {
+                FirstName = faker.Name.FirstName(),
+                LastName = faker.Name.LastName(),
+                CompanyId = companyIdAttemptedValue
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                new()
                 {
-                    FirstName = "",
-                    LastName = faker.Name.LastName(),
-                    CompanyId = companyId
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "FirstName"
-                    )
+                    PropertyName = "Company",
+                    ErrorMessage = $"Company with the given id doesn't exist ('{companyIdAttemptedValue}').",
+                    ErrorCode = "NotExist",
+                    AttemptedValue = companyIdAttemptedValue
                 }
-            ),
-            BuildParameters(
-                2,
-                employeeId,
-                new UpdateEmployeeRequest
+            }
+        );
+
+        int employeeIdAttemptedValue = 999;
+        yield return BuildParameters(
+            10,
+            employeeIdAttemptedValue,
+            new UpdateEmployeeRequest
+            {
+                FirstName = faker.Name.FirstName(),
+                LastName = faker.Name.LastName(),
+                CompanyId = companyId
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                new()
                 {
-                    FirstName = "  ",
-                    LastName = faker.Name.LastName(),
-                    CompanyId = companyId
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "FirstName"
-                    )
+                    PropertyName = "Employee",
+                    ErrorMessage = $"Employee with the given id doesn't exist ('{employeeIdAttemptedValue}').",
+                    ErrorCode = "NotExist",
+                    AttemptedValue = employeeIdAttemptedValue
                 }
-            ),
-            BuildParameters(
-                3,
-                employeeId,
-                new UpdateEmployeeRequest
-                {
-                    FirstName = null,
-                    LastName = faker.Name.LastName(),
-                    CompanyId = companyId
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "FirstName"
-                    )
-                }
-            ),
-            BuildParameters(
-                4,
-                employeeId,
-                new UpdateEmployeeRequest
-                {
-                    FirstName = faker.Random.String2(101),
-                    LastName = faker.Name.LastName(),
-                    CompanyId = companyId
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildTooLongFieldValidationError(
-                        fieldName: "FirstName",
-                        maxLength: 100
-                    )
-                }
-            ),
-            BuildParameters(
-                5,
-                employeeId,
-                new UpdateEmployeeRequest
-                {
-                    FirstName = faker.Name.FirstName(),
-                    LastName = "",
-                    CompanyId = companyId
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "LastName"
-                    )
-                }
-            ),
-            BuildParameters(
-                6,
-                employeeId,
-                new UpdateEmployeeRequest
-                {
-                    FirstName = faker.Name.FirstName(),
-                    LastName = "  ",
-                    CompanyId = companyId
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "LastName"
-                    )
-                }
-            ),
-            BuildParameters(
-                7,
-                employeeId,
-                new UpdateEmployeeRequest
-                {
-                    FirstName = faker.Name.FirstName(),
-                    LastName = null,
-                    CompanyId = companyId
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(
-                        fieldName: "LastName"
-                    )
-                }
-            ),
-            BuildParameters(
-                8,
-                employeeId,
-                new UpdateEmployeeRequest
-                {
-                    FirstName = faker.Name.FirstName(),
-                    LastName = faker.Random.String2(101),
-                    CompanyId = companyId
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildTooLongFieldValidationError(
-                        fieldName: "LastName",
-                        maxLength: 100
-                    )
-                }
-            ),
-            BuildParameters(
-                9,
-                employeeId,
-                new UpdateEmployeeRequest
-                {
-                    FirstName = faker.Name.FirstName(),
-                    LastName = faker.Name.LastName(),
-                    CompanyId = 999
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    new()
-                    {
-                        PropertyName = "Company",
-                        ErrorMessage = "Company with the given id doesn't exist ('999').",
-                        ErrorCode = "NotExist"
-                    }
-                }
-            ),
-            BuildParameters(
-                10,
-                999,
-                new UpdateEmployeeRequest
-                {
-                    FirstName = faker.Name.FirstName(),
-                    LastName = faker.Name.LastName(),
-                    CompanyId = companyId
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    new()
-                    {
-                        PropertyName = "Employee",
-                        ErrorMessage = "Employee with the given id doesn't exist ('999').",
-                        ErrorCode = "NotExist"
-                    }
-                }
-            )
-        };
+            }
+        );
     }
 
     private static object[] BuildParameters(

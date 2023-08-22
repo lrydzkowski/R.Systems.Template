@@ -4,7 +4,11 @@ namespace R.Systems.Template.Tests.Core.Integration.Common.Builders;
 
 internal static class ValidationFailureBuilder
 {
-    public static ValidationFailure BuildEmptyFieldValidationError(string fieldName, string? fieldNameInMsg = null)
+    public static ValidationFailure BuildEmptyFieldValidationError(
+        string fieldName,
+        object? attemptedValue,
+        string? fieldNameInMsg = null
+    )
     {
         fieldNameInMsg ??= fieldName;
 
@@ -12,13 +16,15 @@ internal static class ValidationFailureBuilder
         {
             PropertyName = $"{fieldName}",
             ErrorMessage = $"'{fieldNameInMsg}' must not be empty.",
-            ErrorCode = "NotEmptyValidator"
+            ErrorCode = "NotEmptyValidator",
+            AttemptedValue = attemptedValue
         };
     }
 
     public static ValidationFailure BuildTooLongFieldValidationError(
         string fieldName,
         int maxLength,
+        object? attemptedValue,
         string? fieldNameInMsg = null
     )
     {
@@ -29,7 +35,8 @@ internal static class ValidationFailureBuilder
             PropertyName = $"{fieldName}",
             ErrorMessage =
                 $"The length of '{fieldNameInMsg}' must be {maxLength} characters or fewer. You entered {maxLength + 1} characters.",
-            ErrorCode = "MaximumLengthValidator"
+            ErrorCode = "MaximumLengthValidator",
+            AttemptedValue = attemptedValue
         };
     }
 }

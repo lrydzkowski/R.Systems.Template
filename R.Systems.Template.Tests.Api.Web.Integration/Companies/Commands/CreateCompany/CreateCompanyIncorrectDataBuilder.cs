@@ -12,57 +12,74 @@ internal static class CreateCompanyIncorrectDataBuilder
     {
         Faker faker = new();
 
-        return new List<object[]>
-        {
-            BuildParameters(
-                1,
-                new CreateCompanyCommand
-                {
-                    Name = ""
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name")
-                }
-            ),
-            BuildParameters(
-                2,
-                new CreateCompanyCommand
-                {
-                    Name = "  "
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name")
-                }
-            ),
-            BuildParameters(
-                3,
-                new CreateCompanyCommand
-                {
-                    Name = null
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name")
-                }
-            ),
-            BuildParameters(
-                4,
-                new CreateCompanyCommand
-                {
-                    Name = faker.Random.String2(201)
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildTooLongFieldValidationError(fieldName: "Name", maxLength: 200)
-                }
-            )
-        };
+        string? nameAttemptedValue = "";
+        yield return BuildParameters(
+            1,
+            new CreateCompanyCommand
+            {
+                Name = nameAttemptedValue
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "Name",
+                    attemptedValue: nameAttemptedValue
+                )
+            }
+        );
+
+        nameAttemptedValue = "  ";
+        yield return BuildParameters(
+            2,
+            new CreateCompanyCommand
+            {
+                Name = nameAttemptedValue.Trim()
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "Name",
+                    attemptedValue: nameAttemptedValue.Trim()
+                )
+            }
+        );
+
+        nameAttemptedValue = null;
+        yield return BuildParameters(
+            3,
+            new CreateCompanyCommand
+            {
+                Name = nameAttemptedValue
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "Name",
+                    attemptedValue: nameAttemptedValue
+                )
+            }
+        );
+
+        nameAttemptedValue = faker.Random.String2(201);
+        yield return BuildParameters(
+            4,
+            new CreateCompanyCommand
+            {
+                Name = nameAttemptedValue
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildTooLongFieldValidationError(
+                    fieldName: "Name",
+                    maxLength: 200,
+                    attemptedValue: nameAttemptedValue
+                )
+            }
+        );
     }
 
     private static object[] BuildParameters(

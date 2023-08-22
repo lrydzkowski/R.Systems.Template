@@ -50,13 +50,7 @@ public class UpdateCompanyTests
 
         response.StatusCode.Should().Be(expectedHttpStatus);
         response.Data.Should().NotBeNull();
-        response.Data.Should()
-            .BeEquivalentTo(
-                validationFailures,
-                options => options.Including(x => x.PropertyName)
-                    .Including(x => x.ErrorMessage)
-                    .Including(x => x.ErrorCode)
-            );
+        response.Data.Should().BeEquivalentTo(validationFailures, options => options.WithStrictOrdering());
     }
 
     [Theory]

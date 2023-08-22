@@ -13,74 +13,94 @@ internal static class UpdateCompanyIncorrectDataBuilder
         Faker faker = new();
         int companyId = (int)CompaniesSampleData.Data["Meta"].Id!;
 
-        return new List<object[]>
-        {
-            BuildParameters(
-                1,
-                new UpdateCompanyCommand
+        string? nameAttemptedValue = "";
+        yield return BuildParameters(
+            1,
+            new UpdateCompanyCommand
+            {
+                CompanyId = companyId,
+                Name = nameAttemptedValue
+            },
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "Name",
+                    attemptedValue: nameAttemptedValue
+                )
+            }
+        );
+
+        nameAttemptedValue = "  ";
+        yield return BuildParameters(
+            2,
+            new UpdateCompanyCommand
+            {
+                CompanyId = companyId,
+                Name = nameAttemptedValue
+            },
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "Name",
+                    attemptedValue: nameAttemptedValue.Trim()
+                )
+            }
+        );
+
+        nameAttemptedValue = null;
+        yield return BuildParameters(
+            3,
+            new UpdateCompanyCommand
+            {
+                CompanyId = companyId,
+                Name = nameAttemptedValue
+            },
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(
+                    fieldName: "Name",
+                    attemptedValue: nameAttemptedValue
+                )
+            }
+        );
+
+        nameAttemptedValue = faker.Random.String2(201);
+        yield return BuildParameters(
+            4,
+            new UpdateCompanyCommand
+            {
+                CompanyId = companyId,
+                Name = nameAttemptedValue
+            },
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildTooLongFieldValidationError(
+                    fieldName: "Name",
+                    maxLength: 200,
+                    attemptedValue: nameAttemptedValue
+                )
+            }
+        );
+
+        int companyIdAttemptedValue = 999;
+        yield return BuildParameters(
+            5,
+            new UpdateCompanyCommand
+            {
+                CompanyId = companyIdAttemptedValue,
+                Name = faker.Company.CompanyName()
+            },
+            new List<ValidationFailure>
+            {
+                new()
                 {
-                    CompanyId = companyId,
-                    Name = ""
-                },
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name")
+                    AttemptedValue = companyIdAttemptedValue,
+                    PropertyName = "Company",
+                    ErrorMessage = $"Company with the given id doesn't exist ('{companyIdAttemptedValue}').",
+                    ErrorCode = "NotExist"
                 }
-            ),
-            BuildParameters(
-                2,
-                new UpdateCompanyCommand
-                {
-                    CompanyId = companyId,
-                    Name = "  "
-                },
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name")
-                }
-            ),
-            BuildParameters(
-                3,
-                new UpdateCompanyCommand
-                {
-                    CompanyId = companyId,
-                    Name = null
-                },
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name")
-                }
-            ),
-            BuildParameters(
-                4,
-                new UpdateCompanyCommand
-                {
-                    CompanyId = companyId,
-                    Name = faker.Random.String2(201)
-                },
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildTooLongFieldValidationError(fieldName: "Name", maxLength: 200)
-                }
-            ),
-            BuildParameters(
-                5,
-                new UpdateCompanyCommand
-                {
-                    CompanyId = 999,
-                    Name = faker.Company.CompanyName()
-                },
-                new List<ValidationFailure>
-                {
-                    new()
-                    {
-                        PropertyName = "Company",
-                        ErrorMessage = "Company with the given id doesn't exist ('999').",
-                        ErrorCode = "NotExist"
-                    }
-                }
-            )
-        };
+            }
+        );
     }
 
     private static object[] BuildParameters(

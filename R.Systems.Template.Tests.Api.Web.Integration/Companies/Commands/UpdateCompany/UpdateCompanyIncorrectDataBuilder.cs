@@ -14,79 +14,90 @@ internal static class UpdateCompanyIncorrectDataBuilder
         Faker faker = new();
         int companyId = (int)CompaniesSampleData.Data["Meta"].Id!;
 
-        return new List<object[]>
-        {
-            BuildParameters(
-                1,
-                companyId,
-                new UpdateCompanyRequest
+        string? nameAttemptedValue = "";
+        yield return BuildParameters(
+            1,
+            companyId,
+            new UpdateCompanyRequest
+            {
+                Name = nameAttemptedValue
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name", nameAttemptedValue)
+            }
+        );
+
+        nameAttemptedValue = "  ";
+        yield return BuildParameters(
+            2,
+            companyId,
+            new UpdateCompanyRequest
+            {
+                Name = nameAttemptedValue
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name", nameAttemptedValue.Trim())
+            }
+        );
+
+        nameAttemptedValue = null;
+        yield return BuildParameters(
+            3,
+            companyId,
+            new UpdateCompanyRequest
+            {
+                Name = nameAttemptedValue
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name", nameAttemptedValue)
+            }
+        );
+
+        nameAttemptedValue = faker.Random.String2(201);
+        yield return BuildParameters(
+            4,
+            companyId,
+            new UpdateCompanyRequest
+            {
+                Name = nameAttemptedValue
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                ValidationFailureBuilder.BuildTooLongFieldValidationError(
+                    fieldName: "Name",
+                    maxLength: 200,
+                    nameAttemptedValue
+                )
+            }
+        );
+
+        int companyIdAttemptedValue = 999;
+        yield return BuildParameters(
+            5,
+            companyIdAttemptedValue,
+            new UpdateCompanyRequest
+            {
+                Name = faker.Company.CompanyName()
+            },
+            HttpStatusCode.UnprocessableEntity,
+            new List<ValidationFailure>
+            {
+                new()
                 {
-                    Name = ""
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name")
+                    PropertyName = "Company",
+                    ErrorMessage = $"Company with the given id doesn't exist ('{companyIdAttemptedValue}').",
+                    ErrorCode = "NotExist",
+                    AttemptedValue = companyIdAttemptedValue
                 }
-            ),
-            BuildParameters(
-                2,
-                companyId,
-                new UpdateCompanyRequest
-                {
-                    Name = "  "
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name")
-                }
-            ),
-            BuildParameters(
-                3,
-                companyId,
-                new UpdateCompanyRequest
-                {
-                    Name = null
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name")
-                }
-            ),
-            BuildParameters(
-                4,
-                companyId,
-                new UpdateCompanyRequest
-                {
-                    Name = faker.Random.String2(201)
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    ValidationFailureBuilder.BuildTooLongFieldValidationError(fieldName: "Name", maxLength: 200)
-                }
-            ),
-            BuildParameters(
-                5,
-                999,
-                new UpdateCompanyRequest
-                {
-                    Name = faker.Company.CompanyName()
-                },
-                HttpStatusCode.UnprocessableEntity,
-                new List<ValidationFailure>
-                {
-                    new()
-                    {
-                        PropertyName = "Company",
-                        ErrorMessage = "Company with the given id doesn't exist ('999').",
-                        ErrorCode = "NotExist"
-                    }
-                }
-            )
-        };
+            }
+        );
     }
 
     private static object[] BuildParameters(

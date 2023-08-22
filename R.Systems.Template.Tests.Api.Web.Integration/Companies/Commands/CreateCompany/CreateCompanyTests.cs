@@ -52,9 +52,7 @@ public class CreateCompanyTests
         response.Data.Should()
             .BeEquivalentTo(
                 validationFailures,
-                options => options.Including(x => x.PropertyName)
-                    .Including(x => x.ErrorMessage)
-                    .Including(x => x.ErrorCode)
+                options => options.WithStrictOrdering()
             );
     }
 

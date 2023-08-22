@@ -6,6 +6,7 @@ internal static class ValidationFailureBuilder
 {
     public static ValidationFailure BuildEmptyFieldValidationError(
         string fieldName,
+        object? attemptedValue,
         string? fieldNameInMsg = null
     )
     {
@@ -15,13 +16,15 @@ internal static class ValidationFailureBuilder
         {
             PropertyName = $"{fieldName}",
             ErrorMessage = $"'{fieldNameInMsg}' must not be empty.",
-            ErrorCode = "NotEmptyValidator"
+            ErrorCode = "NotEmptyValidator",
+            AttemptedValue = attemptedValue
         };
     }
 
     public static ValidationFailure BuildTooLongFieldValidationError(
         string fieldName,
         int maxLength,
+        object? attemptedValue,
         string? fieldNameInMsg = null
     )
     {
@@ -32,7 +35,8 @@ internal static class ValidationFailureBuilder
             PropertyName = $"{fieldName}",
             ErrorMessage =
                 $"The length of '{fieldNameInMsg}' must be {maxLength} characters or fewer. You entered {maxLength + 1} characters.",
-            ErrorCode = "MaximumLengthValidator"
+            ErrorCode = "MaximumLengthValidator",
+            AttemptedValue = attemptedValue
         };
     }
 
@@ -40,6 +44,7 @@ internal static class ValidationFailureBuilder
         string fieldName,
         int expectedLength,
         int enteredLength,
+        object? attemptedValue = null,
         string? fieldNameInMsg = null
     )
     {
@@ -50,17 +55,19 @@ internal static class ValidationFailureBuilder
             PropertyName = $"{fieldName}",
             ErrorMessage =
                 $"'{fieldNameInMsg}' must be {expectedLength} characters in length. You entered {enteredLength} characters.",
-            ErrorCode = ""
+            ErrorCode = "",
+            AttemptedValue = attemptedValue
         };
     }
 
-    public static ValidationFailure BuildEmailIsNotValidValidationError()
+    public static ValidationFailure BuildEmailIsNotValidValidationError(object? attemptedValue)
     {
         return new ValidationFailure
         {
             PropertyName = "Email",
             ErrorMessage = "'Email' is not a valid email address.",
-            ErrorCode = ""
+            ErrorCode = "",
+            AttemptedValue = attemptedValue
         };
     }
 }

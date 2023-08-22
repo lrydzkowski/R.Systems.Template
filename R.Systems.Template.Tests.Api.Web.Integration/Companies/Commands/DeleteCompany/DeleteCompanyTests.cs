@@ -9,6 +9,7 @@ using R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 using RestSharp;
 using System.Net;
 using System.Text.Json;
+using R.Systems.Template.Tests.Api.Web.Integration.Common.Assertion;
 using Xunit.Abstractions;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Companies.Commands.DeleteCompany;
@@ -36,7 +37,7 @@ public class DeleteCompanyTests
             {
                 PropertyName = "Company",
                 ErrorMessage = $"Company with the given id doesn't exist ('{companyId}').",
-                AttemptedValue = JsonSerializer.SerializeToElement(companyId),
+                AttemptedValue = companyId,
                 ErrorCode = "NotExist"
             }
         };
@@ -51,7 +52,7 @@ public class DeleteCompanyTests
         deleteResponse.Data.Should()
             .BeEquivalentTo(
                 expectedValidationFailures,
-                options => options.WithStrictOrdering().ComparingByMembers<JsonElement>()
+                options => options.WithStrictOrdering()
             );
     }
 

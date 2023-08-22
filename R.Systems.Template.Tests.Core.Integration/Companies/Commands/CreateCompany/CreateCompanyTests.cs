@@ -45,9 +45,11 @@ public class CreateCompanyTests
         exception.Errors.Should()
             .BeEquivalentTo(
                 validationFailures,
-                options => options.Including(x => x.PropertyName)
-                    .Including(x => x.ErrorMessage)
+                options => options.WithStrictOrdering()
+                    .Including(x => x.AttemptedValue)
                     .Including(x => x.ErrorCode)
+                    .Including(x => x.ErrorMessage)
+                    .Including(x => x.PropertyName)
             );
     }
 

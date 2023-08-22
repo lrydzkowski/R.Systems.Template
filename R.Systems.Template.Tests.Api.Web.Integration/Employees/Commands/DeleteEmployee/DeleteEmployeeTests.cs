@@ -36,7 +36,7 @@ public class DeleteEmployeeTests
             {
                 PropertyName = "Employee",
                 ErrorMessage = $"Employee with the given id doesn't exist ('{employeeId}').",
-                AttemptedValue = JsonSerializer.SerializeToElement(employeeId),
+                AttemptedValue = employeeId,
                 ErrorCode = "NotExist"
             }
         };
@@ -51,7 +51,7 @@ public class DeleteEmployeeTests
         deleteResponse.Data.Should()
             .BeEquivalentTo(
                 expectedValidationFailures,
-                options => options.WithStrictOrdering().ComparingByMembers<JsonElement>()
+                options => options.WithStrictOrdering()
             );
     }
 

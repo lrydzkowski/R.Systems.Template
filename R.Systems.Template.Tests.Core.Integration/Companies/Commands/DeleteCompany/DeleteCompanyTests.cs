@@ -39,7 +39,7 @@ public class DeleteCompanyTests
             {
                 PropertyName = "Company",
                 ErrorMessage = $"Company with the given id doesn't exist ('{companyId}').",
-                AttemptedValue = JsonSerializer.SerializeToElement(companyId),
+                AttemptedValue = companyId,
                 ErrorCode = "NotExist"
             }
         };
@@ -49,9 +49,7 @@ public class DeleteCompanyTests
         exception.Errors.Should()
             .BeEquivalentTo(
                 expectedValidationFailures,
-                options => options.Including(x => x.PropertyName)
-                    .Including(x => x.ErrorMessage)
-                    .Including(x => x.ErrorCode)
+                options => options.WithStrictOrdering()
             );
     }
 
