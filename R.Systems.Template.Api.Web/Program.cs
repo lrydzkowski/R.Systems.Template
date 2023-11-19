@@ -71,7 +71,6 @@ public class Program
         app.UseAuthorization();
         app.MapControllers();
         app.UseWebSockets();
-        //app.UseNotificationsWebSockets();
     }
 
     private static void UseHealthChecks(WebApplication app)
