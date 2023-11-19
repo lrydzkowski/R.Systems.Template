@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ public static class DependencyInjection
     {
         services.AddMediatR();
         services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
+        services.ConfigureMassTransit();
     }
 
     public static void ConfigureOptionsWithValidation<TOptions, TValidator>(
@@ -33,5 +35,18 @@ public static class DependencyInjection
     {
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+    }
+
+    private static void ConfigureMassTransit(this IServiceCollection services)
+    {
+        services.AddMassTransit(
+            x =>
+            {
+                x.AddConsumer<LogInformationConsumer>();
+                x.UsingInMemory(
+                    (context, cfg) => cfg.ConfigureEndpoints(context)
+                );
+            }
+        );
     }
 }
