@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Benchmar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Db", "R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj", "{C97F17BC-9F02-4968-8E42-921CFC606DF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.Infrastructure.Notifications", "R.Systems.Template.Infrastructure.Notifications\R.Systems.Template.Infrastructure.Notifications.csproj", "{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{C97F17BC-9F02-4968-8E42-921CFC606DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C97F17BC-9F02-4968-8E42-921CFC606DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C97F17BC-9F02-4968-8E42-921CFC606DF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +125,7 @@ Global
 		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{B9104281-C654-4DB9-8BBF-BBAFEE97E312} = {2CAD7464-F38B-4665-9621-58A092B2BD81}
 		{C97F17BC-9F02-4968-8E42-921CFC606DF8} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
+		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}

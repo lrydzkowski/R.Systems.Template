@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Core.Common.Validation;
+using R.Systems.Template.Core.Jobs;
 
 namespace R.Systems.Template.Core;
 
@@ -11,7 +12,7 @@ public static class DependencyInjection
 {
     public static void ConfigureCoreServices(this IServiceCollection services)
     {
-        services.AddMediatR();
+        services.ConfigureMediatR();
         services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
         services.ConfigureMassTransit();
     }
@@ -31,7 +32,7 @@ public static class DependencyInjection
             .ValidateOnStart();
     }
 
-    private static void AddMediatR(this IServiceCollection services)
+    private static void ConfigureMediatR(this IServiceCollection services)
     {
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

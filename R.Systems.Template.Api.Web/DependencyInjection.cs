@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using Quartz;
 using R.Systems.Template.Api.Web.Auth;
 using R.Systems.Template.Api.Web.Options;
 using R.Systems.Template.Api.Web.Services;
@@ -27,6 +28,7 @@ public static class DependencyInjection
         services.ChangeApiControllerModelValidationResponse();
         services.ConfigureOptions(configuration);
         services.ConfigureAuth();
+        services.ConfigureQuartz();
     }
 
     private static void ConfigureSwagger(this IServiceCollection services)
@@ -112,5 +114,25 @@ public static class DependencyInjection
                 ApiKeyAuthenticationSchemeOptions.Name,
                 null
             );
+    }
+
+    private static void ConfigureQuartz(this IServiceCollection services)
+    {
+        services.AddQuartz(
+            q =>
+            {
+                JobKey jobKey = new(nameof(SendNotificationsJob));
+                q.AddJob<SendNotificationsJob>(opts => opts.WithIdentity(jobKey));
+
+                q.AddTrigger(
+                    opts => opts
+                        .ForJob(jobKey)
+                        .WithIdentity($"{nameof(SendNotificationsJob)}-trigger")
+                        //This Cron interval can be described as "run every minute" (when second is zero)
+                        .WithCronSchedule("0 * * ? * *")
+                );
+            }
+        );
+        services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
     }
 }
