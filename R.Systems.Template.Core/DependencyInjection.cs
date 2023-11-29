@@ -4,7 +4,12 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Core.Common.Validation;
+using R.Systems.Template.Core.Companies.Commands.CreateCompany;
+using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
+using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
+using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 using R.Systems.Template.Core.Jobs;
+using R.Systems.Template.Core.Words.Queries.GetDefinitions;
 
 namespace R.Systems.Template.Core;
 
@@ -34,7 +39,17 @@ public static class DependencyInjection
 
     private static void ConfigureMediatR(this IServiceCollection services)
     {
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
+        services.AddMediatR(
+            cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+                cfg.AddRequestPreProcessor<CreateCompanyCommandPreProcessor>();
+                cfg.AddRequestPreProcessor<UpdateCompanyCommandPreProcessor>();
+                cfg.AddRequestPreProcessor<CreateEmployeeCommandPreProcessor>();
+                cfg.AddRequestPreProcessor<UpdateEmployeeCommandPreProcessor>();
+                cfg.AddRequestPreProcessor<GetDefinitionsQueryPreProcessor>();
+            }
+        );
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
     }
 

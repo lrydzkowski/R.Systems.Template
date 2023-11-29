@@ -25,7 +25,7 @@ public class WebSocketsAuthMiddleware
             if (headerParts?.Length >= 2)
             {
                 string authToken = headerParts[1].Trim();
-                context.Request.Headers.Add(HeaderNames.Authorization, $"Bearer {authToken}");
+                context.Request.Headers.TryAdd(HeaderNames.Authorization, $"Bearer {authToken}");
             }
         }
 

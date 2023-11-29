@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErorrs>true</TreatWarningsAsErorrs>
@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Infrastructure.Wordnik\R.Systems.Template.Infrastructure.Wordnik.csproj" />
   </ItemGroup>
 
 </Project>
