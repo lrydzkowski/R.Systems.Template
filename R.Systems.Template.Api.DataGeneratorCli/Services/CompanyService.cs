@@ -19,7 +19,9 @@ internal class CompanyService
     {
         await using IDbContextTransaction transaction = await DbContext.Database.BeginTransactionAsync();
 
-        List<int> companiesIds = await CreateCompaniesAsync(numberOfCompanies);
+        List<string> existingCompaniesNames =
+            await DbContext.Companies.AsNoTracking().Select(x => x.Name).ToListAsync();
+        List<int> companiesIds = await CreateCompaniesAsync(numberOfCompanies, existingCompaniesNames);
         await CreateEmployeesAsync(numberOfEmployees, companiesIds);
         await transaction.CommitAsync();
     }
@@ -29,19 +31,17 @@ internal class CompanyService
         return await DbContext.Companies.AsNoTracking().Include(x => x.Employees).ToListAsync();
     }
 
-    private async Task<List<int>> CreateCompaniesAsync(int numberOfCompanies)
+    private async Task<List<int>> CreateCompaniesAsync(int numberOfCompanies, List<string> existingCompaniesNames)
     {
-        List<CompanyEntity> companies = BuildCompanyEntities(numberOfCompanies);
+        List<CompanyEntity> companies = BuildCompanyEntities(numberOfCompanies, existingCompaniesNames);
         await DbContext.Companies.AddRangeAsync(companies);
         await DbContext.SaveChangesAsync();
 
         return companies.Select(company => (int)company.Id!).ToList();
     }
 
-    private List<CompanyEntity> BuildCompanyEntities(int numberOfCompanies)
+    private List<CompanyEntity> BuildCompanyEntities(int numberOfCompanies, List<string> existingCompaniesNames)
     {
-        List<string> companiesNames = new();
-
         return Enumerable.Range(1, numberOfCompanies)
             .Select(
                 _ =>
@@ -50,9 +50,9 @@ internal class CompanyService
                     do
                     {
                         companyEntity = BuildCompanyEntityFaker().Generate();
-                    } while (companiesNames.Contains(companyEntity.Name));
+                    } while (existingCompaniesNames.Contains(companyEntity.Name));
 
-                    companiesNames.Add(companyEntity.Name);
+                    existingCompaniesNames.Add(companyEntity.Name);
 
                     return companyEntity;
                 }
