@@ -40,7 +40,7 @@ internal static class UpdateCompanyIncorrectDataBuilder
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
             {
-                ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name", nameAttemptedValue.Trim())
+                ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name", nameAttemptedValue)
             }
         );
 

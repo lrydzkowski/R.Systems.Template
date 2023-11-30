@@ -38,7 +38,7 @@ internal static class CreateCompanyIncorrectDataBuilder
             {
                 ValidationFailureBuilder.BuildEmptyFieldValidationError(
                     fieldName: "Name",
-                    attemptedValue: nameAttemptedValue.Trim()
+                    attemptedValue: nameAttemptedValue
                 )
             }
         );

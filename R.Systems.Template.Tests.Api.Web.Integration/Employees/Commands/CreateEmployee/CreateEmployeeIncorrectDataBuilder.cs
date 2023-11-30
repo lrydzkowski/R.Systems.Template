@@ -46,7 +46,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
             {
                 ValidationFailureBuilder.BuildEmptyFieldValidationError(
                     fieldName: "FirstName",
-                    attemptedValue: firstNameAttemptedValue.Trim()
+                    attemptedValue: firstNameAttemptedValue
                 )
             }
         );
@@ -123,7 +123,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
             {
                 ValidationFailureBuilder.BuildEmptyFieldValidationError(
                     fieldName: "LastName",
-                    attemptedValue: lastNameAttemptedValue.Trim()
+                    attemptedValue: lastNameAttemptedValue
                 )
             }
         );

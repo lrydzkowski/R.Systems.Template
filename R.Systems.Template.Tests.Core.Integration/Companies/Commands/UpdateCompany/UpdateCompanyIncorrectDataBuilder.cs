@@ -42,7 +42,7 @@ internal static class UpdateCompanyIncorrectDataBuilder
             {
                 ValidationFailureBuilder.BuildEmptyFieldValidationError(
                     fieldName: "Name",
-                    attemptedValue: nameAttemptedValue.Trim()
+                    attemptedValue: nameAttemptedValue
                 )
             }
         );

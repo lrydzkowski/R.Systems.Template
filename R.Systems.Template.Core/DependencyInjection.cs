@@ -39,6 +39,7 @@ public static class DependencyInjection
 
     private static void ConfigureMediatR(this IServiceCollection services)
     {
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddMediatR(
             cfg =>
             {
@@ -50,7 +51,6 @@ public static class DependencyInjection
                 cfg.AddRequestPreProcessor<GetDefinitionsQueryPreProcessor>();
             }
         );
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
     }
 
     private static void ConfigureMassTransit(this IServiceCollection services)
