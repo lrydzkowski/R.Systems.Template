@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.OpenApi.Models;
 using Quartz;
 using R.Systems.Template.Api.Web.Auth;
+using R.Systems.Template.Api.Web.Hubs;
 using R.Systems.Template.Api.Web.Options;
 using R.Systems.Template.Api.Web.Services;
 using R.Systems.Template.Core;
@@ -13,6 +14,8 @@ namespace R.Systems.Template.Api.Web;
 
 public static class DependencyInjection
 {
+    public const string CorsPolicy = "CorsPolicy";
+
     public static void ConfigureServices(
         this IServiceCollection services,
         IConfiguration configuration,
@@ -22,6 +25,7 @@ public static class DependencyInjection
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddHealthChecks();
+        services.ConfigureSignalR();
         services.ConfigureSwagger();
         services.ConfigureCors();
         services.ConfigureSequentialServices(environment);
@@ -29,6 +33,12 @@ public static class DependencyInjection
         services.ConfigureOptions(configuration);
         services.ConfigureAuth();
         services.ConfigureQuartz();
+    }
+
+    private static void ConfigureSignalR(this IServiceCollection services)
+    {
+        services.AddSignalR();
+        services.AddSingleton<IUserIdProvider, EmailBasedUserIdProvider>();
     }
 
     private static void ConfigureSwagger(this IServiceCollection services)
@@ -76,8 +86,11 @@ public static class DependencyInjection
             options =>
             {
                 options.AddPolicy(
-                    "CorsPolicy",
-                    builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+                    CorsPolicy,
+                    builder => builder.WithOrigins("http://localhost:4200")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
                 );
             }
         );

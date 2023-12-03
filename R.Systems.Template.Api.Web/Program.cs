@@ -1,6 +1,7 @@
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using R.Systems.Template.Api.Web.Auth;
+using R.Systems.Template.Api.Web.Hubs;
 using R.Systems.Template.Api.Web.Middleware;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
@@ -62,14 +63,15 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseSwaggerUI();
+            app.UseCors(DependencyInjection.CorsPolicy);
         }
 
         UseHealthChecks(app);
-        app.UseCors("CorsPolicy");
         app.UseWebSocketsAuth();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+        app.MapHub<NotificationsHub>(NotificationsHub.Path);
         app.UseWebSockets();
     }
 
