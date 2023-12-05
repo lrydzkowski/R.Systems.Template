@@ -27,7 +27,7 @@ public static class DependencyInjection
         services.AddHealthChecks();
         services.ConfigureSignalR();
         services.ConfigureSwagger();
-        services.ConfigureCors();
+        services.ConfigureCors(configuration);
         services.ConfigureSequentialServices(environment);
         services.ChangeApiControllerModelValidationResponse();
         services.ConfigureOptions(configuration);
@@ -80,14 +80,16 @@ public static class DependencyInjection
         );
     }
 
-    private static void ConfigureCors(this IServiceCollection services)
+    private static void ConfigureCors(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddCors(
             options =>
             {
                 options.AddPolicy(
                     CorsPolicy,
-                    builder => builder.WithOrigins("http://localhost:4200")
+                    builder => builder.WithOrigins(
+                            configuration.GetSection("AllowedOrigins").Get<string[]>() ?? Array.Empty<string>()
+                        )
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()
