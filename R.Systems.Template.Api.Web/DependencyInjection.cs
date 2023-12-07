@@ -85,11 +85,11 @@ public static class DependencyInjection
         services.AddCors(
             options =>
             {
+                string[] allowedOrigins = configuration["AllowedOrigins"]?.Split(";")
+                                          ?? Array.Empty<string>();
                 options.AddPolicy(
                     CorsPolicy,
-                    builder => builder.WithOrigins(
-                            configuration.GetSection("AllowedOrigins").Get<string[]>() ?? Array.Empty<string>()
-                        )
+                    builder => builder.WithOrigins(allowedOrigins)
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()
