@@ -26,7 +26,7 @@ public static class DependencyInjection
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddHealthChecks();
-        services.ConfigureHttpLogging();
+        services.ConfigureHttpLogging(configuration);
         services.ConfigureSignalR();
         services.ConfigureSwagger();
         services.ConfigureCors(configuration);
