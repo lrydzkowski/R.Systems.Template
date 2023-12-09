@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddHealthChecks();
+        services.ConfigureHttpLogging();
         services.ConfigureSignalR();
         services.ConfigureSwagger();
         services.ConfigureCors(configuration);
@@ -33,6 +34,20 @@ public static class DependencyInjection
         services.ConfigureOptions(configuration);
         services.ConfigureAuth();
         services.ConfigureQuartz();
+    }
+
+    private static void ConfigureHttpLogging(this IServiceCollection services)
+    {
+        services.AddHttpLogging(
+            logging =>
+            {
+                logging.RequestHeaders.Add("Origin");
+                logging.RequestHeaders.Add("x-signalr-user-agent");
+                logging.RequestHeaders.Add("Referer");
+                logging.RequestHeaders.Add("Access-Control-Allow-Credentials");
+                logging.RequestHeaders.Add("Access-Control-Allow-Origin");
+            }
+        );
     }
 
     private static void ConfigureSignalR(this IServiceCollection services)

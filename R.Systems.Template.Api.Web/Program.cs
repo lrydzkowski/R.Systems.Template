@@ -58,6 +58,7 @@ public class Program
 
     private static void ConfigureRequestPipeline(WebApplication app)
     {
+        app.UseHttpLogging();
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseSwagger();
         if (app.Environment.IsDevelopment())
