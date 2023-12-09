@@ -37,16 +37,16 @@ public static class DependencyInjection
         services.ConfigureQuartz(configuration);
     }
 
-    private static void ConfigureHttpLogging(this IServiceCollection services)
+    private static void ConfigureHttpLogging(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpLogging(
             logging =>
             {
-                logging.RequestHeaders.Add("Origin");
-                logging.RequestHeaders.Add("x-signalr-user-agent");
-                logging.RequestHeaders.Add("Referer");
-                logging.RequestHeaders.Add("Access-Control-Allow-Credentials");
-                logging.RequestHeaders.Add("Access-Control-Allow-Origin");
+                string[] headersToAdd = configuration["HeadersToAddToLogs"]?.Split(";") ?? Array.Empty<string>();
+                foreach (string header in headersToAdd)
+                {
+                    logging.RequestHeaders.Add(header);
+                }
             }
         );
     }
