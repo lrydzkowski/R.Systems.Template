@@ -61,10 +61,10 @@ public class Program
         app.UseHttpLogging();
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseSwagger();
+        app.UseCors(DependencyInjection.CorsPolicy);
         if (app.Environment.IsDevelopment())
         {
             app.UseSwaggerUI();
-            app.UseCors(DependencyInjection.CorsPolicy);
         }
 
         UseHealthChecks(app);
