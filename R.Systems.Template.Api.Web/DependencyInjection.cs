@@ -7,6 +7,7 @@ using R.Systems.Template.Api.Web.Hubs;
 using R.Systems.Template.Api.Web.Options;
 using R.Systems.Template.Api.Web.Services;
 using R.Systems.Template.Core;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Infrastructure.Db;
 using RunMethodsSequentially;
 
@@ -33,7 +34,7 @@ public static class DependencyInjection
         services.ChangeApiControllerModelValidationResponse();
         services.ConfigureOptions(configuration);
         services.ConfigureAuth();
-        services.ConfigureQuartz();
+        services.ConfigureQuartz(configuration);
     }
 
     private static void ConfigureHttpLogging(this IServiceCollection services)
@@ -146,8 +147,13 @@ public static class DependencyInjection
             );
     }
 
-    private static void ConfigureQuartz(this IServiceCollection services)
+    private static void ConfigureQuartz(this IServiceCollection services, IConfiguration configuration)
     {
+        if (EnvHandler.IsSystemUnderTest(configuration))
+        {
+            return;
+        }
+
         services.AddQuartz(
             q =>
             {

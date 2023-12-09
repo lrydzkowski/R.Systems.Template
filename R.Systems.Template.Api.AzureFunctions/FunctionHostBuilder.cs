@@ -31,7 +31,7 @@ public class FunctionHostBuilder
                 (builder, services) =>
                 {
                     services.ConfigureServices();
-                    services.ConfigureCoreServices();
+                    services.ConfigureCoreServices(builder.Configuration);
                     services.ConfigureInfrastructureDbServices(builder.Configuration);
                 }
             );

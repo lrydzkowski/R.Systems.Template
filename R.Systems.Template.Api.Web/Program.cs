@@ -43,7 +43,7 @@ public class Program
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
         builder.Services.ConfigureServices(builder.Configuration, builder.Environment);
-        builder.Services.ConfigureCoreServices();
+        builder.Services.ConfigureCoreServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);

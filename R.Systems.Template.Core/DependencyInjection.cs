@@ -3,6 +3,7 @@ using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Common.Validation;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
@@ -15,11 +16,11 @@ namespace R.Systems.Template.Core;
 
 public static class DependencyInjection
 {
-    public static void ConfigureCoreServices(this IServiceCollection services)
+    public static void ConfigureCoreServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.ConfigureMediatR();
         services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
-        services.ConfigureMassTransit();
+        services.ConfigureMassTransit(configuration);
     }
 
     public static void ConfigureOptionsWithValidation<TOptions, TValidator>(
@@ -53,8 +54,13 @@ public static class DependencyInjection
         );
     }
 
-    private static void ConfigureMassTransit(this IServiceCollection services)
+    private static void ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
     {
+        if (EnvHandler.IsSystemUnderTest(configuration))
+        {
+            return;
+        }
+
         services.AddMassTransit(
             x =>
             {

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using R.Systems.Template.Core;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Infrastructure.Azure;
 using R.Systems.Template.Infrastructure.Db;
 using R.Systems.Template.Infrastructure.Db.Common.Options;
@@ -36,7 +37,7 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
         IConfiguration configuration = BuildConfiguration(setConfiguration);
 
         IServiceCollection services = new ServiceCollection();
-        services.ConfigureCoreServices();
+        services.ConfigureCoreServices(configuration);
         services.ConfigureInfrastructureDbServices(configuration);
         services.ConfigureInfrastructureAzureServices(configuration);
         configureServices?.Invoke(services);
@@ -49,6 +50,7 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
         IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
         setConfiguration?.Invoke(configurationBuilder);
         SetDatabaseConnectionString(configurationBuilder);
+        SetIsSystemUnderTestOption(configurationBuilder);
 
         return configurationBuilder.Build();
     }
@@ -60,6 +62,16 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
             {
                 [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppPostgresDb)}"] =
                     BuildConnectionString()
+            }
+        );
+    }
+
+    private void SetIsSystemUnderTestOption(IConfigurationBuilder configBuilder)
+    {
+        configBuilder.AddInMemoryCollection(
+            new Dictionary<string, string?>
+            {
+                [EnvHandler.ConfigKey] = EnvHandler.ConfigValue
             }
         );
     }

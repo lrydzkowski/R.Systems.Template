@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using R.Systems.Template.Api.Web;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Infrastructure.Db.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Assertion;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
@@ -53,18 +55,39 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         await _dbContainer.DisposeAsync();
     }
 
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        builder.ConfigureHostConfiguration(SetIsSystemUnderTestOption);
+
+        return base.CreateHost(builder);
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureLogging(
-            x => x.ClearProviders()
-        );
+        DisableLogging(builder);
         builder.ConfigureAppConfiguration(
             (_, configBuilder) =>
             {
                 SetDefaultOptions(configBuilder);
                 SetDatabaseConnectionString(configBuilder);
-                DisableLogging(configBuilder);
             }
+        );
+    }
+
+    private void SetIsSystemUnderTestOption(IConfigurationBuilder configBuilder)
+    {
+        configBuilder.AddInMemoryCollection(
+            new Dictionary<string, string?>
+            {
+                [EnvHandler.ConfigKey] = EnvHandler.ConfigValue
+            }
+        );
+    }
+
+    private void DisableLogging(IWebHostBuilder builder)
+    {
+        builder.ConfigureLogging(
+            x => x.ClearProviders()
         );
     }
 
@@ -90,18 +113,6 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     private string BuildConnectionString()
     {
         return _dbContainer.GetConnectionString();
-    }
-
-    private void DisableLogging(IConfigurationBuilder configBuilder)
-    {
-        configBuilder.AddInMemoryCollection(
-            new Dictionary<string, string?>
-            {
-                ["Serilog:MinimumLevel:Default"] = "6",
-                ["Serilog:MinimumLevel:Override:Microsoft"] = "6",
-                ["Serilog:MinimumLevel:Override:System"] = "6"
-            }
-        );
     }
 }
 
