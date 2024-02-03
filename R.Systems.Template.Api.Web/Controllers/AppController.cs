@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Net.Mime;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Api.Web.Mappers;
 using R.Systems.Template.Api.Web.Models;
@@ -11,8 +12,11 @@ namespace R.Systems.Template.Api.Web.Controllers;
 [ApiController]
 public class AppController : ControllerBase
 {
-    public AppController(ISender mediator)
+    private readonly ILogger<AppController> _logger;
+
+    public AppController(ISender mediator, ILogger<AppController> logger)
     {
+        _logger = logger;
         Mediator = mediator;
     }
 
@@ -36,5 +40,25 @@ public class AppController : ControllerBase
         GetAppInfoResponse response = mapper.ToResponse(result);
 
         return Ok(response);
+    }
+
+    [SwaggerOperation(Summary = "Save logs")]
+    [SwaggerResponse(
+        statusCode: 200,
+        description: "Correct response",
+        contentTypes: [MediaTypeNames.Application.Json]
+    )]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpPost, Route("logs")]
+    public IActionResult SaveLogs()
+    {
+        _logger.LogTrace("It's trace with a {placeholder}", "test placeholder");
+        _logger.LogDebug("It's debug with a {placeholder}", "test placeholder");
+        _logger.LogInformation("It's information with a {placeholder}", "test placeholder");
+        _logger.LogWarning("It's warning with a {placeholder}", "test placeholder");
+        _logger.LogError("It's error with a {placeholder}", "test placeholder");
+        _logger.LogCritical("It's critical with a {placeholder}", "test placeholder");
+
+        return Ok();
     }
 }

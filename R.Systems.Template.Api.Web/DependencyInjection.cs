@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.OpenApi.Models;
 using Quartz;
@@ -35,6 +37,7 @@ public static class DependencyInjection
         services.ConfigureOptions(configuration);
         services.ConfigureAuth();
         services.ConfigureQuartz(configuration);
+        services.ConfigureApplicationInsights(configuration);
     }
 
     private static void ConfigureHttpLogging(this IServiceCollection services, IConfiguration configuration)
@@ -170,5 +173,15 @@ public static class DependencyInjection
             }
         );
         services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+    }
+
+    private static void ConfigureApplicationInsights(this IServiceCollection services, IConfiguration configuration)
+    {
+        if (string.IsNullOrWhiteSpace(configuration["AzureMonitor:ConnectionString"]))
+        {
+            return;
+        }
+
+        services.AddOpenTelemetry().UseAzureMonitor();
     }
 }

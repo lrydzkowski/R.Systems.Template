@@ -8,8 +8,6 @@ using R.Systems.Template.Infrastructure.Azure;
 using R.Systems.Template.Infrastructure.Db;
 using R.Systems.Template.Infrastructure.Notifications;
 using R.Systems.Template.Infrastructure.Wordnik;
-using Serilog;
-using Serilog.Debugging;
 
 namespace R.Systems.Template.Api.Web;
 
@@ -17,27 +15,11 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        Log.Logger = Serilog.CreateBootstrapLogger();
-        SelfLog.Enable(Console.Error);
-
-        try
-        {
-            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-            ConfigureServices(builder);
-            ConfigureLogging(builder);
-            WebApplication app = builder.Build();
-            ConfigureRequestPipeline(app);
-            app.Run();
-        }
-        catch (Exception exception)
-        {
-            Log.Fatal(exception, "Application terminated unexpectedly");
-            throw;
-        }
-        finally
-        {
-            Log.CloseAndFlush();
-        }
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        ConfigureServices(builder);
+        WebApplication app = builder.Build();
+        ConfigureRequestPipeline(app);
+        app.Run();
     }
 
     private static void ConfigureServices(WebApplicationBuilder builder)
@@ -50,22 +32,13 @@ public class Program
         builder.Services.ConfigureNotificationsServices();
     }
 
-    private static void ConfigureLogging(WebApplicationBuilder builder)
-    {
-        builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
-        builder.Host.UseSerilog(Serilog.CreateLogger, true);
-    }
-
     private static void ConfigureRequestPipeline(WebApplication app)
     {
         app.UseHttpLogging();
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseSwagger();
         app.UseCors(DependencyInjection.CorsPolicy);
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwaggerUI();
-        }
+        app.UseSwaggerUI();
 
         UseHealthChecks(app);
         app.UseWebSocketsAuth();
