@@ -11,6 +11,7 @@ using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
 using R.Systems.Template.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Net.Mime;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
@@ -29,13 +30,13 @@ public class EmployeeInCompanyController : ControllerBase
 
     [SwaggerOperation(Summary = "Get the employee in the company")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
         type: typeof(Employee),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 404, description: "Employee doesn't exist.")]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(StatusCodes.Status404NotFound, description: "Employee doesn't exist.")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpGet("{companyId}/employees/{employeeId}", Name = "GetEmployeeInCompany")]
     public async Task<IActionResult> GetEmployeeInCompany(
         int companyId,
@@ -63,12 +64,12 @@ public class EmployeeInCompanyController : ControllerBase
 
     [SwaggerOperation(Summary = "Get employees in the company")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
         type: typeof(ListInfo<Employee>),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpGet("{companyId}/employees", Name = "GetEmployeesInCompany")]
     public async Task<IActionResult> GetEmployeesInCompany(
         [FromQuery] ListRequest listRequest,

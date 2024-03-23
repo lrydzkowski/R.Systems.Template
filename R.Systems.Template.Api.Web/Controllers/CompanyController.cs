@@ -14,6 +14,7 @@ using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
 using R.Systems.Template.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Net.Mime;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
@@ -32,13 +33,13 @@ public class CompanyController : ControllerBase
 
     [SwaggerOperation(Summary = "Get the company")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
         type: typeof(Company),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 404, description: "Company doesn't exist.")]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(StatusCodes.Status404NotFound, description: "Company doesn't exist.")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpGet("{companyId}", Name = "GetCompany")]
     public async Task<IActionResult> GetCompany(int companyId, CancellationToken cancellationToken)
     {
@@ -62,12 +63,12 @@ public class CompanyController : ControllerBase
 
     [SwaggerOperation(Summary = "Get companies")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
         type: typeof(ListInfo<Company>),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpGet]
     public async Task<IActionResult> GetCompanies(
         [FromQuery] ListRequest listRequest,
@@ -86,13 +87,17 @@ public class CompanyController : ControllerBase
 
     [SwaggerOperation(Summary = "Create the company")]
     [SwaggerResponse(
-        statusCode: 201,
+        StatusCodes.Status201Created,
         description: "Company created",
         type: typeof(Company),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(
+        StatusCodes.Status422UnprocessableEntity,
+        type: typeof(List<ErrorInfo>),
+        contentTypes: [MediaTypeNames.Application.Json]
+    )]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpPost]
     public async Task<IActionResult> CreateCompany(CreateCompanyRequest request)
     {
@@ -109,13 +114,17 @@ public class CompanyController : ControllerBase
 
     [SwaggerOperation(Summary = "Update the company")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Company updated",
         type: typeof(Company),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(
+        StatusCodes.Status422UnprocessableEntity,
+        type: typeof(List<ErrorInfo>),
+        contentTypes: [MediaTypeNames.Application.Json]
+    )]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpPut("{companyId}")]
     public async Task<IActionResult> UpdateCompany(int companyId, UpdateCompanyRequest request)
     {
@@ -128,9 +137,13 @@ public class CompanyController : ControllerBase
     }
 
     [SwaggerOperation(Summary = "Delete the company")]
-    [SwaggerResponse(statusCode: 204, description: "Company deleted")]
-    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(StatusCodes.Status204NoContent, description: "Company deleted")]
+    [SwaggerResponse(
+        StatusCodes.Status422UnprocessableEntity,
+        type: typeof(List<ErrorInfo>),
+        contentTypes: [MediaTypeNames.Application.Json]
+    )]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpDelete("{companyId}")]
     public async Task<IActionResult> DeleteCompany(int companyId)
     {

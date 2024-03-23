@@ -14,6 +14,7 @@ using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
 using R.Systems.Template.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Net.Mime;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
@@ -32,13 +33,13 @@ public class EmployeeController : ControllerBase
 
     [SwaggerOperation(Summary = "Get the employee")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
         type: typeof(Employee),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 404, description: "Employee doesn't exist.")]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(StatusCodes.Status404NotFound, description: "Employee doesn't exist.")]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpGet("{employeeId}", Name = "GetEmployee")]
     public async Task<IActionResult> GetEmployee(int employeeId, CancellationToken cancellationToken)
     {
@@ -62,12 +63,12 @@ public class EmployeeController : ControllerBase
 
     [SwaggerOperation(Summary = "Get employees")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
         type: typeof(ListInfo<Employee>),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpGet]
     public async Task<IActionResult> GetEmployees(
         [FromQuery] ListRequest listRequest,
@@ -86,13 +87,17 @@ public class EmployeeController : ControllerBase
 
     [SwaggerOperation(Summary = "Create the employee")]
     [SwaggerResponse(
-        statusCode: 201,
+        StatusCodes.Status201Created,
         description: "Employee created",
         type: typeof(Employee),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(
+        StatusCodes.Status422UnprocessableEntity,
+        type: typeof(List<ErrorInfo>),
+        contentTypes: [MediaTypeNames.Application.Json]
+    )]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpPost]
     public async Task<IActionResult> CreateEmployee(CreateEmployeeRequest request)
     {
@@ -109,13 +114,17 @@ public class EmployeeController : ControllerBase
 
     [SwaggerOperation(Summary = "Update the employee")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Employee updated",
         type: typeof(Employee),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(
+        StatusCodes.Status422UnprocessableEntity,
+        type: typeof(List<ErrorInfo>),
+        contentTypes: [MediaTypeNames.Application.Json]
+    )]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpPut("{employeeId}")]
     public async Task<IActionResult> UpdateEmployee(int employeeId, UpdateEmployeeRequest request)
     {
@@ -128,9 +137,13 @@ public class EmployeeController : ControllerBase
     }
 
     [SwaggerOperation(Summary = "Delete the employee")]
-    [SwaggerResponse(statusCode: 204, description: "Employee deleted")]
-    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(StatusCodes.Status204NoContent, description: "Employee deleted")]
+    [SwaggerResponse(
+        StatusCodes.Status422UnprocessableEntity,
+        type: typeof(List<ErrorInfo>),
+        contentTypes: [MediaTypeNames.Application.Json]
+    )]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpDelete("{employeeId}")]
     public async Task<IActionResult> DeleteEmployee(int employeeId)
     {

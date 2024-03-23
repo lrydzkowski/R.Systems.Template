@@ -5,6 +5,7 @@ using Microsoft.Identity.Web.Resource;
 using R.Systems.Template.Core.Words.Queries.GetDefinitions;
 using R.Systems.Template.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Net.Mime;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
@@ -23,12 +24,12 @@ public class WordsController : ControllerBase
 
     [SwaggerOperation(Summary = "Get word definitions")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
         type: typeof(List<Definition>),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [Route("{word}/definitions")]
     [HttpGet]
     public async Task<IActionResult> GetDefinitions(
