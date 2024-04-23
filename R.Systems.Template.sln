@@ -45,7 +45,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Benchmar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Db", "R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj", "{C97F17BC-9F02-4968-8E42-921CFC606DF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.Infrastructure.Notifications", "R.Systems.Template.Infrastructure.Notifications\R.Systems.Template.Infrastructure.Notifications.csproj", "{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Notifications", "R.Systems.Template.Infrastructure.Notifications\R.Systems.Template.Infrastructure.Notifications.csproj", "{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubAction", "GitHubAction", "{CA9E7BA5-AD15-415E-9C4D-56848F3A7D41}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-and-deploy.yml = .github\workflows\build-and-deploy.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,6 +131,7 @@ Global
 		{B9104281-C654-4DB9-8BBF-BBAFEE97E312} = {2CAD7464-F38B-4665-9621-58A092B2BD81}
 		{C97F17BC-9F02-4968-8E42-921CFC606DF8} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
+		{CA9E7BA5-AD15-415E-9C4D-56848F3A7D41} = {3FC77EDA-4DED-4EA0-B6FA-F1A06DD40E61}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}
