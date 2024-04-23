@@ -60,7 +60,7 @@ public class DeleteEmployeeTests
     {
         CreateEmployeeCommand createEmployeeCommand = new()
         {
-            CompanyId = CompanyConfiguration.FirstAvailableId,
+            CompanyId = CompanyEntityTypeConfiguration.FirstAvailableId,
             FirstName = "John",
             LastName = "Smith"
         };

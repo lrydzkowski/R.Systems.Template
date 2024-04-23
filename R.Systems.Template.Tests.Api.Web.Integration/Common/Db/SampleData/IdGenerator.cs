@@ -6,12 +6,12 @@ internal static class IdGenerator
 {
     public static int GetCompanyId(int id)
     {
-        return GetId(CompanyConfiguration.FirstAvailableId, id);
+        return GetId(CompanyEntityTypeConfiguration.FirstAvailableId, id);
     }
 
     public static int GetEmployeeId(int id)
     {
-        return GetId(EmployeeConfiguration.FirstAvailableId, id);
+        return GetId(EmployeeEntityTypeConfiguration.FirstAvailableId, id);
     }
 
     private static int GetId(int firstAvailableId, int id)

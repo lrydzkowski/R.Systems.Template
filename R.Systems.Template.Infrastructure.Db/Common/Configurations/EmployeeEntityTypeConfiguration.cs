@@ -4,7 +4,7 @@ using R.Systems.Template.Infrastructure.Db.Common.Entities;
 
 namespace R.Systems.Template.Infrastructure.Db.Common.Configurations;
 
-internal class EmployeeConfiguration : IEntityTypeConfiguration<EmployeeEntity>
+internal class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<EmployeeEntity>
 {
     public static readonly int FirstAvailableId = 4;
 
