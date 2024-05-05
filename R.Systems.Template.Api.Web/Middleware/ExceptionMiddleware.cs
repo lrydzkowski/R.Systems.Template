@@ -29,13 +29,11 @@ public class ExceptionMiddleware
         }
         catch (OperationCanceledException exception)
         {
-            _logger.LogWarning(exception, "Operation was cancelled");
-            HandleException(httpContext);
+            HandleOperationCancelledException(httpContext, exception);
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Something went wrong");
-            HandleException(httpContext);
+            HandleException(httpContext, exception);
         }
     }
 
@@ -60,8 +58,18 @@ public class ExceptionMiddleware
         await context.Response.WriteAsJsonAsync(errors, jsonSerializerOptions);
     }
 
-    private void HandleException(HttpContext context)
+    private void HandleOperationCancelledException(HttpContext context, OperationCanceledException exception)
     {
+        _logger.LogWarning(exception, "Task cancelled exception");
+
+        context.Response.ContentType = MediaTypeNames.Application.Json;
+        context.Response.StatusCode = 499;
+    }
+
+    private void HandleException(HttpContext context, Exception exception)
+    {
+        _logger.LogError(exception, "Something went wrong");
+
         context.Response.ContentType = MediaTypeNames.Application.Json;
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
     }
