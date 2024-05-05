@@ -7,11 +7,11 @@ using System.Text.Encodings.Web;
 namespace R.Systems.Template.Api.Web.Auth;
 
 public class ApiKeyAuthenticationHandler(
-        IOptionsMonitor<ApiKeyAuthenticationSchemeOptions> options,
-        ILoggerFactory logger,
-        UrlEncoder encoder,
-        IOptions<HealthCheckOptions> healthCheckOptions
-    )
+    IOptionsMonitor<ApiKeyAuthenticationSchemeOptions> options,
+    ILoggerFactory logger,
+    UrlEncoder encoder,
+    IOptions<HealthCheckOptions> healthCheckOptions
+)
     : AuthenticationHandler<ApiKeyAuthenticationSchemeOptions>(options, logger, encoder)
 {
     private const string ApiKeyHeaderName = "api-key";

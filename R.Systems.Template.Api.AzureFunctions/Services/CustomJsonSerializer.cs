@@ -4,13 +4,13 @@ namespace R.Systems.Template.Api.AzureFunctions.Services;
 
 public class CustomJsonSerializer
 {
+    private readonly JsonSerializerOptions _options = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
     public string Serialize<T>(T data)
     {
-        JsonSerializerOptions jsonSerializerOptions = new()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        };
-
-        return JsonSerializer.Serialize(data, jsonSerializerOptions);
+        return JsonSerializer.Serialize(data, _options);
     }
 }

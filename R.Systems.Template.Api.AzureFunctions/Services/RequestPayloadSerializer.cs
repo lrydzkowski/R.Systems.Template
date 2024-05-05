@@ -11,14 +11,13 @@ public interface IRequestPayloadSerializer
 public class RequestPayloadSerializer
     : IRequestPayloadSerializer
 {
+    private readonly JsonSerializerOptions _options = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+    };
+
     public async Task<T?> DeserializeAsync<T>(HttpRequestData request)
     {
-        return await JsonSerializer.DeserializeAsync<T>(
-            request.Body,
-            new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            }
-        );
+        return await JsonSerializer.DeserializeAsync<T>(request.Body, _options);
     }
 }

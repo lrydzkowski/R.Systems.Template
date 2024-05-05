@@ -9,7 +9,6 @@ using R.Systems.Template.Core.Companies.Queries.GetCompany;
 using R.Systems.Template.Tests.Core.Integration.Common;
 using R.Systems.Template.Tests.Core.Integration.Common.Db;
 using R.Systems.Template.Tests.Core.Integration.Common.TestsCollections;
-using System.Text.Json;
 using Xunit.Abstractions;
 
 namespace R.Systems.Template.Tests.Core.Integration.Companies.Commands.DeleteCompany;
@@ -18,14 +17,12 @@ namespace R.Systems.Template.Tests.Core.Integration.Companies.Commands.DeleteCom
 [Trait(TestConstants.Category, CommandTestsCollection.CollectionName)]
 public class DeleteCompanyTests
 {
-    public DeleteCompanyTests(ITestOutputHelper output, SystemUnderTest<SampleDataDbInitializer> systemUnderTest)
+    public DeleteCompanyTests(SystemUnderTest<SampleDataDbInitializer> systemUnderTest)
     {
-        Output = output;
         SystemUnderTest = systemUnderTest;
         Mediator = SystemUnderTest.BuildServiceProvider().GetRequiredService<ISender>();
     }
 
-    private ITestOutputHelper Output { get; }
     private SystemUnderTest<SampleDataDbInitializer> SystemUnderTest { get; }
     private ISender Mediator { get; }
 

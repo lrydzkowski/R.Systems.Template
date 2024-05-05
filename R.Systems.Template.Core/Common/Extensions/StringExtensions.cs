@@ -11,10 +11,7 @@ public static class StringExtensions
             throw new ArgumentException($"The '{nameof(times)}' parameter must be non-negative.", nameof(times));
         }
 
-        if (input == null)
-        {
-            throw new ArgumentNullException(nameof(input));
-        }
+        ArgumentNullException.ThrowIfNull(input);
 
         StringBuilder result = new(input.Length * times);
         for (int i = 0; i < times; i++)
