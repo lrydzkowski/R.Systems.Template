@@ -17,19 +17,31 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
 
     private AppDbContext DbContext { get; }
 
-    public async Task<ListInfo<Employee>> GetEmployeesAsync(ListParameters listParameters)
+    public async Task<ListInfo<Employee>> GetEmployeesAsync(
+        ListParameters listParameters,
+        CancellationToken cancellationToken
+    )
     {
-        return await GetEmployeeFromDbAsync(listParameters);
+        return await GetEmployeeFromDbAsync(listParameters, cancellationToken: cancellationToken);
     }
 
-    public async Task<ListInfo<Employee>> GetEmployeesAsync(ListParameters listParameters, int companyId)
+    public async Task<ListInfo<Employee>> GetEmployeesAsync(
+        ListParameters listParameters,
+        int companyId,
+        CancellationToken cancellationToken
+    )
     {
-        return await GetEmployeeFromDbAsync(listParameters, employeeEntity => employeeEntity.CompanyId == companyId);
+        return await GetEmployeeFromDbAsync(
+            listParameters,
+            employeeEntity => employeeEntity.CompanyId == companyId,
+            cancellationToken
+        );
     }
 
     private async Task<ListInfo<Employee>> GetEmployeeFromDbAsync(
         ListParameters listParameters,
-        Expression<Func<EmployeeEntity, bool>>? wherePredicate = null
+        Expression<Func<EmployeeEntity, bool>>? wherePredicate = null,
+        CancellationToken cancellationToken = default
     )
     {
         List<string> fieldsAvailableToSort = new() { "id", "firstName", "lastName" };
@@ -54,14 +66,14 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
                     CompanyId = employeeEntity.CompanyId
                 }
             )
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
         int count = await query
             .Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
             .Filter(fieldsAvailableToFilter, listParameters.Search)
             .Select(
                 employeeEntity => (int)employeeEntity.Id!
             )
-            .CountAsync();
+            .CountAsync(cancellationToken);
 
         return new ListInfo<Employee>
         {
