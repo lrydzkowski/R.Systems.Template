@@ -68,6 +68,7 @@ public static class DependencyInjection
                 x.UsingInMemory(
                     (context, cfg) => cfg.ConfigureEndpoints(context)
                 );
+                x.ConfigureHealthCheckOptions(options => options.Name = "MassTransitCheck");
             }
         );
     }

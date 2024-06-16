@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.OpenApi.Models;
 using Quartz;
@@ -6,6 +7,7 @@ using R.Systems.Template.Api.Web.Auth;
 using R.Systems.Template.Api.Web.Hubs;
 using R.Systems.Template.Api.Web.Options;
 using R.Systems.Template.Api.Web.Services;
+using R.Systems.Template.Api.Web.Swagger;
 using R.Systems.Template.Core;
 using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Infrastructure.Db;
@@ -24,6 +26,8 @@ public static class DependencyInjection
     )
     {
         services.AddControllers();
+        services.AddMvc()
+            .AddJsonOptions(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         services.AddEndpointsApiExplorer();
         services.AddHealthChecks();
         services.ConfigureHttpLogging(configuration);
@@ -92,6 +96,7 @@ public static class DependencyInjection
                         }
                     }
                 );
+                options.OperationFilter<SwaggerHeaderParameterAttributeFilter>();
             }
         );
     }

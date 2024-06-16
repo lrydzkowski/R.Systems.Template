@@ -1,6 +1,3 @@
-using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using R.Systems.Template.Api.Web.Auth;
 using R.Systems.Template.Api.Web.Hubs;
 using R.Systems.Template.Api.Web.Middleware;
 using R.Systems.Template.Core;
@@ -67,27 +64,11 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        UseHealthChecks(app);
         app.UseWebSocketsAuth();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
         app.MapHub<NotificationsHub>(NotificationsHub.Path);
         app.UseWebSockets();
-    }
-
-    private static void UseHealthChecks(WebApplication app)
-    {
-        app.MapHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                }
-            )
-            .RequireAuthorization(
-                builder => builder.AddAuthenticationSchemes(ApiKeyAuthenticationSchemeOptions.Name)
-                    .RequireAuthenticatedUser()
-            );
     }
 }

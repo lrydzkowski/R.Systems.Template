@@ -14,7 +14,7 @@ public class ApiKeyAuthenticationHandler(
 )
     : AuthenticationHandler<ApiKeyAuthenticationSchemeOptions>(options, logger, encoder)
 {
-    private const string ApiKeyHeaderName = "api-key";
+    public const string ApiKeyHeaderName = "api-key";
 
     private readonly string _apiKey = healthCheckOptions.Value.ApiKey;
 

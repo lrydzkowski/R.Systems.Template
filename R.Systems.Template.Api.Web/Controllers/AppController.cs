@@ -1,23 +1,30 @@
-﻿using System.Net.Mime;
+﻿using System.Net;
+using System.Net.Mime;
+using System.Reflection;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using R.Systems.Template.Api.Web.Auth;
 using R.Systems.Template.Api.Web.Mappers;
 using R.Systems.Template.Api.Web.Models;
+using R.Systems.Template.Api.Web.Swagger;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Reflection;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
 [ApiController]
 public class AppController : ControllerBase
 {
-    public AppController(ISender mediator)
+    public AppController(ISender mediator, HealthCheckService healthCheckService)
     {
         Mediator = mediator;
+        HealthCheckService = healthCheckService;
     }
 
     private ISender Mediator { get; }
+    private HealthCheckService HealthCheckService { get; }
 
     [SwaggerOperation(Summary = "Get basic information about application")]
     [SwaggerResponse(
@@ -37,5 +44,25 @@ public class AppController : ControllerBase
         GetAppInfoResponse response = mapper.ToResponse(result);
 
         return Ok(response);
+    }
+
+    [SwaggerResponse(
+        StatusCodes.Status200OK,
+        ContentTypes = [MediaTypeNames.Application.Json]
+    )]
+    [SwaggerResponse(
+        StatusCodes.Status503ServiceUnavailable,
+        ContentTypes = [MediaTypeNames.Application.Json]
+    )]
+    [SwaggerHeaderParameter(ApiKeyAuthenticationHandler.ApiKeyHeaderName)]
+    [HttpGet("health")]
+    [Authorize(AuthenticationSchemes = ApiKeyAuthenticationSchemeOptions.Name)]
+    public async Task<IActionResult> Get()
+    {
+        HealthReport report = await HealthCheckService.CheckHealthAsync();
+
+        return report.Status == HealthStatus.Healthy
+            ? Ok(report)
+            : StatusCode((int)HttpStatusCode.ServiceUnavailable, report);
     }
 }
