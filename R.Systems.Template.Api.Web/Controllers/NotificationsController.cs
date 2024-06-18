@@ -9,11 +9,11 @@ namespace R.Systems.Template.Api.Web.Controllers;
 
 [ApiExplorerSettings(IgnoreApi = true)]
 [Authorize(AuthenticationSchemes = AuthenticationSchemes.AzureAd)]
-public class NotificationsController : ControllerBase
+public class NotificationsController : ApiControllerBase
 {
     private const string WebSocketProtocol = "websocket";
-    private readonly IWebSocketsHandler _webSocketsHandler;
     private readonly INotificationsRepository _notificationsRepository;
+    private readonly IWebSocketsHandler _webSocketsHandler;
 
     public NotificationsController(
         IWebSocketsHandler webSocketsHandler,

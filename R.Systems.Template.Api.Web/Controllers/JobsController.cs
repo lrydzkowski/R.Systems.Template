@@ -4,9 +4,8 @@ using R.Systems.Template.Core.Jobs;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
-[ApiController]
 [Route("jobs")]
-public class JobsController : ControllerBase
+public class JobsController : ApiControllerBase
 {
     private readonly IBus _bus;
     private readonly ILogger<JobsController> _logger;
@@ -17,8 +16,7 @@ public class JobsController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost]
-    [Route("log-information")]
+    [HttpPost("log-information")]
     public async Task<IActionResult> RunLogInformationJob()
     {
         await _bus.Publish(new LogInformation());

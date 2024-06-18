@@ -18,20 +18,17 @@ internal class DbExceptionHandler
 
         List<ValidationFailure> errors = new();
 
-        if (postgresException.SqlState == PostgresErrorCodes.UniqueViolation)
+        if (postgresException is { SqlState: PostgresErrorCodes.UniqueViolation, ConstraintName: "IX_company_name" })
         {
-            if (postgresException.ConstraintName == "IX_company_name")
-            {
-                errors.Add(
-                    new ValidationFailure
-                    {
-                        PropertyName = "Name",
-                        ErrorMessage = $"Company with the given name already exists ('{companyEntity.Name}').",
-                        AttemptedValue = companyEntity.Name,
-                        ErrorCode = "Exists"
-                    }
-                );
-            }
+            errors.Add(
+                new ValidationFailure
+                {
+                    PropertyName = "Name",
+                    ErrorMessage = $"Company with the given name already exists ('{companyEntity.Name}').",
+                    AttemptedValue = companyEntity.Name,
+                    ErrorCode = "UniquenessValidator"
+                }
+            );
         }
 
         if (errors.Count > 0)

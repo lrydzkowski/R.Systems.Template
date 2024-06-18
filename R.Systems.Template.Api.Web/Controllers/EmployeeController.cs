@@ -1,9 +1,11 @@
-﻿using MediatR;
+﻿using System.Net.Mime;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using R.Systems.Template.Api.Web.Mappers;
 using R.Systems.Template.Api.Web.Models;
+using R.Systems.Template.Api.Web.Swagger.Examples.Employees;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Core.Common.Lists;
@@ -14,15 +16,14 @@ using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
 using R.Systems.Template.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Net.Mime;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
-[ApiController]
 [Authorize(AuthenticationSchemes = AuthenticationSchemes.AzureAdB2C)]
 [RequiredScope("User.Access")]
 [Route("employees")]
-public class EmployeeController : ControllerBase
+public class EmployeeController : ApiControllerBase
 {
     public EmployeeController(ISender mediator)
     {
@@ -34,12 +35,22 @@ public class EmployeeController : ControllerBase
     [SwaggerOperation(Summary = "Get the employee")]
     [SwaggerResponse(
         StatusCodes.Status200OK,
-        description: "Correct response",
-        type: typeof(Employee),
-        contentTypes: [MediaTypeNames.Application.Json]
+        "Correct response",
+        typeof(Employee),
+        [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(StatusCodes.Status404NotFound, description: "Employee doesn't exist.")]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+    [SwaggerResponseExample(
+        StatusCodes.Status200OK,
+        typeof(GetEmployeeResponseExamples)
+    )]
+    [SwaggerResponse(
+        StatusCodes.Status404NotFound,
+        "Employee doesn't exist."
+    )]
+    [SwaggerResponseExample(
+        StatusCodes.Status404NotFound,
+        typeof(GetEmployeeNotFoundResponseExamples)
+    )]
     [HttpGet("{employeeId}", Name = "GetEmployee")]
     public async Task<IActionResult> GetEmployee(int employeeId, CancellationToken cancellationToken)
     {
@@ -64,11 +75,14 @@ public class EmployeeController : ControllerBase
     [SwaggerOperation(Summary = "Get employees")]
     [SwaggerResponse(
         StatusCodes.Status200OK,
-        description: "Correct response",
-        type: typeof(ListInfo<Employee>),
-        contentTypes: [MediaTypeNames.Application.Json]
+        "Correct response",
+        typeof(ListInfo<Employee>),
+        [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+    [SwaggerResponseExample(
+        StatusCodes.Status200OK,
+        typeof(GetEmployeesResponseExamples)
+    )]
     [HttpGet]
     public async Task<IActionResult> GetEmployees(
         [FromQuery] ListRequest listRequest,
@@ -88,16 +102,19 @@ public class EmployeeController : ControllerBase
     [SwaggerOperation(Summary = "Create the employee")]
     [SwaggerResponse(
         StatusCodes.Status201Created,
-        description: "Employee created",
-        type: typeof(Employee),
-        contentTypes: [MediaTypeNames.Application.Json]
+        "Employee created",
+        typeof(Employee),
+        [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(
+    [SwaggerResponseExample(
+        StatusCodes.Status201Created,
+        typeof(CreateEmployeeResponseExamples)
+    )]
+    [SwaggerResponseExample(
         StatusCodes.Status422UnprocessableEntity,
-        type: typeof(List<ErrorInfo>),
-        contentTypes: [MediaTypeNames.Application.Json]
+        typeof(CreateEmployeeValidationErrorResponseExamples)
     )]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [HttpPost]
     public async Task<IActionResult> CreateEmployee(CreateEmployeeRequest request)
     {
@@ -115,16 +132,19 @@ public class EmployeeController : ControllerBase
     [SwaggerOperation(Summary = "Update the employee")]
     [SwaggerResponse(
         StatusCodes.Status200OK,
-        description: "Employee updated",
-        type: typeof(Employee),
-        contentTypes: [MediaTypeNames.Application.Json]
+        "Employee updated",
+        typeof(Employee),
+        [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(
+    [SwaggerResponseExample(
+        StatusCodes.Status200OK,
+        typeof(UpdateEmployeeResponseExamples)
+    )]
+    [SwaggerResponseExample(
         StatusCodes.Status422UnprocessableEntity,
-        type: typeof(List<ErrorInfo>),
-        contentTypes: [MediaTypeNames.Application.Json]
+        typeof(UpdateEmployeeValidationErrorResponseExamples)
     )]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [HttpPut("{employeeId}")]
     public async Task<IActionResult> UpdateEmployee(int employeeId, UpdateEmployeeRequest request)
     {
@@ -137,13 +157,10 @@ public class EmployeeController : ControllerBase
     }
 
     [SwaggerOperation(Summary = "Delete the employee")]
-    [SwaggerResponse(StatusCodes.Status204NoContent, description: "Employee deleted")]
     [SwaggerResponse(
-        StatusCodes.Status422UnprocessableEntity,
-        type: typeof(List<ErrorInfo>),
-        contentTypes: [MediaTypeNames.Application.Json]
+        StatusCodes.Status204NoContent,
+        "Employee deleted"
     )]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpDelete("{employeeId}")]
     public async Task<IActionResult> DeleteEmployee(int employeeId)
     {

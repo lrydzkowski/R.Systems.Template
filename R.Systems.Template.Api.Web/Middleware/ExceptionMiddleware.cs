@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using System.Text.Json;
 using FluentValidation;
 using R.Systems.Template.Core.Common.Errors;
@@ -8,8 +7,8 @@ namespace R.Systems.Template.Api.Web.Middleware;
 
 public class ExceptionMiddleware
 {
-    private readonly RequestDelegate _next;
     private readonly ILogger<Program> _logger;
+    private readonly RequestDelegate _next;
 
     public ExceptionMiddleware(RequestDelegate next, ILogger<Program> logger)
     {
@@ -62,15 +61,13 @@ public class ExceptionMiddleware
     {
         _logger.LogWarning(exception, "Task cancelled exception");
 
-        context.Response.ContentType = MediaTypeNames.Application.Json;
-        context.Response.StatusCode = 499;
+        context.Response.StatusCode = StatusCodes.Status499ClientClosedRequest;
     }
 
     private void HandleException(HttpContext context, Exception exception)
     {
         _logger.LogError(exception, "Something went wrong");
 
-        context.Response.ContentType = MediaTypeNames.Application.Json;
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
     }
 }

@@ -12,6 +12,7 @@ using R.Systems.Template.Core;
 using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Infrastructure.Db;
 using RunMethodsSequentially;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace R.Systems.Template.Api.Web;
 
@@ -68,6 +69,7 @@ public static class DependencyInjection
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "R.Systems.Template.Api.Web", Version = "1.0" });
                 options.EnableAnnotations();
+                options.ExampleFilters();
                 options.AddSecurityDefinition(
                     "Bearer",
                     new OpenApiSecurityScheme
@@ -99,6 +101,7 @@ public static class DependencyInjection
                 options.OperationFilter<SwaggerHeaderParameterAttributeFilter>();
             }
         );
+        services.AddSwaggerExamplesFromAssemblyOf(typeof(DependencyInjection));
     }
 
     private static void ConfigureCors(this IServiceCollection services, IConfiguration configuration)

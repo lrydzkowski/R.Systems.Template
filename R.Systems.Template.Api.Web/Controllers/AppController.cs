@@ -9,13 +9,14 @@ using R.Systems.Template.Api.Web.Auth;
 using R.Systems.Template.Api.Web.Mappers;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Api.Web.Swagger;
+using R.Systems.Template.Api.Web.Swagger.Examples.App;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
-[ApiController]
-public class AppController : ControllerBase
+public class AppController : ApiControllerBase
 {
     public AppController(ISender mediator, HealthCheckService healthCheckService)
     {
@@ -29,12 +30,15 @@ public class AppController : ControllerBase
     [SwaggerOperation(Summary = "Get basic information about application")]
     [SwaggerResponse(
         StatusCodes.Status200OK,
-        description: "Correct response",
-        type: typeof(GetAppInfoResponse),
-        contentTypes: [MediaTypeNames.Application.Json]
+        "Correct response",
+        typeof(GetAppInfoResponse),
+        [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-    [HttpGet, Route("")]
+    [SwaggerResponseExample(
+        StatusCodes.Status200OK,
+        typeof(GetAppInfoResponseExamples)
+    )]
+    [HttpGet("")]
     public async Task<IActionResult> GetAppInfo()
     {
         GetAppInfoResult result = await Mediator.Send(
@@ -46,6 +50,7 @@ public class AppController : ControllerBase
         return Ok(response);
     }
 
+    [SwaggerOperation(Summary = "Check health")]
     [SwaggerResponse(
         StatusCodes.Status200OK,
         ContentTypes = [MediaTypeNames.Application.Json]
@@ -54,9 +59,13 @@ public class AppController : ControllerBase
         StatusCodes.Status503ServiceUnavailable,
         ContentTypes = [MediaTypeNames.Application.Json]
     )]
-    [SwaggerHeaderParameter(ApiKeyAuthenticationHandler.ApiKeyHeaderName)]
+    [SwaggerHeaderParameter(
+        ApiKeyAuthenticationHandler.ApiKeyHeaderName
+    )]
+    [Authorize(
+        AuthenticationSchemes = ApiKeyAuthenticationSchemeOptions.Name
+    )]
     [HttpGet("health")]
-    [Authorize(AuthenticationSchemes = ApiKeyAuthenticationSchemeOptions.Name)]
     public async Task<IActionResult> Get()
     {
         HealthReport report = await HealthCheckService.CheckHealthAsync();

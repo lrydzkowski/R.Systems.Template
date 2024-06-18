@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Net.Mime;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
@@ -11,15 +12,13 @@ using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
 using R.Systems.Template.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Net.Mime;
 
 namespace R.Systems.Template.Api.Web.Controllers;
 
-[ApiController]
 [Authorize(AuthenticationSchemes = AuthenticationSchemes.AzureAd)]
 [RequiredScope("User.Access")]
 [Route("companies")]
-public class EmployeeInCompanyController : ControllerBase
+public class EmployeeInCompanyController : ApiControllerBase
 {
     public EmployeeInCompanyController(ISender mediator)
     {
@@ -31,12 +30,14 @@ public class EmployeeInCompanyController : ControllerBase
     [SwaggerOperation(Summary = "Get the employee in the company")]
     [SwaggerResponse(
         StatusCodes.Status200OK,
-        description: "Correct response",
-        type: typeof(Employee),
-        contentTypes: [MediaTypeNames.Application.Json]
+        "Correct response",
+        typeof(Employee),
+        [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(StatusCodes.Status404NotFound, description: "Employee doesn't exist.")]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+    [SwaggerResponse(
+        StatusCodes.Status404NotFound,
+        "Employee doesn't exist."
+    )]
     [HttpGet("{companyId}/employees/{employeeId}", Name = "GetEmployeeInCompany")]
     public async Task<IActionResult> GetEmployeeInCompany(
         int companyId,
@@ -65,11 +66,10 @@ public class EmployeeInCompanyController : ControllerBase
     [SwaggerOperation(Summary = "Get employees in the company")]
     [SwaggerResponse(
         StatusCodes.Status200OK,
-        description: "Correct response",
-        type: typeof(ListInfo<Employee>),
-        contentTypes: [MediaTypeNames.Application.Json]
+        "Correct response",
+        typeof(ListInfo<Employee>),
+        [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     [HttpGet("{companyId}/employees", Name = "GetEmployeesInCompany")]
     public async Task<IActionResult> GetEmployeesInCompany(
         [FromQuery] ListRequest listRequest,
