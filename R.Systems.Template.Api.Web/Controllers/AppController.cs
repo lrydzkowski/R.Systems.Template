@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -62,9 +61,7 @@ public class AppController : ApiControllerBase
     [SwaggerHeaderParameter(
         ApiKeyAuthenticationHandler.ApiKeyHeaderName
     )]
-    [Authorize(
-        AuthenticationSchemes = ApiKeyAuthenticationSchemeOptions.Name
-    )]
+    [Authorize(AuthenticationSchemes = ApiKeyAuthenticationSchemeOptions.Name)]
     [HttpGet("health")]
     public async Task<IActionResult> Get()
     {
@@ -72,6 +69,6 @@ public class AppController : ApiControllerBase
 
         return report.Status == HealthStatus.Healthy
             ? Ok(report)
-            : StatusCode((int)HttpStatusCode.ServiceUnavailable, report);
+            : StatusCode(StatusCodes.Status503ServiceUnavailable, report);
     }
 }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Core.Common.Extensions;
-using System.Net;
 
 namespace R.Systems.Template.Api.Web.Services;
 
@@ -37,7 +36,7 @@ public static class InvalidModelStateService
 
         return new ObjectResult(errors)
         {
-            StatusCode = (int)HttpStatusCode.UnprocessableEntity
+            StatusCode = StatusCodes.Status422UnprocessableEntity
         };
     }
 }
