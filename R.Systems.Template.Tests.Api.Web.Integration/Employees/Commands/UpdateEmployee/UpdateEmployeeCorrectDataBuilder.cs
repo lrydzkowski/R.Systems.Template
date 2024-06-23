@@ -1,4 +1,4 @@
-﻿using Bogus;
+using Bogus;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 
@@ -9,7 +9,6 @@ internal static class UpdateEmployeeCorrectDataBuilder
     public static IEnumerable<object[]> Build()
     {
         Faker faker = new();
-
         return new List<object[]>
         {
             BuildParameters(
@@ -17,20 +16,20 @@ internal static class UpdateEmployeeCorrectDataBuilder
                 (int)EmployeesSampleData.Data[0].Id!,
                 new UpdateEmployeeRequest
                 {
-                    FirstName = faker.Name.FirstName(),
-                    LastName = faker.Name.LastName(),
+                    FirstName = faker.Name.FirstName(), LastName = faker.Name.LastName(),
                     CompanyId = (int)CompaniesSampleData.Data["Meta"].Id!
                 }
             )
         };
     }
 
-    private static object[] BuildParameters(
-        int id,
-        int employeeId,
-        UpdateEmployeeRequest data
-    )
+    private static object[] BuildParameters(int id, int employeeId, UpdateEmployeeRequest data)
     {
-        return new object[] { id, employeeId, data };
+        return new object[]
+        {
+            id,
+            employeeId,
+            data
+        };
     }
 }

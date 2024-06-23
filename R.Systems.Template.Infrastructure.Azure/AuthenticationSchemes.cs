@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Infrastructure.Azure;
+namespace R.Systems.Template.Infrastructure.Azure;
 
 public static class AuthenticationSchemes
 {

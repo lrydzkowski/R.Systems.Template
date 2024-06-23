@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Employees.Queries.GetEmployee;
@@ -8,12 +8,12 @@ namespace R.Systems.Template.Infrastructure.Db.Employees.Queries;
 
 internal class GetEmployeeRepository : IGetEmployeeRepository
 {
+    private readonly AppDbContext _dbContext;
+
     public GetEmployeeRepository(AppDbContext dbContext)
     {
-        DbContext = dbContext;
+        _dbContext = dbContext;
     }
-
-    private AppDbContext DbContext { get; }
 
     public async Task<Employee?> GetEmployeeAsync(int employeeId, CancellationToken cancellationToken)
     {
@@ -33,15 +33,13 @@ internal class GetEmployeeRepository : IGetEmployeeRepository
         CancellationToken cancellationToken
     )
     {
-        return await DbContext.Employees.AsNoTracking()
+        return await _dbContext.Employees.AsNoTracking()
             .Where(wherePredicate)
             .Select(
                 employeeEntity => new Employee
                 {
-                    EmployeeId = (int)employeeEntity.Id!,
-                    FirstName = employeeEntity.FirstName,
-                    LastName = employeeEntity.LastName,
-                    CompanyId = employeeEntity.CompanyId
+                    EmployeeId = (int)employeeEntity.Id!, FirstName = employeeEntity.FirstName,
+                    LastName = employeeEntity.LastName, CompanyId = employeeEntity.CompanyId
                 }
             )
             .FirstOrDefaultAsync(cancellationToken);

@@ -1,4 +1,4 @@
-﻿using MassTransit;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core.Jobs;
 
@@ -22,7 +22,6 @@ public class JobsController : ApiControllerBase
         await _bus.Publish(new LogInformation());
         Thread.Sleep(TimeSpan.FromSeconds(20));
         _logger.LogInformation("controller :)");
-
         return NoContent();
     }
 }

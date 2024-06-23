@@ -1,4 +1,4 @@
-﻿using System.Linq.Dynamic.Core;
+using System.Linq.Dynamic.Core;
 
 namespace R.Systems.Template.Core.Common.Lists.Extensions;
 
@@ -12,7 +12,6 @@ public static class SortExtensions
     )
     {
         sorting = PrepareSortingParameters(sorting, defaultSortingFieldName);
-
         if (!fieldsAvailableToSort.Contains(sorting.FieldName!))
         {
             return query;
@@ -21,7 +20,6 @@ public static class SortExtensions
         string sortOrderQuery = sorting.Order == SortingOrder.Ascending ? "" : " desc";
         string sortQuery = $"{sorting.FieldName}{sortOrderQuery}, {defaultSortingFieldName} asc";
         query = query.OrderBy(sortQuery);
-
         return query;
     }
 

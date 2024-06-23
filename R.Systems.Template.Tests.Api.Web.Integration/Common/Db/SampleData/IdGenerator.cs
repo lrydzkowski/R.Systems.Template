@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Infrastructure.Db.Common.Configurations;
+using R.Systems.Template.Infrastructure.Db.Common.Configurations;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 
@@ -16,6 +16,6 @@ internal static class IdGenerator
 
     private static int GetId(int firstAvailableId, int id)
     {
-        return (firstAvailableId - 1) + id;
+        return firstAvailableId - 1 + id;
     }
 }

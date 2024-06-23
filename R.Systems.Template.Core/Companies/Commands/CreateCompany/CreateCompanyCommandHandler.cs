@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using R.Systems.Template.Core.Common.Domain;
 
 namespace R.Systems.Template.Core.Companies.Commands.CreateCompany;
@@ -15,19 +15,18 @@ public class CreateCompanyResult
 
 public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand, CreateCompanyResult>
 {
+    private readonly ICreateCompanyRepository _createCompanyRepository;
+
     public CreateCompanyCommandHandler(ICreateCompanyRepository createCompanyRepository)
     {
-        CreateCompanyRepository = createCompanyRepository;
+        _createCompanyRepository = createCompanyRepository;
     }
-
-    private ICreateCompanyRepository CreateCompanyRepository { get; }
 
     public async Task<CreateCompanyResult> Handle(CreateCompanyCommand command, CancellationToken cancellationToken)
     {
         CreateCompanyCommandMapper mapper = new();
         CompanyToCreate companyToCreate = mapper.ToCompanyToCreate(command);
-        Company companyCreated = await CreateCompanyRepository.CreateCompanyAsync(companyToCreate);
-
+        Company companyCreated = await _createCompanyRepository.CreateCompanyAsync(companyToCreate);
         return new CreateCompanyResult
         {
             Company = companyCreated

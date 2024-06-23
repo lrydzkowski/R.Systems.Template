@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -24,10 +24,7 @@ namespace R.Systems.Template.Infrastructure.Db;
 
 public static class DependencyInjection
 {
-    public static void ConfigureInfrastructureDbServices(
-        this IServiceCollection services,
-        IConfiguration configuration
-    )
+    public static void ConfigureInfrastructureDbServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.ConfigureOptions(configuration);
         services.ConfigureAppDbContext();

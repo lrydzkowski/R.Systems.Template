@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.ExceptionMiddleware;

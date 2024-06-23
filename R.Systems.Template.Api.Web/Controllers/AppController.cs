@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -17,14 +17,15 @@ namespace R.Systems.Template.Api.Web.Controllers;
 
 public class AppController : ApiControllerBase
 {
+    private readonly HealthCheckService _healthCheckService;
+
+    private readonly ISender _mediator;
+
     public AppController(ISender mediator, HealthCheckService healthCheckService)
     {
-        Mediator = mediator;
-        HealthCheckService = healthCheckService;
+        _mediator = mediator;
+        _healthCheckService = healthCheckService;
     }
-
-    private ISender Mediator { get; }
-    private HealthCheckService HealthCheckService { get; }
 
     [SwaggerOperation(Summary = "Get basic information about application")]
     [SwaggerResponse(
@@ -40,12 +41,10 @@ public class AppController : ApiControllerBase
     [HttpGet("")]
     public async Task<IActionResult> GetAppInfo()
     {
-        GetAppInfoResult result = await Mediator.Send(
-            new GetAppInfoQuery { AppAssembly = Assembly.GetExecutingAssembly() }
-        );
+        GetAppInfoResult result =
+            await _mediator.Send(new GetAppInfoQuery { AppAssembly = Assembly.GetExecutingAssembly() });
         GetAppInfoMapper mapper = new();
         GetAppInfoResponse response = mapper.ToResponse(result);
-
         return Ok(response);
     }
 
@@ -65,8 +64,7 @@ public class AppController : ApiControllerBase
     [HttpGet("health")]
     public async Task<IActionResult> Get()
     {
-        HealthReport report = await HealthCheckService.CheckHealthAsync();
-
+        HealthReport report = await _healthCheckService.CheckHealthAsync();
         return report.Status == HealthStatus.Healthy
             ? Ok(report)
             : StatusCode(StatusCodes.Status503ServiceUnavailable, report);

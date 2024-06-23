@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Core.Common.Lists;
+namespace R.Systems.Template.Core.Common.Lists;
 
 public class GetElementsQuery
 {

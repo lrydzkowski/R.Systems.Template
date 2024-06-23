@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Api.Web.Options;
+using R.Systems.Template.Api.Web.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Options.Serilog;

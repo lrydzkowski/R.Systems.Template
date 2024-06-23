@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -28,8 +28,7 @@ public static class DependencyInjection
         IConfiguration configuration,
         string configurationPosition
     )
-        where TOptions : class
-        where TValidator : class, IValidator<TOptions>, new()
+        where TOptions : class where TValidator : class, IValidator<TOptions>, new()
     {
         services.AddSingleton<IValidator<TOptions>, TValidator>();
         services.AddOptions<TOptions>()
@@ -65,9 +64,7 @@ public static class DependencyInjection
             x =>
             {
                 x.AddConsumer<LogInformationConsumer>();
-                x.UsingInMemory(
-                    (context, cfg) => cfg.ConfigureEndpoints(context)
-                );
+                x.UsingInMemory((context, cfg) => cfg.ConfigureEndpoints(context));
                 x.ConfigureHealthCheckOptions(options => options.Name = "MassTransitCheck");
             }
         );

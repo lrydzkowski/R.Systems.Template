@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+using System.Net;
+using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
@@ -8,7 +9,6 @@ using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 using RestSharp;
-using System.Net;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Employees.Queries.GetEmployee;
 
@@ -18,12 +18,12 @@ public class GetEmployeeTests
 {
     private readonly string _endpointUrlPath = "/employees";
 
+    private readonly RestClient _restClient;
+
     public GetEmployeeTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
-        RestClient = webApiFactory.WithoutAuthentication().CreateRestClient();
+        _restClient = webApiFactory.WithoutAuthentication().CreateRestClient();
     }
-
-    private RestClient RestClient { get; }
 
     [Fact]
     public async Task GetEmployee_ShouldReturnEmployee_WhenEmployeeExists()
@@ -37,9 +37,7 @@ public class GetEmployeeTests
             CompanyId = expectedEmployeeEntity.CompanyId
         };
         RestRequest restRequest = new($"{_endpointUrlPath}/{expectedEmployee.EmployeeId}");
-
-        RestResponse<Employee> response = await RestClient.ExecuteAsync<Employee>(restRequest);
-
+        RestResponse<Employee> response = await _restClient.ExecuteAsync<Employee>(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
         response.Data.Should().BeEquivalentTo(expectedEmployee);
@@ -50,18 +48,12 @@ public class GetEmployeeTests
     {
         int employeeId = 100;
         RestRequest restRequest = new($"{_endpointUrlPath}/{employeeId}");
-
-        RestResponse<ErrorInfo> response = await RestClient.ExecuteAsync<ErrorInfo>(restRequest);
-
+        RestResponse<ErrorInfo> response = await _restClient.ExecuteAsync<ErrorInfo>(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         response.Data.Should()
             .BeEquivalentTo(
                 new ErrorInfo
-                {
-                    PropertyName = "Employee",
-                    ErrorMessage = "Employee doesn't exist.",
-                    ErrorCode = "NotExist"
-                },
+                    { PropertyName = "Employee", ErrorMessage = "Employee doesn't exist.", ErrorCode = "NotExist" },
                 options => options.Including(x => x.PropertyName).Including(x => x.ErrorMessage)
             );
     }

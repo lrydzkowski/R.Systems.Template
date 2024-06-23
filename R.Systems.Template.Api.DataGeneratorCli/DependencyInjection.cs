@@ -1,4 +1,4 @@
-﻿using CommandDotNet;
+using CommandDotNet;
 using CommandDotNet.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

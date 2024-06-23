@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -17,7 +17,6 @@ internal class DbExceptionHandler
         }
 
         List<ValidationFailure> errors = new();
-
         if (postgresException is { SqlState: PostgresErrorCodes.UniqueViolation, ConstraintName: "IX_company_name" })
         {
             errors.Add(

@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Api.AzureFunctions.Models;
+namespace R.Systems.Template.Api.AzureFunctions.Models;
 
 public class UpdateCompanyRequest
 {

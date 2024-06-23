@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly.Caching;
 using Polly.Caching.Memory;
@@ -18,9 +18,7 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
-        services.ConfigureOptions(configuration)
-            .AddMemoryCache()
-            .ConfigureServices();
+        services.ConfigureOptions(configuration).AddMemoryCache().ConfigureServices();
         services.AddHealthChecks().AddCheck<WordnikHealthCheck>(nameof(WordnikHealthCheck));
     }
 
@@ -30,7 +28,6 @@ public static class DependencyInjection
             configuration,
             WordnikOptions.Position
         );
-
         return services;
     }
 
@@ -39,7 +36,6 @@ public static class DependencyInjection
         services.AddSingleton<WordApi>()
             .AddSingleton<IGetDefinitionsRepository, GetDefinitionsRepository>()
             .AddSingleton<IAsyncCacheProvider, MemoryCacheProvider>();
-
         return services;
     }
 }

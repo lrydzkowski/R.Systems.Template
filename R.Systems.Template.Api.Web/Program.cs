@@ -16,7 +16,6 @@ public class Program
     {
         Log.Logger = Serilog.CreateBootstrapLogger();
         SelfLog.Enable(Console.Error);
-
         try
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

@@ -5,6 +5,11 @@ namespace R.Systems.Template.Core.Common.Lists.Extensions;
 
 public static class FilterExtensions
 {
+    private static ParsingConfig DynamicLinqParsingConfig { get; } = new()
+    {
+        ResolveTypesBySimpleName = true
+    };
+
     public static IQueryable<T> Filter<T>(this IQueryable<T> query, List<string> fieldsAvailableToFilter, Search search)
     {
         if (search.Query == null)
@@ -64,9 +69,4 @@ public static class FilterExtensions
     {
         return $"{fieldName}.ToLower().Contains(@{index})";
     }
-
-    private static ParsingConfig DynamicLinqParsingConfig { get; } = new()
-    {
-        ResolveTypesBySimpleName = true
-    };
 }

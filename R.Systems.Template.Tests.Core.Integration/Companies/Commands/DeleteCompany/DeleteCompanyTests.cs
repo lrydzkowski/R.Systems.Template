@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
@@ -9,7 +9,6 @@ using R.Systems.Template.Core.Companies.Queries.GetCompany;
 using R.Systems.Template.Tests.Core.Integration.Common;
 using R.Systems.Template.Tests.Core.Integration.Common.Db;
 using R.Systems.Template.Tests.Core.Integration.Common.TestsCollections;
-using Xunit.Abstractions;
 
 namespace R.Systems.Template.Tests.Core.Integration.Companies.Commands.DeleteCompany;
 
@@ -17,14 +16,15 @@ namespace R.Systems.Template.Tests.Core.Integration.Companies.Commands.DeleteCom
 [Trait(TestConstants.Category, CommandTestsCollection.CollectionName)]
 public class DeleteCompanyTests
 {
+    private readonly ISender _mediator;
+
+    private readonly SystemUnderTest<SampleDataDbInitializer> _systemUnderTest;
+
     public DeleteCompanyTests(SystemUnderTest<SampleDataDbInitializer> systemUnderTest)
     {
-        SystemUnderTest = systemUnderTest;
-        Mediator = SystemUnderTest.BuildServiceProvider().GetRequiredService<ISender>();
+        _systemUnderTest = systemUnderTest;
+        _mediator = _systemUnderTest.BuildServiceProvider().GetRequiredService<ISender>();
     }
-
-    private SystemUnderTest<SampleDataDbInitializer> SystemUnderTest { get; }
-    private ISender Mediator { get; }
 
     [Fact]
     public async Task DeleteCompany_ShouldReturnValidationError_WhenCompanyNotExist()
@@ -40,14 +40,12 @@ public class DeleteCompanyTests
                 ErrorCode = "NotExist"
             }
         };
-        DeleteCompanyCommand command = new() { CompanyId = companyId };
-        ValidationException exception = await Assert.ThrowsAsync<ValidationException>(() => Mediator.Send(command));
-
-        exception.Errors.Should()
-            .BeEquivalentTo(
-                expectedValidationFailures,
-                options => options.WithStrictOrdering()
-            );
+        DeleteCompanyCommand command = new()
+        {
+            CompanyId = companyId
+        };
+        ValidationException exception = await Assert.ThrowsAsync<ValidationException>(() => _mediator.Send(command));
+        exception.Errors.Should().BeEquivalentTo(expectedValidationFailures, options => options.WithStrictOrdering());
     }
 
     [Fact]
@@ -57,19 +55,23 @@ public class DeleteCompanyTests
         {
             Name = "Test Company"
         };
-        CreateCompanyResult createCompanyResult = await Mediator.Send(createCompanyCommand);
-
+        CreateCompanyResult createCompanyResult = await _mediator.Send(createCompanyCommand);
         int companyId = createCompanyResult.Company.CompanyId;
-
-        GetCompanyQuery getCompanyQuery = new() { CompanyId = companyId };
-        GetCompanyResult getCompanyResult = await Mediator.Send(getCompanyQuery);
-
-        DeleteCompanyCommand deleteCompanyCommand = new() { CompanyId = companyId };
-        await Mediator.Send(deleteCompanyCommand);
-
-        GetCompanyQuery getCompanyAfterDeleteQuery = new() { CompanyId = companyId };
-        GetCompanyResult getCompanyAfterDeleteResult = await Mediator.Send(getCompanyAfterDeleteQuery);
-
+        GetCompanyQuery getCompanyQuery = new()
+        {
+            CompanyId = companyId
+        };
+        GetCompanyResult getCompanyResult = await _mediator.Send(getCompanyQuery);
+        DeleteCompanyCommand deleteCompanyCommand = new()
+        {
+            CompanyId = companyId
+        };
+        await _mediator.Send(deleteCompanyCommand);
+        GetCompanyQuery getCompanyAfterDeleteQuery = new()
+        {
+            CompanyId = companyId
+        };
+        GetCompanyResult getCompanyAfterDeleteResult = await _mediator.Send(getCompanyAfterDeleteQuery);
         getCompanyResult.Company.Should().NotBeNull();
         getCompanyResult.Company?.Name.Should().Be(createCompanyCommand.Name);
         getCompanyAfterDeleteResult.Company.Should().BeNull();

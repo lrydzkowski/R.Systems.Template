@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace R.Systems.Template.Core.Common.Extensions;
 
@@ -12,7 +12,6 @@ public static class StringExtensions
         }
 
         ArgumentNullException.ThrowIfNull(input);
-
         StringBuilder result = new(input.Length * times);
         for (int i = 0; i < times; i++)
         {

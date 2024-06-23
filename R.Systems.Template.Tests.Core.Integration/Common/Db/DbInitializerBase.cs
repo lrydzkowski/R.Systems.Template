@@ -1,4 +1,4 @@
-﻿using Npgsql;
+using Npgsql;
 
 namespace R.Systems.Template.Tests.Core.Integration.Common.Db;
 

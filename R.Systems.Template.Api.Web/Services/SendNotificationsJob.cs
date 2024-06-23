@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using Quartz;
 using R.Systems.Template.Api.Web.Hubs;
 using R.Systems.Template.Infrastructure.Notifications.Models;
@@ -8,10 +8,10 @@ namespace R.Systems.Template.Api.Web.Services;
 
 public class SendNotificationsJob : IJob
 {
+    private readonly IHubContext<NotificationsHub, INotificationsClient> _hubContext;
     private readonly ILogger<SendNotificationsJob> _logger;
     private readonly INotificationsRepository _notificationsRepository;
     private readonly IWebSocketsHandler _webSocketsHandler;
-    private readonly IHubContext<NotificationsHub, INotificationsClient> _hubContext;
 
     public SendNotificationsJob(
         ILogger<SendNotificationsJob> logger,
@@ -29,10 +29,11 @@ public class SendNotificationsJob : IJob
     public async Task Execute(IJobExecutionContext context)
     {
         _logger.LogInformation("It works - great :)");
-
         List<string> notifications = _notificationsRepository.GetNotifications();
-        NotificationsMessage message = new() { Notifications = notifications };
-
+        NotificationsMessage message = new()
+        {
+            Notifications = notifications
+        };
         await SendMessageByWebSocketAsync(message);
         await SendMessageBySignalRAsync(message);
     }

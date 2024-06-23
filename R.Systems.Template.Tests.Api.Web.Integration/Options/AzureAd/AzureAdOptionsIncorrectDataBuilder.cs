@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Infrastructure.Azure.Options;
+using R.Systems.Template.Infrastructure.Azure.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAd;
@@ -11,106 +11,66 @@ internal class AzureAdOptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Azu
         {
             BuildParameters(
                 1,
-                new AzureAdOptionsData
-                {
-                    Instance = ""
-                },
+                new AzureAdOptionsData { Instance = "" },
                 BuildExpectedExceptionMessage(
                     new List<string>
-                    {
-                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Instance))
-                    }
+                        { BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Instance)) }
                 )
             ),
             BuildParameters(
                 2,
-                new AzureAdOptionsData
-                {
-                    Instance = "  "
-                },
+                new AzureAdOptionsData { Instance = "  " },
                 BuildExpectedExceptionMessage(
                     new List<string>
-                    {
-                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Instance))
-                    }
+                        { BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Instance)) }
                 )
             ),
             BuildParameters(
                 3,
-                new AzureAdOptionsData
-                {
-                    ClientId = ""
-                },
+                new AzureAdOptionsData { ClientId = "" },
                 BuildExpectedExceptionMessage(
                     new List<string>
-                    {
-                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.ClientId))
-                    }
+                        { BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.ClientId)) }
                 )
             ),
             BuildParameters(
                 4,
-                new AzureAdOptionsData
-                {
-                    ClientId = "  "
-                },
+                new AzureAdOptionsData { ClientId = "  " },
                 BuildExpectedExceptionMessage(
                     new List<string>
-                    {
-                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.ClientId))
-                    }
+                        { BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.ClientId)) }
                 )
             ),
             BuildParameters(
                 5,
-                new AzureAdOptionsData
-                {
-                    TenantId = ""
-                },
+                new AzureAdOptionsData { TenantId = "" },
                 BuildExpectedExceptionMessage(
                     new List<string>
-                    {
-                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.TenantId))
-                    }
+                        { BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.TenantId)) }
                 )
             ),
             BuildParameters(
                 6,
-                new AzureAdOptionsData
-                {
-                    TenantId = "  "
-                },
+                new AzureAdOptionsData { TenantId = "  " },
                 BuildExpectedExceptionMessage(
                     new List<string>
-                    {
-                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.TenantId))
-                    }
+                        { BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.TenantId)) }
                 )
             ),
             BuildParameters(
                 7,
-                new AzureAdOptionsData
-                {
-                    Audience = ""
-                },
+                new AzureAdOptionsData { Audience = "" },
                 BuildExpectedExceptionMessage(
                     new List<string>
-                    {
-                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Audience))
-                    }
+                        { BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Audience)) }
                 )
             ),
             BuildParameters(
                 8,
-                new AzureAdOptionsData
-                {
-                    Audience = "  "
-                },
+                new AzureAdOptionsData { Audience = "  " },
                 BuildExpectedExceptionMessage(
                     new List<string>
-                    {
-                        BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Audience))
-                    }
+                        { BuildNotEmptyErrorMessage(AzureAdOptions.Position, nameof(AzureAdOptions.Audience)) }
                 )
             )
         };

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using MediatR;
 
 namespace R.Systems.Template.Core.App.Queries.GetAppInfo;
@@ -11,7 +11,6 @@ public class GetAppInfoQuery : IRequest<GetAppInfoResult>
 public class GetAppInfoResult
 {
     public string AppName { get; init; } = "";
-
     public string AppVersion { get; init; } = "";
 }
 
@@ -24,7 +23,6 @@ public class GetAppInfoHandler : IRequestHandler<GetAppInfoQuery, GetAppInfoResu
             AppName = GetAppName(request.AppAssembly),
             AppVersion = GetAppVersion(request.AppAssembly)
         };
-
         return Task.FromResult(result);
     }
 
@@ -35,10 +33,6 @@ public class GetAppInfoHandler : IRequestHandler<GetAppInfoQuery, GetAppInfoResu
 
     private string GetAppVersion(Assembly appAssembly)
     {
-        return appAssembly
-                   .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-                   ?
-                   .InformationalVersion
-               ?? "";
+        return appAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "";
     }
 }

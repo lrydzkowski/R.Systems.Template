@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Infrastructure.Db.Common.Options;
+using R.Systems.Template.Infrastructure.Db.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Options.ConnectionStrings;
@@ -11,10 +11,7 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
         {
             BuildParameters(
                 1,
-                new ConnectionStringsOptionsData
-                {
-                    AppPostgresDb = ""
-                },
+                new ConnectionStringsOptionsData { AppPostgresDb = "" },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
@@ -27,10 +24,7 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
             ),
             BuildParameters(
                 2,
-                new ConnectionStringsOptionsData
-                {
-                    AppPostgresDb = " "
-                },
+                new ConnectionStringsOptionsData { AppPostgresDb = " " },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
@@ -43,10 +37,7 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
             ),
             BuildParameters(
                 3,
-                new ConnectionStringsOptionsData
-                {
-                    AppPostgresDb = null
-                },
+                new ConnectionStringsOptionsData { AppPostgresDb = null },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {

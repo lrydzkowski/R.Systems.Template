@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;

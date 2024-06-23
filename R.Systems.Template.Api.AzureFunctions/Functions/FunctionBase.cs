@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using R.Systems.Template.Api.AzureFunctions.Services;
 
@@ -6,7 +6,12 @@ namespace R.Systems.Template.Api.AzureFunctions.Functions;
 
 public class FunctionBase<T>
 {
-    public FunctionBase(
+    protected readonly IHttpResponseBuilder HttpResponseBuilder;
+    protected readonly ILogger<T> Logger;
+    protected readonly ISender Mediator;
+    protected readonly IRequestPayloadSerializer RequestPayloadSerializer;
+
+    protected FunctionBase(
         ILogger<T> logger,
         IRequestPayloadSerializer requestPayloadSerializer,
         IHttpResponseBuilder httpResponseBuilder,
@@ -18,9 +23,4 @@ public class FunctionBase<T>
         HttpResponseBuilder = httpResponseBuilder;
         Mediator = mediator;
     }
-
-    protected ILogger<T> Logger { get; }
-    protected IRequestPayloadSerializer RequestPayloadSerializer { get; }
-    protected IHttpResponseBuilder HttpResponseBuilder { get; }
-    protected ISender Mediator { get; }
 }

@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
-using FluentAssertions.Equivalency;
 using System.Text.Json;
+using FluentAssertions;
+using FluentAssertions.Equivalency;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Assertion;
 
@@ -20,7 +20,6 @@ internal class JsonElementEquivalencyStep : IEquivalencyStep
         subject.ToString()
             .Should()
             .Be(comparands.Expectation.ToString(), context.Reason.FormattedMessage, context.Reason.Arguments);
-
         return EquivalencyResult.AssertionCompleted;
     }
 }

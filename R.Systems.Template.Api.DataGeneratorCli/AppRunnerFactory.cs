@@ -1,4 +1,4 @@
-﻿using CommandDotNet;
+using CommandDotNet;
 using CommandDotNet.IoC.MicrosoftDependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,28 +9,23 @@ namespace R.Systems.Template.Api.DataGeneratorCli;
 
 public class AppRunnerFactory
 {
+    private IServiceProvider? _serviceProvider;
     protected List<Action<IConfigurationBuilder>> AddConfigurationMethods { get; } = new();
-
     protected List<Action<IServiceCollection>> ConfigureServicesMethods { get; } = new();
-
-    protected IServiceProvider? ServiceProvider { get; private set; }
 
     public AppRunnerFactory WithConfigureServices(Action<IServiceCollection> configureServices)
     {
         ConfigureServicesMethods.Add(configureServices);
-
         return this;
     }
 
     public virtual async Task<AppRunner> CreateAsync()
     {
         IConfigurationRoot configuration = BuildConfiguration();
-        ServiceProvider = BuildServiceProvider(configuration);
-        await RunStartupMethodsSequentially(ServiceProvider);
-
-        AppRunner appRunner = new(rootCommandType: typeof(CommandsHandler));
-
-        return appRunner.UseDefaultMiddleware().UseMicrosoftDependencyInjection(ServiceProvider);
+        _serviceProvider = BuildServiceProvider(configuration);
+        await RunStartupMethodsSequentially(_serviceProvider);
+        AppRunner appRunner = new(typeof(CommandsHandler));
+        return appRunner.UseDefaultMiddleware().UseMicrosoftDependencyInjection(_serviceProvider);
     }
 
     private IConfigurationRoot BuildConfiguration()
@@ -38,7 +33,7 @@ public class AppRunnerFactory
         string environmentName = Environment.GetEnvironmentVariable("APP_ENVIRONMENT") ?? "Production";
         IConfigurationBuilder confBuilder = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false)
+            .AddJsonFile("appsettings.json", false)
             .AddEnvironmentVariables();
         if (environmentName == "Development")
         {

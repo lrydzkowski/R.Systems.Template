@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
 
@@ -18,7 +18,7 @@ internal class CompanyEntityTypeConfiguration : IEntityTypeConfiguration<Company
 
     private void SetTableName(EntityTypeBuilder<CompanyEntity> builder)
     {
-        builder.ToTable(name: "company");
+        builder.ToTable("company");
     }
 
     private void SetPrimaryKey(EntityTypeBuilder<CompanyEntity> builder)
@@ -28,34 +28,14 @@ internal class CompanyEntityTypeConfiguration : IEntityTypeConfiguration<Company
 
     private void ConfigureColumns(EntityTypeBuilder<CompanyEntity> builder)
     {
-        builder.Property(company => company.Id)
-            .HasColumnName("id")
-            .ValueGeneratedOnAdd()
-            .IsRequired();
-
-        builder.Property(company => company.Name)
-            .HasColumnName("name")
-            .IsRequired()
-            .HasMaxLength(200);
-
-        builder.HasIndex(company => company.Name)
-            .IsUnique();
+        builder.Property(company => company.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property(company => company.Name).HasColumnName("name").IsRequired().HasMaxLength(200);
+        builder.HasIndex(company => company.Name).IsUnique();
     }
 
     private void InitData(EntityTypeBuilder<CompanyEntity> builder)
     {
-        builder.HasData(
-            new CompanyEntity
-            {
-                Id = 1,
-                Name = "Meta"
-            },
-            new CompanyEntity
-            {
-                Id = 2,
-                Name = "Google"
-            }
-        );
-        builder.Property(user => user.Id).HasIdentityOptions(startValue: FirstAvailableId);
+        builder.HasData(new CompanyEntity { Id = 1, Name = "Meta" }, new CompanyEntity { Id = 2, Name = "Google" });
+        builder.Property(user => user.Id).HasIdentityOptions(FirstAvailableId);
     }
 }

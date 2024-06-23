@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Authentication;
 

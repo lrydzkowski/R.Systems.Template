@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using System.Text.Json;
 using FluentValidation;
 using R.Systems.Template.Core.Common.Errors;
@@ -60,14 +60,12 @@ public class ExceptionMiddleware
     private void HandleOperationCancelledException(HttpContext context, OperationCanceledException exception)
     {
         _logger.LogWarning(exception, "Task cancelled exception");
-
         context.Response.StatusCode = StatusCodes.Status499ClientClosedRequest;
     }
 
     private void HandleException(HttpContext context, Exception exception)
     {
         _logger.LogError(exception, "Something went wrong");
-
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using FluentAssertions;
 using FluentValidation.Results;
 using R.Systems.Template.Api.Web.Models;
@@ -18,14 +18,14 @@ public class UpdateCompanyTests
 {
     private readonly string _endpointUrlPath = "/companies";
 
+    private readonly ITestOutputHelper _output;
+    private readonly RestClient _restClient;
+
     public UpdateCompanyTests(ITestOutputHelper output, WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
-        Output = output;
-        RestClient = webApiFactory.WithoutAuthentication().CreateRestClient();
+        _output = output;
+        _restClient = webApiFactory.WithoutAuthentication().CreateRestClient();
     }
-
-    private ITestOutputHelper Output { get; }
-    private RestClient RestClient { get; }
 
     [Theory]
     [MemberData(
@@ -40,14 +40,11 @@ public class UpdateCompanyTests
         IEnumerable<ValidationFailure> validationFailures
     )
     {
-        Output.WriteLine("Parameters set with id = {0}", id);
-
+        _output.WriteLine("Parameters set with id = {0}", id);
         string url = $"{_endpointUrlPath}/{companyId}";
         RestRequest restRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
-
         RestResponse<List<ValidationFailure>> response =
-            await RestClient.ExecuteAsync<List<ValidationFailure>>(restRequest);
-
+            await _restClient.ExecuteAsync<List<ValidationFailure>>(restRequest);
         response.StatusCode.Should().Be(expectedHttpStatus);
         response.Data.Should().NotBeNull();
         response.Data.Should().BeEquivalentTo(validationFailures, options => options.WithStrictOrdering());
@@ -61,23 +58,16 @@ public class UpdateCompanyTests
         UpdateCompanyRequest request
     )
     {
-        Output.WriteLine("Parameters set with id = {0}", id);
-
+        _output.WriteLine("Parameters set with id = {0}", id);
         string url = $"{_endpointUrlPath}/{companyId}";
         RestRequest updateRequest = new RestRequest(url, Method.Put).AddJsonBody(request);
-
-        RestResponse<Company> updateResponse = await RestClient.ExecuteAsync<Company>(updateRequest);
-
+        RestResponse<Company> updateResponse = await _restClient.ExecuteAsync<Company>(updateRequest);
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         updateResponse.Data.Should().NotBeNull();
         updateResponse.Data.Should().BeEquivalentTo(new Company { CompanyId = companyId, Name = request.Name! });
-
         Company company = updateResponse.Data!;
-
         RestRequest getRequest = new(url);
-
-        RestResponse<Company> getResponse = await RestClient.ExecuteAsync<Company>(getRequest);
-
+        RestResponse<Company> getResponse = await _restClient.ExecuteAsync<Company>(getRequest);
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         getResponse.Data.Should().NotBeNull();
         getResponse.Data.Should().BeEquivalentTo(company);

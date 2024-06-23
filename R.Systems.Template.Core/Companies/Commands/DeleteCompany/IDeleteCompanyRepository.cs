@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Core.Companies.Commands.DeleteCompany;
+namespace R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 
 public interface IDeleteCompanyRepository
 {

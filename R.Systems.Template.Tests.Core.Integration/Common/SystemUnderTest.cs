@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using R.Systems.Template.Core;
@@ -13,10 +13,8 @@ namespace R.Systems.Template.Tests.Core.Integration.Common;
 
 public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializer : DbInitializerBase, new()
 {
-    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-        .WithImage("postgres:15-alpine")
-        .WithCleanUp(true)
-        .Build();
+    private readonly PostgreSqlContainer _dbContainer =
+        new PostgreSqlBuilder().WithImage("postgres:15-alpine").WithCleanUp(true).Build();
 
     public async Task InitializeAsync()
     {
@@ -35,13 +33,11 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
     )
     {
         IConfiguration configuration = BuildConfiguration(setConfiguration);
-
         IServiceCollection services = new ServiceCollection();
         services.ConfigureCoreServices(configuration);
         services.ConfigureInfrastructureDbServices(configuration);
         services.ConfigureInfrastructureAzureServices(configuration);
         configureServices?.Invoke(services);
-
         return services.BuildServiceProvider();
     }
 
@@ -51,7 +47,6 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
         setConfiguration?.Invoke(configurationBuilder);
         SetDatabaseConnectionString(configurationBuilder);
         SetIsSystemUnderTestOption(configurationBuilder);
-
         return configurationBuilder.Build();
     }
 
@@ -69,10 +64,7 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
     private void SetIsSystemUnderTestOption(IConfigurationBuilder configBuilder)
     {
         configBuilder.AddInMemoryCollection(
-            new Dictionary<string, string?>
-            {
-                [EnvHandler.ConfigKey] = EnvHandler.ConfigValue
-            }
+            new Dictionary<string, string?> { [EnvHandler.ConfigKey] = EnvHandler.ConfigValue }
         );
     }
 

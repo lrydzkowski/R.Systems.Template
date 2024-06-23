@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
 
@@ -11,7 +11,6 @@ internal class AppDbContext : DbContext
     }
 
     public DbSet<CompanyEntity> Companies => Set<CompanyEntity>();
-
     public DbSet<EmployeeEntity> Employees => Set<EmployeeEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

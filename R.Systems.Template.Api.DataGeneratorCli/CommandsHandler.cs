@@ -1,4 +1,4 @@
-﻿using CommandDotNet;
+using CommandDotNet;
 using Microsoft.Extensions.Logging;
 using R.Systems.Template.Api.DataGeneratorCli.Commands;
 
@@ -6,12 +6,12 @@ namespace R.Systems.Template.Api.DataGeneratorCli;
 
 internal class CommandsHandler
 {
+    private readonly ILogger<CommandsHandler> _logger;
+
     public CommandsHandler(ILogger<CommandsHandler> logger)
     {
-        Logger = logger;
+        _logger = logger;
     }
-
-    private ILogger<CommandsHandler> Logger { get; }
 
     [Subcommand] public GenerateCommand? GenerateCommand { get; set; }
 
@@ -26,7 +26,7 @@ internal class CommandsHandler
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "An unexpected error has occurred.");
+            _logger.LogError(ex, "An unexpected error has occurred.");
         }
 
         return result;

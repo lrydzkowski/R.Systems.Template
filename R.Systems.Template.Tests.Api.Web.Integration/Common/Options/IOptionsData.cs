@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
+namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 
 internal interface IOptionsData
 {

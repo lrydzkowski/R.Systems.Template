@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
+namespace R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
 
 public interface IDeleteEmployeeRepository
 {

@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 
 namespace R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 

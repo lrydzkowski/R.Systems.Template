@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 
 namespace R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
 

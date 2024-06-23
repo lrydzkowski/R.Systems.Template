@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Api.Web;
+using R.Systems.Template.Api.Web;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.App.Queries.GetAppInfo;
 

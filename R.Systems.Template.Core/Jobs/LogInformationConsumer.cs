@@ -1,4 +1,4 @@
-﻿using MassTransit;
+using MassTransit;
 using Microsoft.Extensions.Logging;
 
 namespace R.Systems.Template.Core.Jobs;
@@ -16,7 +16,6 @@ public class LogInformationConsumer : IConsumer<LogInformation>
     {
         Thread.Sleep(TimeSpan.FromMinutes(1));
         _logger.LogInformation("It works :)");
-
         return Task.CompletedTask;
     }
 }

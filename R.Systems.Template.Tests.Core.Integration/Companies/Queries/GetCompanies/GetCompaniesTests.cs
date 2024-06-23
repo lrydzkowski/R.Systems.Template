@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+using System.Linq.Dynamic.Core;
+using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Core.Common.Domain;
@@ -7,7 +8,6 @@ using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Tests.Core.Integration.Common;
 using R.Systems.Template.Tests.Core.Integration.Common.Db;
 using R.Systems.Template.Tests.Core.Integration.Common.TestsCollections;
-using System.Linq.Dynamic.Core;
 
 namespace R.Systems.Template.Tests.Core.Integration.Companies.Queries.GetCompanies;
 
@@ -15,14 +15,12 @@ namespace R.Systems.Template.Tests.Core.Integration.Companies.Queries.GetCompani
 [Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class GetCompaniesTests
 {
+    private readonly ISender _mediator;
+
     public GetCompaniesTests(SystemUnderTest<SampleDataDbInitializer> systemUnderTest)
     {
-        SystemUnderTest = systemUnderTest;
-        Mediator = SystemUnderTest.BuildServiceProvider().GetRequiredService<ISender>();
+        _mediator = systemUnderTest.BuildServiceProvider().GetRequiredService<ISender>();
     }
-
-    private SystemUnderTest<SampleDataDbInitializer> SystemUnderTest { get; }
-    private ISender Mediator { get; }
 
     [Fact]
     public async Task GetCompanies_ShouldReturnCompanies_WhenCompaniesExist()
@@ -35,7 +33,6 @@ public class GetCompaniesTests
                 Count = CompaniesSampleData.Companies.Count
             }
         };
-
         GetCompaniesQuery query = new()
         {
             ListParameters = new ListParameters
@@ -56,8 +53,7 @@ public class GetCompaniesTests
                 }
             }
         };
-        GetCompaniesResult result = await Mediator.Send(query);
-
+        GetCompaniesResult result = await _mediator.Send(query);
         result.Should().BeEquivalentTo(expectedResult, options => options.WithStrictOrderingFor(x => x.Companies.Data));
     }
 
@@ -74,14 +70,10 @@ public class GetCompaniesTests
         {
             Companies = new ListInfo<Company>
             {
-                Data = expectedCompanies
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList(),
+                Data = expectedCompanies.Skip((page - 1) * pageSize).Take(pageSize).ToList(),
                 Count = expectedCompanies.Count()
             }
         };
-
         GetCompaniesQuery query = new()
         {
             ListParameters = new ListParameters
@@ -102,8 +94,7 @@ public class GetCompaniesTests
                 }
             }
         };
-        GetCompaniesResult result = await Mediator.Send(query);
-
+        GetCompaniesResult result = await _mediator.Send(query);
         result.Should().BeEquivalentTo(expectedResult, options => options.WithStrictOrderingFor(x => x.Companies.Data));
     }
 
@@ -125,7 +116,6 @@ public class GetCompaniesTests
                 Count = expectedCompanies.Count()
             }
         };
-
         GetCompaniesQuery query = new()
         {
             ListParameters = new ListParameters
@@ -146,8 +136,7 @@ public class GetCompaniesTests
                 }
             }
         };
-        GetCompaniesResult result = await Mediator.Send(query);
-
+        GetCompaniesResult result = await _mediator.Send(query);
         result.Should().BeEquivalentTo(expectedResult, options => options.WithStrictOrderingFor(x => x.Companies.Data));
     }
 
@@ -169,7 +158,6 @@ public class GetCompaniesTests
                 Count = expectedCompanies.Count()
             }
         };
-
         GetCompaniesQuery query = new()
         {
             ListParameters = new ListParameters
@@ -190,8 +178,7 @@ public class GetCompaniesTests
                 }
             }
         };
-        GetCompaniesResult result = await Mediator.Send(query);
-
+        GetCompaniesResult result = await _mediator.Send(query);
         result.Should().BeEquivalentTo(expectedResult, options => options.WithStrictOrderingFor(x => x.Companies.Data));
     }
 
@@ -203,24 +190,20 @@ public class GetCompaniesTests
         string sortingFieldName = "name";
         SortingOrder sortingOrder = SortingOrder.Ascending;
         string searchQuery = "o";
-
-        IQueryable<Company> expectedCompanies = CompaniesSampleData.Companies
-            .OrderBy(x => x.Name)
+        IQueryable<Company> expectedCompanies = CompaniesSampleData.Companies.OrderBy(x => x.Name)
             .Where(x => x.Name.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase))
             .AsQueryable();
         GetCompaniesResult expectedResult = new()
         {
             Companies = new ListInfo<Company>
             {
-                Data = expectedCompanies
-                    // ReSharper disable once UselessBinaryOperation
+                Data = expectedCompanies // ReSharper disable once UselessBinaryOperation
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .ToList(),
                 Count = expectedCompanies.Count()
             }
         };
-
         GetCompaniesQuery query = new()
         {
             ListParameters = new ListParameters
@@ -241,8 +224,7 @@ public class GetCompaniesTests
                 }
             }
         };
-        GetCompaniesResult result = await Mediator.Send(query);
-
+        GetCompaniesResult result = await _mediator.Send(query);
         result.Should().BeEquivalentTo(expectedResult, options => options.WithStrictOrderingFor(x => x.Companies.Data));
     }
 }

@@ -1,4 +1,4 @@
-﻿using CommandDotNet;
+using CommandDotNet;
 
 namespace R.Systems.Template.Api.DataGeneratorCli;
 

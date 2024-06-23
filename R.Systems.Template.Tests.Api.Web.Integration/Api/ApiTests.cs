@@ -1,10 +1,10 @@
-﻿using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
+using System.Net;
+using FluentAssertions;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db;
+using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 using RestSharp;
-using FluentAssertions;
-using System.Net;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Api;
 
@@ -12,21 +12,19 @@ namespace R.Systems.Template.Tests.Api.Web.Integration.Api;
 [Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class ApiTests
 {
+    private readonly RestClient _restClient;
+
     public ApiTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
-        RestClient = webApiFactory.CreateRestClient();
+        _restClient = webApiFactory.CreateRestClient();
     }
-
-    private RestClient RestClient { get; }
 
     [Theory]
     [MemberData(nameof(ApiDataBuilder.Build), MemberType = typeof(ApiDataBuilder))]
     public async Task SendRequest_ShouldReturn401_WhenNoAccessToken(string endpointUrlPath, Method httpMethod)
     {
         RestRequest restRequest = new(endpointUrlPath, httpMethod);
-
-        RestResponse response = await RestClient.ExecuteAsync(restRequest);
-
+        RestResponse response = await _restClient.ExecuteAsync(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 }

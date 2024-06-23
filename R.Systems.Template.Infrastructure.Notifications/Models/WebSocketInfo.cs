@@ -1,4 +1,4 @@
-﻿using System.Net.WebSockets;
+using System.Net.WebSockets;
 
 namespace R.Systems.Template.Infrastructure.Notifications.Models;
 

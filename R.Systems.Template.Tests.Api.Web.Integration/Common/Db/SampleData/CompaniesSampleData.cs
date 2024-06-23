@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
@@ -57,28 +57,21 @@ internal static class CompaniesSampleData
         }
     };
 
+    public static List<Company> Companies
+    {
+        get
+        {
+            return Data.Where(x => x.Value.Id != null)
+                .Select(x => new Company { CompanyId = (int)x.Value.Id!, Name = x.Value.Name })
+                .ToList();
+        }
+    }
+
     public static CompanyEntity Clone(this CompanyEntity companyEntity)
     {
         return new CompanyEntity
         {
             Name = companyEntity.Name
         };
-    }
-
-    public static List<Company> Companies
-    {
-        get
-        {
-            return Data
-                .Where(x => x.Value.Id != null)
-                .Select(
-                    x => new Company
-                    {
-                        CompanyId = (int)x.Value.Id!,
-                        Name = x.Value.Name
-                    }
-                )
-                .ToList();
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using FluentValidation.Results;
+using FluentValidation.Results;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Builders;
 
@@ -11,7 +11,6 @@ internal static class ValidationFailureBuilder
     )
     {
         fieldNameInMsg ??= fieldName;
-
         return new ValidationFailure
         {
             PropertyName = $"{fieldName}",
@@ -29,7 +28,6 @@ internal static class ValidationFailureBuilder
     )
     {
         fieldNameInMsg ??= fieldName;
-
         return new ValidationFailure
         {
             PropertyName = $"{fieldName}",
@@ -49,7 +47,6 @@ internal static class ValidationFailureBuilder
     )
     {
         fieldNameInMsg ??= fieldName;
-
         return new ValidationFailure
         {
             PropertyName = $"{fieldName}",

@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Lists;
@@ -15,21 +15,19 @@ namespace R.Systems.Template.Tests.Api.Web.Integration.Employees.Queries.GetEmpl
 [Trait(TestConstants.Category, QueryWithoutDataTestsCollection.CollectionName)]
 public class GetEmployeesInCompanyWithoutDataTests
 {
+    private readonly RestClient _restClient;
+
     public GetEmployeesInCompanyWithoutDataTests(WebApiFactoryWithDb<NoDataDbInitializer> webApiFactory)
     {
-        RestClient = webApiFactory.WithoutAuthentication().CreateRestClient();
+        _restClient = webApiFactory.WithoutAuthentication().CreateRestClient();
     }
-
-    private RestClient RestClient { get; }
 
     [Fact]
     public async Task GetEmployeesInCompany_ShouldReturnEmptyList_WhenEmployeesNotExist()
     {
         int companyId = IdGenerator.GetCompanyId(1);
         RestRequest restRequest = new($"/companies/{companyId}/employees");
-
-        RestResponse<ListInfo<Employee>> response = await RestClient.ExecuteAsync<ListInfo<Employee>>(restRequest);
-
+        RestResponse<ListInfo<Employee>> response = await _restClient.ExecuteAsync<ListInfo<Employee>>(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
         response.Data.Should().BeEquivalentTo(new ListInfo<Employee> { Count = 0, Data = new List<Employee>() });

@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Api.AzureFunctions.Models;
+using R.Systems.Template.Api.AzureFunctions.Models;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using Riok.Mapperly.Abstractions;

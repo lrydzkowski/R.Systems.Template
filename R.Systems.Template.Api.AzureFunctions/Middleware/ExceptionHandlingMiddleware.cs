@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using FluentValidation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -11,8 +11,8 @@ namespace R.Systems.Template.Api.AzureFunctions.Middleware;
 
 public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
 {
-    private readonly ILogger<Program> _logger;
     private readonly CustomJsonSerializer _jsonSerializer;
+    private readonly ILogger<Program> _logger;
 
     public ExceptionHandlingMiddleware(ILogger<Program> logger, CustomJsonSerializer jsonSerializer)
     {
@@ -53,7 +53,6 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
             )
             .AsEnumerable();
         string errorsSerialized = _jsonSerializer.Serialize(errors);
-
         await CreateResponse(context, HttpStatusCode.UnprocessableEntity, errorsSerialized);
     }
 
@@ -65,7 +64,6 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
     private async Task CreateResponse(FunctionContext context, HttpStatusCode statusCode, string? response = null)
     {
         HttpRequestData? httpRequestData = await context.GetHttpRequestDataAsync();
-
         if (httpRequestData != null)
         {
             HttpResponseData newHttpResponse = httpRequestData.CreateResponse(statusCode);
@@ -76,7 +74,6 @@ public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
             }
 
             InvocationResult invocationResult = context.GetInvocationResult();
-
             OutputBindingData<HttpResponseData>? httpOutputBindingFromMultipleOutputBindings =
                 GetHttpOutputBindingFromMultipleOutputBinding(context);
             if (httpOutputBindingFromMultipleOutputBindings is not null)

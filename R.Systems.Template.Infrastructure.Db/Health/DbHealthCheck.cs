@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace R.Systems.Template.Infrastructure.Db.Health;
@@ -23,7 +23,6 @@ internal class DbHealthCheck : IHealthCheck
                 .OrderBy(id => id)
                 .Take(10)
                 .ToListAsync(cancellationToken);
-
             return HealthCheckResult.Healthy();
         }
         catch (Exception ex)

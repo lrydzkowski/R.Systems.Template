@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
 using Riok.Mapperly.Abstractions;

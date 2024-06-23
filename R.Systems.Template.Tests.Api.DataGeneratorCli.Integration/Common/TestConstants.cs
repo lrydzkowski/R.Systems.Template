@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.Common;
+namespace R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.Common;
 
 internal class TestConstants
 {

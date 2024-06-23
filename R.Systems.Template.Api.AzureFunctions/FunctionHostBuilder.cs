@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,15 +15,11 @@ public class FunctionHostBuilder
     public FunctionHostBuilder()
     {
         _hostBuilder = new HostBuilder()
-            .ConfigureFunctionsWorkerDefaults(
-                builder => builder.UseMiddleware<ExceptionHandlingMiddleware>()
-            )
+            .ConfigureFunctionsWorkerDefaults(builder => builder.UseMiddleware<ExceptionHandlingMiddleware>())
             .ConfigureAppConfiguration(
                 builder =>
                 {
-                    builder.AddJsonFile("appsettings.json")
-                        .AddUserSecrets<Program>()
-                        .AddEnvironmentVariables();
+                    builder.AddJsonFile("appsettings.json").AddUserSecrets<Program>().AddEnvironmentVariables();
                 }
             )
             .ConfigureOpenApi()
@@ -45,14 +41,12 @@ public class FunctionHostBuilder
     public FunctionHostBuilder WithServices(Action<HostBuilderContext, IServiceCollection> configureDelegate)
     {
         _hostBuilder.ConfigureServices(configureDelegate);
-
         return this;
     }
 
     public FunctionHostBuilder WithAppConfiguration(Action<IConfigurationBuilder> configureDelegate)
     {
         _hostBuilder.ConfigureAppConfiguration(configureDelegate);
-
         return this;
     }
 }

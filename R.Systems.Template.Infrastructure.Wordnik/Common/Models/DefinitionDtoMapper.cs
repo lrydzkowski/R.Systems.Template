@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Core.Words.Queries.GetDefinitions;
+using R.Systems.Template.Core.Words.Queries.GetDefinitions;
 using Riok.Mapperly.Abstractions;
 
 namespace R.Systems.Template.Infrastructure.Wordnik.Common.Models;

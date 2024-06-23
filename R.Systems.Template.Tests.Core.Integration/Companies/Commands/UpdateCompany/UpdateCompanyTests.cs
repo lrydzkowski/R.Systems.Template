@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
@@ -16,16 +16,15 @@ namespace R.Systems.Template.Tests.Core.Integration.Companies.Commands.UpdateCom
 [Trait(TestConstants.Category, CommandTestsCollection.CollectionName)]
 public class UpdateCompanyTests
 {
+    private readonly ISender _mediator;
+
+    private readonly ITestOutputHelper _output;
+
     public UpdateCompanyTests(ITestOutputHelper output, SystemUnderTest<SampleDataDbInitializer> systemUnderTest)
     {
-        Output = output;
-        SystemUnderTest = systemUnderTest;
-        Mediator = SystemUnderTest.BuildServiceProvider().GetRequiredService<ISender>();
+        _output = output;
+        _mediator = systemUnderTest.BuildServiceProvider().GetRequiredService<ISender>();
     }
-
-    private ITestOutputHelper Output { get; }
-    private SystemUnderTest<SampleDataDbInitializer> SystemUnderTest { get; }
-    private ISender Mediator { get; }
 
     [Theory]
     [MemberData(
@@ -38,10 +37,8 @@ public class UpdateCompanyTests
         IEnumerable<ValidationFailure> validationFailures
     )
     {
-        Output.WriteLine("Parameters set with id = {0}", id);
-
-        ValidationException exception = await Assert.ThrowsAsync<ValidationException>(() => Mediator.Send(command));
-
+        _output.WriteLine("Parameters set with id = {0}", id);
+        ValidationException exception = await Assert.ThrowsAsync<ValidationException>(() => _mediator.Send(command));
         exception.Errors.Should()
             .BeEquivalentTo(
                 validationFailures,
@@ -55,13 +52,9 @@ public class UpdateCompanyTests
 
     [Theory]
     [MemberData(nameof(UpdateCompanyCorrectDataBuilder.Build), MemberType = typeof(UpdateCompanyCorrectDataBuilder))]
-    public async Task UpdateCompany_ShouldUpdateCompany_WhenDataIsCorrect(
-        int id,
-        UpdateCompanyCommand command
-    )
+    public async Task UpdateCompany_ShouldUpdateCompany_WhenDataIsCorrect(int id, UpdateCompanyCommand command)
     {
-        Output.WriteLine("Parameters set with id = {0}", id);
-
+        _output.WriteLine("Parameters set with id = {0}", id);
         UpdateCompanyResult expectedResult = new()
         {
             Company = new Company
@@ -70,9 +63,7 @@ public class UpdateCompanyTests
                 Name = command.Name!
             }
         };
-
-        UpdateCompanyResult result = await Mediator.Send(command);
-
+        UpdateCompanyResult result = await _mediator.Send(command);
         result.Should().BeEquivalentTo(expectedResult);
     }
 }

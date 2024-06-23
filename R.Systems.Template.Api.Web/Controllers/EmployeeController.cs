@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,12 +25,12 @@ namespace R.Systems.Template.Api.Web.Controllers;
 [Route("employees")]
 public class EmployeeController : ApiControllerBase
 {
+    private readonly ISender _mediator;
+
     public EmployeeController(ISender mediator)
     {
-        Mediator = mediator;
+        _mediator = mediator;
     }
-
-    private ISender Mediator { get; }
 
     [SwaggerOperation(Summary = "Get the employee")]
     [SwaggerResponse(
@@ -54,8 +54,11 @@ public class EmployeeController : ApiControllerBase
     [HttpGet("{employeeId}", Name = "GetEmployee")]
     public async Task<IActionResult> GetEmployee(int employeeId, CancellationToken cancellationToken)
     {
-        GetEmployeeQuery query = new() { EmployeeId = employeeId };
-        GetEmployeeResult result = await Mediator.Send(query, cancellationToken);
+        GetEmployeeQuery query = new()
+        {
+            EmployeeId = employeeId
+        };
+        GetEmployeeResult result = await _mediator.Send(query, cancellationToken);
         if (result.Employee == null)
         {
             return NotFound(
@@ -91,7 +94,7 @@ public class EmployeeController : ApiControllerBase
     {
         ListMapper mapper = new();
         ListParameters listParameters = mapper.ToListParameter(listRequest);
-        GetEmployeesResult result = await Mediator.Send(
+        GetEmployeesResult result = await _mediator.Send(
             new GetEmployeesQuery { ListParameters = listParameters },
             cancellationToken
         );
@@ -120,7 +123,7 @@ public class EmployeeController : ApiControllerBase
     {
         EmployeeMapper mapper = new();
         CreateEmployeeCommand command = mapper.ToCreateCommand(request);
-        CreateEmployeeResult result = await Mediator.Send(command);
+        CreateEmployeeResult result = await _mediator.Send(command);
 
         return CreatedAtAction(
             nameof(GetEmployee),
@@ -151,7 +154,7 @@ public class EmployeeController : ApiControllerBase
         EmployeeMapper mapper = new();
         UpdateEmployeeCommand command = mapper.ToUpdateCommand(request);
         command.EmployeeId = employeeId;
-        UpdateEmployeeResult result = await Mediator.Send(command);
+        UpdateEmployeeResult result = await _mediator.Send(command);
 
         return Ok(result.UpdatedEmployee);
     }
@@ -164,8 +167,11 @@ public class EmployeeController : ApiControllerBase
     [HttpDelete("{employeeId}")]
     public async Task<IActionResult> DeleteEmployee(int employeeId)
     {
-        DeleteEmployeeCommand command = new() { EmployeeId = employeeId };
-        await Mediator.Send(command);
+        DeleteEmployeeCommand command = new()
+        {
+            EmployeeId = employeeId
+        };
+        await _mediator.Send(command);
 
         return NoContent();
     }

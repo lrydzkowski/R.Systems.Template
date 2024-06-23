@@ -1,4 +1,4 @@
-﻿using System.Linq.Dynamic.Core;
+using System.Linq.Dynamic.Core;
 using System.Net;
 using FluentAssertions;
 using R.Systems.Template.Core.Common.Domain;
@@ -18,12 +18,12 @@ public class GetCompaniesTests
 {
     private readonly string _endpointUrlPath = "/companies";
 
+    private readonly RestClient _restClient;
+
     public GetCompaniesTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
-        RestClient = webApiFactory.WithoutAuthentication().CreateRestClient();
+        _restClient = webApiFactory.WithoutAuthentication().CreateRestClient();
     }
-
-    private RestClient RestClient { get; }
 
     [Fact]
     public async Task GetCompanies_ShouldReturnCompanies_WhenCompaniesExist()
@@ -34,9 +34,7 @@ public class GetCompaniesTests
             Count = CompaniesSampleData.Companies.Count
         };
         RestRequest restRequest = new(_endpointUrlPath);
-
-        RestResponse<ListInfo<Company>> response = await RestClient.ExecuteAsync<ListInfo<Company>>(restRequest);
-
+        RestResponse<ListInfo<Company>> response = await _restClient.ExecuteAsync<ListInfo<Company>>(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
         response.Data.Should().BeEquivalentTo(expectedResponse);
@@ -53,25 +51,16 @@ public class GetCompaniesTests
         IQueryable<Company> expectedCompanies = CompaniesSampleData.Companies.OrderBy(x => x.CompanyId).AsQueryable();
         ListInfo<Company> expectedResponse = new()
         {
-            Data = expectedCompanies
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList(),
+            Data = expectedCompanies.Skip((page - 1) * pageSize).Take(pageSize).ToList(),
             Count = expectedCompanies.Count()
         };
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(page), page);
         restRequest.AddQueryParameter(nameof(pageSize), pageSize);
-
-        RestResponse<ListInfo<Company>> response = await RestClient.ExecuteAsync<ListInfo<Company>>(restRequest);
-
+        RestResponse<ListInfo<Company>> response = await _restClient.ExecuteAsync<ListInfo<Company>>(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
-        response.Data.Should()
-            .BeEquivalentTo(
-                expectedResponse,
-                options => options.WithStrictOrdering()
-            );
+        response.Data.Should().BeEquivalentTo(expectedResponse, options => options.WithStrictOrdering());
     }
 
     [Theory]
@@ -92,16 +81,10 @@ public class GetCompaniesTests
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(sortingFieldName), sortingFieldName);
         restRequest.AddQueryParameter(nameof(sortingOrder), sortingOrder);
-
-        RestResponse<ListInfo<Company>> response = await RestClient.ExecuteAsync<ListInfo<Company>>(restRequest);
-
+        RestResponse<ListInfo<Company>> response = await _restClient.ExecuteAsync<ListInfo<Company>>(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
-        response.Data.Should()
-            .BeEquivalentTo(
-                expectedResponse,
-                options => options.WithStrictOrdering()
-            );
+        response.Data.Should().BeEquivalentTo(expectedResponse, options => options.WithStrictOrdering());
     }
 
     [Theory]
@@ -121,16 +104,10 @@ public class GetCompaniesTests
         };
         RestRequest restRequest = new(_endpointUrlPath);
         restRequest.AddQueryParameter(nameof(searchQuery), searchQuery);
-
-        RestResponse<ListInfo<Company>> response = await RestClient.ExecuteAsync<ListInfo<Company>>(restRequest);
-
+        RestResponse<ListInfo<Company>> response = await _restClient.ExecuteAsync<ListInfo<Company>>(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
-        response.Data.Should()
-            .BeEquivalentTo(
-                expectedResponse,
-                options => options.WithStrictOrdering()
-            );
+        response.Data.Should().BeEquivalentTo(expectedResponse, options => options.WithStrictOrdering());
     }
 
     [Fact]
@@ -141,15 +118,12 @@ public class GetCompaniesTests
         string sortingFieldName = "name";
         string sortingOrder = "asc";
         string searchQuery = "o";
-
-        IQueryable<Company> expectedCompanies = CompaniesSampleData.Companies
-            .OrderBy(x => x.Name)
+        IQueryable<Company> expectedCompanies = CompaniesSampleData.Companies.OrderBy(x => x.Name)
             .Where(x => x.Name.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase))
             .AsQueryable();
         ListInfo<Company> expectedResponse = new()
         {
-            Data = expectedCompanies
-                // ReSharper disable once UselessBinaryOperation
+            Data = expectedCompanies // ReSharper disable once UselessBinaryOperation
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList(),
@@ -161,15 +135,9 @@ public class GetCompaniesTests
         restRequest.AddQueryParameter(nameof(sortingFieldName), sortingFieldName);
         restRequest.AddQueryParameter(nameof(sortingOrder), sortingOrder);
         restRequest.AddQueryParameter(nameof(searchQuery), searchQuery);
-
-        RestResponse<ListInfo<Company>> response = await RestClient.ExecuteAsync<ListInfo<Company>>(restRequest);
-
+        RestResponse<ListInfo<Company>> response = await _restClient.ExecuteAsync<ListInfo<Company>>(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
-        response.Data.Should()
-            .BeEquivalentTo(
-                expectedResponse,
-                options => options.WithStrictOrdering()
-            );
+        response.Data.Should().BeEquivalentTo(expectedResponse, options => options.WithStrictOrdering());
     }
 }

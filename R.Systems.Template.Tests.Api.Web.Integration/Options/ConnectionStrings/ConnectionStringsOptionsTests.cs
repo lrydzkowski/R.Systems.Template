@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
@@ -11,17 +11,17 @@ namespace R.Systems.Template.Tests.Api.Web.Integration.Options.ConnectionStrings
 [Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class ConnectionStringsOptionsTests
 {
+    private readonly ITestOutputHelper _output;
+    private readonly WebApiFactory _webApiFactory;
+
     public ConnectionStringsOptionsTests(
         ITestOutputHelper output,
         WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory
     )
     {
-        Output = output;
-        WebApiFactory = webApiFactory;
+        _output = output;
+        _webApiFactory = webApiFactory;
     }
-
-    private ITestOutputHelper Output { get; }
-    private WebApiFactory WebApiFactory { get; }
 
     [Theory]
     [MemberData(
@@ -34,12 +34,9 @@ public class ConnectionStringsOptionsTests
         string expectedErrorMessage
     )
     {
-        Output.WriteLine("Parameters set with id = {0}", id);
-
-        ValidationException ex = Assert.Throws<ValidationException>(
-            () => WebApiFactory.WithCustomOptions(options).CreateRestClient()
-        );
-
+        _output.WriteLine("Parameters set with id = {0}", id);
+        ValidationException ex =
+            Assert.Throws<ValidationException>(() => _webApiFactory.WithCustomOptions(options).CreateRestClient());
         Assert.Equal(expectedErrorMessage, ex.Message);
     }
 }

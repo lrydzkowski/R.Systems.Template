@@ -1,4 +1,4 @@
-﻿using Bogus;
+using Bogus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using R.Systems.Template.Infrastructure.Db;
@@ -8,19 +8,18 @@ namespace R.Systems.Template.Api.DataGeneratorCli.Services;
 
 internal class CompanyService
 {
+    private readonly AppDbContext _dbContext;
+
     public CompanyService(AppDbContext dbContext)
     {
-        DbContext = dbContext;
+        _dbContext = dbContext;
     }
-
-    private AppDbContext DbContext { get; }
 
     public async Task CreateCompaniesAsync(int numberOfCompanies, int numberOfEmployees)
     {
-        await using IDbContextTransaction transaction = await DbContext.Database.BeginTransactionAsync();
-
+        await using IDbContextTransaction transaction = await _dbContext.Database.BeginTransactionAsync();
         List<string> existingCompaniesNames =
-            await DbContext.Companies.AsNoTracking().Select(x => x.Name).ToListAsync();
+            await _dbContext.Companies.AsNoTracking().Select(x => x.Name).ToListAsync();
         List<int> companiesIds = await CreateCompaniesAsync(numberOfCompanies, existingCompaniesNames);
         await CreateEmployeesAsync(numberOfEmployees, companiesIds);
         await transaction.CommitAsync();
@@ -28,15 +27,14 @@ internal class CompanyService
 
     public async Task<List<CompanyEntity>> GetCompaniesAsync()
     {
-        return await DbContext.Companies.AsNoTracking().Include(x => x.Employees).ToListAsync();
+        return await _dbContext.Companies.AsNoTracking().Include(x => x.Employees).ToListAsync();
     }
 
     private async Task<List<int>> CreateCompaniesAsync(int numberOfCompanies, List<string> existingCompaniesNames)
     {
         List<CompanyEntity> companies = BuildCompanyEntities(numberOfCompanies, existingCompaniesNames);
-        await DbContext.Companies.AddRangeAsync(companies);
-        await DbContext.SaveChangesAsync();
-
+        await _dbContext.Companies.AddRangeAsync(companies);
+        await _dbContext.SaveChangesAsync();
         return companies.Select(company => (int)company.Id!).ToList();
     }
 
@@ -53,7 +51,6 @@ internal class CompanyService
                     } while (existingCompaniesNames.Contains(companyEntity.Name));
 
                     existingCompaniesNames.Add(companyEntity.Name);
-
                     return companyEntity;
                 }
             )
@@ -62,15 +59,17 @@ internal class CompanyService
 
     private Faker<CompanyEntity> BuildCompanyEntityFaker()
     {
-        return new Faker<CompanyEntity>()
-            .RuleFor(companyEntity => companyEntity.Name, faker => faker.Company.CompanyName());
+        return new Faker<CompanyEntity>().RuleFor(
+            companyEntity => companyEntity.Name,
+            faker => faker.Company.CompanyName()
+        );
     }
 
     private async Task CreateEmployeesAsync(int numberOfEmployees, List<int> companiesIds)
     {
         List<EmployeeEntity> employees = BuildEmployeeEntities(numberOfEmployees, companiesIds);
-        await DbContext.Employees.AddRangeAsync(employees);
-        await DbContext.SaveChangesAsync();
+        await _dbContext.Employees.AddRangeAsync(employees);
+        await _dbContext.SaveChangesAsync();
     }
 
     private List<EmployeeEntity> BuildEmployeeEntities(int numberOfEmployees, List<int> companiesIds)

@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Infrastructure.Notifications.Models;
+using R.Systems.Template.Infrastructure.Notifications.Models;
 
 namespace R.Systems.Template.Api.Web.Hubs;
 

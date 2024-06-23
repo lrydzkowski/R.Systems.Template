@@ -1,4 +1,4 @@
-﻿using MediatR.Pipeline;
+using MediatR.Pipeline;
 
 namespace R.Systems.Template.Core.Words.Queries.GetDefinitions;
 
@@ -7,7 +7,6 @@ internal class GetDefinitionsQueryPreProcessor : IRequestPreProcessor<GetDefinit
     public Task Process(GetDefinitionsQuery request, CancellationToken cancellationToken)
     {
         request.Word = request.Word?.Trim();
-
         return Task.CompletedTask;
     }
 }

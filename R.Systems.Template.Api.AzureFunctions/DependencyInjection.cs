@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Api.AzureFunctions.Services;
 
 namespace R.Systems.Template.Api.AzureFunctions;

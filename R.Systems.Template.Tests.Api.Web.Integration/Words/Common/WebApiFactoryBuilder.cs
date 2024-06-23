@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Mvc.Testing;
 using R.Systems.Template.Api.Web;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 
@@ -12,10 +12,7 @@ internal static class WebApiFactoryBuilder
     )
     {
         return webApplicationFactory.WithCustomOptions(
-            new Dictionary<string, string?>
-            {
-                ["Wordnik:ApiBaseUrl"] = apiBaseUrl
-            }
+            new Dictionary<string, string?> { ["Wordnik:ApiBaseUrl"] = apiBaseUrl }
         );
     }
 }

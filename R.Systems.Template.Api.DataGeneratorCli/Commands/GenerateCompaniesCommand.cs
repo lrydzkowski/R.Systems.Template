@@ -1,20 +1,17 @@
-﻿using CommandDotNet;
+using CommandDotNet;
 using R.Systems.Template.Api.DataGeneratorCli.Services;
 
 namespace R.Systems.Template.Api.DataGeneratorCli.Commands;
 
-[Command(
-    name: "companies",
-    Description = "Generate companies in database."
-)]
+[Command("companies", Description = "Generate companies in database.")]
 internal class GenerateCompaniesCommand
 {
+    private readonly CompanyService _companyService;
+
     public GenerateCompaniesCommand(CompanyService companyService)
     {
-        CompanyService = companyService;
+        _companyService = companyService;
     }
-
-    private CompanyService CompanyService { get; }
 
     [DefaultCommand]
     public async Task ExecuteAsync(
@@ -22,6 +19,6 @@ internal class GenerateCompaniesCommand
         [Option("number-of-employees")] int numberOfEmployees = 10000
     )
     {
-        await CompanyService.CreateCompaniesAsync(numberOfCompanies, numberOfEmployees);
+        await _companyService.CreateCompaniesAsync(numberOfCompanies, numberOfEmployees);
     }
 }

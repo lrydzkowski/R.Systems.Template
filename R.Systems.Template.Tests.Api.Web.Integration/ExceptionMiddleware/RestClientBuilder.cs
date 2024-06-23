@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Api.Web;
@@ -25,7 +25,6 @@ internal static class RestClientBuilder
                 }
             )
             .CreateClient();
-
         return new RestClient(httpClient);
     }
 }

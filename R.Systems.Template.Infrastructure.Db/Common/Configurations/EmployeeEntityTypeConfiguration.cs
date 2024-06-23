@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
 
@@ -19,7 +19,7 @@ internal class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<Employ
 
     private void SetTableName(EntityTypeBuilder<EmployeeEntity> builder)
     {
-        builder.ToTable(name: "employee");
+        builder.ToTable("employee");
     }
 
     private void SetPrimaryKey(EntityTypeBuilder<EmployeeEntity> builder)
@@ -37,50 +37,19 @@ internal class EmployeeEntityTypeConfiguration : IEntityTypeConfiguration<Employ
 
     private void ConfigureColumns(EntityTypeBuilder<EmployeeEntity> builder)
     {
-        builder.Property(employee => employee.Id)
-            .HasColumnName("id")
-            .ValueGeneratedOnAdd()
-            .IsRequired();
-
-        builder.Property(employee => employee.FirstName)
-            .HasColumnName("first_name")
-            .IsRequired()
-            .HasMaxLength(100);
-
-        builder.Property(employee => employee.LastName)
-            .HasColumnName("last_name")
-            .IsRequired()
-            .HasMaxLength(100);
-
-        builder.Property(employee => employee.CompanyId)
-            .HasColumnName("company_id");
+        builder.Property(employee => employee.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property(employee => employee.FirstName).HasColumnName("first_name").IsRequired().HasMaxLength(100);
+        builder.Property(employee => employee.LastName).HasColumnName("last_name").IsRequired().HasMaxLength(100);
+        builder.Property(employee => employee.CompanyId).HasColumnName("company_id");
     }
 
     private void InitData(EntityTypeBuilder<EmployeeEntity> builder)
     {
         builder.HasData(
-            new EmployeeEntity
-            {
-                Id = 1,
-                FirstName = "John",
-                LastName = "Doe",
-                CompanyId = 1
-            },
-            new EmployeeEntity
-            {
-                Id = 2,
-                FirstName = "Will",
-                LastName = "Smith",
-                CompanyId = 2
-            },
-            new EmployeeEntity
-            {
-                Id = 3,
-                FirstName = "Jack",
-                LastName = "Parker",
-                CompanyId = 2
-            }
+            new EmployeeEntity { Id = 1, FirstName = "John", LastName = "Doe", CompanyId = 1 },
+            new EmployeeEntity { Id = 2, FirstName = "Will", LastName = "Smith", CompanyId = 2 },
+            new EmployeeEntity { Id = 3, FirstName = "Jack", LastName = "Parker", CompanyId = 2 }
         );
-        builder.Property(user => user.Id).HasIdentityOptions(startValue: FirstAvailableId);
+        builder.Property(user => user.Id).HasIdentityOptions(FirstAvailableId);
     }
 }

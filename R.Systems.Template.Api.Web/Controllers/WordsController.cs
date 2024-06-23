@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +14,12 @@ namespace R.Systems.Template.Api.Web.Controllers;
 [Route("words")]
 public class WordsController : ApiControllerBase
 {
+    private readonly ISender _mediator;
+
     public WordsController(ISender mediator)
     {
-        Mediator = mediator;
+        _mediator = mediator;
     }
-
-    private ISender Mediator { get; }
 
     [SwaggerOperation(Summary = "Get word definitions")]
     [SwaggerResponse(
@@ -29,15 +29,9 @@ public class WordsController : ApiControllerBase
         [MediaTypeNames.Application.Json]
     )]
     [HttpGet("{word}/definitions")]
-    public async Task<IActionResult> GetDefinitions(
-        string? word,
-        CancellationToken cancellationToken
-    )
+    public async Task<IActionResult> GetDefinitions(string? word, CancellationToken cancellationToken)
     {
-        GetDefinitionsResult result = await Mediator.Send(
-            new GetDefinitionsQuery { Word = word },
-            cancellationToken
-        );
+        GetDefinitionsResult result = await _mediator.Send(new GetDefinitionsQuery { Word = word }, cancellationToken);
 
         return Ok(result.Definitions);
     }

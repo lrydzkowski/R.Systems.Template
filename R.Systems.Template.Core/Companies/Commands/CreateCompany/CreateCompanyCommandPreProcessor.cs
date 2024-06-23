@@ -1,4 +1,4 @@
-﻿using MediatR.Pipeline;
+using MediatR.Pipeline;
 
 namespace R.Systems.Template.Core.Companies.Commands.CreateCompany;
 
@@ -7,7 +7,6 @@ internal class CreateCompanyCommandPreProcessor : IRequestPreProcessor<CreateCom
     public Task Process(CreateCompanyCommand request, CancellationToken cancellationToken)
     {
         request.Name = request.Name?.Trim();
-
         return Task.CompletedTask;
     }
 }

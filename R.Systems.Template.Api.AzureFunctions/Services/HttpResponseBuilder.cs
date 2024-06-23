@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace R.Systems.Template.Api.AzureFunctions.Services;
@@ -10,15 +10,14 @@ public interface IHttpResponseBuilder
     HttpResponseData BuildNoContent(HttpRequestData request);
 }
 
-public class HttpResponseBuilder
-    : IHttpResponseBuilder
+public class HttpResponseBuilder : IHttpResponseBuilder
 {
+    private readonly CustomJsonSerializer _customJsonSerializer;
+
     public HttpResponseBuilder(CustomJsonSerializer customJsonSerializer)
     {
-        CustomJsonSerializer = customJsonSerializer;
+        _customJsonSerializer = customJsonSerializer;
     }
-
-    private CustomJsonSerializer CustomJsonSerializer { get; }
 
     public async Task<HttpResponseData> BuildAsync<T>(HttpRequestData request, T data)
     {
@@ -33,7 +32,6 @@ public class HttpResponseBuilder
     public HttpResponseData BuildNoContent(HttpRequestData request)
     {
         HttpResponseData httpResponse = request.CreateResponse(HttpStatusCode.NoContent);
-
         return httpResponse;
     }
 
@@ -41,9 +39,7 @@ public class HttpResponseBuilder
     {
         HttpResponseData httpResponse = request.CreateResponse(statusCode);
         httpResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
-
-        await httpResponse.WriteStringAsync(CustomJsonSerializer.Serialize(data));
-
+        await httpResponse.WriteStringAsync(_customJsonSerializer.Serialize(data));
         return httpResponse;
     }
 }

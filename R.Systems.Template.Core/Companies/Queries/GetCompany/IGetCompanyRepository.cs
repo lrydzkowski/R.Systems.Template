@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Domain;
 
 namespace R.Systems.Template.Core.Companies.Queries.GetCompany;
 

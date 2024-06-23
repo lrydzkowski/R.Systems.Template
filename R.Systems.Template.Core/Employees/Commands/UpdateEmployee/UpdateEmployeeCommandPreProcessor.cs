@@ -1,4 +1,4 @@
-﻿using MediatR.Pipeline;
+using MediatR.Pipeline;
 
 namespace R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 
@@ -8,7 +8,6 @@ internal class UpdateEmployeeCommandPreProcessor : IRequestPreProcessor<UpdateEm
     {
         request.FirstName = request.FirstName?.Trim();
         request.LastName = request.LastName?.Trim();
-
         return Task.CompletedTask;
     }
 }

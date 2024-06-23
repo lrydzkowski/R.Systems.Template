@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Options;
-using R.Systems.Template.Api.Web.Options;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Options;
+using R.Systems.Template.Api.Web.Options;
 
 namespace R.Systems.Template.Api.Web.Auth;
 
@@ -10,12 +10,10 @@ public class ApiKeyAuthenticationHandler(
     IOptionsMonitor<ApiKeyAuthenticationSchemeOptions> options,
     ILoggerFactory logger,
     UrlEncoder encoder,
-    IOptions<HealthCheckOptions> healthCheckOptions
-)
+    IOptions<HealthCheckOptions> healthCheckOptions)
     : AuthenticationHandler<ApiKeyAuthenticationSchemeOptions>(options, logger, encoder)
 {
     public const string ApiKeyHeaderName = "api-key";
-
     private readonly string _apiKey = healthCheckOptions.Value.ApiKey;
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -30,7 +28,6 @@ public class ApiKeyAuthenticationHandler(
         ClaimsIdentity claimsIdentity = new("APIKey");
         claimsPrincipal.AddIdentity(claimsIdentity);
         AuthenticationTicket authTicket = new(claimsPrincipal, ApiKeyAuthenticationSchemeOptions.Name);
-
         return Task.FromResult(AuthenticateResult.Success(authTicket));
     }
 }

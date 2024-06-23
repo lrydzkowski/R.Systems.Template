@@ -1,4 +1,5 @@
-﻿using MediatR;
+using System.Net;
+using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
@@ -7,7 +8,6 @@ using R.Systems.Template.Api.AzureFunctions.Services;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
-using System.Net;
 
 namespace R.Systems.Template.Api.AzureFunctions.Functions.Companies;
 
@@ -22,29 +22,21 @@ internal class GetCompanyFunction : FunctionBase<GetCompanyFunction>
     {
     }
 
-    [OpenApiOperation(
-        operationId: nameof(GetCompany),
-        Summary = nameof(GetCompany),
-        Description = "It returns a company."
-    )]
-    [OpenApiParameter(name: nameof(companyId), Type = typeof(int), Required = true)]
-    [OpenApiResponseWithBody(
-        statusCode: HttpStatusCode.OK,
-        contentType: "application/json",
-        bodyType: typeof(Company),
-        Description = "A company"
-    )]
+    [OpenApiOperation(nameof(GetCompany), Summary = nameof(GetCompany), Description = "It returns a company.")]
+    [OpenApiParameter(nameof(companyId), Type = typeof(int), Required = true)]
+    [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(Company), Description = "A company")]
     [Function(nameof(GetCompany))]
     public async Task<HttpResponseData> GetCompany(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies/{companyId:int}")]
-        HttpRequestData request,
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies/{companyId:int}")] HttpRequestData request,
         int companyId,
         CancellationToken cancellationToken
     )
     {
         Logger.LogInformation("C# Start processing {FunctionName} function.", nameof(GetCompany));
-
-        GetCompanyQuery query = new() { CompanyId = companyId };
+        GetCompanyQuery query = new()
+        {
+            CompanyId = companyId
+        };
         GetCompanyResult result = await Mediator.Send(query, cancellationToken);
         if (result.Company == null)
         {

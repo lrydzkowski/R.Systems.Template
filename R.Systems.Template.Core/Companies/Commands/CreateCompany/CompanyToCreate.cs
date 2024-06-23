@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Core.Companies.Commands.CreateCompany;
+namespace R.Systems.Template.Core.Companies.Commands.CreateCompany;
 
 public class CompanyToCreate
 {

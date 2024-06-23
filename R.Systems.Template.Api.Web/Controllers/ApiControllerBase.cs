@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core.Common.Errors;
 using Swashbuckle.AspNetCore.Annotations;

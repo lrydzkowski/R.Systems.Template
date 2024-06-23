@@ -1,4 +1,4 @@
-﻿using Riok.Mapperly.Abstractions;
+using Riok.Mapperly.Abstractions;
 
 namespace R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 

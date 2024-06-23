@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using Bogus;
 using FluentValidation.Results;
 using R.Systems.Template.Api.Web.Models;
@@ -13,79 +13,47 @@ internal static class UpdateCompanyIncorrectDataBuilder
     {
         Faker faker = new();
         int companyId = (int)CompaniesSampleData.Data["Meta"].Id!;
-
         string? nameAttemptedValue = "";
         yield return BuildParameters(
             1,
             companyId,
-            new UpdateCompanyRequest
-            {
-                Name = nameAttemptedValue
-            },
+            new UpdateCompanyRequest { Name = nameAttemptedValue },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
-            {
-                ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name", nameAttemptedValue)
-            }
+                { ValidationFailureBuilder.BuildEmptyFieldValidationError("Name", nameAttemptedValue) }
         );
-
         nameAttemptedValue = "  ";
         yield return BuildParameters(
             2,
             companyId,
-            new UpdateCompanyRequest
-            {
-                Name = nameAttemptedValue
-            },
+            new UpdateCompanyRequest { Name = nameAttemptedValue },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
-            {
-                ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name", nameAttemptedValue)
-            }
+                { ValidationFailureBuilder.BuildEmptyFieldValidationError("Name", nameAttemptedValue) }
         );
-
         nameAttemptedValue = null;
         yield return BuildParameters(
             3,
             companyId,
-            new UpdateCompanyRequest
-            {
-                Name = nameAttemptedValue
-            },
+            new UpdateCompanyRequest { Name = nameAttemptedValue },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
-            {
-                ValidationFailureBuilder.BuildEmptyFieldValidationError(fieldName: "Name", nameAttemptedValue)
-            }
+                { ValidationFailureBuilder.BuildEmptyFieldValidationError("Name", nameAttemptedValue) }
         );
-
         nameAttemptedValue = faker.Random.String2(201);
         yield return BuildParameters(
             4,
             companyId,
-            new UpdateCompanyRequest
-            {
-                Name = nameAttemptedValue
-            },
+            new UpdateCompanyRequest { Name = nameAttemptedValue },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
-            {
-                ValidationFailureBuilder.BuildTooLongFieldValidationError(
-                    fieldName: "Name",
-                    maxLength: 200,
-                    nameAttemptedValue
-                )
-            }
+                { ValidationFailureBuilder.BuildTooLongFieldValidationError("Name", 200, nameAttemptedValue) }
         );
-
         int companyIdAttemptedValue = 999;
         yield return BuildParameters(
             5,
             companyIdAttemptedValue,
-            new UpdateCompanyRequest
-            {
-                Name = faker.Company.CompanyName()
-            },
+            new UpdateCompanyRequest { Name = faker.Company.CompanyName() },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
             {
@@ -93,8 +61,7 @@ internal static class UpdateCompanyIncorrectDataBuilder
                 {
                     PropertyName = "Company",
                     ErrorMessage = $"Company with the given id doesn't exist ('{companyIdAttemptedValue}').",
-                    ErrorCode = "NotExist",
-                    AttemptedValue = companyIdAttemptedValue
+                    ErrorCode = "NotExist", AttemptedValue = companyIdAttemptedValue
                 }
             }
         );
@@ -108,6 +75,13 @@ internal static class UpdateCompanyIncorrectDataBuilder
         List<ValidationFailure> validationFailures
     )
     {
-        return new object[] { id, companyId, data, expectedHttpStatus, validationFailures };
+        return new object[]
+        {
+            id,
+            companyId,
+            data,
+            expectedHttpStatus,
+            validationFailures
+        };
     }
 }

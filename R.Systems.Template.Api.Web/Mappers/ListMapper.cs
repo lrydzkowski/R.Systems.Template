@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Api.Web.Models;
+using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Core.Common.Lists;
 using Riok.Mapperly.Abstractions;
 

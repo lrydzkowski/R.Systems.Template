@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +20,12 @@ namespace R.Systems.Template.Api.Web.Controllers;
 [Route("companies")]
 public class EmployeeInCompanyController : ApiControllerBase
 {
+    private readonly ISender _mediator;
+
     public EmployeeInCompanyController(ISender mediator)
     {
-        Mediator = mediator;
+        _mediator = mediator;
     }
-
-    private ISender Mediator { get; }
 
     [SwaggerOperation(Summary = "Get the employee in the company")]
     [SwaggerResponse(
@@ -45,8 +45,12 @@ public class EmployeeInCompanyController : ApiControllerBase
         CancellationToken cancellationToken
     )
     {
-        GetEmployeeQuery query = new() { CompanyId = companyId, EmployeeId = employeeId };
-        GetEmployeeResult result = await Mediator.Send(query, cancellationToken);
+        GetEmployeeQuery query = new()
+        {
+            CompanyId = companyId,
+            EmployeeId = employeeId
+        };
+        GetEmployeeResult result = await _mediator.Send(query, cancellationToken);
         if (result.Employee == null)
         {
             return NotFound(
@@ -79,7 +83,7 @@ public class EmployeeInCompanyController : ApiControllerBase
     {
         ListMapper mapper = new();
         ListParameters listParameters = mapper.ToListParameter(listRequest);
-        GetEmployeesResult result = await Mediator.Send(
+        GetEmployeesResult result = await _mediator.Send(
             new GetEmployeesQuery { ListParameters = listParameters, CompanyId = companyId },
             cancellationToken
         );

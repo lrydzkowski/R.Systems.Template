@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Infrastructure.Notifications.Services;
 
 namespace R.Systems.Template.Infrastructure.Notifications;

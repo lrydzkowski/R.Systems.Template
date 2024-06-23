@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using R.Systems.Template.Infrastructure.Db.Common.Options;
@@ -10,7 +10,6 @@ internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     public AppDbContext CreateDbContext(string[] args)
     {
         DbContextOptionsBuilder<AppDbContext> builder = GetDbContextOptionsBuilder();
-
         return new AppDbContext(builder.Options);
     }
 
@@ -19,7 +18,6 @@ internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         IConfigurationRoot config = new ConfigurationBuilder().AddUserSecrets<AppDbContext>().Build();
         IConfigurationProvider secretProvider = config.Providers.First();
         DbContextOptionsBuilder<AppDbContext> builder = new();
-
         string? postgresConnectionString = GetConnectionString(
             secretProvider,
             nameof(ConnectionStringsOptions.AppPostgresDb)
@@ -30,21 +28,15 @@ internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
                 postgresConnectionString,
                 x => x.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
             );
-
             return builder;
         }
 
-        throw new Exception(
-            "There is no connection string in user secrets."
-        );
+        throw new Exception("There is no connection string in user secrets.");
     }
 
     private string? GetConnectionString(IConfigurationProvider secretProvider, string optionName)
     {
-        secretProvider.TryGet(
-            $"{ConnectionStringsOptions.Position}:{optionName}",
-            out string? connectionString
-        );
+        secretProvider.TryGet($"{ConnectionStringsOptions.Position}:{optionName}", out string? connectionString);
 
         return connectionString;
     }

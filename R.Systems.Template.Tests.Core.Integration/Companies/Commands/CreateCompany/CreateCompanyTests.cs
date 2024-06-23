@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
@@ -16,16 +16,15 @@ namespace R.Systems.Template.Tests.Core.Integration.Companies.Commands.CreateCom
 [Trait(TestConstants.Category, CommandTestsCollection.CollectionName)]
 public class CreateCompanyTests
 {
+    private readonly ISender _mediator;
+
+    private readonly ITestOutputHelper _output;
+
     public CreateCompanyTests(ITestOutputHelper output, SystemUnderTest<SampleDataDbInitializer> systemUnderTest)
     {
-        Output = output;
-        SystemUnderTest = systemUnderTest;
-        Mediator = SystemUnderTest.BuildServiceProvider().GetRequiredService<ISender>();
+        _output = output;
+        _mediator = systemUnderTest.BuildServiceProvider().GetRequiredService<ISender>();
     }
-
-    private ITestOutputHelper Output { get; }
-    private SystemUnderTest<SampleDataDbInitializer> SystemUnderTest { get; }
-    private ISender Mediator { get; }
 
     [Theory]
     [MemberData(
@@ -38,10 +37,8 @@ public class CreateCompanyTests
         IEnumerable<ValidationFailure> validationFailures
     )
     {
-        Output.WriteLine("Parameters set with id = {0}", id);
-
-        ValidationException exception = await Assert.ThrowsAsync<ValidationException>(() => Mediator.Send(command));
-
+        _output.WriteLine("Parameters set with id = {0}", id);
+        ValidationException exception = await Assert.ThrowsAsync<ValidationException>(() => _mediator.Send(command));
         exception.Errors.Should()
             .BeEquivalentTo(
                 validationFailures,
@@ -57,8 +54,7 @@ public class CreateCompanyTests
     [MemberData(nameof(CreateCompanyCorrectDataBuilder.Build), MemberType = typeof(CreateCompanyCorrectDataBuilder))]
     public async Task CreateCompany_ShouldCreateCompany_WhenDataIsCorrect(int id, CreateCompanyCommand command)
     {
-        Output.WriteLine("Parameters set with id = {0}", id);
-
+        _output.WriteLine("Parameters set with id = {0}", id);
         CreateCompanyResult expectedResult = new()
         {
             Company = new Company
@@ -66,9 +62,7 @@ public class CreateCompanyTests
                 Name = command.Name!
             }
         };
-
-        CreateCompanyResult result = await Mediator.Send(command);
-
+        CreateCompanyResult result = await _mediator.Send(command);
         result.Should().BeEquivalentTo(expectedResult, options => options.Excluding(x => x.Company.CompanyId));
     }
 }

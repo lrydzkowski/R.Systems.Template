@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,16 +6,16 @@ namespace R.Systems.Template.Infrastructure.Db.Employees.Commands;
 
 internal class EmployeeValidator
 {
+    private readonly AppDbContext _dbContext;
+
     public EmployeeValidator(AppDbContext dbContext)
     {
-        DbContext = dbContext;
+        _dbContext = dbContext;
     }
-
-    private AppDbContext DbContext { get; }
 
     public async Task VerifyCompanyExistenceAsync(int companyId)
     {
-        bool exist = await DbContext.Companies.AsNoTracking()
+        bool exist = await _dbContext.Companies.AsNoTracking()
                          .Where(x => x.Id == companyId)
                          .Select(x => x.Id)
                          .FirstOrDefaultAsync()
@@ -29,8 +29,7 @@ internal class EmployeeValidator
                     {
                         PropertyName = "Company",
                         ErrorMessage = $"Company with the given id doesn't exist ('{companyId}').",
-                        AttemptedValue = companyId,
-                        ErrorCode = "NotExist"
+                        AttemptedValue = companyId, ErrorCode = "NotExist"
                     }
                 }
             );

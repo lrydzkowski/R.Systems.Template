@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Infrastructure.Db;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
@@ -31,9 +31,7 @@ public class SampleDataDbInitializer : IStartupServiceToRunSequentially
             return false;
         }
 
-        CompanyEntity? companyEntity = await dbContext.Companies.AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == maxId);
-
+        CompanyEntity? companyEntity = await dbContext.Companies.AsNoTracking().FirstOrDefaultAsync(x => x.Id == maxId);
         return companyEntity != null;
     }
 

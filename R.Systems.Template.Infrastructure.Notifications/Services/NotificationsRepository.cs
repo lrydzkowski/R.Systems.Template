@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Infrastructure.Notifications.Services;
+namespace R.Systems.Template.Infrastructure.Notifications.Services;
 
 public interface INotificationsRepository
 {

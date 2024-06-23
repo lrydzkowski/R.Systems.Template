@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace R.Systems.Template.Api.AzureFunctions.Services;
@@ -8,8 +8,7 @@ public interface IRequestPayloadSerializer
     Task<T?> DeserializeAsync<T>(HttpRequestData request);
 }
 
-public class RequestPayloadSerializer
-    : IRequestPayloadSerializer
+public class RequestPayloadSerializer : IRequestPayloadSerializer
 {
     private readonly JsonSerializerOptions _options = new()
     {

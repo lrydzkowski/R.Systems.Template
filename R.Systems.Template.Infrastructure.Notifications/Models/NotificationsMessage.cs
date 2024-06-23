@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Infrastructure.Notifications.Models;
+namespace R.Systems.Template.Infrastructure.Notifications.Models;
 
 public record NotificationsMessage
 {

@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Api.Web.Models;
+using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 using Riok.Mapperly.Abstractions;

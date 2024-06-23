@@ -1,4 +1,4 @@
-﻿using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
 
 namespace R.Systems.Template.Tests.Core.Integration.Common.Db;
@@ -61,15 +61,8 @@ internal static class CompaniesSampleData
     {
         get
         {
-            return Data
-                .Where(x => x.Value.Id != null)
-                .Select(
-                    x => new Company
-                    {
-                        CompanyId = (int)x.Value.Id!,
-                        Name = x.Value.Name
-                    }
-                )
+            return Data.Where(x => x.Value.Id != null)
+                .Select(x => new Company { CompanyId = (int)x.Value.Id!, Name = x.Value.Name })
                 .ToList();
         }
     }

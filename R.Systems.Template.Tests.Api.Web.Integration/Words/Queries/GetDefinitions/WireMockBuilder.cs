@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using R.Systems.Template.Infrastructure.Wordnik.Common.Api;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -16,7 +16,6 @@ internal static class WireMockBuilder
     )
     {
         wireMockServer.Reset();
-
         List<ApiResponse<T>> responses = new();
         for (int i = 0; i < WordApi.RetryCount + 1; i++)
         {
@@ -51,8 +50,7 @@ internal static class WireMockBuilder
                 provider = provider.WhenStateIs($"state{i - 1}");
             }
 
-            provider.WillSetStateTo($"state{i}")
-                .RespondWith(responseBuilder);
+            provider.WillSetStateTo($"state{i}").RespondWith(responseBuilder);
         }
 
         return wireMockServer;

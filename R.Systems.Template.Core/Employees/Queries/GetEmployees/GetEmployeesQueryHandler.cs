@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Lists;
 
@@ -16,23 +16,22 @@ public class GetEmployeesResult
 
 public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, GetEmployeesResult>
 {
+    private readonly IGetEmployeesRepository _getEmployeesRepository;
+
     public GetEmployeesQueryHandler(IGetEmployeesRepository getCompaniesRepository)
     {
-        GetEmployeesRepository = getCompaniesRepository;
+        _getEmployeesRepository = getCompaniesRepository;
     }
-
-    private IGetEmployeesRepository GetEmployeesRepository { get; }
 
     public async Task<GetEmployeesResult> Handle(GetEmployeesQuery query, CancellationToken cancellationToken)
     {
         ListInfo<Employee> employees = query.CompanyId == null
-            ? await GetEmployeesRepository.GetEmployeesAsync(query.ListParameters, cancellationToken)
-            : await GetEmployeesRepository.GetEmployeesAsync(
+            ? await _getEmployeesRepository.GetEmployeesAsync(query.ListParameters, cancellationToken)
+            : await _getEmployeesRepository.GetEmployeesAsync(
                 query.ListParameters,
                 (int)query.CompanyId,
                 cancellationToken
             );
-
         return new GetEmployeesResult
         {
             Employees = employees

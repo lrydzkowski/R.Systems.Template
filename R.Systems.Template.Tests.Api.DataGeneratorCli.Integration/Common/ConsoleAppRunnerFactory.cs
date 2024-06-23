@@ -1,4 +1,4 @@
-﻿using CommandDotNet;
+using CommandDotNet;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Api.DataGeneratorCli;
@@ -10,10 +10,8 @@ namespace R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.Common;
 
 public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-        .WithImage("postgres:15-alpine")
-        .WithCleanUp(true)
-        .Build();
+    private readonly PostgreSqlContainer _dbContainer =
+        new PostgreSqlBuilder().WithImage("postgres:15-alpine").WithCleanUp(true).Build();
 
     public async Task InitializeAsync()
     {
@@ -29,7 +27,6 @@ public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
     {
         AddConfigurationMethods.Add(SetDatabaseConnectionString);
         ConfigureServicesMethods.Add(InitializeDatabase);
-
         return await base.CreateAsync();
     }
 

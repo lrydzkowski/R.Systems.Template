@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Core.Words.Queries.GetDefinitions;
+namespace R.Systems.Template.Core.Words.Queries.GetDefinitions;
 
 public interface IGetDefinitionsRepository
 {

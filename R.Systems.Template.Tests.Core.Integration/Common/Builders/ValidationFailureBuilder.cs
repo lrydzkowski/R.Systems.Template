@@ -1,4 +1,4 @@
-﻿using FluentValidation.Results;
+using FluentValidation.Results;
 
 namespace R.Systems.Template.Tests.Core.Integration.Common.Builders;
 
@@ -11,8 +11,7 @@ internal static class ValidationFailureBuilder
     )
     {
         fieldNameInMsg ??= fieldName;
-
-        return new ValidationFailure()
+        return new ValidationFailure
         {
             PropertyName = $"{fieldName}",
             ErrorMessage = $"'{fieldNameInMsg}' must not be empty.",
@@ -29,8 +28,7 @@ internal static class ValidationFailureBuilder
     )
     {
         fieldNameInMsg ??= fieldName;
-
-        return new ValidationFailure()
+        return new ValidationFailure
         {
             PropertyName = $"{fieldName}",
             ErrorMessage =

@@ -1,6 +1,6 @@
-﻿using System.Net.WebSockets;
-using System.Text.Json;
+using System.Net.WebSockets;
 using System.Text;
+using System.Text.Json;
 using R.Systems.Template.Infrastructure.Notifications.Models;
 
 namespace R.Systems.Template.Infrastructure.Notifications.Services;
@@ -23,7 +23,6 @@ internal class WebSocketsHandler : IWebSocketsHandler
     public async Task SendMessageAsync(NotificationsMessage message)
     {
         ArraySegment<byte> serializedMessageArraySegments = SerializeMessage(message);
-
         _sockets = _sockets.Where(x => x.WebSocket.State == WebSocketState.Open).ToList();
         foreach (WebSocketInfo socket in _sockets)
         {
@@ -41,7 +40,6 @@ internal class WebSocketsHandler : IWebSocketsHandler
         string serializedMessage = JsonSerializer.Serialize(message);
         byte[] serializedMessageBytes = Encoding.UTF8.GetBytes(serializedMessage);
         ArraySegment<byte> serializedMessageArraySegments = new(serializedMessageBytes);
-
         return serializedMessageArraySegments;
     }
 }

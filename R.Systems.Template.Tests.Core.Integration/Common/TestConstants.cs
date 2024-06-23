@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Tests.Core.Integration.Common;
+namespace R.Systems.Template.Tests.Core.Integration.Common;
 
 internal static class TestConstants
 {

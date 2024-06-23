@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using FluentAssertions;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
@@ -13,12 +13,12 @@ namespace R.Systems.Template.Tests.Api.Web.Integration.App.Queries.GetAppInfo;
 [Trait(TestConstants.Category, QueryTestsCollection.CollectionName)]
 public class GetAppInfoTests
 {
+    private readonly RestClient _restClient;
+
     public GetAppInfoTests(WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
-        RestClient = webApiFactory.CreateRestClient();
+        _restClient = webApiFactory.CreateRestClient();
     }
-
-    private RestClient RestClient { get; }
 
     [Fact]
     public async Task GetAppInfo_ShouldReturnCorrectVersion_WhenCorrectDataIsPassed()
@@ -26,9 +26,7 @@ public class GetAppInfoTests
         string expectedAppName = AppNameService.GetWebApiName();
         string semVerRegex = new SemVerRegex().Get();
         RestRequest request = new("/");
-
-        RestResponse<GetAppInfoResponse> response = await RestClient.ExecuteAsync<GetAppInfoResponse>(request);
-
+        RestResponse<GetAppInfoResponse> response = await _restClient.ExecuteAsync<GetAppInfoResponse>(request);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();
         response.Data?.AppName.Should().Be(expectedAppName);

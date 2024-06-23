@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,12 +25,12 @@ namespace R.Systems.Template.Api.Web.Controllers;
 [Route("companies")]
 public class CompanyController : ApiControllerBase
 {
+    private readonly ISender _mediator;
+
     public CompanyController(ISender mediator)
     {
-        Mediator = mediator;
+        _mediator = mediator;
     }
-
-    private ISender Mediator { get; }
 
     [SwaggerOperation(Summary = "Get the company")]
     [SwaggerResponse(
@@ -56,8 +56,11 @@ public class CompanyController : ApiControllerBase
     [HttpGet("{companyId}", Name = "GetCompany")]
     public async Task<IActionResult> GetCompany(int companyId, CancellationToken cancellationToken)
     {
-        GetCompanyQuery query = new() { CompanyId = companyId };
-        GetCompanyResult result = await Mediator.Send(query, cancellationToken);
+        GetCompanyQuery query = new()
+        {
+            CompanyId = companyId
+        };
+        GetCompanyResult result = await _mediator.Send(query, cancellationToken);
         if (result.Company == null)
         {
             return NotFound(
@@ -93,7 +96,7 @@ public class CompanyController : ApiControllerBase
     {
         ListMapper mapper = new();
         ListParameters listParameters = mapper.ToListParameter(listRequest);
-        GetCompaniesResult result = await Mediator.Send(
+        GetCompaniesResult result = await _mediator.Send(
             new GetCompaniesQuery { ListParameters = listParameters },
             cancellationToken
         );
@@ -122,13 +125,9 @@ public class CompanyController : ApiControllerBase
     {
         CompanyMapper companyMapper = new();
         CreateCompanyCommand command = companyMapper.ToCreateCommand(request);
-        CreateCompanyResult result = await Mediator.Send(command);
+        CreateCompanyResult result = await _mediator.Send(command);
 
-        return CreatedAtAction(
-            nameof(GetCompany),
-            new { companyId = result.Company.CompanyId },
-            result.Company
-        );
+        return CreatedAtAction(nameof(GetCompany), new { companyId = result.Company.CompanyId }, result.Company);
     }
 
     [SwaggerOperation(Summary = "Update the company")]
@@ -153,7 +152,7 @@ public class CompanyController : ApiControllerBase
         CompanyMapper companyMapper = new();
         UpdateCompanyCommand command = companyMapper.ToUpdateCommand(request);
         command.CompanyId = companyId;
-        UpdateCompanyResult result = await Mediator.Send(command);
+        UpdateCompanyResult result = await _mediator.Send(command);
 
         return Ok(result.Company);
     }
@@ -170,8 +169,11 @@ public class CompanyController : ApiControllerBase
     [HttpDelete("{companyId}")]
     public async Task<IActionResult> DeleteCompany(int companyId)
     {
-        DeleteCompanyCommand command = new() { CompanyId = companyId };
-        await Mediator.Send(command);
+        DeleteCompanyCommand command = new()
+        {
+            CompanyId = companyId
+        };
+        await _mediator.Send(command);
 
         return NoContent();
     }

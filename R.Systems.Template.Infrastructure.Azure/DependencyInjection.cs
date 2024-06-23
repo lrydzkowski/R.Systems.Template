@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,17 +36,14 @@ public static class DependencyInjection
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApi(configuration, Constants.AzureAd, AuthenticationSchemes.AzureAd);
-
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApi(configuration, Constants.AzureAdB2C, AuthenticationSchemes.AzureAdB2C);
-
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApi(
-                (options) =>
+                options =>
                 {
                     IConfigurationSection configurationSection = configuration.GetSection(Constants.AzureAd);
                     configurationSection.Bind(options);
-
                     options.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
@@ -62,7 +59,7 @@ public static class DependencyInjection
                         }
                     };
                 },
-                (options) =>
+                options =>
                 {
                     IConfigurationSection configurationSection = configuration.GetSection(Constants.AzureAd);
                     configurationSection.Bind(options);

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Core.Common.Domain;
@@ -14,14 +14,12 @@ namespace R.Systems.Template.Tests.Core.Integration.Companies.Queries.GetCompani
 [Trait(TestConstants.Category, QueryWithoutDataTestsCollection.CollectionName)]
 public class GetCompaniesWithoutDataTests
 {
+    private readonly ISender _mediator;
+
     public GetCompaniesWithoutDataTests(SystemUnderTest<NoDataDbInitializer> systemUnderTest)
     {
-        SystemUnderTest = systemUnderTest;
-        Mediator = SystemUnderTest.BuildServiceProvider().GetRequiredService<ISender>();
+        _mediator = systemUnderTest.BuildServiceProvider().GetRequiredService<ISender>();
     }
-
-    private SystemUnderTest<NoDataDbInitializer> SystemUnderTest { get; }
-    private ISender Mediator { get; }
 
     [Fact]
     public async Task GetCompanies_ShouldReturnEmptyList_WhenCompaniesNotExist()
@@ -30,7 +28,6 @@ public class GetCompaniesWithoutDataTests
         {
             Companies = new ListInfo<Company>()
         };
-
         GetCompaniesQuery query = new()
         {
             ListParameters = new ListParameters
@@ -51,8 +48,7 @@ public class GetCompaniesWithoutDataTests
                 }
             }
         };
-        GetCompaniesResult result = await Mediator.Send(query);
-
+        GetCompaniesResult result = await _mediator.Send(query);
         result.Should().BeEquivalentTo(expectedResult);
     }
 }

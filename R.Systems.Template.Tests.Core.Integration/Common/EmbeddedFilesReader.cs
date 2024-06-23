@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 namespace R.Systems.Template.Tests.Core.Integration.Common;
 
@@ -15,14 +15,12 @@ internal static class EmbeddedFilesReader
 
         using Stream? stream = assembly.GetManifestResourceStream(path);
         using StreamReader reader = new(stream!);
-
         return reader.ReadToEnd();
     }
 
     private static string TransformPath(this string path, Assembly assembly)
     {
         string transformedPath = path.Replace('/', '.').Replace('\\', '.');
-
         return $"{assembly.GetName().Name}.{transformedPath}";
     }
 

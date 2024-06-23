@@ -1,4 +1,4 @@
-﻿using MediatR.Pipeline;
+using MediatR.Pipeline;
 
 namespace R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 
@@ -8,7 +8,6 @@ internal class CreateEmployeeCommandPreProcessor : IRequestPreProcessor<CreateEm
     {
         request.FirstName = request.FirstName?.Trim();
         request.LastName = request.LastName?.Trim();
-
         return Task.CompletedTask;
     }
 }

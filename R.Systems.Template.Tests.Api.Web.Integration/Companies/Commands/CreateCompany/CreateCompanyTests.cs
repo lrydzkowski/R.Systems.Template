@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using FluentAssertions;
 using FluentValidation.Results;
 using R.Systems.Template.Core.Common.Domain;
@@ -18,14 +18,14 @@ public class CreateCompanyTests
 {
     private readonly string _endpointUrlPath = "/companies";
 
+    private readonly ITestOutputHelper _output;
+    private readonly RestClient _restClient;
+
     public CreateCompanyTests(ITestOutputHelper output, WebApiFactoryWithDb<SampleDataDbInitializer> webApiFactory)
     {
-        Output = output;
-        RestClient = webApiFactory.WithoutAuthentication().CreateRestClient();
+        _output = output;
+        _restClient = webApiFactory.WithoutAuthentication().CreateRestClient();
     }
-
-    private ITestOutputHelper Output { get; }
-    private RestClient RestClient { get; }
 
     [Theory]
     [MemberData(
@@ -39,54 +39,33 @@ public class CreateCompanyTests
         IEnumerable<ValidationFailure> validationFailures
     )
     {
-        Output.WriteLine("Parameters set with id = {0}", id);
-
+        _output.WriteLine("Parameters set with id = {0}", id);
         RestRequest restRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
-
-        RestResponse<List<ValidationFailure>> response = await RestClient.ExecuteAsync<List<ValidationFailure>>(
-            restRequest
-        );
-
+        RestResponse<List<ValidationFailure>> response =
+            await _restClient.ExecuteAsync<List<ValidationFailure>>(restRequest);
         response.StatusCode.Should().Be(expectedHttpStatus);
         response.Data.Should().NotBeNull();
-        response.Data.Should()
-            .BeEquivalentTo(
-                validationFailures,
-                options => options.WithStrictOrdering()
-            );
+        response.Data.Should().BeEquivalentTo(validationFailures, options => options.WithStrictOrdering());
     }
 
     [Theory]
     [MemberData(nameof(CreateCompanyCorrectDataBuilder.Build), MemberType = typeof(CreateCompanyCorrectDataBuilder))]
     public async Task CreateCompany_ShouldCreateCompany_WhenDataIsCorrect(int id, CreateCompanyCommand command)
     {
-        Output.WriteLine("Parameters set with id = {0}", id);
-
+        _output.WriteLine("Parameters set with id = {0}", id);
         RestRequest createRequest = new RestRequest(_endpointUrlPath, Method.Post).AddJsonBody(command);
-
-        RestResponse<Company> createResponse = await RestClient.ExecuteAsync<Company>(createRequest);
-
+        RestResponse<Company> createResponse = await _restClient.ExecuteAsync<Company>(createRequest);
         createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
         createResponse.Data.Should().NotBeNull();
         createResponse.Data.Should()
-            .BeEquivalentTo(
-                new Company
-                {
-                    Name = command.Name!
-                },
-                options => options.Excluding(ctx => ctx.CompanyId)
-            );
+            .BeEquivalentTo(new Company { Name = command.Name! }, options => options.Excluding(ctx => ctx.CompanyId));
         createResponse.Headers.Should().NotBeNullOrEmpty();
         createResponse.Headers.Should().Contain(x => x.Name == "Location");
-
         Company company = createResponse.Data!;
         string? companyUrl = createResponse.Headers!.First(x => x.Name == "Location").Value?.ToString();
         companyUrl.Should().NotBeNull();
-
         RestRequest getRequest = new(companyUrl);
-
-        RestResponse<Company> getResponse = await RestClient.ExecuteAsync<Company>(getRequest);
-
+        RestResponse<Company> getResponse = await _restClient.ExecuteAsync<Company>(getRequest);
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         getResponse.Data.Should().NotBeNull();
         getResponse.Data.Should().BeEquivalentTo(company);

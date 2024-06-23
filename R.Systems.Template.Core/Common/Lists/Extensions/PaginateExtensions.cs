@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Template.Core.Common.Lists.Extensions;
+namespace R.Systems.Template.Core.Common.Lists.Extensions;
 
 public static class PaginateExtensions
 {

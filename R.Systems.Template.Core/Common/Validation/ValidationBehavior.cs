@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 
@@ -7,12 +7,12 @@ namespace R.Systems.Template.Core.Common.Validation;
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : class, IRequest<TResponse>
 {
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
+
     public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
-        Validators = validators;
+        _validators = validators;
     }
-
-    private IEnumerable<IValidator<TRequest>> Validators { get; }
 
     public async Task<TResponse> Handle(
         TRequest request,
@@ -20,14 +20,14 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         CancellationToken cancellationToken
     )
     {
-        if (!Validators.Any())
+        if (!_validators.Any())
         {
             return await next();
         }
 
         List<ValidationFailure> validationFailures = new();
         ValidationContext<TRequest> context = new(request);
-        foreach (IValidator<TRequest> validator in Validators)
+        foreach (IValidator<TRequest> validator in _validators)
         {
             ValidationResult result = await validator.ValidateAsync(context, cancellationToken);
             if (result.Errors.Count == 0)
