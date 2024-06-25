@@ -7,6 +7,7 @@ using R.Systems.Template.Api.Web.Mappers;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
@@ -40,6 +41,7 @@ public class EmployeeInCompanyController : ApiControllerBase
     )]
     [HttpGet("{companyId}/employees/{employeeId}", Name = "GetEmployeeInCompany")]
     public async Task<IActionResult> GetEmployeeInCompany(
+        [FromHeader(Name = Headers.Version)] string? version,
         int companyId,
         int employeeId,
         CancellationToken cancellationToken
@@ -48,7 +50,8 @@ public class EmployeeInCompanyController : ApiControllerBase
         GetEmployeeQuery query = new()
         {
             CompanyId = companyId,
-            EmployeeId = employeeId
+            EmployeeId = employeeId,
+            AppContext = new ApplicationContext(version)
         };
         GetEmployeeResult result = await _mediator.Send(query, cancellationToken);
         if (result.Employee == null)
@@ -76,6 +79,7 @@ public class EmployeeInCompanyController : ApiControllerBase
     )]
     [HttpGet("{companyId}/employees", Name = "GetEmployeesInCompany")]
     public async Task<IActionResult> GetEmployeesInCompany(
+        [FromHeader(Name = Headers.Version)] string? version,
         [FromQuery] ListRequest listRequest,
         int companyId,
         CancellationToken cancellationToken
@@ -84,7 +88,10 @@ public class EmployeeInCompanyController : ApiControllerBase
         ListMapper mapper = new();
         ListParameters listParameters = mapper.ToListParameter(listRequest);
         GetEmployeesResult result = await _mediator.Send(
-            new GetEmployeesQuery { ListParameters = listParameters, CompanyId = companyId },
+            new GetEmployeesQuery
+            {
+                ListParameters = listParameters, CompanyId = companyId, AppContext = new ApplicationContext(version)
+            },
             cancellationToken
         );
 

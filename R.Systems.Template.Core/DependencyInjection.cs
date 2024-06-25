@@ -21,6 +21,7 @@ public static class DependencyInjection
         services.ConfigureMediatR();
         services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
         services.ConfigureMassTransit(configuration);
+        services.RegisterServices();
     }
 
     public static void ConfigureOptionsWithValidation<TOptions, TValidator>(
@@ -68,5 +69,10 @@ public static class DependencyInjection
                 x.ConfigureHealthCheckOptions(options => options.Name = "MassTransitCheck");
             }
         );
+    }
+
+    private static void RegisterServices(this IServiceCollection services)
+    {
+        services.AddScoped(typeof(IVersionedRepositoryFactory<>), typeof(VersionedRepositoryFactory<>));
     }
 }

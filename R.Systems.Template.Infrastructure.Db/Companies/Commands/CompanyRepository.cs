@@ -2,6 +2,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
@@ -20,6 +21,8 @@ internal class CompanyRepository : ICreateCompanyRepository, IUpdateCompanyRepos
         _dbContext = dbContext;
         _dbExceptionHandler = dbExceptionHandler;
     }
+
+    public string Version { get; } = Versions.V1;
 
     public async Task<Company> CreateCompanyAsync(CompanyToCreate companyToCreate)
     {

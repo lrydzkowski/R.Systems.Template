@@ -8,6 +8,7 @@ using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Api.Web.Swagger.Examples.Employees;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 using R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
@@ -52,11 +53,16 @@ public class EmployeeController : ApiControllerBase
         typeof(GetEmployeeNotFoundResponseExamples)
     )]
     [HttpGet("{employeeId}", Name = "GetEmployee")]
-    public async Task<IActionResult> GetEmployee(int employeeId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetEmployee(
+        [FromHeader(Name = Headers.Version)] string? version,
+        int employeeId,
+        CancellationToken cancellationToken
+    )
     {
         GetEmployeeQuery query = new()
         {
-            EmployeeId = employeeId
+            EmployeeId = employeeId,
+            AppContext = new ApplicationContext(version)
         };
         GetEmployeeResult result = await _mediator.Send(query, cancellationToken);
         if (result.Employee == null)
@@ -88,6 +94,7 @@ public class EmployeeController : ApiControllerBase
     )]
     [HttpGet]
     public async Task<IActionResult> GetEmployees(
+        [FromHeader(Name = Headers.Version)] string? version,
         [FromQuery] ListRequest listRequest,
         CancellationToken cancellationToken
     )
@@ -95,7 +102,7 @@ public class EmployeeController : ApiControllerBase
         ListMapper mapper = new();
         ListParameters listParameters = mapper.ToListParameter(listRequest);
         GetEmployeesResult result = await _mediator.Send(
-            new GetEmployeesQuery { ListParameters = listParameters },
+            new GetEmployeesQuery { ListParameters = listParameters, AppContext = new ApplicationContext(version) },
             cancellationToken
         );
 
@@ -119,10 +126,14 @@ public class EmployeeController : ApiControllerBase
     )]
     [Consumes(MediaTypeNames.Application.Json)]
     [HttpPost]
-    public async Task<IActionResult> CreateEmployee(CreateEmployeeRequest request)
+    public async Task<IActionResult> CreateEmployee(
+        [FromHeader(Name = Headers.Version)] string? version,
+        CreateEmployeeRequest request
+    )
     {
         EmployeeMapper mapper = new();
         CreateEmployeeCommand command = mapper.ToCreateCommand(request);
+        command.AppContext = new ApplicationContext(version);
         CreateEmployeeResult result = await _mediator.Send(command);
 
         return CreatedAtAction(
@@ -149,10 +160,15 @@ public class EmployeeController : ApiControllerBase
     )]
     [Consumes(MediaTypeNames.Application.Json)]
     [HttpPut("{employeeId}")]
-    public async Task<IActionResult> UpdateEmployee(int employeeId, UpdateEmployeeRequest request)
+    public async Task<IActionResult> UpdateEmployee(
+        [FromHeader(Name = Headers.Version)] string? version,
+        int employeeId,
+        UpdateEmployeeRequest request
+    )
     {
         EmployeeMapper mapper = new();
         UpdateEmployeeCommand command = mapper.ToUpdateCommand(request);
+        command.AppContext = new ApplicationContext(version);
         command.EmployeeId = employeeId;
         UpdateEmployeeResult result = await _mediator.Send(command);
 
@@ -165,11 +181,15 @@ public class EmployeeController : ApiControllerBase
         "Employee deleted"
     )]
     [HttpDelete("{employeeId}")]
-    public async Task<IActionResult> DeleteEmployee(int employeeId)
+    public async Task<IActionResult> DeleteEmployee(
+        [FromHeader(Name = Headers.Version)] string? version,
+        int employeeId
+    )
     {
         DeleteEmployeeCommand command = new()
         {
-            EmployeeId = employeeId
+            EmployeeId = employeeId,
+            AppContext = new ApplicationContext(version)
         };
         await _mediator.Send(command);
 

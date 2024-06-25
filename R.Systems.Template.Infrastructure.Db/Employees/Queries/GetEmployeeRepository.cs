@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Infrastructure.Db.Common.Entities;
 
@@ -14,6 +15,8 @@ internal class GetEmployeeRepository : IGetEmployeeRepository
     {
         _dbContext = dbContext;
     }
+
+    public string Version { get; } = Versions.V1;
 
     public async Task<Employee?> GetEmployeeAsync(int employeeId, CancellationToken cancellationToken)
     {

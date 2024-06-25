@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Common.Lists.Extensions;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
@@ -16,6 +17,8 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
     {
         _dbContext = dbContext;
     }
+
+    public string Version { get; } = Versions.V1;
 
     public async Task<ListInfo<Employee>> GetEmployeesAsync(
         ListParameters listParameters,

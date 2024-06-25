@@ -23,6 +23,7 @@ internal class DbHealthCheck : IHealthCheck
                 .OrderBy(id => id)
                 .Take(10)
                 .ToListAsync(cancellationToken);
+
             return HealthCheckResult.Healthy();
         }
         catch (Exception ex)

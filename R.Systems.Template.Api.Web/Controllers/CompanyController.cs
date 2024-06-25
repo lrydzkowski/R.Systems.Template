@@ -8,6 +8,7 @@ using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Api.Web.Swagger.Examples.Companies;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Errors;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Commands.DeleteCompany;
@@ -54,11 +55,16 @@ public class CompanyController : ApiControllerBase
         typeof(GetCompanyNotFoundResponseExamples)
     )]
     [HttpGet("{companyId}", Name = "GetCompany")]
-    public async Task<IActionResult> GetCompany(int companyId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetCompany(
+        [FromHeader(Name = Headers.Version)] string? version,
+        int companyId,
+        CancellationToken cancellationToken
+    )
     {
         GetCompanyQuery query = new()
         {
-            CompanyId = companyId
+            CompanyId = companyId,
+            AppContext = new ApplicationContext(version)
         };
         GetCompanyResult result = await _mediator.Send(query, cancellationToken);
         if (result.Company == null)
@@ -90,6 +96,7 @@ public class CompanyController : ApiControllerBase
     )]
     [HttpGet]
     public async Task<IActionResult> GetCompanies(
+        [FromHeader(Name = Headers.Version)] string? version,
         [FromQuery] ListRequest listRequest,
         CancellationToken cancellationToken
     )
@@ -97,7 +104,7 @@ public class CompanyController : ApiControllerBase
         ListMapper mapper = new();
         ListParameters listParameters = mapper.ToListParameter(listRequest);
         GetCompaniesResult result = await _mediator.Send(
-            new GetCompaniesQuery { ListParameters = listParameters },
+            new GetCompaniesQuery { ListParameters = listParameters, AppContext = new ApplicationContext(version) },
             cancellationToken
         );
 
@@ -121,10 +128,14 @@ public class CompanyController : ApiControllerBase
     )]
     [Consumes(MediaTypeNames.Application.Json)]
     [HttpPost]
-    public async Task<IActionResult> CreateCompany(CreateCompanyRequest request)
+    public async Task<IActionResult> CreateCompany(
+        [FromHeader(Name = Headers.Version)] string? version,
+        CreateCompanyRequest request
+    )
     {
         CompanyMapper companyMapper = new();
         CreateCompanyCommand command = companyMapper.ToCreateCommand(request);
+        command.AppContext = new ApplicationContext(version);
         CreateCompanyResult result = await _mediator.Send(command);
 
         return CreatedAtAction(nameof(GetCompany), new { companyId = result.Company.CompanyId }, result.Company);
@@ -147,10 +158,15 @@ public class CompanyController : ApiControllerBase
     )]
     [Consumes(MediaTypeNames.Application.Json)]
     [HttpPut("{companyId}")]
-    public async Task<IActionResult> UpdateCompany(int companyId, UpdateCompanyRequest request)
+    public async Task<IActionResult> UpdateCompany(
+        [FromHeader(Name = Headers.Version)] string? version,
+        int companyId,
+        UpdateCompanyRequest request
+    )
     {
         CompanyMapper companyMapper = new();
         UpdateCompanyCommand command = companyMapper.ToUpdateCommand(request);
+        command.AppContext = new ApplicationContext(version);
         command.CompanyId = companyId;
         UpdateCompanyResult result = await _mediator.Send(command);
 
@@ -167,11 +183,15 @@ public class CompanyController : ApiControllerBase
         typeof(DeleteCompanyValidationErrorResponseExamples)
     )]
     [HttpDelete("{companyId}")]
-    public async Task<IActionResult> DeleteCompany(int companyId)
+    public async Task<IActionResult> DeleteCompany(
+        [FromHeader(Name = Headers.Version)] string? version,
+        int companyId
+    )
     {
         DeleteCompanyCommand command = new()
         {
-            CompanyId = companyId
+            CompanyId = companyId,
+            AppContext = new ApplicationContext(version)
         };
         await _mediator.Send(command);
 

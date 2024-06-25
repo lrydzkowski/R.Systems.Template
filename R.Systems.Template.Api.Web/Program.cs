@@ -3,6 +3,7 @@ using R.Systems.Template.Api.Web.Middleware;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
 using R.Systems.Template.Infrastructure.Db;
+using R.Systems.Template.Infrastructure.MongoDb;
 using R.Systems.Template.Infrastructure.Notifications;
 using R.Systems.Template.Infrastructure.Wordnik;
 using Serilog;
@@ -41,6 +42,7 @@ public class Program
         builder.Services.ConfigureServices(builder.Configuration, builder.Environment);
         builder.Services.ConfigureCoreServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureMongoDbServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);
         builder.Services.ConfigureNotificationsServices();

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
 
 namespace R.Systems.Template.Infrastructure.Db.Companies.Queries;
@@ -12,6 +13,8 @@ internal class GetCompanyRepository : IGetCompanyRepository
     {
         _dbContext = dbContext;
     }
+
+    public string Version { get; } = Versions.V1;
 
     public async Task<Company?> GetCompanyAsync(int companyId, CancellationToken cancellationToken)
     {

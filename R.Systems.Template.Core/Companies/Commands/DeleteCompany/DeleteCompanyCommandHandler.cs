@@ -1,23 +1,26 @@
 using MediatR;
+using R.Systems.Template.Core.Common.Infrastructure;
 
 namespace R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 
-public class DeleteCompanyCommand : IRequest
+public class DeleteCompanyCommand : IContextRequest, IRequest
 {
     public int CompanyId { get; init; }
+    public ApplicationContext AppContext { get; set; } = new();
 }
 
 public class DeleteCompanyCommandHandler : IRequestHandler<DeleteCompanyCommand>
 {
-    private readonly IDeleteCompanyRepository _deleteCompanyRepository;
+    private readonly IVersionedRepositoryFactory<IDeleteCompanyRepository> _repositoryFactory;
 
-    public DeleteCompanyCommandHandler(IDeleteCompanyRepository deleteCompanyRepository)
+    public DeleteCompanyCommandHandler(IVersionedRepositoryFactory<IDeleteCompanyRepository> repositoryFactory)
     {
-        _deleteCompanyRepository = deleteCompanyRepository;
+        _repositoryFactory = repositoryFactory;
     }
 
     public async Task Handle(DeleteCompanyCommand command, CancellationToken cancellationToken)
     {
-        await _deleteCompanyRepository.DeleteAsync(command.CompanyId);
+        IDeleteCompanyRepository repository = _repositoryFactory.GetRepository(command.AppContext);
+        await repository.DeleteAsync(command.CompanyId);
     }
 }

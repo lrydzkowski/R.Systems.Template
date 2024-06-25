@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using Quartz;
 using R.Systems.Template.Api.Web.Auth;
 using R.Systems.Template.Api.Web.Hubs;
+using R.Systems.Template.Api.Web.JsonConverters;
 using R.Systems.Template.Api.Web.Options;
 using R.Systems.Template.Api.Web.Services;
 using R.Systems.Template.Api.Web.Swagger;
@@ -26,7 +27,8 @@ public static class DependencyInjection
         IWebHostEnvironment environment
     )
     {
-        services.AddControllers();
+        services.AddControllers()
+            .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonExceptionConverter()));
         services.AddMvc()
             .AddJsonOptions(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
         services.AddEndpointsApiExplorer();

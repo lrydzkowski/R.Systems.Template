@@ -1,11 +1,13 @@
 using MediatR;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Infrastructure;
 
 namespace R.Systems.Template.Core.Companies.Commands.CreateCompany;
 
-public class CreateCompanyCommand : IRequest<CreateCompanyResult>
+public class CreateCompanyCommand : IContextRequest, IRequest<CreateCompanyResult>
 {
     public string? Name { get; set; }
+    public ApplicationContext AppContext { get; set; } = new();
 }
 
 public class CreateCompanyResult
@@ -15,18 +17,19 @@ public class CreateCompanyResult
 
 public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand, CreateCompanyResult>
 {
-    private readonly ICreateCompanyRepository _createCompanyRepository;
+    private readonly IVersionedRepositoryFactory<ICreateCompanyRepository> _repositoryFactory;
 
-    public CreateCompanyCommandHandler(ICreateCompanyRepository createCompanyRepository)
+    public CreateCompanyCommandHandler(IVersionedRepositoryFactory<ICreateCompanyRepository> repositoryFactory)
     {
-        _createCompanyRepository = createCompanyRepository;
+        _repositoryFactory = repositoryFactory;
     }
 
     public async Task<CreateCompanyResult> Handle(CreateCompanyCommand command, CancellationToken cancellationToken)
     {
+        ICreateCompanyRepository repository = _repositoryFactory.GetRepository(command.AppContext);
         CreateCompanyCommandMapper mapper = new();
         CompanyToCreate companyToCreate = mapper.ToCompanyToCreate(command);
-        Company companyCreated = await _createCompanyRepository.CreateCompanyAsync(companyToCreate);
+        Company companyCreated = await repository.CreateCompanyAsync(companyToCreate);
         return new CreateCompanyResult
         {
             Company = companyCreated

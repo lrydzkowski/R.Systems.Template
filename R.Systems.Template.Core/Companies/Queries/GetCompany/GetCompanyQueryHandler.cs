@@ -1,11 +1,13 @@
 using MediatR;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Infrastructure;
 
 namespace R.Systems.Template.Core.Companies.Queries.GetCompany;
 
-public class GetCompanyQuery : IRequest<GetCompanyResult>
+public class GetCompanyQuery : IContextRequest, IRequest<GetCompanyResult>
 {
     public int CompanyId { get; init; }
+    public ApplicationContext AppContext { get; set; } = new();
 }
 
 public class GetCompanyResult
@@ -15,16 +17,17 @@ public class GetCompanyResult
 
 public class GetCompanyQueryHandler : IRequestHandler<GetCompanyQuery, GetCompanyResult>
 {
-    private readonly IGetCompanyRepository _getCompanyRepository;
+    private readonly IVersionedRepositoryFactory<IGetCompanyRepository> _repositoryFactory;
 
-    public GetCompanyQueryHandler(IGetCompanyRepository getCompanyRepository)
+    public GetCompanyQueryHandler(IVersionedRepositoryFactory<IGetCompanyRepository> repositoryFactory)
     {
-        _getCompanyRepository = getCompanyRepository;
+        _repositoryFactory = repositoryFactory;
     }
 
     public async Task<GetCompanyResult> Handle(GetCompanyQuery query, CancellationToken cancellationToken)
     {
-        Company? company = await _getCompanyRepository.GetCompanyAsync(query.CompanyId, cancellationToken);
+        IGetCompanyRepository repository = _repositoryFactory.GetRepository(query.AppContext);
+        Company? company = await repository.GetCompanyAsync(query.CompanyId, cancellationToken);
         return new GetCompanyResult
         {
             Company = company

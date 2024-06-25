@@ -52,6 +52,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubAction", "GitHubActio
 		.github\workflows\build-and-deploy.yml = .github\workflows\build-and-deploy.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.Infrastructure.MongoDb", "R.Systems.Template.Infrastructure.MongoDb\R.Systems.Template.Infrastructure.MongoDb.csproj", "{FED511FE-5E70-4AC0-809D-5683665F386D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +112,10 @@ Global
 		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FED511FE-5E70-4AC0-809D-5683665F386D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FED511FE-5E70-4AC0-809D-5683665F386D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FED511FE-5E70-4AC0-809D-5683665F386D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FED511FE-5E70-4AC0-809D-5683665F386D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,6 +138,7 @@ Global
 		{C97F17BC-9F02-4968-8E42-921CFC606DF8} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{CA9E7BA5-AD15-415E-9C4D-56848F3A7D41} = {3FC77EDA-4DED-4EA0-B6FA-F1A06DD40E61}
+		{FED511FE-5E70-4AC0-809D-5683665F386D} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}
