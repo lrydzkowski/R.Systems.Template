@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using R.Systems.Template.Api.Web;
 using R.Systems.Template.Core.Common.Infrastructure;
-using R.Systems.Template.Infrastructure.Db.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Assertion;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureAd;
@@ -18,8 +17,12 @@ using R.Systems.Template.Tests.Api.Web.Integration.Options.HealthCheck;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.Serilog;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.Wordnik;
 using RunMethodsSequentially;
+using Testcontainers.MongoDb;
 using Testcontainers.PostgreSql;
 using WireMock.Server;
+using DbConnectionStringsOptions = R.Systems.Template.Infrastructure.Db.Common.Options.ConnectionStringsOptions;
+using MongoDbConnectionStringsOptions =
+    R.Systems.Template.Infrastructure.MongoDb.Common.Options.ConnectionStringsOptions;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 
@@ -36,6 +39,8 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         new WordnikOptionsData(), new HealthCheckOptionsData(), new SerilogOptionsData()
     };
 
+    private readonly MongoDbContainer _mongoDbContainer = new MongoDbBuilder().WithImage("mongo:6.0").Build();
+
     public WebApiFactory()
     {
         WireMockServer = WireMockServer.Start();
@@ -47,12 +52,14 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     public async Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
+        await _mongoDbContainer.StartAsync();
     }
 
     public new async Task DisposeAsync()
     {
         WireMockServer.Dispose();
         await _dbContainer.DisposeAsync();
+        await _mongoDbContainer.DisposeAsync();
     }
 
     protected override IHost CreateHost(IHostBuilder builder)
@@ -104,15 +111,12 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppPostgresDb)}"] =
-                    BuildConnectionString()
+                [$"{DbConnectionStringsOptions.Position}:{nameof(DbConnectionStringsOptions.AppPostgresDb)}"] =
+                    _dbContainer.GetConnectionString(),
+                [$"{MongoDbConnectionStringsOptions.Position}:{nameof(MongoDbConnectionStringsOptions.MongoDb)}"] =
+                    _mongoDbContainer.GetConnectionString()
             }
         );
-    }
-
-    private string BuildConnectionString()
-    {
-        return _dbContainer.GetConnectionString();
     }
 }
 
