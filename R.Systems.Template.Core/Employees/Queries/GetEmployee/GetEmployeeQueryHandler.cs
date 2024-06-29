@@ -6,8 +6,8 @@ namespace R.Systems.Template.Core.Employees.Queries.GetEmployee;
 
 public class GetEmployeeQuery : IContextRequest, IRequest<GetEmployeeResult>
 {
-    public int? CompanyId { get; init; }
-    public int EmployeeId { get; init; }
+    public long? CompanyId { get; init; }
+    public long EmployeeId { get; init; }
     public ApplicationContext AppContext { get; set; } = new();
 }
 
@@ -30,7 +30,7 @@ public class GetEmployeeQueryHandler : IRequestHandler<GetEmployeeQuery, GetEmpl
         IGetEmployeeRepository repository = _repositoryFactory.GetRepository(query.AppContext);
         Employee? employee = query.CompanyId == null
             ? await repository.GetEmployeeAsync(query.EmployeeId, cancellationToken)
-            : await repository.GetEmployeeAsync((int)query.CompanyId, query.EmployeeId, cancellationToken);
+            : await repository.GetEmployeeAsync((long)query.CompanyId, query.EmployeeId, cancellationToken);
         return new GetEmployeeResult
         {
             Employee = employee

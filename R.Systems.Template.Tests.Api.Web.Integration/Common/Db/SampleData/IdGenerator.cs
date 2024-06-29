@@ -4,17 +4,17 @@ namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 
 internal static class IdGenerator
 {
-    public static int GetCompanyId(int id)
+    public static long GetCompanyId(long id)
     {
         return GetId(CompanyEntityTypeConfiguration.FirstAvailableId, id);
     }
 
-    public static int GetEmployeeId(int id)
+    public static long GetEmployeeId(long id)
     {
         return GetId(EmployeeEntityTypeConfiguration.FirstAvailableId, id);
     }
 
-    private static int GetId(int firstAvailableId, int id)
+    private static long GetId(long firstAvailableId, long id)
     {
         return firstAvailableId - 1 + id;
     }

@@ -27,7 +27,7 @@ public class GetCompanyTests
     [Fact]
     public async Task GetCompany_ShouldReturnCompany_WhenCompanyExists()
     {
-        int companyId = IdGenerator.GetCompanyId(1);
+        long companyId = IdGenerator.GetCompanyId(1);
         Company expectedCompany = new()
         {
             CompanyId = companyId,
@@ -43,7 +43,7 @@ public class GetCompanyTests
     [Fact]
     public async Task GetCompany_ShouldReturn404_WhenCompanyNotExist()
     {
-        int companyId = 10;
+        long companyId = 10;
         RestRequest restRequest = new($"{_endpointUrlPath}/{companyId}");
         RestResponse<ErrorInfo> response = await _restClient.ExecuteAsync<ErrorInfo>(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);

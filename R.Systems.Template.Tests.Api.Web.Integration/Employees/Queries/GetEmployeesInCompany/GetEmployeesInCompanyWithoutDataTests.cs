@@ -25,7 +25,7 @@ public class GetEmployeesInCompanyWithoutDataTests
     [Fact]
     public async Task GetEmployeesInCompany_ShouldReturnEmptyList_WhenEmployeesNotExist()
     {
-        int companyId = IdGenerator.GetCompanyId(1);
+        long companyId = IdGenerator.GetCompanyId(1);
         RestRequest restRequest = new($"/companies/{companyId}/employees");
         RestResponse<ListInfo<Employee>> response = await _restClient.ExecuteAsync<ListInfo<Employee>>(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.OK);

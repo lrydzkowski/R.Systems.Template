@@ -20,7 +20,7 @@ internal class CompanyService
         await using IDbContextTransaction transaction = await _dbContext.Database.BeginTransactionAsync();
         List<string> existingCompaniesNames =
             await _dbContext.Companies.AsNoTracking().Select(x => x.Name).ToListAsync();
-        List<int> companiesIds = await CreateCompaniesAsync(numberOfCompanies, existingCompaniesNames);
+        List<long> companiesIds = await CreateCompaniesAsync(numberOfCompanies, existingCompaniesNames);
         await CreateEmployeesAsync(numberOfEmployees, companiesIds);
         await transaction.CommitAsync();
     }
@@ -30,12 +30,12 @@ internal class CompanyService
         return await _dbContext.Companies.AsNoTracking().Include(x => x.Employees).ToListAsync();
     }
 
-    private async Task<List<int>> CreateCompaniesAsync(int numberOfCompanies, List<string> existingCompaniesNames)
+    private async Task<List<long>> CreateCompaniesAsync(int numberOfCompanies, List<string> existingCompaniesNames)
     {
         List<CompanyEntity> companies = BuildCompanyEntities(numberOfCompanies, existingCompaniesNames);
         await _dbContext.Companies.AddRangeAsync(companies);
         await _dbContext.SaveChangesAsync();
-        return companies.Select(company => (int)company.Id!).ToList();
+        return companies.Select(company => (long)company.Id!).ToList();
     }
 
     private List<CompanyEntity> BuildCompanyEntities(int numberOfCompanies, List<string> existingCompaniesNames)
@@ -65,21 +65,21 @@ internal class CompanyService
         );
     }
 
-    private async Task CreateEmployeesAsync(int numberOfEmployees, List<int> companiesIds)
+    private async Task CreateEmployeesAsync(int numberOfEmployees, List<long> companiesIds)
     {
         List<EmployeeEntity> employees = BuildEmployeeEntities(numberOfEmployees, companiesIds);
         await _dbContext.Employees.AddRangeAsync(employees);
         await _dbContext.SaveChangesAsync();
     }
 
-    private List<EmployeeEntity> BuildEmployeeEntities(int numberOfEmployees, List<int> companiesIds)
+    private List<EmployeeEntity> BuildEmployeeEntities(int numberOfEmployees, List<long> companiesIds)
     {
         return Enumerable.Range(1, numberOfEmployees)
             .Select(_ => BuildEmployeeEntityFaker(companiesIds).Generate())
             .ToList();
     }
 
-    private Faker<EmployeeEntity> BuildEmployeeEntityFaker(List<int> companiesIds)
+    private Faker<EmployeeEntity> BuildEmployeeEntityFaker(List<long> companiesIds)
     {
         return new Faker<EmployeeEntity>()
             .RuleFor(employeeEntity => employeeEntity.FirstName, faker => faker.Name.FirstName())

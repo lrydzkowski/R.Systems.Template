@@ -5,5 +5,5 @@ namespace R.Systems.Template.Core.Companies.Queries.GetCompany;
 
 public interface IGetCompanyRepository : IVersionedRepository
 {
-    Task<Company?> GetCompanyAsync(int companyId, CancellationToken cancellationToken);
+    Task<Company?> GetCompanyAsync(long companyId, CancellationToken cancellationToken);
 }

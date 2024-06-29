@@ -24,13 +24,13 @@ internal class UpdateCompanyFunction : FunctionBase<UpdateCompanyFunction>
     }
 
     [OpenApiOperation(nameof(UpdateCompany), Summary = nameof(UpdateCompany), Description = "It updates a company.")]
-    [OpenApiParameter(nameof(companyId), Type = typeof(int), Required = true)]
+    [OpenApiParameter(nameof(companyId), Type = typeof(long), Required = true)]
     [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(Company), Description = "Updated company")]
     [Function(nameof(UpdateCompany))]
     public async Task<HttpResponseData> UpdateCompany(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "companies/{companyId:int}")]
+        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "companies/{companyId:long}")]
         HttpRequestData requestData,
-        int companyId
+        long companyId
     )
     {
         Logger.LogInformation("C# Start processing {FunctionName} function.", nameof(UpdateCompany));

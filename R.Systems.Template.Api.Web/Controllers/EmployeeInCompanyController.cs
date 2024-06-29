@@ -42,8 +42,8 @@ public class EmployeeInCompanyController : ApiControllerBase
     [HttpGet("{companyId}/employees/{employeeId}", Name = "GetEmployeeInCompany")]
     public async Task<IActionResult> GetEmployeeInCompany(
         [FromHeader(Name = Headers.Version)] string? version,
-        int companyId,
-        int employeeId,
+        long companyId,
+        long employeeId,
         CancellationToken cancellationToken
     )
     {
@@ -81,7 +81,7 @@ public class EmployeeInCompanyController : ApiControllerBase
     public async Task<IActionResult> GetEmployeesInCompany(
         [FromHeader(Name = Headers.Version)] string? version,
         [FromQuery] ListRequest listRequest,
-        int companyId,
+        long companyId,
         CancellationToken cancellationToken
     )
     {

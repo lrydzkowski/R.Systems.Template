@@ -15,7 +15,7 @@ internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRe
         throw new NotImplementedException();
     }
 
-    public Task DeleteEmployeeAsync(int employeeId)
+    public Task DeleteEmployeeAsync(long employeeId)
     {
         throw new NotImplementedException();
     }

@@ -5,7 +5,7 @@ namespace R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
 
 public class DeleteEmployeeCommand : IContextRequest, IRequest
 {
-    public int EmployeeId { get; init; }
+    public long EmployeeId { get; init; }
     public ApplicationContext AppContext { get; set; } = new();
 }
 

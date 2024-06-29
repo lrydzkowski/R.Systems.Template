@@ -19,7 +19,7 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
 
     public Task<ListInfo<Employee>> GetEmployeesAsync(
         ListParameters listParameters,
-        int companyId,
+        long companyId,
         CancellationToken cancellationToken
     )
     {

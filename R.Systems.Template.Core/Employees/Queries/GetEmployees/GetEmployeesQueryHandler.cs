@@ -7,7 +7,7 @@ namespace R.Systems.Template.Core.Employees.Queries.GetEmployees;
 
 public class GetEmployeesQuery : GetElementsQuery, IContextRequest, IRequest<GetEmployeesResult>
 {
-    public int? CompanyId { get; init; }
+    public long? CompanyId { get; init; }
     public ApplicationContext AppContext { get; set; } = new();
 }
 
@@ -32,7 +32,7 @@ public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, GetEm
             ? await repository.GetEmployeesAsync(query.ListParameters, cancellationToken)
             : await repository.GetEmployeesAsync(
                 query.ListParameters,
-                (int)query.CompanyId,
+                (long)query.CompanyId,
                 cancellationToken
             );
         return new GetEmployeesResult

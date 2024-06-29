@@ -23,12 +23,13 @@ internal class GetCompanyFunction : FunctionBase<GetCompanyFunction>
     }
 
     [OpenApiOperation(nameof(GetCompany), Summary = nameof(GetCompany), Description = "It returns a company.")]
-    [OpenApiParameter(nameof(companyId), Type = typeof(int), Required = true)]
+    [OpenApiParameter(nameof(companyId), Type = typeof(long), Required = true)]
     [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(Company), Description = "A company")]
     [Function(nameof(GetCompany))]
     public async Task<HttpResponseData> GetCompany(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies/{companyId:int}")] HttpRequestData request,
-        int companyId,
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies/{companyId:long}")]
+        HttpRequestData request,
+        long companyId,
         CancellationToken cancellationToken
     )
     {

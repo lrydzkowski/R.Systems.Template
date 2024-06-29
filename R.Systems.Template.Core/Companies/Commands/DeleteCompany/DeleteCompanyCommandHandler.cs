@@ -5,7 +5,7 @@ namespace R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 
 public class DeleteCompanyCommand : IContextRequest, IRequest
 {
-    public int CompanyId { get; init; }
+    public long CompanyId { get; init; }
     public ApplicationContext AppContext { get; set; } = new();
 }
 

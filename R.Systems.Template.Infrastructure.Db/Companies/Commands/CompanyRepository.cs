@@ -42,7 +42,7 @@ internal class CompanyRepository : ICreateCompanyRepository, IUpdateCompanyRepos
         return mapper.ToCompany(companyEntity);
     }
 
-    public async Task DeleteAsync(int companyId)
+    public async Task DeleteAsync(long companyId)
     {
         CompanyEntity company = await GetCompanyEntityAsync(companyId);
         _dbContext.Companies.Remove(company);
@@ -67,7 +67,7 @@ internal class CompanyRepository : ICreateCompanyRepository, IUpdateCompanyRepos
         return mapper.ToCompany(companyEntity);
     }
 
-    private async Task<CompanyEntity> GetCompanyEntityAsync(int companyId)
+    private async Task<CompanyEntity> GetCompanyEntityAsync(long companyId)
     {
         CompanyEntity? companyEntity = await _dbContext.Companies.Where(x => x.Id == companyId).FirstOrDefaultAsync();
         if (companyEntity == null)

@@ -29,7 +29,7 @@ public class DeleteCompanyTests
     [Fact]
     public async Task DeleteCompany_ShouldReturnValidationError_WhenCompanyNotExist()
     {
-        int companyId = int.MaxValue;
+        long companyId = long.MaxValue;
         List<ValidationFailure> expectedValidationFailures = new()
         {
             new ValidationFailure
@@ -56,7 +56,7 @@ public class DeleteCompanyTests
             Name = "Test Company"
         };
         CreateCompanyResult createCompanyResult = await _mediator.Send(createCompanyCommand);
-        int companyId = createCompanyResult.Company.CompanyId;
+        long companyId = createCompanyResult.Company.CompanyId;
         GetCompanyQuery getCompanyQuery = new()
         {
             CompanyId = companyId

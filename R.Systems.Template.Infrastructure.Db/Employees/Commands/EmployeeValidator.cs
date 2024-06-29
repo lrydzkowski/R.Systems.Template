@@ -13,7 +13,7 @@ internal class EmployeeValidator
         _dbContext = dbContext;
     }
 
-    public async Task VerifyCompanyExistenceAsync(int companyId)
+    public async Task VerifyCompanyExistenceAsync(long companyId)
     {
         bool exist = await _dbContext.Companies.AsNoTracking()
                          .Where(x => x.Id == companyId)

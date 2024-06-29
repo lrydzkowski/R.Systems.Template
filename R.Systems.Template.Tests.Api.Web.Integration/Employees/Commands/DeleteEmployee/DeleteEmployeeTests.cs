@@ -28,7 +28,7 @@ public class DeleteEmployeeTests
     [Fact]
     public async Task DeleteEmployee_ShouldReturnValidationError_WhenEmployeeNotExist()
     {
-        int employeeId = int.MaxValue;
+        long employeeId = long.MaxValue;
         List<ValidationFailure> expectedValidationFailures = new()
         {
             new ValidationFailure

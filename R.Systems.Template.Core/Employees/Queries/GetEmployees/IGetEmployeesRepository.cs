@@ -10,7 +10,7 @@ public interface IGetEmployeesRepository : IVersionedRepository
 
     Task<ListInfo<Employee>> GetEmployeesAsync(
         ListParameters listParameters,
-        int companyId,
+        long companyId,
         CancellationToken cancellationToken
     );
 }

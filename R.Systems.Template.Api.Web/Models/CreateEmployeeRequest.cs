@@ -4,5 +4,5 @@ public class CreateEmployeeRequest
 {
     public string? FirstName { get; init; }
     public string? LastName { get; init; }
-    public int? CompanyId { get; init; }
+    public long? CompanyId { get; init; }
 }

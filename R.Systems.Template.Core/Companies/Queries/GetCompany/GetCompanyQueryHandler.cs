@@ -6,7 +6,7 @@ namespace R.Systems.Template.Core.Companies.Queries.GetCompany;
 
 public class GetCompanyQuery : IContextRequest, IRequest<GetCompanyResult>
 {
-    public int CompanyId { get; init; }
+    public long CompanyId { get; init; }
     public ApplicationContext AppContext { get; set; } = new();
 }
 

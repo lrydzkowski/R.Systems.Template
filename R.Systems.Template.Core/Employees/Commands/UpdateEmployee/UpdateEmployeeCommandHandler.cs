@@ -6,10 +6,10 @@ namespace R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 
 public class UpdateEmployeeCommand : IContextRequest, IRequest<UpdateEmployeeResult>
 {
-    public int EmployeeId { get; set; }
+    public long EmployeeId { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public int? CompanyId { get; set; }
+    public long? CompanyId { get; set; }
     public ApplicationContext AppContext { get; set; } = new();
 }
 

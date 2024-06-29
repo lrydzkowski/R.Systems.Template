@@ -79,7 +79,7 @@ internal static class EmployeesSampleData
             return Data.Select(
                     x => new Employee
                     {
-                        EmployeeId = (int)x.Id!, FirstName = x.FirstName, LastName = x.LastName, CompanyId = x.CompanyId
+                        EmployeeId = (long)x.Id!, FirstName = x.FirstName, LastName = x.LastName, CompanyId = x.CompanyId
                     }
                 )
                 .ToList();

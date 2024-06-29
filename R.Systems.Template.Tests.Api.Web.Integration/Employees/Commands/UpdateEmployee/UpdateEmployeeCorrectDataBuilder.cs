@@ -13,17 +13,17 @@ internal static class UpdateEmployeeCorrectDataBuilder
         {
             BuildParameters(
                 1,
-                (int)EmployeesSampleData.Data[0].Id!,
+                (long)EmployeesSampleData.Data[0].Id!,
                 new UpdateEmployeeRequest
                 {
                     FirstName = faker.Name.FirstName(), LastName = faker.Name.LastName(),
-                    CompanyId = (int)CompaniesSampleData.Data["Meta"].Id!
+                    CompanyId = (long)CompaniesSampleData.Data["Meta"].Id!
                 }
             )
         };
     }
 
-    private static object[] BuildParameters(int id, int employeeId, UpdateEmployeeRequest data)
+    private static object[] BuildParameters(int id, long employeeId, UpdateEmployeeRequest data)
     {
         return new object[]
         {

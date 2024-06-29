@@ -12,8 +12,8 @@ internal static class UpdateEmployeeIncorrectDataBuilder
     public static IEnumerable<object[]> Build()
     {
         Faker faker = new();
-        int employeeId = (int)EmployeesSampleData.Data[0].Id!;
-        int companyId = (int)CompaniesSampleData.Data["Meta"].Id!;
+        long employeeId = (long)EmployeesSampleData.Data[0].Id!;
+        long companyId = (long)CompaniesSampleData.Data["Meta"].Id!;
         string? firstNameAttemptedValue = "";
         yield return BuildParameters(
             1,
@@ -94,7 +94,7 @@ internal static class UpdateEmployeeIncorrectDataBuilder
             new List<ValidationFailure>
                 { ValidationFailureBuilder.BuildTooLongFieldValidationError("LastName", 100, lastNameAttemptedValue) }
         );
-        int companyIdAttemptedValue = 998;
+        long companyIdAttemptedValue = 998;
         yield return BuildParameters(
             9,
             employeeId,
@@ -114,7 +114,7 @@ internal static class UpdateEmployeeIncorrectDataBuilder
                 }
             }
         );
-        int employeeIdAttemptedValue = 999;
+        long employeeIdAttemptedValue = 999;
         yield return BuildParameters(
             10,
             employeeIdAttemptedValue,
@@ -135,7 +135,7 @@ internal static class UpdateEmployeeIncorrectDataBuilder
 
     private static object[] BuildParameters(
         int id,
-        int employeeId,
+        long employeeId,
         UpdateEmployeeRequest data,
         HttpStatusCode expectedHttpStatus,
         List<ValidationFailure> validationFailures

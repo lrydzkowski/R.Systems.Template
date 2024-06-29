@@ -16,11 +16,11 @@ internal class GetCompanyRepository : IGetCompanyRepository
 
     public string Version { get; } = Versions.V1;
 
-    public async Task<Company?> GetCompanyAsync(int companyId, CancellationToken cancellationToken)
+    public async Task<Company?> GetCompanyAsync(long companyId, CancellationToken cancellationToken)
     {
         return await _dbContext.Companies.AsNoTracking()
             .Where(company => company.Id == companyId)
-            .Select(company => new Company { CompanyId = (int)company.Id!, Name = company.Name })
+            .Select(company => new Company { CompanyId = (long)company.Id!, Name = company.Name })
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

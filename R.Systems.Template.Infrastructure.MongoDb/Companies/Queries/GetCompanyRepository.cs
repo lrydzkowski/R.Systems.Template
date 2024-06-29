@@ -8,7 +8,7 @@ internal class GetCompanyRepository : IGetCompanyRepository
 {
     public string Version { get; } = Versions.V2;
 
-    public Task<Company?> GetCompanyAsync(int companyId, CancellationToken cancellationToken)
+    public Task<Company?> GetCompanyAsync(long companyId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

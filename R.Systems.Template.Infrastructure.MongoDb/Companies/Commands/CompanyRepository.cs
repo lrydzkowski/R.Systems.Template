@@ -15,7 +15,7 @@ internal class CompanyRepository : ICreateCompanyRepository, IUpdateCompanyRepos
         throw new NotImplementedException();
     }
 
-    public Task DeleteAsync(int companyId)
+    public Task DeleteAsync(long companyId)
     {
         throw new NotImplementedException();
     }

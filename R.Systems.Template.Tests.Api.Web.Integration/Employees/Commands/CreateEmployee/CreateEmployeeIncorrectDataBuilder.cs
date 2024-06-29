@@ -108,7 +108,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
             new List<ValidationFailure>
                 { ValidationFailureBuilder.BuildTooLongFieldValidationError("LastName", 100, lastNameAttemptedValue) }
         );
-        int companyIdAttemptedValue = 999;
+        long companyIdAttemptedValue = 999;
         yield return BuildParameters(
             9,
             new CreateEmployeeCommand

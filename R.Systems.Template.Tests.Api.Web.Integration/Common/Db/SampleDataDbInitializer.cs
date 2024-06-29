@@ -25,7 +25,7 @@ public class SampleDataDbInitializer : IStartupServiceToRunSequentially
 
     private async Task<bool> DataExistsAsync(AppDbContext dbContext)
     {
-        int? maxId = CompaniesSampleData.Data.Max(y => y.Value.Id);
+        long? maxId = CompaniesSampleData.Data.Max(y => y.Value.Id);
         if (maxId == null)
         {
             return false;

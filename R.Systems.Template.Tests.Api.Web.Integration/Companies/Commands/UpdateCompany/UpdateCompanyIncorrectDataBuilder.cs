@@ -12,7 +12,7 @@ internal static class UpdateCompanyIncorrectDataBuilder
     public static IEnumerable<object[]> Build()
     {
         Faker faker = new();
-        int companyId = (int)CompaniesSampleData.Data["Meta"].Id!;
+        long companyId = (long)CompaniesSampleData.Data["Meta"].Id!;
         string? nameAttemptedValue = "";
         yield return BuildParameters(
             1,
@@ -49,7 +49,7 @@ internal static class UpdateCompanyIncorrectDataBuilder
             new List<ValidationFailure>
                 { ValidationFailureBuilder.BuildTooLongFieldValidationError("Name", 200, nameAttemptedValue) }
         );
-        int companyIdAttemptedValue = 999;
+        long companyIdAttemptedValue = 999;
         yield return BuildParameters(
             5,
             companyIdAttemptedValue,
@@ -69,7 +69,7 @@ internal static class UpdateCompanyIncorrectDataBuilder
 
     private static object[] BuildParameters(
         int id,
-        int companyId,
+        long companyId,
         UpdateCompanyRequest data,
         HttpStatusCode expectedHttpStatus,
         List<ValidationFailure> validationFailures

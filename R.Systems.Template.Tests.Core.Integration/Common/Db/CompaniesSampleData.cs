@@ -62,7 +62,7 @@ internal static class CompaniesSampleData
         get
         {
             return Data.Where(x => x.Value.Id != null)
-                .Select(x => new Company { CompanyId = (int)x.Value.Id!, Name = x.Value.Name })
+                .Select(x => new Company { CompanyId = (long)x.Value.Id!, Name = x.Value.Name })
                 .ToList();
         }
     }

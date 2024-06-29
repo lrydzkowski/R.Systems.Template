@@ -8,7 +8,7 @@ public class CreateEmployeeCommand : IContextRequest, IRequest<CreateEmployeeRes
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public int? CompanyId { get; set; }
+    public long? CompanyId { get; set; }
     public ApplicationContext AppContext { get; set; } = new();
 }
 

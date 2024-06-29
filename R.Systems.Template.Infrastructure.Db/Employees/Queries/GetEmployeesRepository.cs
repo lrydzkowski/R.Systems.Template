@@ -30,7 +30,7 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
 
     public async Task<ListInfo<Employee>> GetEmployeesAsync(
         ListParameters listParameters,
-        int companyId,
+        long companyId,
         CancellationToken cancellationToken
     )
     {
@@ -70,14 +70,14 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
             .Select(
                 employeeEntity => new Employee
                 {
-                    EmployeeId = (int)employeeEntity.Id!, FirstName = employeeEntity.FirstName,
+                    EmployeeId = (long)employeeEntity.Id!, FirstName = employeeEntity.FirstName,
                     LastName = employeeEntity.LastName, CompanyId = employeeEntity.CompanyId
                 }
             )
             .ToListAsync(cancellationToken);
         int count = await query.Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
             .Filter(fieldsAvailableToFilter, listParameters.Search)
-            .Select(employeeEntity => (int)employeeEntity.Id!)
+            .Select(employeeEntity => (long)employeeEntity.Id!)
             .CountAsync(cancellationToken);
         return new ListInfo<Employee>
         {

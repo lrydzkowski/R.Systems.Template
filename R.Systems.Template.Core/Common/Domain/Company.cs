@@ -2,6 +2,6 @@ namespace R.Systems.Template.Core.Common.Domain;
 
 public class Company
 {
-    public int CompanyId { get; set; }
+    public long CompanyId { get; set; }
     public string Name { get; set; } = "";
 }

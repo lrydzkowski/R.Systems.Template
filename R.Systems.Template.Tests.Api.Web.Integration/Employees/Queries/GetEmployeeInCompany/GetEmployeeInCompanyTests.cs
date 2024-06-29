@@ -29,7 +29,7 @@ public class GetEmployeeInCompanyTests
         EmployeeEntity expectedEmployeeEntity = EmployeesSampleData.Data[0];
         Employee expectedEmployee = new()
         {
-            EmployeeId = (int)expectedEmployeeEntity.Id!,
+            EmployeeId = (long)expectedEmployeeEntity.Id!,
             FirstName = expectedEmployeeEntity.FirstName,
             LastName = expectedEmployeeEntity.LastName,
             CompanyId = expectedEmployeeEntity.CompanyId

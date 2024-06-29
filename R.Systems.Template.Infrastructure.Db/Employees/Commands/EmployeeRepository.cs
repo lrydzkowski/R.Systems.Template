@@ -35,7 +35,7 @@ internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRe
         return mapper.ToEmployee(employeeEntity);
     }
 
-    public async Task DeleteEmployeeAsync(int employeeId)
+    public async Task DeleteEmployeeAsync(long employeeId)
     {
         EmployeeEntity employeeEntity = await GetEmployeeEntityAsync(employeeId);
         _dbContext.Employees.Remove(employeeEntity);
@@ -55,7 +55,7 @@ internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRe
         return employee;
     }
 
-    private async Task<EmployeeEntity> GetEmployeeEntityAsync(int employeeId)
+    private async Task<EmployeeEntity> GetEmployeeEntityAsync(long employeeId)
     {
         EmployeeEntity? employeeEntity =
             await _dbContext.Employees.Where(x => x.Id == employeeId).FirstOrDefaultAsync();

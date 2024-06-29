@@ -36,12 +36,12 @@ internal class GetCompaniesRepository : IGetCompaniesRepository
             .Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
             .Filter(fieldsAvailableToFilter, listParameters.Search)
             .Paginate(listParameters.Pagination)
-            .Select(companyEntity => new Company { CompanyId = (int)companyEntity.Id!, Name = companyEntity.Name })
+            .Select(companyEntity => new Company { CompanyId = (long)companyEntity.Id!, Name = companyEntity.Name })
             .ToListAsync(cancellationToken);
         int count = await _dbContext.Companies.AsNoTracking()
             .Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
             .Filter(fieldsAvailableToFilter, listParameters.Search)
-            .Select(companyEntity => (int)companyEntity.Id!)
+            .Select(companyEntity => (long)companyEntity.Id!)
             .CountAsync(cancellationToken);
         return new ListInfo<Company>
         {

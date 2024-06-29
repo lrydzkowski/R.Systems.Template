@@ -27,7 +27,7 @@ public class DeleteCompanyTests
     [Fact]
     public async Task DeleteCompany_ShouldReturnValidationError_WhenCompanyNotExist()
     {
-        int companyId = int.MaxValue;
+        long companyId = long.MaxValue;
         List<ValidationFailure> expectedValidationFailures = new()
         {
             new ValidationFailure

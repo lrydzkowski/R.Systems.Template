@@ -8,12 +8,12 @@ internal class GetEmployeeRepository : IGetEmployeeRepository
 {
     public string Version { get; } = Versions.V2;
 
-    public Task<Employee?> GetEmployeeAsync(int employeeId, CancellationToken cancellationToken)
+    public Task<Employee?> GetEmployeeAsync(long employeeId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Employee?> GetEmployeeAsync(int companyId, int employeeId, CancellationToken cancellationToken)
+    public Task<Employee?> GetEmployeeAsync(long companyId, long employeeId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
