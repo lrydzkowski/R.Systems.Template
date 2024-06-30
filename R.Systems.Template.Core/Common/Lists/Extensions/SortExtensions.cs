@@ -12,7 +12,7 @@ public static class SortExtensions
     )
     {
         sorting = PrepareSortingParameters(sorting, defaultSortingFieldName);
-        if (!fieldsAvailableToSort.Contains(sorting.FieldName!))
+        if (!fieldsAvailableToSort.Contains(sorting.FieldName!, StringComparer.InvariantCultureIgnoreCase))
         {
             return query;
         }
