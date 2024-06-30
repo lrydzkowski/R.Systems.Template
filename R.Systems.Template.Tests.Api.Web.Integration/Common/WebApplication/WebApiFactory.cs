@@ -28,6 +28,8 @@ namespace R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 
 public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
+    private const string MongoDbName = "admin";
+
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:15-alpine")
         .WithCleanUp(true)
@@ -114,7 +116,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
                 [$"{DbConnectionStringsOptions.Position}:{nameof(DbConnectionStringsOptions.AppPostgresDb)}"] =
                     _dbContainer.GetConnectionString(),
                 [$"{MongoDbConnectionStringsOptions.Position}:{nameof(MongoDbConnectionStringsOptions.MongoDb)}"] =
-                    _mongoDbContainer.GetConnectionString()
+                    _mongoDbContainer.GetConnectionString() + MongoDbName
             }
         );
     }
