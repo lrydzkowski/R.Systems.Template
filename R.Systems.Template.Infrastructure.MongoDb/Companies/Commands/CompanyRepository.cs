@@ -42,9 +42,9 @@ internal class CompanyRepository : ICreateCompanyRepository, IUpdateCompanyRepos
 
     public async Task<Company> UpdateCompanyAsync(CompanyToUpdate companyToUpdate)
     {
-        FilterDefinition<CompanyDocument>? filter =
+        FilterDefinition<CompanyDocument> filter =
             Builders<CompanyDocument>.Filter.Where(x => x.Id == companyToUpdate.CompanyId);
-        UpdateDefinition<CompanyDocument>? updateDefinition =
+        UpdateDefinition<CompanyDocument> updateDefinition =
             Builders<CompanyDocument>.Update.Set(x => x.Name, companyToUpdate.Name);
 
         CompanyDocument updatedDocument = await _appDbContext.Companies.FindOneAndUpdateAsync(

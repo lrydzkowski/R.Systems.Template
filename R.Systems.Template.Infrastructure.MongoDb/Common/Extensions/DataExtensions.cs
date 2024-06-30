@@ -11,22 +11,27 @@ internal static class DataExtensions
     public static async Task<ListInfo<TDocument>> GetDataAsync<TDocument>(
         this IMongoCollection<TDocument> collection,
         ListParameters listParameters,
+        IReadOnlyList<string> fieldsAvailableToFilter,
         IReadOnlyList<string> fieldsAvailableToSort,
         string defaultSortingFieldName,
-        IReadOnlyList<string> fieldsAvailableToFilter
+        FilterDefinition<TDocument>? initialFilter = null,
+        CancellationToken cancellationToken = default
     ) where TDocument : class, new()
     {
-        FilterDefinition<TDocument> filterDefinition = FilterExtensions.BuilderFilterDefinition<TDocument>(
-            listParameters.Search,
+        FilterDefinition<TDocument> filterDefinition = listParameters.Search.BuildFilterDefinition<TDocument>(
             fieldsAvailableToFilter
         );
-        SortDefinition<TDocument> sortDefinition = SortExtensions.BuildSortDefinition<TDocument>(
-            listParameters.Sorting,
+        if (initialFilter != null)
+        {
+            filterDefinition = Builders<TDocument>.Filter.And(initialFilter, filterDefinition);
+        }
+
+        SortDefinition<TDocument> sortDefinition = listParameters.Sorting.BuildSortDefinition<TDocument>(
             fieldsAvailableToSort,
             defaultSortingFieldName
         );
 
-        AggregateFacet<TDocument, AggregateCountResult>? countFacet = AggregateFacet.Create(
+        AggregateFacet<TDocument, AggregateCountResult> countFacet = AggregateFacet.Create(
             CountFacetName,
             PipelineDefinition<TDocument, AggregateCountResult>.Create(
                 new[]
@@ -35,8 +40,7 @@ internal static class DataExtensions
                 }
             )
         );
-
-        AggregateFacet<TDocument, TDocument>? dataFacet = AggregateFacet.Create(
+        AggregateFacet<TDocument, TDocument> dataFacet = AggregateFacet.Create(
             DataFacetName,
             PipelineDefinition<TDocument, TDocument>.Create(
                 new[]
@@ -48,12 +52,11 @@ internal static class DataExtensions
                 }
             )
         );
-
-        List<AggregateFacetResults>? aggregation = await collection.Aggregate()
+        List<AggregateFacetResults> aggregation = await collection.Aggregate()
             .Match(filterDefinition)
             .Sort(sortDefinition)
             .Facet(countFacet, dataFacet)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         long count = aggregation.First()
                          .Facets.First(x => x.Name == CountFacetName)

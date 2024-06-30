@@ -13,5 +13,5 @@ internal class EmployeeDocument
 
     public string LastName { get; set; } = "";
 
-    public CompanyDocument Company { get; set; } = new();
+    public long CompanyId { get; set; }
 }

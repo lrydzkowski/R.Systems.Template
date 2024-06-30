@@ -7,8 +7,8 @@ namespace R.Systems.Template.Infrastructure.MongoDb.Common.Extensions;
 
 internal static class FilterExtensions
 {
-    public static FilterDefinition<TDocument> BuilderFilterDefinition<TDocument>(
-        Search search,
+    public static FilterDefinition<TDocument> BuildFilterDefinition<TDocument>(
+        this Search search,
         IReadOnlyList<string> fieldsAvailableToFilter
     )
     {

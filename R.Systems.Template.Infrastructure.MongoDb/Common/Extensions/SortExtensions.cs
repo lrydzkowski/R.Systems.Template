@@ -7,7 +7,7 @@ namespace R.Systems.Template.Infrastructure.MongoDb.Common.Extensions;
 public static class SortExtensions
 {
     public static SortDefinition<TDocument> BuildSortDefinition<TDocument>(
-        Sorting sorting,
+        this Sorting sorting,
         IReadOnlyList<string> fieldsAvailableToSort,
         string defaultSortingFieldName
     )

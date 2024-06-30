@@ -62,5 +62,6 @@ public static class DependencyInjection
         services.AddScoped<IDeleteEmployeeRepository, EmployeeRepository>();
         services.AddScoped<IUniqueIdGenerator, UniqueIdGenerator>();
         services.AddScoped<ICompanyMapper, CompanyMapper>();
+        services.AddScoped<IEmployeeMapper, EmployeeMapper>();
     }
 }

@@ -26,14 +26,15 @@ internal class GetCompaniesRepository : IGetCompaniesRepository
         CancellationToken cancellationToken
     )
     {
+        IReadOnlyList<string> fieldsAvailableToFilter = [nameof(CompanyDocument.Name)];
         IReadOnlyList<string> fieldsAvailableToSort = [nameof(CompanyDocument.Id), nameof(CompanyDocument.Name)];
         string defaultSortingFieldName = nameof(CompanyDocument.Id);
-        IReadOnlyList<string> fieldsAvailableToFilter = [nameof(CompanyDocument.Name)];
         ListInfo<CompanyDocument> result = await _appDbContext.Companies.GetDataAsync(
             listParameters,
+            fieldsAvailableToFilter,
             fieldsAvailableToSort,
             defaultSortingFieldName,
-            fieldsAvailableToFilter
+            cancellationToken: cancellationToken
         );
 
         return new ListInfo<Company>
