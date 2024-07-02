@@ -6,4 +6,6 @@ namespace R.Systems.Template.Api.DataGeneratorCli.Commands;
 internal class GenerateCommand
 {
     [Subcommand] public GenerateCompaniesCommand? GenerateCompaniesCommand { get; set; }
+
+    [Subcommand] public GenerateElementsCommand? GenerateElementsCommand { get; set; }
 }

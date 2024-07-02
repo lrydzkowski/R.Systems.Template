@@ -12,6 +12,7 @@ internal class AppDbContext : DbContext
 
     public DbSet<CompanyEntity> Companies => Set<CompanyEntity>();
     public DbSet<EmployeeEntity> Employees => Set<EmployeeEntity>();
+    public DbSet<ElementEntity> Elements => Set<ElementEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
