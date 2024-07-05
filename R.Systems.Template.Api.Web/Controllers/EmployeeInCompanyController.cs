@@ -86,11 +86,12 @@ public class EmployeeInCompanyController : ApiControllerBase
     )
     {
         ListMapper mapper = new();
-        ListParameters listParameters = mapper.ToListParameter(listRequest);
+        ListParametersDto listParametersDto = mapper.ToListParametersDto(listRequest);
         GetEmployeesResult result = await _mediator.Send(
             new GetEmployeesQuery
             {
-                ListParameters = listParameters, CompanyId = companyId, AppContext = new ApplicationContext(version)
+                ListParametersDto = listParametersDto, CompanyId = companyId,
+                AppContext = new ApplicationContext(version)
             },
             cancellationToken
         );

@@ -2,21 +2,23 @@ namespace R.Systems.Template.Core.Common.Lists;
 
 public class ListParameters
 {
-    public Pagination Pagination { get; set; } = new();
-    public Sorting Sorting { get; set; } = new();
-    public Search Search { get; set; } = new();
+    public IReadOnlyList<FieldInfo> Fields { get; init; } = [];
+    public Pagination Pagination { get; init; } = new();
+    public Sorting Sorting { get; init; } = new();
+    public IReadOnlyList<SearchFilterGroup> Filters { get; init; } = [];
 }
 
 public class Pagination
 {
-    public int Page { get; set; } = 1;
-    public int PageSize { get; set; } = 100;
+    public int Page { get; init; } = 1;
+    public int PageSize { get; init; } = 100;
 }
 
 public class Sorting
 {
-    public string? FieldName { get; set; }
-    public SortingOrder Order { get; set; } = SortingOrder.Ascending;
+    public string? FieldName { get; init; }
+    public string DefaultFieldName { get; init; } = "";
+    public SortingOrder Order { get; init; } = SortingOrder.Ascending;
 }
 
 public enum SortingOrder
@@ -25,7 +27,20 @@ public enum SortingOrder
     Descending
 }
 
-public class Search
+public class SearchFilterGroup
 {
-    public string? Query { get; set; }
+    public FilterGroupOperator Operator { get; init; }
+    public IReadOnlyList<SearchFilter> Filters { get; init; } = [];
+}
+
+public enum FilterGroupOperator
+{
+    And,
+    Or
+}
+
+public class SearchFilter
+{
+    public string? FieldName { get; init; }
+    public string Value { get; init; } = "";
 }

@@ -102,9 +102,10 @@ public class CompanyController : ApiControllerBase
     )
     {
         ListMapper mapper = new();
-        ListParameters listParameters = mapper.ToListParameter(listRequest);
+        ListParametersDto listParametersDto = mapper.ToListParametersDto(listRequest);
         GetCompaniesResult result = await _mediator.Send(
-            new GetCompaniesQuery { ListParameters = listParameters, AppContext = new ApplicationContext(version) },
+            new GetCompaniesQuery
+                { ListParametersDto = listParametersDto, AppContext = new ApplicationContext(version) },
             cancellationToken
         );
 

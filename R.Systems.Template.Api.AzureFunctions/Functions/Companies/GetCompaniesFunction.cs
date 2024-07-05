@@ -43,7 +43,8 @@ internal class GetCompaniesFunction : FunctionBase<GetCompaniesFunction>
     )]
     [Function(nameof(GetCompanies))]
     public async Task<HttpResponseData> GetCompanies(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies")] HttpRequestData request,
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies")]
+        HttpRequestData request,
         CancellationToken cancellationToken,
         int page = 1,
         int pageSize = 100,
@@ -54,7 +55,7 @@ internal class GetCompaniesFunction : FunctionBase<GetCompaniesFunction>
     {
         Logger.LogInformation("C# Start processing {FunctionName} function.", nameof(GetCompanies));
         ListMapper mapper = new();
-        ListParameters listParameters = mapper.ToListParameter(
+        ListParametersDto listParametersDto = mapper.ToListParametersDto(
             new ListRequest
             {
                 Page = page, PageSize = pageSize, SortingFieldName = sortingFieldName, SortingOrder = sortingOrder,
@@ -62,7 +63,7 @@ internal class GetCompaniesFunction : FunctionBase<GetCompaniesFunction>
             }
         );
         GetCompaniesResult result = await Mediator.Send(
-            new GetCompaniesQuery { ListParameters = listParameters },
+            new GetCompaniesQuery { ListParametersDto = listParametersDto },
             cancellationToken
         );
         return await HttpResponseBuilder.BuildAsync(request, result.Companies);

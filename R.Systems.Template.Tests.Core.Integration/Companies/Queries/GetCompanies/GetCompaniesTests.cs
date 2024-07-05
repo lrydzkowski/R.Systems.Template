@@ -35,22 +35,13 @@ public class GetCompaniesTests
         };
         GetCompaniesQuery query = new()
         {
-            ListParameters = new ListParameters
+            ListParametersDto = new ListParametersDto
             {
-                Pagination = new Pagination
-                {
-                    Page = 1,
-                    PageSize = 100
-                },
-                Sorting = new Sorting
-                {
-                    FieldName = null,
-                    Order = SortingOrder.Ascending
-                },
-                Search = new Search
-                {
-                    Query = null
-                }
+                Page = 1,
+                PageSize = 100,
+                SortingFieldName = null,
+                SortingOrder = "asc",
+                SearchQuery = null
             }
         };
         GetCompaniesResult result = await _mediator.Send(query);
@@ -76,22 +67,13 @@ public class GetCompaniesTests
         };
         GetCompaniesQuery query = new()
         {
-            ListParameters = new ListParameters
+            ListParametersDto = new ListParametersDto
             {
-                Pagination = new Pagination
-                {
-                    Page = page,
-                    PageSize = pageSize
-                },
-                Sorting = new Sorting
-                {
-                    FieldName = null,
-                    Order = SortingOrder.Ascending
-                },
-                Search = new Search
-                {
-                    Query = null
-                }
+                Page = page,
+                PageSize = pageSize,
+                SortingFieldName = null,
+                SortingOrder = "asc",
+                SearchQuery = null
             }
         };
         GetCompaniesResult result = await _mediator.Send(query);
@@ -118,22 +100,13 @@ public class GetCompaniesTests
         };
         GetCompaniesQuery query = new()
         {
-            ListParameters = new ListParameters
+            ListParametersDto = new ListParametersDto
             {
-                Pagination = new Pagination
-                {
-                    Page = 1,
-                    PageSize = 100
-                },
-                Sorting = new Sorting
-                {
-                    FieldName = sortingFieldName,
-                    Order = sortingOrder
-                },
-                Search = new Search
-                {
-                    Query = null
-                }
+                Page = 1,
+                PageSize = 100,
+                SortingFieldName = sortingFieldName,
+                SortingOrder = sortingOrder == SortingOrder.Ascending ? "asc" : "desc",
+                SearchQuery = null
             }
         };
         GetCompaniesResult result = await _mediator.Send(query);
@@ -160,22 +133,13 @@ public class GetCompaniesTests
         };
         GetCompaniesQuery query = new()
         {
-            ListParameters = new ListParameters
+            ListParametersDto = new ListParametersDto
             {
-                Pagination = new Pagination
-                {
-                    Page = 1,
-                    PageSize = 100
-                },
-                Sorting = new Sorting
-                {
-                    FieldName = null,
-                    Order = SortingOrder.Ascending
-                },
-                Search = new Search
-                {
-                    Query = searchQuery
-                }
+                Page = 1,
+                PageSize = 100,
+                SortingFieldName = null,
+                SortingOrder = "asc",
+                SearchQuery = searchQuery
             }
         };
         GetCompaniesResult result = await _mediator.Send(query);
@@ -188,7 +152,7 @@ public class GetCompaniesTests
         int page = 2;
         int pageSize = 2;
         string sortingFieldName = "name";
-        SortingOrder sortingOrder = SortingOrder.Ascending;
+        string sortingOrder = "asc";
         string searchQuery = "o";
         IQueryable<Company> expectedCompanies = CompaniesSampleData.Companies.OrderBy(x => x.Name)
             .Where(x => x.Name.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase))
@@ -206,22 +170,13 @@ public class GetCompaniesTests
         };
         GetCompaniesQuery query = new()
         {
-            ListParameters = new ListParameters
+            ListParametersDto = new ListParametersDto
             {
-                Pagination = new Pagination
-                {
-                    Page = page,
-                    PageSize = pageSize
-                },
-                Sorting = new Sorting
-                {
-                    FieldName = sortingFieldName,
-                    Order = sortingOrder
-                },
-                Search = new Search
-                {
-                    Query = searchQuery
-                }
+                Page = page,
+                PageSize = pageSize,
+                SortingFieldName = sortingFieldName,
+                SortingOrder = sortingOrder,
+                SearchQuery = searchQuery
             }
         };
         GetCompaniesResult result = await _mediator.Send(query);

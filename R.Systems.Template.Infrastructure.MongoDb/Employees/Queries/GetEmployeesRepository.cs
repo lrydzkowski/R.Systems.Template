@@ -12,12 +12,10 @@ namespace R.Systems.Template.Infrastructure.MongoDb.Employees.Queries;
 internal class GetEmployeesRepository : IGetEmployeesRepository
 {
     private readonly AppDbContext _appDbContext;
-    private readonly IEmployeeMapper _employeeMapper;
 
-    public GetEmployeesRepository(AppDbContext appDbContext, IEmployeeMapper employeeMapper)
+    public GetEmployeesRepository(AppDbContext appDbContext)
     {
         _appDbContext = appDbContext;
-        _employeeMapper = employeeMapper;
     }
 
     public string Version { get; } = Versions.V2;
@@ -27,7 +25,7 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
         CancellationToken cancellationToken
     )
     {
-        ListInfo<EmployeeDocument> result = await GetEmployeesAsync(
+        ListInfo<Employee> result = await GetEmployeesAsync(
             listParameters,
             null,
             cancellationToken
@@ -36,7 +34,7 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
         return new ListInfo<Employee>
         {
             Count = result.Count,
-            Data = _employeeMapper.Map(result.Data)
+            Data = result.Data
         };
     }
 
@@ -46,35 +44,32 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
         CancellationToken cancellationToken
     )
     {
-        ListInfo<EmployeeDocument> result = await GetEmployeesAsync(
+        ListInfo<Employee> result = await GetEmployeesAsync(
             listParameters,
-            Builders<EmployeeDocument>.Filter.Eq(x => x.CompanyId, companyId),
+            Builders<Employee>.Filter.Eq(x => x.CompanyId, companyId),
             cancellationToken
         );
 
         return new ListInfo<Employee>
         {
             Count = result.Count,
-            Data = _employeeMapper.Map(result.Data)
+            Data = result.Data
         };
     }
 
-    private async Task<ListInfo<EmployeeDocument>> GetEmployeesAsync(
+    private async Task<ListInfo<Employee>> GetEmployeesAsync(
         ListParameters listParameters,
-        FilterDefinition<EmployeeDocument>? initialFilter = null,
+        FilterDefinition<Employee>? initialFilter = null,
         CancellationToken cancellationToken = default
     )
     {
-        IReadOnlyList<string> fieldsAvailableToFilter =
-            [nameof(EmployeeDocument.FirstName), nameof(EmployeeDocument.LastName)];
-        IReadOnlyList<string> fieldsAvailableToSort =
-            [nameof(EmployeeDocument.Id), nameof(EmployeeDocument.FirstName), nameof(EmployeeDocument.LastName)];
-        string defaultSortingFieldName = nameof(EmployeeDocument.Id);
-        ListInfo<EmployeeDocument> result = await _appDbContext.Employees.GetDataAsync(
+        ProjectionDefinition<EmployeeDocument, Employee> projection = Builders<EmployeeDocument>.Projection.Expression(
+            x => new Employee { EmployeeId = x.Id, FirstName = x.FirstName, LastName = x.LastName }
+        );
+
+        ListInfo<Employee> result = await _appDbContext.Employees.GetDataAsync(
+            projection,
             listParameters,
-            fieldsAvailableToFilter,
-            fieldsAvailableToSort,
-            defaultSortingFieldName,
             initialFilter,
             cancellationToken
         );

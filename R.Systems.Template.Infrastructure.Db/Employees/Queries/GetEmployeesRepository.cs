@@ -5,7 +5,6 @@ using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Common.Lists.Extensions;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
-using R.Systems.Template.Infrastructure.Db.Common.Entities;
 
 namespace R.Systems.Template.Infrastructure.Db.Employees.Queries;
 
@@ -43,42 +42,33 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
 
     private async Task<ListInfo<Employee>> GetEmployeeFromDbAsync(
         ListParameters listParameters,
-        Expression<Func<EmployeeEntity, bool>>? wherePredicate = null,
+        Expression<Func<Employee, bool>>? wherePredicate = null,
         CancellationToken cancellationToken = default
     )
     {
-        List<string> fieldsAvailableToSort = new()
-        {
-            "id",
-            "firstName",
-            "lastName"
-        };
-        List<string> fieldsAvailableToFilter = new()
-        {
-            "firstName",
-            "lastName"
-        };
-        IQueryable<EmployeeEntity> query = _dbContext.Employees.AsNoTracking();
+        IQueryable<Employee> query = _dbContext.Employees.Select(
+                employeeEntity => new Employee
+                {
+                    EmployeeId = (long)employeeEntity.Id!,
+                    FirstName = employeeEntity.FirstName,
+                    LastName = employeeEntity.LastName,
+                    CompanyId = employeeEntity.CompanyId
+                }
+            )
+            .AsNoTracking();
         if (wherePredicate != null)
         {
             query = query.Where(wherePredicate);
         }
 
-        List<Employee> employees = await query.Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
-            .Filter(fieldsAvailableToFilter, listParameters.Search)
+        query = query.Sort(listParameters.Sorting, listParameters.Fields)
+            .Filter(listParameters.Filters, listParameters.Fields);
+        List<Employee> employees = await query
             .Paginate(listParameters.Pagination)
-            .Select(
-                employeeEntity => new Employee
-                {
-                    EmployeeId = (long)employeeEntity.Id!, FirstName = employeeEntity.FirstName,
-                    LastName = employeeEntity.LastName, CompanyId = employeeEntity.CompanyId
-                }
-            )
+            .Project(listParameters.Fields)
             .ToListAsync(cancellationToken);
-        int count = await query.Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
-            .Filter(fieldsAvailableToFilter, listParameters.Search)
-            .Select(employeeEntity => (long)employeeEntity.Id!)
-            .CountAsync(cancellationToken);
+        int count = await query.CountAsync(cancellationToken);
+
         return new ListInfo<Employee>
         {
             Data = employees,

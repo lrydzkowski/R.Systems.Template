@@ -30,4 +30,14 @@ public static class StringExtensions
 
         return $"{input[0].ToString().ToUpper()}{input.Substring(1)}";
     }
+
+    public static bool CompareIgnoreCase(this string? input, string? compareTo)
+    {
+        if (input == null && compareTo == null)
+        {
+            return true;
+        }
+
+        return input?.Equals(compareTo, StringComparison.InvariantCultureIgnoreCase) == true;
+    }
 }

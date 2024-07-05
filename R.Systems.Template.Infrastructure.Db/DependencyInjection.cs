@@ -8,6 +8,7 @@ using R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
 using R.Systems.Template.Core.Companies.Queries.GetCompany;
+using R.Systems.Template.Core.Elements.Queries.GetElements;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 using R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
 using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
@@ -16,6 +17,7 @@ using R.Systems.Template.Core.Employees.Queries.GetEmployees;
 using R.Systems.Template.Infrastructure.Db.Common.Options;
 using R.Systems.Template.Infrastructure.Db.Companies.Commands;
 using R.Systems.Template.Infrastructure.Db.Companies.Queries;
+using R.Systems.Template.Infrastructure.Db.Elements.Queries;
 using R.Systems.Template.Infrastructure.Db.Employees.Commands;
 using R.Systems.Template.Infrastructure.Db.Employees.Queries;
 using R.Systems.Template.Infrastructure.Db.Health;
@@ -65,6 +67,7 @@ public static class DependencyInjection
         services.AddScoped<ICreateEmployeeRepository, EmployeeRepository>();
         services.AddScoped<IUpdateEmployeeRepository, EmployeeRepository>();
         services.AddScoped<IDeleteEmployeeRepository, EmployeeRepository>();
+        services.AddScoped<IGetElementsRepository, GetElementsRepository>();
         services.AddScoped<DbExceptionHandler>();
     }
 }

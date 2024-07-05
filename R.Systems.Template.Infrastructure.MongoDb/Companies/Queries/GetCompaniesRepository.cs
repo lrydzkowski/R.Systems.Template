@@ -1,10 +1,10 @@
-﻿using MongoDB.Driver;
+﻿using MassTransit;
+using MongoDB.Driver;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Common.Lists.Extensions;
 using R.Systems.Template.Core.Companies.Queries.GetCompanies;
-using R.Systems.Template.Infrastructure.MongoDb.Common.Documents;
 
 namespace R.Systems.Template.Infrastructure.MongoDb.Companies.Queries;
 
@@ -24,19 +24,18 @@ internal class GetCompaniesRepository : IGetCompaniesRepository
         CancellationToken cancellationToken
     )
     {
-        List<string> fieldsAvailableToSort = [nameof(CompanyDocument.Id), nameof(CompanyDocument.Name)];
-        List<string> fieldsAvailableToFilter = [nameof(CompanyDocument.Name)];
-        List<Company> companies = _appDbContext.Companies.AsQueryable()
-            .Sort(fieldsAvailableToSort, listParameters.Sorting, nameof(CompanyDocument.Id))
-            .Filter(fieldsAvailableToFilter, listParameters.Search)
+        IQueryable<Company> query = _appDbContext.Companies.AsQueryable()
+            .Select(companyEntity => new Company { CompanyId = companyEntity.Id!, Name = companyEntity.Name })
+            .Sort(listParameters.Sorting, listParameters.Fields)
+            .Filter(listParameters.Filters, listParameters.Fields);
+
+        List<Company> companies = query
             .Paginate(listParameters.Pagination)
-            .Select(document => new Company { CompanyId = document.Id!, Name = document.Name })
+            .ToList()
+            .AsQueryable()
+            .Project(listParameters.Fields)
             .ToList();
-        int count = _appDbContext.Companies.AsQueryable()
-            .Sort(fieldsAvailableToSort, listParameters.Sorting, nameof(CompanyDocument.Id))
-            .Filter(fieldsAvailableToFilter, listParameters.Search)
-            .Select(document => document.Id!)
-            .Count();
+        int count = query.Count();
 
         return Task.FromResult(
             new ListInfo<Company>

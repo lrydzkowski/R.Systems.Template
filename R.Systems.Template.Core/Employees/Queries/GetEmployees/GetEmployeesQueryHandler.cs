@@ -5,10 +5,11 @@ using R.Systems.Template.Core.Common.Lists;
 
 namespace R.Systems.Template.Core.Employees.Queries.GetEmployees;
 
-public class GetEmployeesQuery : GetElementsQuery, IContextRequest, IRequest<GetEmployeesResult>
+public class GetEmployeesQuery : IGetListQuery, IContextRequest, IRequest<GetEmployeesResult>
 {
     public long? CompanyId { get; init; }
     public ApplicationContext AppContext { get; set; } = new();
+    public ListParametersDto ListParametersDto { get; init; } = new();
 }
 
 public class GetEmployeesResult
@@ -18,20 +19,54 @@ public class GetEmployeesResult
 
 public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, GetEmployeesResult>
 {
-    private readonly IVersionedRepositoryFactory<IGetEmployeesRepository> _getEmployeesRepositoryFactory;
+    private readonly IReadOnlyList<FieldInfo> _fields =
+    [
+        new FieldInfo
+        {
+            FieldName = nameof(Employee.EmployeeId),
+            DefaultSorting = true,
+            UseInFiltering = true,
+            UseInSorting = true,
+            AlwaysPresent = true
+        },
+        new FieldInfo
+        {
+            FieldName = nameof(Employee.FirstName),
+            UseInFiltering = true,
+            UseInSorting = true
+        },
+        new FieldInfo
+        {
+            FieldName = nameof(Employee.LastName),
+            UseInFiltering = true,
+            UseInSorting = true
+        },
+        new FieldInfo
+        {
+            FieldName = nameof(Employee.CompanyId)
+        }
+    ];
 
-    public GetEmployeesQueryHandler(IVersionedRepositoryFactory<IGetEmployeesRepository> repositoryFactory)
+    private readonly IVersionedRepositoryFactory<IGetEmployeesRepository> _getEmployeesRepositoryFactory;
+    private readonly IListParametersMapper _listParametersMapper;
+
+    public GetEmployeesQueryHandler(
+        IVersionedRepositoryFactory<IGetEmployeesRepository> repositoryFactory,
+        IListParametersMapper listParametersMapper
+    )
     {
         _getEmployeesRepositoryFactory = repositoryFactory;
+        _listParametersMapper = listParametersMapper;
     }
 
     public async Task<GetEmployeesResult> Handle(GetEmployeesQuery query, CancellationToken cancellationToken)
     {
         IGetEmployeesRepository repository = _getEmployeesRepositoryFactory.GetRepository(query.AppContext);
+        ListParameters listParameters = _listParametersMapper.Map(query.ListParametersDto, _fields);
         ListInfo<Employee> employees = query.CompanyId == null
-            ? await repository.GetEmployeesAsync(query.ListParameters, cancellationToken)
+            ? await repository.GetEmployeesAsync(listParameters, cancellationToken)
             : await repository.GetEmployeesAsync(
-                query.ListParameters,
+                listParameters,
                 (long)query.CompanyId,
                 cancellationToken
             );

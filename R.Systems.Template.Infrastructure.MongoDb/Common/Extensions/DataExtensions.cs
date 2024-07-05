@@ -8,51 +8,49 @@ internal static class DataExtensions
     private const string CountFacetName = "count";
     private const string DataFacetName = "data";
 
-    public static async Task<ListInfo<TDocument>> GetDataAsync<TDocument>(
+    public static async Task<ListInfo<TModel>> GetDataAsync<TDocument, TModel>(
         this IMongoCollection<TDocument> collection,
+        ProjectionDefinition<TDocument, TModel> projection,
         ListParameters listParameters,
-        IReadOnlyList<string> fieldsAvailableToFilter,
-        IReadOnlyList<string> fieldsAvailableToSort,
-        string defaultSortingFieldName,
-        FilterDefinition<TDocument>? initialFilter = null,
+        FilterDefinition<TModel>? initialFilter = null,
         CancellationToken cancellationToken = default
-    ) where TDocument : class, new()
+    ) where TDocument : class, new() where TModel : class, new()
     {
-        FilterDefinition<TDocument> filterDefinition = listParameters.Search.BuildFilterDefinition<TDocument>(
-            fieldsAvailableToFilter
+        FilterDefinition<TModel> filterDefinition = listParameters.Filters.BuildFilterDefinition<TModel>(
+            listParameters.Fields
         );
         if (initialFilter != null)
         {
-            filterDefinition = Builders<TDocument>.Filter.And(initialFilter, filterDefinition);
+            filterDefinition = Builders<TModel>.Filter.And(initialFilter, filterDefinition);
         }
 
-        SortDefinition<TDocument> sortDefinition = listParameters.Sorting.BuildSortDefinition<TDocument>(
-            fieldsAvailableToSort,
-            defaultSortingFieldName
+        SortDefinition<TModel> sortDefinition = listParameters.Sorting.BuildSortDefinition<TModel>(
+            listParameters.Fields
         );
 
-        AggregateFacet<TDocument, AggregateCountResult> countFacet = AggregateFacet.Create(
+        AggregateFacet<TModel, AggregateCountResult> countFacet = AggregateFacet.Create(
             CountFacetName,
-            PipelineDefinition<TDocument, AggregateCountResult>.Create(
+            PipelineDefinition<TModel, AggregateCountResult>.Create(
                 new[]
                 {
-                    PipelineStageDefinitionBuilder.Count<TDocument>()
+                    PipelineStageDefinitionBuilder.Count<TModel>()
                 }
             )
         );
-        AggregateFacet<TDocument, TDocument> dataFacet = AggregateFacet.Create(
+        AggregateFacet<TModel, TModel> dataFacet = AggregateFacet.Create(
             DataFacetName,
-            PipelineDefinition<TDocument, TDocument>.Create(
+            PipelineDefinition<TModel, TModel>.Create(
                 new[]
                 {
-                    PipelineStageDefinitionBuilder.Skip<TDocument>(
+                    PipelineStageDefinitionBuilder.Skip<TModel>(
                         (listParameters.Pagination.Page - 1) * listParameters.Pagination.PageSize
                     ),
-                    PipelineStageDefinitionBuilder.Limit<TDocument>(listParameters.Pagination.PageSize)
+                    PipelineStageDefinitionBuilder.Limit<TModel>(listParameters.Pagination.PageSize)
                 }
             )
         );
         List<AggregateFacetResults> aggregation = await collection.Aggregate()
+            .Project(projection)
             .Match(filterDefinition)
             .Sort(sortDefinition)
             .Facet(countFacet, dataFacet)
@@ -65,11 +63,11 @@ internal static class DataExtensions
                          ?.Count
                      ?? 0;
 
-        IReadOnlyList<TDocument>? data = aggregation.First()
+        IReadOnlyList<TModel>? data = aggregation.First()
             .Facets.First(x => x.Name == DataFacetName)
-            .Output<TDocument>();
+            .Output<TModel>();
 
-        ListInfo<TDocument> listInfo = new()
+        ListInfo<TModel> listInfo = new()
         {
             Count = count,
             Data = data.ToList()

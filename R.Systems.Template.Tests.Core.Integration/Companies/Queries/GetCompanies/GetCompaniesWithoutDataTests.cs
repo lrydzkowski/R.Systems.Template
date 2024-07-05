@@ -1,3 +1,4 @@
+using System.Drawing.Printing;
 using FluentAssertions;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,22 +31,13 @@ public class GetCompaniesWithoutDataTests
         };
         GetCompaniesQuery query = new()
         {
-            ListParameters = new ListParameters
+            ListParametersDto = new ListParametersDto
             {
-                Pagination = new Pagination
-                {
-                    Page = 1,
-                    PageSize = 100
-                },
-                Sorting = new Sorting
-                {
-                    FieldName = null,
-                    Order = SortingOrder.Ascending
-                },
-                Search = new Search
-                {
-                    Query = null
-                }
+                Page = 1,
+                PageSize = 100,
+                SortingFieldName = null,
+                SortingOrder = "asc",
+                SearchQuery = null
             }
         };
         GetCompaniesResult result = await _mediator.Send(query);

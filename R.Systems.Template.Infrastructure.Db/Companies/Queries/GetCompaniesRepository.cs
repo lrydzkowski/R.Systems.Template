@@ -23,26 +23,16 @@ internal class GetCompaniesRepository : IGetCompaniesRepository
         CancellationToken cancellationToken
     )
     {
-        List<string> fieldsAvailableToSort = new()
-        {
-            "id",
-            "name"
-        };
-        List<string> fieldsAvailableToFilter = new()
-        {
-            "name"
-        };
-        List<Company> companies = await _dbContext.Companies.AsNoTracking()
-            .Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
-            .Filter(fieldsAvailableToFilter, listParameters.Search)
-            .Paginate(listParameters.Pagination)
+        IQueryable<Company> query = _dbContext.Companies.AsNoTracking()
             .Select(companyEntity => new Company { CompanyId = (long)companyEntity.Id!, Name = companyEntity.Name })
+            .Sort(listParameters.Sorting, listParameters.Fields)
+            .Filter(listParameters.Filters, listParameters.Fields);
+        List<Company> companies = await query
+            .Paginate(listParameters.Pagination)
+            .Project(listParameters.Fields)
             .ToListAsync(cancellationToken);
-        int count = await _dbContext.Companies.AsNoTracking()
-            .Sort(fieldsAvailableToSort, listParameters.Sorting, "id")
-            .Filter(fieldsAvailableToFilter, listParameters.Search)
-            .Select(companyEntity => (long)companyEntity.Id!)
-            .CountAsync(cancellationToken);
+        int count = await query.CountAsync(cancellationToken);
+
         return new ListInfo<Company>
         {
             Data = companies,
