@@ -65,11 +65,11 @@ internal class ElementService
             )
             .RuleFor(
                 x => x.CreationDate,
-                faker => faker.Date.Past().ToUniversalTime()
+                faker => DateOnly.FromDateTime(faker.Date.Past().Date)
             )
             .RuleFor(
                 x => x.UpdateDate,
-                faker => ShouldGenerateValue() ? faker.Date.Past().ToUniversalTime() : null
+                faker => ShouldGenerateValue() ? DateOnly.FromDateTime(faker.Date.Past().Date) : null
             )
             .RuleFor(
                 x => x.CreationDateTime,
