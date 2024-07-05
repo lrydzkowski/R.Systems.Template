@@ -16,15 +16,51 @@ public class GetElementsResult
 
 public class GetElementsQueryHandler : IRequestHandler<GetElementsQuery, GetElementsResult>
 {
-    private readonly IGetElementsRepository _getElementsRepository;
+    private readonly IReadOnlyList<FieldInfo> _fields =
+    [
+        new FieldInfo
+        {
+            FieldName = nameof(Element.Id),
+            DefaultSorting = true,
+            AlwaysPresent = true
+        },
+        new FieldInfo { FieldName = nameof(Element.Name) },
+        new FieldInfo { FieldName = nameof(Element.Description) },
+        new FieldInfo { FieldName = nameof(Element.Value) },
+        new FieldInfo { FieldName = nameof(Element.AdditionalValue) },
+        new FieldInfo { FieldName = nameof(Element.BigValue) },
+        new FieldInfo { FieldName = nameof(Element.BigAdditionalValue) },
+        new FieldInfo { FieldName = nameof(Element.Price) },
+        new FieldInfo { FieldName = nameof(Element.Discount) },
+        new FieldInfo { FieldName = nameof(Element.CreationDate) },
+        new FieldInfo { FieldName = nameof(Element.UpdateDate) },
+        new FieldInfo { FieldName = nameof(Element.CreationDateTime) },
+        new FieldInfo { FieldName = nameof(Element.UpdateDateTime) },
+        new FieldInfo { FieldName = nameof(Element.IsNew) },
+        new FieldInfo { FieldName = nameof(Element.IsActive) }
+    ];
 
-    public GetElementsQueryHandler(IGetElementsRepository getElementsRepository)
+    private readonly IListParametersMapper _listParametersMapper;
+
+    private readonly IGetElementsRepository _repository;
+
+    public GetElementsQueryHandler(
+        IGetElementsRepository repository,
+        IListParametersMapper listParametersMapper
+    )
     {
-        _getElementsRepository = getElementsRepository;
+        _repository = repository;
+        _listParametersMapper = listParametersMapper;
     }
 
-    public Task<GetElementsResult> Handle(GetElementsQuery query, CancellationToken cancellationToken)
+    public async Task<GetElementsResult> Handle(GetElementsQuery query, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        ListParameters listParameters = _listParametersMapper.Map(query.ListParametersDto, _fields);
+        ListInfo<Element> elements = await _repository.GetElementsAsync(listParameters, cancellationToken);
+
+        return new GetElementsResult
+        {
+            Elements = elements
+        };
     }
 }

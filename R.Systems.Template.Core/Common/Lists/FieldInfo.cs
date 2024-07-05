@@ -6,9 +6,9 @@ public class FieldInfo
 
     public bool DefaultSorting { get; init; }
 
-    public bool UseInSorting { get; init; }
+    public bool UseInSorting { get; init; } = true;
 
-    public bool UseInFiltering { get; init; }
+    public bool UseInFiltering { get; init; } = true;
 
     public bool AlwaysPresent { get; init; }
 }

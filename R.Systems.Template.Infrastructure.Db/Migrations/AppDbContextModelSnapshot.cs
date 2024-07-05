@@ -79,7 +79,7 @@ namespace R.Systems.Template.Infrastructure.Db.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("big_value");
 
-                    b.Property<DateTime>("CreationDate")
+                    b.Property<DateOnly>("CreationDate")
                         .HasColumnType("date")
                         .HasColumnName("creation_date");
 
@@ -114,7 +114,7 @@ namespace R.Systems.Template.Infrastructure.Db.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("price");
 
-                    b.Property<DateTime?>("UpdateDate")
+                    b.Property<DateOnly?>("UpdateDate")
                         .HasColumnType("date")
                         .HasColumnName("update_date");
 

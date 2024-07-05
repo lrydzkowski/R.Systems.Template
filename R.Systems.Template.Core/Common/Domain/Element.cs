@@ -20,9 +20,9 @@ public class Element
 
     public decimal? Discount { get; init; }
 
-    public DateTime CreationDate { get; init; }
+    public DateOnly CreationDate { get; init; }
 
-    public DateTime? UpdateDate { get; init; }
+    public DateOnly? UpdateDate { get; init; }
 
     public DateTime CreationDateTime { get; set; }
 
