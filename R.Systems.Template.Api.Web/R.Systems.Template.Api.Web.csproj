@@ -32,9 +32,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Azure\R.Systems.Template.Infrastructure.Azure.csproj" />
-    <ProjectReference Include="..\R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.MongoDb\R.Systems.Template.Infrastructure.MongoDb.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Notifications\R.Systems.Template.Infrastructure.Notifications.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Infrastructure.PostgreSqlDb\R.Systems.Template.Infrastructure.PostgreSqlDb.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Wordnik\R.Systems.Template.Infrastructure.Wordnik.csproj" />
   </ItemGroup>
 

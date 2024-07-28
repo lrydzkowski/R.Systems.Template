@@ -1,6 +1,6 @@
 ﻿using Bogus;
-using R.Systems.Template.Infrastructure.Db;
-using R.Systems.Template.Infrastructure.Db.Common.Entities;
+using R.Systems.Template.Infrastructure.PostgreSqlDb;
+using R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Entities;
 
 namespace R.Systems.Template.Api.DataGeneratorCli.Services;
 

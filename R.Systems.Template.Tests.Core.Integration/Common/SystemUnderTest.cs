@@ -4,8 +4,8 @@ using Npgsql;
 using R.Systems.Template.Core;
 using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Infrastructure.Azure;
-using R.Systems.Template.Infrastructure.Db;
-using R.Systems.Template.Infrastructure.Db.Common.Options;
+using R.Systems.Template.Infrastructure.PostgreSqlDb;
+using R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Options;
 using R.Systems.Template.Tests.Core.Integration.Common.Db;
 using Testcontainers.PostgreSql;
 

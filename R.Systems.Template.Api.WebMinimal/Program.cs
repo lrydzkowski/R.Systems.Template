@@ -1,9 +1,9 @@
+using System.Reflection;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Template.Core;
 using R.Systems.Template.Core.App.Queries.GetAppInfo;
-using R.Systems.Template.Infrastructure.Db;
-using System.Reflection;
+using R.Systems.Template.Infrastructure.PostgreSqlDb;
 using R.Systems.Template.Infrastructure.Wordnik;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);

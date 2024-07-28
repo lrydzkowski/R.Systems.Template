@@ -1,5 +1,5 @@
 using R.Systems.Template.Core.Common.Domain;
-using R.Systems.Template.Infrastructure.Db.Common.Entities;
+using R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Entities;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 
@@ -79,7 +79,8 @@ internal static class EmployeesSampleData
             return Data.Select(
                     x => new Employee
                     {
-                        EmployeeId = (long)x.Id!, FirstName = x.FirstName, LastName = x.LastName, CompanyId = x.CompanyId
+                        EmployeeId = (long)x.Id!, FirstName = x.FirstName, LastName = x.LastName,
+                        CompanyId = x.CompanyId
                     }
                 )
                 .ToList();

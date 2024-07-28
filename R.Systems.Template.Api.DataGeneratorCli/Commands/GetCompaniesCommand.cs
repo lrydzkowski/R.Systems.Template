@@ -1,6 +1,6 @@
 using CommandDotNet;
 using R.Systems.Template.Api.DataGeneratorCli.Services;
-using R.Systems.Template.Infrastructure.Db.Common.Entities;
+using R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Entities;
 
 namespace R.Systems.Template.Api.DataGeneratorCli.Commands;
 

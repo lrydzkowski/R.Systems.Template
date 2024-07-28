@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
-    <ProjectReference Include="..\R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Infrastructure.PostgreSqlDb\R.Systems.Template.Infrastructure.PostgreSqlDb.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Wordnik\R.Systems.Template.Infrastructure.Wordnik.csproj" />
   </ItemGroup>
 

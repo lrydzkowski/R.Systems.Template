@@ -2,7 +2,7 @@ using CommandDotNet;
 using CommandDotNet.IoC.MicrosoftDependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using R.Systems.Template.Infrastructure.Db;
+using R.Systems.Template.Infrastructure.PostgreSqlDb;
 using RunMethodsSequentially.LockAndRunCode;
 
 namespace R.Systems.Template.Api.DataGeneratorCli;

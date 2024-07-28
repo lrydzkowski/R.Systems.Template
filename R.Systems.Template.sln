@@ -43,8 +43,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Benchmarks.Api.Web", "R.Systems.Template.Benchmarks.Api.Web\R.Systems.Template.Benchmarks.Api.Web.csproj", "{B9104281-C654-4DB9-8BBF-BBAFEE97E312}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Db", "R.Systems.Template.Infrastructure.Db\R.Systems.Template.Infrastructure.Db.csproj", "{C97F17BC-9F02-4968-8E42-921CFC606DF8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.Notifications", "R.Systems.Template.Infrastructure.Notifications\R.Systems.Template.Infrastructure.Notifications.csproj", "{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubAction", "GitHubAction", "{CA9E7BA5-AD15-415E-9C4D-56848F3A7D41}"
@@ -52,7 +50,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHubAction", "GitHubActio
 		.github\workflows\build-and-deploy.yml = .github\workflows\build-and-deploy.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.Infrastructure.MongoDb", "R.Systems.Template.Infrastructure.MongoDb\R.Systems.Template.Infrastructure.MongoDb.csproj", "{FED511FE-5E70-4AC0-809D-5683665F386D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.MongoDb", "R.Systems.Template.Infrastructure.MongoDb\R.Systems.Template.Infrastructure.MongoDb.csproj", "{FED511FE-5E70-4AC0-809D-5683665F386D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.PostgreSqlDb", "R.Systems.Template.Infrastructure.PostgreSqlDb\R.Systems.Template.Infrastructure.PostgreSqlDb.csproj", "{5BF4633A-D804-4D3D-A0BD-C420025B640B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,10 +104,6 @@ Global
 		{B9104281-C654-4DB9-8BBF-BBAFEE97E312}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9104281-C654-4DB9-8BBF-BBAFEE97E312}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9104281-C654-4DB9-8BBF-BBAFEE97E312}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C97F17BC-9F02-4968-8E42-921CFC606DF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C97F17BC-9F02-4968-8E42-921CFC606DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C97F17BC-9F02-4968-8E42-921CFC606DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C97F17BC-9F02-4968-8E42-921CFC606DF8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -116,6 +112,10 @@ Global
 		{FED511FE-5E70-4AC0-809D-5683665F386D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FED511FE-5E70-4AC0-809D-5683665F386D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FED511FE-5E70-4AC0-809D-5683665F386D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BF4633A-D804-4D3D-A0BD-C420025B640B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BF4633A-D804-4D3D-A0BD-C420025B640B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BF4633A-D804-4D3D-A0BD-C420025B640B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BF4633A-D804-4D3D-A0BD-C420025B640B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -135,10 +135,10 @@ Global
 		{4AD22595-32AA-4106-9520-0FEF657CA6AA} = {348E1E8F-5473-43FF-A448-6746DE652F54}
 		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{B9104281-C654-4DB9-8BBF-BBAFEE97E312} = {2CAD7464-F38B-4665-9621-58A092B2BD81}
-		{C97F17BC-9F02-4968-8E42-921CFC606DF8} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{B2A250D1-160B-4762-9E0B-47A47AFC7AD2} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{CA9E7BA5-AD15-415E-9C4D-56848F3A7D41} = {3FC77EDA-4DED-4EA0-B6FA-F1A06DD40E61}
 		{FED511FE-5E70-4AC0-809D-5683665F386D} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
+		{5BF4633A-D804-4D3D-A0BD-C420025B640B} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}

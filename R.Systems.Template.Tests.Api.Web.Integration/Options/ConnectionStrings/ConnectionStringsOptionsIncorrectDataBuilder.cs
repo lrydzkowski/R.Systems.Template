@@ -1,4 +1,4 @@
-using R.Systems.Template.Infrastructure.Db.Common.Options;
+using R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Options;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Options;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Options.ConnectionStrings;

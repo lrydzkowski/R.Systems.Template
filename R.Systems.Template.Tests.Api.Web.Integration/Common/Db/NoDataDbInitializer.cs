@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using R.Systems.Template.Infrastructure.Db;
+using R.Systems.Template.Infrastructure.PostgreSqlDb;
 using RunMethodsSequentially;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.Db;

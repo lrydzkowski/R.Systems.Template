@@ -11,7 +11,7 @@ using R.Systems.Template.Api.Web.Services;
 using R.Systems.Template.Api.Web.Swagger;
 using R.Systems.Template.Core;
 using R.Systems.Template.Core.Common.Infrastructure;
-using R.Systems.Template.Infrastructure.Db;
+using R.Systems.Template.Infrastructure.PostgreSqlDb;
 using RunMethodsSequentially;
 using Swashbuckle.AspNetCore.Filters;
 

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using R.Systems.Template.Api.AzureFunctions.Middleware;
 using R.Systems.Template.Core;
-using R.Systems.Template.Infrastructure.Db;
+using R.Systems.Template.Infrastructure.PostgreSqlDb;
 
 namespace R.Systems.Template.Api.AzureFunctions;
 

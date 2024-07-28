@@ -20,7 +20,8 @@ using RunMethodsSequentially;
 using Testcontainers.MongoDb;
 using Testcontainers.PostgreSql;
 using WireMock.Server;
-using DbConnectionStringsOptions = R.Systems.Template.Infrastructure.Db.Common.Options.ConnectionStringsOptions;
+using DbConnectionStringsOptions =
+    R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Options.ConnectionStringsOptions;
 using MongoDbConnectionStringsOptions =
     R.Systems.Template.Infrastructure.MongoDb.Common.Options.ConnectionStringsOptions;
 
