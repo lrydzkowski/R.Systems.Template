@@ -15,8 +15,8 @@ internal class GenerateCompaniesCommand
 
     [DefaultCommand]
     public async Task ExecuteAsync(
-        [Option("number-of-companies")] int numberOfCompanies = 1000,
-        [Option("number-of-employees")] int numberOfEmployees = 10000
+        [Option("companies-count")] int numberOfCompanies = 1000,
+        [Option("employees-count")] int numberOfEmployees = 10000
     )
     {
         await _companyService.CreateCompaniesAsync(numberOfCompanies, numberOfEmployees);
