@@ -23,7 +23,7 @@ public class GenerateCompaniesCommandTests : IClassFixture<ConsoleAppRunnerFacto
         TestConsole testConsole = new();
         AppRunner appRunner = await _consoleAppRunnerFactory.WithTestConsole(testConsole).CreateAsync();
         AppRunnerResult generateResult = appRunner.RunInMem(
-            $"generate companies --number-of-companies {numOfCompanies} --number-of-employees {numOfEmployees}"
+            $"generate companies --companies-count {numOfCompanies} --employees-count {numOfEmployees}"
         );
         generateResult.ExitCode.Should().Be(0);
         AppRunnerResult getResult = appRunner.RunInMem("get companies");
