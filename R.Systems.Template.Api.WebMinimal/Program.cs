@@ -11,7 +11,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureCoreServices(builder.Configuration);
-builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
+builder.Services.ConfigureInfrastructurePostgreSqlDbServices(builder.Configuration);
 builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);
 
 WebApplication app = builder.Build();

@@ -35,7 +35,7 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
         IConfiguration configuration = BuildConfiguration(setConfiguration);
         IServiceCollection services = new ServiceCollection();
         services.ConfigureCoreServices(configuration);
-        services.ConfigureInfrastructureDbServices(configuration);
+        services.ConfigureInfrastructurePostgreSqlDbServices(configuration);
         services.ConfigureInfrastructureAzureServices(configuration);
         configureServices?.Invoke(services);
         return services.BuildServiceProvider();
@@ -55,7 +55,7 @@ public class SystemUnderTest<TDbInitializer> : IAsyncLifetime where TDbInitializ
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppPostgresDb)}"] =
+                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppPostgreSqlDb)}"] =
                     BuildConnectionString()
             }
         );

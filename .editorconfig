@@ -1917,3 +1917,4 @@ resharper_xunit_xunit_test_with_console_output_highlighting = warning
 resharper_zero_index_from_end_highlighting = warning
 
 dotnet_diagnostic.IDE0290.severity = none
+resharper_convert_to_primary_constructor_highlighting = none

@@ -6,11 +6,11 @@ internal class ConnectionStringsOptionsValidator : AbstractValidator<ConnectionS
 {
     public ConnectionStringsOptionsValidator()
     {
-        RuleFor(x => x.AppPostgresDb)
+        RuleFor(x => x.AppPostgreSqlDb)
             .NotEmpty()
-            .WithName(nameof(ConnectionStringsOptions.AppPostgresDb))
+            .WithName(nameof(ConnectionStringsOptions.AppPostgreSqlDb))
             .OverridePropertyName(
-                $"{ConnectionStringsOptions.Position}.{nameof(ConnectionStringsOptions.AppPostgresDb)}"
+                $"{ConnectionStringsOptions.Position}.{nameof(ConnectionStringsOptions.AppPostgreSqlDb)}"
             );
     }
 }

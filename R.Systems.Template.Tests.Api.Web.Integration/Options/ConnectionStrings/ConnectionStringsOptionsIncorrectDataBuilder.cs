@@ -11,39 +11,39 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
         {
             BuildParameters(
                 1,
-                new ConnectionStringsOptionsData { AppPostgresDb = "" },
+                new ConnectionStringsOptionsData { AppPostgreSqlDb = "" },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
                         BuildNotEmptyErrorMessage(
                             ConnectionStringsOptions.Position,
-                            nameof(ConnectionStringsOptions.AppPostgresDb)
+                            nameof(ConnectionStringsOptions.AppPostgreSqlDb)
                         )
                     }
                 )
             ),
             BuildParameters(
                 2,
-                new ConnectionStringsOptionsData { AppPostgresDb = " " },
+                new ConnectionStringsOptionsData { AppPostgreSqlDb = " " },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
                         BuildNotEmptyErrorMessage(
                             ConnectionStringsOptions.Position,
-                            nameof(ConnectionStringsOptions.AppPostgresDb)
+                            nameof(ConnectionStringsOptions.AppPostgreSqlDb)
                         )
                     }
                 )
             ),
             BuildParameters(
                 3,
-                new ConnectionStringsOptionsData { AppPostgresDb = null },
+                new ConnectionStringsOptionsData { AppPostgreSqlDb = null },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
                         BuildNotEmptyErrorMessage(
                             ConnectionStringsOptions.Position,
-                            nameof(ConnectionStringsOptions.AppPostgresDb)
+                            nameof(ConnectionStringsOptions.AppPostgreSqlDb)
                         )
                     }
                 )

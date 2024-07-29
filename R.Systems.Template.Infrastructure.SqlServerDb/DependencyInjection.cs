@@ -14,19 +14,19 @@ using R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
 using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
-using R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Options;
-using R.Systems.Template.Infrastructure.PostgreSqlDb.Companies.Commands;
-using R.Systems.Template.Infrastructure.PostgreSqlDb.Companies.Queries;
-using R.Systems.Template.Infrastructure.PostgreSqlDb.Elements.Queries;
-using R.Systems.Template.Infrastructure.PostgreSqlDb.Employees.Commands;
-using R.Systems.Template.Infrastructure.PostgreSqlDb.Employees.Queries;
-using R.Systems.Template.Infrastructure.PostgreSqlDb.Health;
+using R.Systems.Template.Infrastructure.SqlServerDb.Common.Options;
+using R.Systems.Template.Infrastructure.SqlServerDb.Companies.Commands;
+using R.Systems.Template.Infrastructure.SqlServerDb.Companies.Queries;
+using R.Systems.Template.Infrastructure.SqlServerDb.Elements.Queries;
+using R.Systems.Template.Infrastructure.SqlServerDb.Employees.Commands;
+using R.Systems.Template.Infrastructure.SqlServerDb.Employees.Queries;
+using R.Systems.Template.Infrastructure.SqlServerDb.Health;
 
-namespace R.Systems.Template.Infrastructure.PostgreSqlDb;
+namespace R.Systems.Template.Infrastructure.SqlServerDb;
 
 public static class DependencyInjection
 {
-    public static void ConfigureInfrastructurePostgreSqlDbServices(
+    public static void ConfigureInfrastructureSqlServerDbServices(
         this IServiceCollection services,
         IConfiguration configuration
     )
@@ -34,7 +34,7 @@ public static class DependencyInjection
         services.ConfigureOptions(configuration);
         services.ConfigureAppDbContext();
         services.ConfigureServices();
-        services.AddHealthChecks().AddCheck<PostgreSqlDbHealthCheck>(nameof(PostgreSqlDbHealthCheck));
+        services.AddHealthChecks().AddCheck<SqlServerDbHealthCheck>(nameof(SqlServerDbHealthCheck));
     }
 
     private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
@@ -52,7 +52,7 @@ public static class DependencyInjection
             {
                 ConnectionStringsOptions connectionStrings =
                     serviceProvider.GetRequiredService<IOptions<ConnectionStringsOptions>>().Value;
-                options.UseNpgsql(connectionStrings.AppPostgreSqlDb);
+                options.UseSqlServer(connectionStrings.AppSqlServerDb);
             }
         );
     }

@@ -35,6 +35,7 @@
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.MongoDb\R.Systems.Template.Infrastructure.MongoDb.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Notifications\R.Systems.Template.Infrastructure.Notifications.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.PostgreSqlDb\R.Systems.Template.Infrastructure.PostgreSqlDb.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Infrastructure.SqlServerDb\R.Systems.Template.Infrastructure.SqlServerDb.csproj" />
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Wordnik\R.Systems.Template.Infrastructure.Wordnik.csproj" />
   </ItemGroup>
 

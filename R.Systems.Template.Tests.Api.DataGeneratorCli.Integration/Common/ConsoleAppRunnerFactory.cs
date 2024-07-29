@@ -35,7 +35,7 @@ public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppPostgresDb)}"] =
+                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppPostgreSqlDb)}"] =
                     BuildConnectionString()
             }
         );

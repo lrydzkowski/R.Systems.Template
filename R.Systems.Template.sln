@@ -54,6 +54,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Template.Infrastructure.PostgreSqlDb", "R.Systems.Template.Infrastructure.PostgreSqlDb\R.Systems.Template.Infrastructure.PostgreSqlDb.csproj", "{5BF4633A-D804-4D3D-A0BD-C420025B640B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Template.Infrastructure.SqlServerDb", "R.Systems.Template.Infrastructure.SqlServerDb\R.Systems.Template.Infrastructure.SqlServerDb.csproj", "{49919296-64EB-4077-AF7C-DCA1E82A08C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -116,6 +118,10 @@ Global
 		{5BF4633A-D804-4D3D-A0BD-C420025B640B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BF4633A-D804-4D3D-A0BD-C420025B640B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BF4633A-D804-4D3D-A0BD-C420025B640B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49919296-64EB-4077-AF7C-DCA1E82A08C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49919296-64EB-4077-AF7C-DCA1E82A08C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49919296-64EB-4077-AF7C-DCA1E82A08C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49919296-64EB-4077-AF7C-DCA1E82A08C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -139,6 +145,7 @@ Global
 		{CA9E7BA5-AD15-415E-9C4D-56848F3A7D41} = {3FC77EDA-4DED-4EA0-B6FA-F1A06DD40E61}
 		{FED511FE-5E70-4AC0-809D-5683665F386D} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{5BF4633A-D804-4D3D-A0BD-C420025B640B} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
+		{49919296-64EB-4077-AF7C-DCA1E82A08C9} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}

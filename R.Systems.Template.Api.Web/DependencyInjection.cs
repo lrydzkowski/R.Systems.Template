@@ -11,7 +11,8 @@ using R.Systems.Template.Api.Web.Services;
 using R.Systems.Template.Api.Web.Swagger;
 using R.Systems.Template.Core;
 using R.Systems.Template.Core.Common.Infrastructure;
-using R.Systems.Template.Infrastructure.PostgreSqlDb;
+using PostgreSqlDbInitializer = R.Systems.Template.Infrastructure.PostgreSqlDb.AppDbInitializer;
+using SqlServerDbInitializer = R.Systems.Template.Infrastructure.SqlServerDb.AppDbInitializer;
 using RunMethodsSequentially;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -129,7 +130,8 @@ public static class DependencyInjection
         services.RegisterRunMethodsSequentially(
                 options => options.AddFileSystemLockAndRunMethods(environment.ContentRootPath)
             )
-            .RegisterServiceToRunInJob<AppDbInitializer>();
+            .RegisterServiceToRunInJob<PostgreSqlDbInitializer>()
+            .RegisterServiceToRunInJob<SqlServerDbInitializer>();
     }
 
     private static void ChangeApiControllerModelValidationResponse(this IServiceCollection services)

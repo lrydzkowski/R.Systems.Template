@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Options;
+using R.Systems.Template.Infrastructure.SqlServerDb.Common.Options;
 
-namespace R.Systems.Template.Infrastructure.PostgreSqlDb;
+namespace R.Systems.Template.Infrastructure.SqlServerDb;
 
 internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
@@ -18,14 +18,14 @@ internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         IConfigurationRoot config = new ConfigurationBuilder().AddUserSecrets<AppDbContext>().Build();
         IConfigurationProvider secretProvider = config.Providers.First();
         DbContextOptionsBuilder<AppDbContext> builder = new();
-        string? postgresConnectionString = GetConnectionString(
+        string? sqlServerConnectionString = GetConnectionString(
             secretProvider,
-            nameof(ConnectionStringsOptions.AppPostgreSqlDb)
+            nameof(ConnectionStringsOptions.AppSqlServerDb)
         );
-        if (IsConnectionStringCorrect(postgresConnectionString))
+        if (IsConnectionStringCorrect(sqlServerConnectionString))
         {
-            builder.UseNpgsql(
-                postgresConnectionString,
+            builder.UseSqlServer(
+                sqlServerConnectionString,
                 x => x.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
             );
             return builder;

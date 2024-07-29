@@ -7,7 +7,7 @@ internal class ConnectionStringsOptionsData : ConnectionStringsOptions, IOptions
 {
     public ConnectionStringsOptionsData()
     {
-        AppPostgresDb =
+        AppPostgreSqlDb =
             "Server=127.0.0.1;Database=r_systems_template;Port=5502;User Id=r_systems_template_user;Password=123";
     }
 
@@ -15,7 +15,7 @@ internal class ConnectionStringsOptionsData : ConnectionStringsOptions, IOptions
     {
         return new Dictionary<string, string?>
         {
-            [$"{Position}:{nameof(AppPostgresDb)}"] = AppPostgresDb
+            [$"{Position}:{nameof(AppPostgreSqlDb)}"] = AppPostgreSqlDb
         };
     }
 }

@@ -114,7 +114,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                [$"{DbConnectionStringsOptions.Position}:{nameof(DbConnectionStringsOptions.AppPostgresDb)}"] =
+                [$"{DbConnectionStringsOptions.Position}:{nameof(DbConnectionStringsOptions.AppPostgreSqlDb)}"] =
                     _dbContainer.GetConnectionString(),
                 [$"{MongoDbConnectionStringsOptions.Position}:{nameof(MongoDbConnectionStringsOptions.MongoDb)}"] =
                     _mongoDbContainer.GetConnectionString() + MongoDbName

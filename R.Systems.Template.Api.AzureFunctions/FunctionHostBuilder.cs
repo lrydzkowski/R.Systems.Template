@@ -28,7 +28,7 @@ public class FunctionHostBuilder
                 {
                     services.ConfigureServices();
                     services.ConfigureCoreServices(builder.Configuration);
-                    services.ConfigureInfrastructureDbServices(builder.Configuration);
+                    services.ConfigureInfrastructurePostgreSqlDbServices(builder.Configuration);
                 }
             );
     }

@@ -5,6 +5,7 @@ using R.Systems.Template.Infrastructure.Azure;
 using R.Systems.Template.Infrastructure.MongoDb;
 using R.Systems.Template.Infrastructure.Notifications;
 using R.Systems.Template.Infrastructure.PostgreSqlDb;
+using R.Systems.Template.Infrastructure.SqlServerDb;
 using R.Systems.Template.Infrastructure.Wordnik;
 using Serilog;
 using Serilog.Debugging;
@@ -41,7 +42,8 @@ public class Program
     {
         builder.Services.ConfigureServices(builder.Configuration, builder.Environment);
         builder.Services.ConfigureCoreServices(builder.Configuration);
-        builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructurePostgreSqlDbServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureSqlServerDbServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureMongoDbServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);
