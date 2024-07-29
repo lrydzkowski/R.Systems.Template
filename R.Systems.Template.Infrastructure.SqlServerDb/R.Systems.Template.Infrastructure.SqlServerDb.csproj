@@ -21,4 +21,8 @@
     <ProjectReference Include="..\R.Systems.Template.Core\R.Systems.Template.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="R.Systems.Template.Tests.Api.Web.Integration" />
+  </ItemGroup>
+
 </Project>

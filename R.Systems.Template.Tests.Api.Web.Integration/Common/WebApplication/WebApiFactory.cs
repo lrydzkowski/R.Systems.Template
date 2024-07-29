@@ -18,10 +18,13 @@ using R.Systems.Template.Tests.Api.Web.Integration.Options.Serilog;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.Wordnik;
 using RunMethodsSequentially;
 using Testcontainers.MongoDb;
+using Testcontainers.MsSql;
 using Testcontainers.PostgreSql;
 using WireMock.Server;
-using DbConnectionStringsOptions =
+using PostgresSqlDbConnectionStringsOptions =
     R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Options.ConnectionStringsOptions;
+using SqlServerDbConnectionStringsOptions =
+    R.Systems.Template.Infrastructure.SqlServerDb.Common.Options.ConnectionStringsOptions;
 using MongoDbConnectionStringsOptions =
     R.Systems.Template.Infrastructure.MongoDb.Common.Options.ConnectionStringsOptions;
 
@@ -31,18 +34,20 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private const string MongoDbName = "admin";
 
-    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
+    private readonly List<IOptionsData> _defaultOptionsData =
+    [
+        new AzureAdOptionsData(), new AzureAdB2COptionsData(), new ConnectionStringsOptionsData(),
+        new WordnikOptionsData(), new HealthCheckOptionsData(), new SerilogOptionsData()
+    ];
+
+    private readonly MongoDbContainer _mongoDbContainer = new MongoDbBuilder().WithImage("mongo:6.0").Build();
+
+    private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithImage("postgres:15-alpine")
         .WithCleanUp(true)
         .Build();
 
-    private readonly List<IOptionsData> _defaultOptionsData = new()
-    {
-        new AzureAdOptionsData(), new AzureAdB2COptionsData(), new ConnectionStringsOptionsData(),
-        new WordnikOptionsData(), new HealthCheckOptionsData(), new SerilogOptionsData()
-    };
-
-    private readonly MongoDbContainer _mongoDbContainer = new MongoDbBuilder().WithImage("mongo:6.0").Build();
+    private readonly MsSqlContainer _sqlServerContainer = new MsSqlBuilder().Build();
 
     public WebApiFactory()
     {
@@ -54,14 +59,16 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        await _dbContainer.StartAsync();
+        await _postgreSqlContainer.StartAsync();
+        await _sqlServerContainer.StartAsync();
         await _mongoDbContainer.StartAsync();
     }
 
     public new async Task DisposeAsync()
     {
         WireMockServer.Dispose();
-        await _dbContainer.DisposeAsync();
+        await _postgreSqlContainer.DisposeAsync();
+        await _sqlServerContainer.DisposeAsync();
         await _mongoDbContainer.DisposeAsync();
     }
 
@@ -114,8 +121,10 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                [$"{DbConnectionStringsOptions.Position}:{nameof(DbConnectionStringsOptions.AppPostgreSqlDb)}"] =
-                    _dbContainer.GetConnectionString(),
+                [$"{PostgresSqlDbConnectionStringsOptions.Position}:{nameof(PostgresSqlDbConnectionStringsOptions.AppPostgreSqlDb)}"] =
+                    _postgreSqlContainer.GetConnectionString(),
+                [$"{SqlServerDbConnectionStringsOptions.Position}:{nameof(SqlServerDbConnectionStringsOptions.AppSqlServerDb)}"] =
+                    _sqlServerContainer.GetConnectionString(),
                 [$"{MongoDbConnectionStringsOptions.Position}:{nameof(MongoDbConnectionStringsOptions.MongoDb)}"] =
                     _mongoDbContainer.GetConnectionString() + MongoDbName
             }
