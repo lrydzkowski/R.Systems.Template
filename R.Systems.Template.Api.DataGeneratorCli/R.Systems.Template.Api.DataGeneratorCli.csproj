@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.PostgreSqlDb\R.Systems.Template.Infrastructure.PostgreSqlDb.csproj" />
+    <ProjectReference Include="..\R.Systems.Template.Infrastructure.SqlServerDb\R.Systems.Template.Infrastructure.SqlServerDb.csproj" />
   </ItemGroup>
 
 </Project>

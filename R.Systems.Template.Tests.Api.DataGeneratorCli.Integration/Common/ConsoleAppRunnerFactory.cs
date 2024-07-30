@@ -2,25 +2,33 @@ using CommandDotNet;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Api.DataGeneratorCli;
-using R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Options;
 using RunMethodsSequentially;
+using Testcontainers.MsSql;
 using Testcontainers.PostgreSql;
+using PostgresSqlDbConnectionStringsOptions =
+    R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Options.ConnectionStringsOptions;
+using SqlServerDbConnectionStringsOptions =
+    R.Systems.Template.Infrastructure.SqlServerDb.Common.Options.ConnectionStringsOptions;
 
 namespace R.Systems.Template.Tests.Api.DataGeneratorCli.Integration.Common;
 
 public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _dbContainer =
+    private readonly PostgreSqlContainer _postgreSqlContainer =
         new PostgreSqlBuilder().WithImage("postgres:15-alpine").WithCleanUp(true).Build();
+
+    private readonly MsSqlContainer _sqlServerContainer = new MsSqlBuilder().Build();
 
     public async Task InitializeAsync()
     {
-        await _dbContainer.StartAsync();
+        await _postgreSqlContainer.StartAsync();
+        await _sqlServerContainer.StartAsync();
     }
 
     public async Task DisposeAsync()
     {
-        await _dbContainer.DisposeAsync();
+        await _postgreSqlContainer.DisposeAsync();
+        await _sqlServerContainer.DisposeAsync();
     }
 
     public override async Task<AppRunner> CreateAsync()
@@ -35,8 +43,10 @@ public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppPostgreSqlDb)}"] =
-                    BuildConnectionString()
+                [$"{PostgresSqlDbConnectionStringsOptions.Position}:{nameof(PostgresSqlDbConnectionStringsOptions.AppPostgreSqlDb)}"] =
+                    _postgreSqlContainer.GetConnectionString(),
+                [$"{SqlServerDbConnectionStringsOptions.Position}:{nameof(SqlServerDbConnectionStringsOptions.AppSqlServerDb)}"] =
+                    _sqlServerContainer.GetConnectionString()
             }
         );
     }
@@ -51,10 +61,5 @@ public class ConsoleAppRunnerFactory : AppRunnerFactory, IAsyncLifetime
                 }
             )
             .RegisterServiceToRunInJob<ConsoleSampleDataDbInitializer>();
-    }
-
-    private string BuildConnectionString()
-    {
-        return _dbContainer.GetConnectionString();
     }
 }

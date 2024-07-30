@@ -1,12 +1,13 @@
 using Bogus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Infrastructure.PostgreSqlDb;
 using R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Entities;
 
-namespace R.Systems.Template.Api.DataGeneratorCli.Services;
+namespace R.Systems.Template.Api.DataGeneratorCli.Services.PostgreSql;
 
-internal class CompanyService
+internal class CompanyService : ICompanyService
 {
     private readonly AppDbContext _dbContext;
 
@@ -14,6 +15,8 @@ internal class CompanyService
     {
         _dbContext = dbContext;
     }
+
+    public string Version { get; } = Versions.V1;
 
     public async Task CreateCompaniesAsync(int numberOfCompanies, int numberOfEmployees)
     {
