@@ -17,7 +17,7 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
         _dbContext = dbContext;
     }
 
-    public string Version { get; } = Versions.V1;
+    public string Version { get; } = Versions.V3;
 
     public async Task<ListInfo<Employee>> GetEmployeesAsync(
         ListParameters listParameters,

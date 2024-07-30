@@ -14,7 +14,7 @@ internal class GetCompanyRepository : IGetCompanyRepository
         _dbContext = dbContext;
     }
 
-    public string Version { get; } = Versions.V1;
+    public string Version { get; } = Versions.V3;
 
     public async Task<Company?> GetCompanyAsync(long companyId, CancellationToken cancellationToken)
     {
