@@ -3,6 +3,7 @@ using BenchmarkDotNet.Attributes;
 using R.Systems.Template.Api.Web.Models;
 using R.Systems.Template.Benchmarks.Api.Web.Options;
 using R.Systems.Template.Core.Common.Domain;
+using R.Systems.Template.Core.Common.Infrastructure;
 using RestSharp;
 using RestSharp.Authenticators;
 
@@ -27,7 +28,7 @@ public class CreateCompanyBenchmark
     }
 
     [Benchmark]
-    public async Task<Company> CreateCompanyAsync()
+    public async Task<Company> CreateCompanyPostgreSqlAsync()
     {
         CreateCompanyRequest request = new()
         {
@@ -35,6 +36,28 @@ public class CreateCompanyBenchmark
         };
         RestRequest restRequest = new(_endpointUrlPath, Method.Post);
         restRequest.AddJsonBody(request);
+
+        RestResponse<Company> response = await _restClient!.ExecuteAsync<Company>(restRequest);
+        if (response.Data == null)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(response));
+
+            throw new InvalidOperationException("response.Data is null");
+        }
+
+        return response.Data;
+    }
+
+    [Benchmark]
+    public async Task<Company> CreateCompanySqlServerAsync()
+    {
+        CreateCompanyRequest request = new()
+        {
+            Name = Guid.NewGuid().ToString()
+        };
+        RestRequest restRequest = new(_endpointUrlPath, Method.Post);
+        restRequest.AddJsonBody(request);
+        restRequest.AddHeader(Headers.Version, Versions.V3);
 
         RestResponse<Company> response = await _restClient!.ExecuteAsync<Company>(restRequest);
         if (response.Data == null)
