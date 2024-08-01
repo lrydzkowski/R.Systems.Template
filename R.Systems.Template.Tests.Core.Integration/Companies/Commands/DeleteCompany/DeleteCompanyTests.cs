@@ -29,14 +29,14 @@ public class DeleteCompanyTests
     [Fact]
     public async Task DeleteCompany_ShouldReturnValidationError_WhenCompanyNotExist()
     {
-        long companyId = long.MaxValue;
+        string companyId = "79973cf6-722f-4ba8-9e8a-f2f18ad961db";
         List<ValidationFailure> expectedValidationFailures = new()
         {
             new ValidationFailure
             {
                 PropertyName = "Company",
                 ErrorMessage = $"Company with the given id doesn't exist ('{companyId}').",
-                AttemptedValue = companyId,
+                AttemptedValue = new Guid(companyId),
                 ErrorCode = "NotExist"
             }
         };
@@ -56,20 +56,20 @@ public class DeleteCompanyTests
             Name = "Test Company"
         };
         CreateCompanyResult createCompanyResult = await _mediator.Send(createCompanyCommand);
-        long companyId = createCompanyResult.Company.CompanyId;
+        Guid companyId = createCompanyResult.Company.CompanyId;
         GetCompanyQuery getCompanyQuery = new()
         {
-            CompanyId = companyId
+            CompanyId = companyId.ToString()
         };
         GetCompanyResult getCompanyResult = await _mediator.Send(getCompanyQuery);
         DeleteCompanyCommand deleteCompanyCommand = new()
         {
-            CompanyId = companyId
+            CompanyId = companyId.ToString()
         };
         await _mediator.Send(deleteCompanyCommand);
         GetCompanyQuery getCompanyAfterDeleteQuery = new()
         {
-            CompanyId = companyId
+            CompanyId = companyId.ToString()
         };
         GetCompanyResult getCompanyAfterDeleteResult = await _mediator.Send(getCompanyAfterDeleteQuery);
         getCompanyResult.Company.Should().NotBeNull();

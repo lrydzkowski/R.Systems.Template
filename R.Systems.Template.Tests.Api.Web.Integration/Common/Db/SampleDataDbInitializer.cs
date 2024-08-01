@@ -14,25 +14,8 @@ public class SampleDataDbInitializer : IStartupServiceToRunSequentially
     public async ValueTask ApplyYourChangeAsync(IServiceProvider scopedServices)
     {
         AppDbContext dbContext = scopedServices.GetRequiredService<AppDbContext>();
-        if (await DataExistsAsync(dbContext))
-        {
-            return;
-        }
-
         await RemoveExistingDataAsync(dbContext);
         await AddTestDataAsync(dbContext);
-    }
-
-    private async Task<bool> DataExistsAsync(AppDbContext dbContext)
-    {
-        long? maxId = CompaniesSampleData.Data.Max(y => y.Value.Id);
-        if (maxId == null)
-        {
-            return false;
-        }
-
-        CompanyEntity? companyEntity = await dbContext.Companies.AsNoTracking().FirstOrDefaultAsync(x => x.Id == maxId);
-        return companyEntity != null;
     }
 
     private async Task RemoveExistingDataAsync(AppDbContext dbContext)

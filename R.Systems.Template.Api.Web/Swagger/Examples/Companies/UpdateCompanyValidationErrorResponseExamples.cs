@@ -46,8 +46,8 @@ public class UpdateCompanyValidationErrorResponseExamples : IMultipleExamplesPro
                 new()
                 {
                     PropertyName = "Company",
-                    ErrorMessage = "Company with the given id doesn't exist ('12222').",
-                    AttemptedValue = "12222",
+                    ErrorMessage = "Company with the given id doesn't exist ('1cfe188a-ffdc-4f1e-83bd-31467b57bca3').",
+                    AttemptedValue = "1cfe188a-ffdc-4f1e-83bd-31467b57bca3",
                     ErrorCode = "NotExist"
                 }
             }

@@ -6,8 +6,8 @@ namespace R.Systems.Template.Core.Employees.Queries.GetEmployee;
 
 public class GetEmployeeQuery : IContextRequest, IRequest<GetEmployeeResult>
 {
-    public long? CompanyId { get; init; }
-    public long EmployeeId { get; init; }
+    public string? CompanyId { get; init; }
+    public string EmployeeId { get; init; } = "";
     public ApplicationContext AppContext { get; set; } = new();
 }
 
@@ -28,12 +28,34 @@ public class GetEmployeeQueryHandler : IRequestHandler<GetEmployeeQuery, GetEmpl
     public async Task<GetEmployeeResult> Handle(GetEmployeeQuery query, CancellationToken cancellationToken)
     {
         IGetEmployeeRepository repository = _repositoryFactory.GetRepository(query.AppContext);
-        Employee? employee = query.CompanyId == null
-            ? await repository.GetEmployeeAsync(query.EmployeeId, cancellationToken)
-            : await repository.GetEmployeeAsync((long)query.CompanyId, query.EmployeeId, cancellationToken);
+
+        bool parsingEmployeeId = Guid.TryParse(query.EmployeeId, out Guid employeeId);
+        if (!parsingEmployeeId)
+        {
+            return new GetEmployeeResult();
+        }
+
+        if (query.CompanyId is null)
+        {
+            Employee? employee = await repository.GetEmployeeAsync(employeeId, cancellationToken);
+
+            return new GetEmployeeResult
+            {
+                Employee = employee
+            };
+        }
+
+        bool parsingCompanyId = Guid.TryParse(query.CompanyId, out Guid companyId);
+        if (!parsingCompanyId)
+        {
+            return new GetEmployeeResult();
+        }
+
+        Employee? employeeInCompany = await repository.GetEmployeeAsync(companyId, employeeId, cancellationToken);
+
         return new GetEmployeeResult
         {
-            Employee = employee
+            Employee = employeeInCompany
         };
     }
 }

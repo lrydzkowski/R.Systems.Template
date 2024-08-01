@@ -7,7 +7,7 @@ namespace R.Systems.Template.Core.Employees.Queries.GetEmployees;
 
 public class GetEmployeesQuery : IGetListQuery, IContextRequest, IRequest<GetEmployeesResult>
 {
-    public long? CompanyId { get; init; }
+    public string? CompanyId { get; init; }
     public ApplicationContext AppContext { get; set; } = new();
     public ListParametersDto ListParametersDto { get; init; } = new();
 }
@@ -63,16 +63,31 @@ public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, GetEm
     {
         IGetEmployeesRepository repository = _getEmployeesRepositoryFactory.GetRepository(query.AppContext);
         ListParameters listParameters = _listParametersMapper.Map(query.ListParametersDto, _fields);
-        ListInfo<Employee> employees = query.CompanyId == null
-            ? await repository.GetEmployeesAsync(listParameters, cancellationToken)
-            : await repository.GetEmployeesAsync(
-                listParameters,
-                (long)query.CompanyId,
-                cancellationToken
-            );
+        if (query.CompanyId is null)
+        {
+            ListInfo<Employee> employees = await repository.GetEmployeesAsync(listParameters, cancellationToken);
+
+            return new GetEmployeesResult
+            {
+                Employees = employees
+            };
+        }
+
+        bool parsingCompanyId = Guid.TryParse(query.CompanyId, out Guid companyId);
+        if (!parsingCompanyId)
+        {
+            return new GetEmployeesResult();
+        }
+
+        ListInfo<Employee> employeesInCompany = await repository.GetEmployeesAsync(
+            listParameters,
+            companyId,
+            cancellationToken
+        );
+
         return new GetEmployeesResult
         {
-            Employees = employees
+            Employees = employeesInCompany
         };
     }
 }

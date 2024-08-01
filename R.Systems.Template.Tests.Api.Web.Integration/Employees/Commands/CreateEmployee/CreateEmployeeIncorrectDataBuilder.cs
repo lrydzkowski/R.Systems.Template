@@ -18,7 +18,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
             new CreateEmployeeCommand
             {
                 FirstName = firstNameAttemptedValue, LastName = faker.Name.LastName(),
-                CompanyId = CompaniesSampleData.Data["Meta"].Id
+                CompanyId = CompaniesSampleData.Data["Meta"].Id?.ToString()
             },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
@@ -30,7 +30,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
             new CreateEmployeeCommand
             {
                 FirstName = firstNameAttemptedValue, LastName = faker.Name.LastName(),
-                CompanyId = CompaniesSampleData.Data["Meta"].Id
+                CompanyId = CompaniesSampleData.Data["Meta"].Id?.ToString()
             },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
@@ -42,7 +42,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
             new CreateEmployeeCommand
             {
                 FirstName = firstNameAttemptedValue, LastName = faker.Name.LastName(),
-                CompanyId = CompaniesSampleData.Data["Meta"].Id
+                CompanyId = CompaniesSampleData.Data["Meta"].Id?.ToString()
             },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
@@ -54,7 +54,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
             new CreateEmployeeCommand
             {
                 FirstName = firstNameAttemptedValue, LastName = faker.Name.LastName(),
-                CompanyId = CompaniesSampleData.Data["Meta"].Id
+                CompanyId = CompaniesSampleData.Data["Meta"].Id?.ToString()
             },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
@@ -66,7 +66,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
             new CreateEmployeeCommand
             {
                 FirstName = faker.Name.FirstName(), LastName = lastNameAttemptedValue,
-                CompanyId = CompaniesSampleData.Data["Meta"].Id
+                CompanyId = CompaniesSampleData.Data["Meta"].Id?.ToString()
             },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
@@ -78,7 +78,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
             new CreateEmployeeCommand
             {
                 FirstName = faker.Name.FirstName(), LastName = lastNameAttemptedValue,
-                CompanyId = CompaniesSampleData.Data["Meta"].Id
+                CompanyId = CompaniesSampleData.Data["Meta"].Id?.ToString()
             },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
@@ -90,7 +90,7 @@ internal static class CreateEmployeeIncorrectDataBuilder
             new CreateEmployeeCommand
             {
                 FirstName = faker.Name.FirstName(), LastName = lastNameAttemptedValue,
-                CompanyId = CompaniesSampleData.Data["Meta"].Id
+                CompanyId = CompaniesSampleData.Data["Meta"].Id?.ToString()
             },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
@@ -102,13 +102,13 @@ internal static class CreateEmployeeIncorrectDataBuilder
             new CreateEmployeeCommand
             {
                 FirstName = faker.Name.FirstName(), LastName = lastNameAttemptedValue,
-                CompanyId = CompaniesSampleData.Data["Meta"].Id
+                CompanyId = CompaniesSampleData.Data["Meta"].Id?.ToString()
             },
             HttpStatusCode.UnprocessableEntity,
             new List<ValidationFailure>
                 { ValidationFailureBuilder.BuildTooLongFieldValidationError("LastName", 100, lastNameAttemptedValue) }
         );
-        long companyIdAttemptedValue = 999;
+        string companyIdAttemptedValue = "fff1ad1b-5cc6-4bd3-81ec-413f889072c9";
         yield return BuildParameters(
             9,
             new CreateEmployeeCommand

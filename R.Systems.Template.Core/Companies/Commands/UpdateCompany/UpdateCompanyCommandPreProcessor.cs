@@ -6,7 +6,9 @@ internal class UpdateCompanyCommandPreProcessor : IRequestPreProcessor<UpdateCom
 {
     public Task Process(UpdateCompanyCommand request, CancellationToken cancellationToken)
     {
+        request.CompanyId = request.CompanyId.Trim();
         request.Name = request.Name?.Trim();
+
         return Task.CompletedTask;
     }
 }

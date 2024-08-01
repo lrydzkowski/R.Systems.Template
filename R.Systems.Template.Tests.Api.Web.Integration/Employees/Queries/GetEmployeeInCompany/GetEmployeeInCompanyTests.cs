@@ -29,7 +29,7 @@ public class GetEmployeeInCompanyTests
         EmployeeEntity expectedEmployeeEntity = EmployeesSampleData.Data[0];
         Employee expectedEmployee = new()
         {
-            EmployeeId = (long)expectedEmployeeEntity.Id!,
+            EmployeeId = (Guid)expectedEmployeeEntity.Id!,
             FirstName = expectedEmployeeEntity.FirstName,
             LastName = expectedEmployeeEntity.LastName,
             CompanyId = expectedEmployeeEntity.CompanyId
@@ -45,8 +45,9 @@ public class GetEmployeeInCompanyTests
     [Fact]
     public async Task GetEmployeeInCompany_ShouldReturn404_WhenEmployeeNotExist()
     {
+        string companyId = "60261960-a923-4ca4-919c-12c901b280d0";
         EmployeeEntity employeeEntity = EmployeesSampleData.Data[0];
-        RestRequest restRequest = new($"/companies/{employeeEntity.CompanyId + 1}/employees/{employeeEntity.Id}");
+        RestRequest restRequest = new($"/companies/{companyId}/employees/{employeeEntity.Id}");
         RestResponse<ErrorInfo> response = await _restClient.ExecuteAsync<ErrorInfo>(restRequest);
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         response.Data.Should()

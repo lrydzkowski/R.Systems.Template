@@ -34,7 +34,7 @@ internal class CompanyRepository : ICreateCompanyRepository, IUpdateCompanyRepos
         return createdCompany;
     }
 
-    public async Task DeleteAsync(long companyId)
+    public async Task DeleteAsync(Guid companyId)
     {
         FilterDefinition<CompanyDocument>? filter = Builders<CompanyDocument>.Filter.Eq(d => d.Id, companyId);
         await _appDbContext.Companies.DeleteOneAsync(filter);

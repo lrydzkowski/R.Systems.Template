@@ -5,7 +5,7 @@ namespace R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
 
 public class DeleteEmployeeCommand : IContextRequest, IRequest
 {
-    public long EmployeeId { get; init; }
+    public string EmployeeId { get; init; } = "";
     public ApplicationContext AppContext { get; set; } = new();
 }
 
@@ -21,6 +21,12 @@ public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeComman
     public async Task Handle(DeleteEmployeeCommand command, CancellationToken cancellationToken)
     {
         IDeleteEmployeeRepository repository = _repositoryFactory.GetRepository(command.AppContext);
-        await repository.DeleteEmployeeAsync(command.EmployeeId);
+        bool parsingResult = Guid.TryParse(command.EmployeeId, out Guid employeeId);
+        if (!parsingResult)
+        {
+            return;
+        }
+
+        await repository.DeleteEmployeeAsync(employeeId);
     }
 }

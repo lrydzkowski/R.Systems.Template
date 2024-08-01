@@ -17,7 +17,7 @@ public class GetEmployeeNotFoundResponseExamples : IMultipleExamplesProvider<Err
                 ErrorCode = "NotExist",
                 AttemptedValue = new
                 {
-                    EmployeeId = 5
+                    EmployeeId = "56c565ae-eef7-4178-89e4-6339875d1c11"
                 }
             }
         );

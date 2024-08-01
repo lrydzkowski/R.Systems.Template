@@ -60,7 +60,10 @@ public class CreateEmployeeTests
         createResponse.Data.Should()
             .BeEquivalentTo(
                 new Employee
-                    { FirstName = command.FirstName!, LastName = command.LastName!, CompanyId = command.CompanyId! },
+                {
+                    FirstName = command.FirstName!, LastName = command.LastName!,
+                    CompanyId = Guid.Parse(command.CompanyId!)
+                },
                 options => options.Excluding(x => x.EmployeeId)
             );
         createResponse.Headers.Should().NotBeNullOrEmpty();

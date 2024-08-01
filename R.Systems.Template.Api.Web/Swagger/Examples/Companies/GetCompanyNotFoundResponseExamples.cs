@@ -17,7 +17,7 @@ public class GetCompanyNotFoundResponseExamples : IMultipleExamplesProvider<Erro
                 ErrorCode = "NotExist",
                 AttemptedValue = new
                 {
-                    CompanyId = 5
+                    CompanyId = "b680cd6e-bc14-43ee-91c9-729f91f93d81"
                 }
             }
         );

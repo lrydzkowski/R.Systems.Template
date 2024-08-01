@@ -10,7 +10,7 @@ internal class ApiDataBuilder
         {
             new object?[]
             {
-                "/companies/1",
+                "/companies/fafc71ef-5662-4c5f-b2c5-5dd3c8dfbbed",
                 Method.Get
             },
             new object?[]
@@ -25,12 +25,12 @@ internal class ApiDataBuilder
             },
             new object?[]
             {
-                "/companies/1",
+                "/companies/fafc71ef-5662-4c5f-b2c5-5dd3c8dfbbed",
                 Method.Put
             },
             new object?[]
             {
-                "/employees/1",
+                "/employees/fafc71ef-5662-4c5f-b2c5-5dd3c8dfbbed",
                 Method.Get
             },
             new object?[]
@@ -45,17 +45,17 @@ internal class ApiDataBuilder
             },
             new object?[]
             {
-                "/employees/1",
+                "/employees/fafc71ef-5662-4c5f-b2c5-5dd3c8dfbbed",
                 Method.Put
             },
             new object?[]
             {
-                "/companies/1/employees/1",
+                "/companies/fafc71ef-5662-4c5f-b2c5-5dd3c8dfbbed/employees/fbc038e3-3cfe-4d87-a0e6-d18d6a5d2c0e",
                 Method.Get
             },
             new object?[]
             {
-                "/companies/1/employees",
+                "/companies/fafc71ef-5662-4c5f-b2c5-5dd3c8dfbbed/employees",
                 Method.Get
             },
             new object?[]

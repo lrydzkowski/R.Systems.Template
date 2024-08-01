@@ -6,8 +6,11 @@ internal class UpdateEmployeeCommandPreProcessor : IRequestPreProcessor<UpdateEm
 {
     public Task Process(UpdateEmployeeCommand request, CancellationToken cancellationToken)
     {
+        request.EmployeeId = request.EmployeeId.Trim();
         request.FirstName = request.FirstName?.Trim();
         request.LastName = request.LastName?.Trim();
+        request.CompanyId = request.CompanyId?.Trim();
+
         return Task.CompletedTask;
     }
 }

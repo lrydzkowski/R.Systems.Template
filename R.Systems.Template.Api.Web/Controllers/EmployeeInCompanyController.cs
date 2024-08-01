@@ -42,8 +42,8 @@ public class EmployeeInCompanyController : ApiControllerBase
     [HttpGet("{companyId}/employees/{employeeId}", Name = "GetEmployeeInCompany")]
     public async Task<IActionResult> GetEmployeeInCompany(
         [FromHeader(Name = Headers.Version)] string? version,
-        long companyId,
-        long employeeId,
+        string companyId,
+        string employeeId,
         CancellationToken cancellationToken
     )
     {
@@ -81,7 +81,7 @@ public class EmployeeInCompanyController : ApiControllerBase
     public async Task<IActionResult> GetEmployeesInCompany(
         [FromHeader(Name = Headers.Version)] string? version,
         [FromQuery] ListRequest listRequest,
-        long companyId,
+        string companyId,
         CancellationToken cancellationToken
     )
     {
@@ -90,7 +90,8 @@ public class EmployeeInCompanyController : ApiControllerBase
         GetEmployeesResult result = await _mediator.Send(
             new GetEmployeesQuery
             {
-                ListParametersDto = listParametersDto, CompanyId = companyId,
+                ListParametersDto = listParametersDto,
+                CompanyId = companyId,
                 AppContext = new ApplicationContext(version)
             },
             cancellationToken

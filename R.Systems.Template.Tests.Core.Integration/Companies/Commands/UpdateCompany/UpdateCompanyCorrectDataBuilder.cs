@@ -14,7 +14,7 @@ internal static class UpdateCompanyCorrectDataBuilder
             BuildParameters(
                 1,
                 new UpdateCompanyCommand
-                    { CompanyId = (long)CompaniesSampleData.Data["Meta"].Id!, Name = faker.Random.String2(100) }
+                    { CompanyId = CompaniesSampleData.Data["Meta"].Id.ToString()!, Name = faker.Random.String2(100) }
             )
         };
     }

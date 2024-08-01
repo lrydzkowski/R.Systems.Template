@@ -57,7 +57,7 @@ public class CompanyController : ApiControllerBase
     [HttpGet("{companyId}", Name = "GetCompany")]
     public async Task<IActionResult> GetCompany(
         [FromHeader(Name = Headers.Version)] string? version,
-        long companyId,
+        string companyId,
         CancellationToken cancellationToken
     )
     {
@@ -161,7 +161,7 @@ public class CompanyController : ApiControllerBase
     [HttpPut("{companyId}")]
     public async Task<IActionResult> UpdateCompany(
         [FromHeader(Name = Headers.Version)] string? version,
-        long companyId,
+        string companyId,
         UpdateCompanyRequest request
     )
     {
@@ -186,7 +186,7 @@ public class CompanyController : ApiControllerBase
     [HttpDelete("{companyId}")]
     public async Task<IActionResult> DeleteCompany(
         [FromHeader(Name = Headers.Version)] string? version,
-        long companyId
+        string companyId
     )
     {
         DeleteCompanyCommand command = new()

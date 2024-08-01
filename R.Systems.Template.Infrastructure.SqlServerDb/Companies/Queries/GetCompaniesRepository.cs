@@ -24,7 +24,7 @@ internal class GetCompaniesRepository : IGetCompaniesRepository
     )
     {
         IQueryable<Company> query = _dbContext.Companies.AsNoTracking()
-            .Select(companyEntity => new Company { CompanyId = (long)companyEntity.Id!, Name = companyEntity.Name })
+            .Select(companyEntity => new Company { CompanyId = (Guid)companyEntity.Id!, Name = companyEntity.Name })
             .Sort(listParameters.Sorting, listParameters.Fields)
             .Filter(listParameters.Filters, listParameters.Fields);
         List<Company> companies = await query

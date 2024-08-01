@@ -17,20 +17,17 @@ namespace R.Systems.Template.Infrastructure.PostgreSqlDb.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("R.Systems.Template.Infrastructure.Db.Common.Entities.CompanyEntity", b =>
+            modelBuilder.Entity("R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Entities.CompanyEntity", b =>
                 {
-                    b.Property<long?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long?>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long?>("Id"), 3L, null, null, null, null, null);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -48,24 +45,22 @@ namespace R.Systems.Template.Infrastructure.PostgreSqlDb.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
+                            Id = new Guid("31b04626-ed12-4d79-b3d6-1430a72000d5"),
                             Name = "Meta"
                         },
                         new
                         {
-                            Id = 2L,
+                            Id = new Guid("9427a96c-a0b6-461c-814c-9c3c2bb6ff80"),
                             Name = "Google"
                         });
                 });
 
-            modelBuilder.Entity("R.Systems.Template.Infrastructure.Db.Common.Entities.ElementEntity", b =>
+            modelBuilder.Entity("R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Entities.ElementEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<int?>("AdditionalValue")
                         .HasColumnType("integer")
@@ -79,7 +74,7 @@ namespace R.Systems.Template.Infrastructure.PostgreSqlDb.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("big_value");
 
-                    b.Property<DateTime>("CreationDate")
+                    b.Property<DateOnly>("CreationDate")
                         .HasColumnType("date")
                         .HasColumnName("creation_date");
 
@@ -114,7 +109,7 @@ namespace R.Systems.Template.Infrastructure.PostgreSqlDb.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("price");
 
-                    b.Property<DateTime?>("UpdateDate")
+                    b.Property<DateOnly?>("UpdateDate")
                         .HasColumnType("date")
                         .HasColumnName("update_date");
 
@@ -131,18 +126,15 @@ namespace R.Systems.Template.Infrastructure.PostgreSqlDb.Migrations
                     b.ToTable("element", (string)null);
                 });
 
-            modelBuilder.Entity("R.Systems.Template.Infrastructure.Db.Common.Entities.EmployeeEntity", b =>
+            modelBuilder.Entity("R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Entities.EmployeeEntity", b =>
                 {
-                    b.Property<long?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long?>("Id"));
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<long?>("Id"), 4L, null, null, null, null, null);
-
-                    b.Property<long?>("CompanyId")
-                        .HasColumnType("bigint")
+                    b.Property<Guid?>("CompanyId")
+                        .HasColumnType("uuid")
                         .HasColumnName("company_id");
 
                     b.Property<string>("FirstName")
@@ -166,30 +158,30 @@ namespace R.Systems.Template.Infrastructure.PostgreSqlDb.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
-                            CompanyId = 1L,
+                            Id = new Guid("84b096f7-68a1-47a8-9e6a-8cfd79f0f069"),
+                            CompanyId = new Guid("31b04626-ed12-4d79-b3d6-1430a72000d5"),
                             FirstName = "John",
                             LastName = "Doe"
                         },
                         new
                         {
-                            Id = 2L,
-                            CompanyId = 2L,
+                            Id = new Guid("ab189e89-7007-43bf-85d1-b1cc3c69c503"),
+                            CompanyId = new Guid("9427a96c-a0b6-461c-814c-9c3c2bb6ff80"),
                             FirstName = "Will",
                             LastName = "Smith"
                         },
                         new
                         {
-                            Id = 3L,
-                            CompanyId = 2L,
+                            Id = new Guid("b82f922b-784c-40e1-b03b-476a0b447dca"),
+                            CompanyId = new Guid("9427a96c-a0b6-461c-814c-9c3c2bb6ff80"),
                             FirstName = "Jack",
                             LastName = "Parker"
                         });
                 });
 
-            modelBuilder.Entity("R.Systems.Template.Infrastructure.Db.Common.Entities.EmployeeEntity", b =>
+            modelBuilder.Entity("R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Entities.EmployeeEntity", b =>
                 {
-                    b.HasOne("R.Systems.Template.Infrastructure.Db.Common.Entities.CompanyEntity", "Company")
+                    b.HasOne("R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Entities.CompanyEntity", "Company")
                         .WithMany("Employees")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -197,7 +189,7 @@ namespace R.Systems.Template.Infrastructure.PostgreSqlDb.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("R.Systems.Template.Infrastructure.Db.Common.Entities.CompanyEntity", b =>
+            modelBuilder.Entity("R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Entities.CompanyEntity", b =>
                 {
                     b.Navigation("Employees");
                 });

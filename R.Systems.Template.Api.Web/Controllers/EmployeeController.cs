@@ -55,7 +55,7 @@ public class EmployeeController : ApiControllerBase
     [HttpGet("{employeeId}", Name = "GetEmployee")]
     public async Task<IActionResult> GetEmployee(
         [FromHeader(Name = Headers.Version)] string? version,
-        long employeeId,
+        string employeeId,
         CancellationToken cancellationToken
     )
     {
@@ -163,7 +163,7 @@ public class EmployeeController : ApiControllerBase
     [HttpPut("{employeeId}")]
     public async Task<IActionResult> UpdateEmployee(
         [FromHeader(Name = Headers.Version)] string? version,
-        long employeeId,
+        string employeeId,
         UpdateEmployeeRequest request
     )
     {
@@ -184,7 +184,7 @@ public class EmployeeController : ApiControllerBase
     [HttpDelete("{employeeId}")]
     public async Task<IActionResult> DeleteEmployee(
         [FromHeader(Name = Headers.Version)] string? version,
-        long employeeId
+        string employeeId
     )
     {
         DeleteEmployeeCommand command = new()

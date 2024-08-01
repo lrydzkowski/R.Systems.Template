@@ -5,7 +5,6 @@ using R.Systems.Template.Core.Common.Lists;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
 using R.Systems.Template.Infrastructure.MongoDb.Common.Documents;
 using R.Systems.Template.Infrastructure.MongoDb.Common.Extensions;
-using R.Systems.Template.Infrastructure.MongoDb.Common.Mappers;
 
 namespace R.Systems.Template.Infrastructure.MongoDb.Employees.Queries;
 
@@ -40,7 +39,7 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
 
     public async Task<ListInfo<Employee>> GetEmployeesAsync(
         ListParameters listParameters,
-        long companyId,
+        Guid companyId,
         CancellationToken cancellationToken
     )
     {

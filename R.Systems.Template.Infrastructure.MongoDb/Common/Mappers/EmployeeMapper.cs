@@ -2,7 +2,6 @@
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 using R.Systems.Template.Infrastructure.MongoDb.Common.Documents;
-using R.Systems.Template.Infrastructure.MongoDb.Common.Services;
 
 namespace R.Systems.Template.Infrastructure.MongoDb.Common.Mappers;
 
@@ -17,18 +16,11 @@ internal interface IEmployeeMapper
 internal class EmployeeMapper
     : IEmployeeMapper
 {
-    private readonly IUniqueIdGenerator _uniqueIdGenerator;
-
-    public EmployeeMapper(IUniqueIdGenerator uniqueIdGenerator)
-    {
-        _uniqueIdGenerator = uniqueIdGenerator;
-    }
-
     public EmployeeDocument Map(EmployeeToCreate employeeToCreate)
     {
         EmployeeDocument employeeDocument = new()
         {
-            Id = _uniqueIdGenerator.Generate(),
+            Id = Guid.NewGuid(),
             FirstName = employeeToCreate.FirstName,
             LastName = employeeToCreate.LastName,
             CompanyId = employeeToCreate.CompanyId

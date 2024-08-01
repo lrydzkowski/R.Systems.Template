@@ -25,7 +25,7 @@ internal class ElementEntityTypeConfiguration : IEntityTypeConfiguration<Element
 
     private void ConfigureColumns(EntityTypeBuilder<ElementEntity> builder)
     {
-        builder.Property(x => x.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property(x => x.Id).HasColumnName("id").IsRequired();
         builder.Property(x => x.Name).HasColumnName("name").IsRequired().HasMaxLength(100);
         builder.Property(x => x.Description).HasColumnName("description").HasMaxLength(1000);
         builder.Property(x => x.Value).HasColumnName("value").IsRequired();

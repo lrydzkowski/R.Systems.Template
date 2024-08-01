@@ -2,7 +2,7 @@
 
 internal class ElementEntity
 {
-    public long Id { get; init; }
+    public Guid Id { get; init; }
 
     public string Name { get; init; } = "";
 

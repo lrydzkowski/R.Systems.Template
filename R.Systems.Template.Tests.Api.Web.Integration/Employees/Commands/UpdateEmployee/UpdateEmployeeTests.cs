@@ -34,7 +34,7 @@ public class UpdateEmployeeTests
     )]
     public async Task UpdateEmployee_ShouldReturnValidationErrors_WhenDataIsIncorrect(
         int id,
-        long employeeId,
+        Guid employeeId,
         UpdateEmployeeRequest request,
         HttpStatusCode expectedHttpStatus,
         IEnumerable<ValidationFailure> validationFailures
@@ -54,7 +54,7 @@ public class UpdateEmployeeTests
     [MemberData(nameof(UpdateEmployeeCorrectDataBuilder.Build), MemberType = typeof(UpdateEmployeeCorrectDataBuilder))]
     public async Task UpdateEmployee_ShouldUpdateCompany_WhenDataIsCorrect(
         int id,
-        long employeeId,
+        Guid employeeId,
         UpdateEmployeeRequest request
     )
     {
@@ -69,7 +69,7 @@ public class UpdateEmployeeTests
                 new Employee
                 {
                     EmployeeId = employeeId, FirstName = request.FirstName!, LastName = request.LastName!,
-                    CompanyId = request.CompanyId
+                    CompanyId = Guid.Parse(request.CompanyId)
                 }
             );
         Employee employee = updateResponse.Data!;

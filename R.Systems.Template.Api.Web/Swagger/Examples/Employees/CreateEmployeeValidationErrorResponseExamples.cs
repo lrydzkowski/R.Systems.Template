@@ -70,8 +70,8 @@ public class CreateEmployeeValidationErrorResponseExamples : IMultipleExamplesPr
                 new()
                 {
                     PropertyName = "Company",
-                    ErrorMessage = "Company with the given id doesn't exist ('112322').",
-                    AttemptedValue = "112322",
+                    ErrorMessage = "Company with the given id doesn't exist ('eb4bb983-4458-49b1-a543-2e826d544459').",
+                    AttemptedValue = "eb4bb983-4458-49b1-a543-2e826d544459",
                     ErrorCode = "NotExist"
                 }
             }

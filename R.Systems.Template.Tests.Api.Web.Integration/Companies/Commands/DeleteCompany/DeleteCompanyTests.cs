@@ -27,9 +27,9 @@ public class DeleteCompanyTests
     [Fact]
     public async Task DeleteCompany_ShouldReturnValidationError_WhenCompanyNotExist()
     {
-        long companyId = long.MaxValue;
-        List<ValidationFailure> expectedValidationFailures = new()
-        {
+        string companyId = "1af061cb-7c32-496e-a3f1-3e5ec38acbb8";
+        List<ValidationFailure> expectedValidationFailures =
+        [
             new ValidationFailure
             {
                 PropertyName = "Company",
@@ -37,7 +37,7 @@ public class DeleteCompanyTests
                 AttemptedValue = companyId,
                 ErrorCode = "NotExist"
             }
-        };
+        ];
         string url = $"{_endpointUrlPath}/{companyId}";
         RestRequest deleteRequest = new(url, Method.Delete);
         RestResponse<List<ValidationFailure>> deleteResponse =

@@ -8,6 +8,8 @@ internal class CreateEmployeeCommandPreProcessor : IRequestPreProcessor<CreateEm
     {
         request.FirstName = request.FirstName?.Trim();
         request.LastName = request.LastName?.Trim();
+        request.CompanyId = request.CompanyId?.Trim();
+
         return Task.CompletedTask;
     }
 }

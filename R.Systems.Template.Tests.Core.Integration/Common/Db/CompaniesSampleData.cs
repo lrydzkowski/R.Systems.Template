@@ -11,7 +11,7 @@ internal static class CompaniesSampleData
             "Meta",
             new CompanyEntity
             {
-                Id = 3,
+                Id = new Guid("01910F2B-6097-BE74-8EEC-5A3F0D44249A"),
                 Name = "Meta"
             }
         },
@@ -19,7 +19,7 @@ internal static class CompaniesSampleData
             "Google",
             new CompanyEntity
             {
-                Id = 4,
+                Id = new Guid("01910F2B-8D9C-FD65-F87B-8CF4812779A0"),
                 Name = "Google"
             }
         },
@@ -27,7 +27,7 @@ internal static class CompaniesSampleData
             "Microsoft",
             new CompanyEntity
             {
-                Id = 5,
+                Id = new Guid("01910F2B-9C9E-A9FB-9057-FEE6FA9EEE07"),
                 Name = "Microsoft"
             }
         },
@@ -35,7 +35,7 @@ internal static class CompaniesSampleData
             "Amazon",
             new CompanyEntity
             {
-                Id = 6,
+                Id = new Guid("01910F2B-ABCC-7D1C-65ED-7AEBE225742F"),
                 Name = "Amazon"
             }
         },
@@ -43,7 +43,7 @@ internal static class CompaniesSampleData
             "Alior",
             new CompanyEntity
             {
-                Id = 7,
+                Id = new Guid("01910F2B-BC3F-8E60-72D9-6B6AB71EF1DB"),
                 Name = "Alior"
             }
         },
@@ -51,7 +51,7 @@ internal static class CompaniesSampleData
             "Starbucks",
             new CompanyEntity
             {
-                Id = 8,
+                Id = new Guid("01910F2B-CD41-6842-ADDD-7D9357541D55"),
                 Name = "Starbucks"
             }
         }
@@ -62,7 +62,7 @@ internal static class CompaniesSampleData
         get
         {
             return Data.Where(x => x.Value.Id != null)
-                .Select(x => new Company { CompanyId = (long)x.Value.Id!, Name = x.Value.Name })
+                .Select(x => new Company { CompanyId = (Guid)x.Value.Id!, Name = x.Value.Name })
                 .ToList();
         }
     }

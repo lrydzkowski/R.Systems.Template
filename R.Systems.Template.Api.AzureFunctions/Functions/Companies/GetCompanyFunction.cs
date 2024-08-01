@@ -27,9 +27,9 @@ internal class GetCompanyFunction : FunctionBase<GetCompanyFunction>
     [OpenApiResponseWithBody(HttpStatusCode.OK, "application/json", typeof(Company), Description = "A company")]
     [Function(nameof(GetCompany))]
     public async Task<HttpResponseData> GetCompany(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies/{companyId:long}")]
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "companies/{companyId}")]
         HttpRequestData request,
-        long companyId,
+        string companyId,
         CancellationToken cancellationToken
     )
     {

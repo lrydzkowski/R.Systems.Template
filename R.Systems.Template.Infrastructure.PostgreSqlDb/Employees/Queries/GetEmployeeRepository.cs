@@ -18,12 +18,12 @@ internal class GetEmployeeRepository : IGetEmployeeRepository
 
     public string Version { get; } = Versions.V1;
 
-    public async Task<Employee?> GetEmployeeAsync(long employeeId, CancellationToken cancellationToken)
+    public async Task<Employee?> GetEmployeeAsync(Guid employeeId, CancellationToken cancellationToken)
     {
         return await GetEmployeeFromDbAsync(employeeEntity => employeeEntity.Id == employeeId, cancellationToken);
     }
 
-    public async Task<Employee?> GetEmployeeAsync(long companyId, long employeeId, CancellationToken cancellationToken)
+    public async Task<Employee?> GetEmployeeAsync(Guid companyId, Guid employeeId, CancellationToken cancellationToken)
     {
         return await GetEmployeeFromDbAsync(
             employeeEntity => employeeEntity.CompanyId == companyId && employeeEntity.Id == employeeId,
@@ -41,7 +41,7 @@ internal class GetEmployeeRepository : IGetEmployeeRepository
             .Select(
                 employeeEntity => new Employee
                 {
-                    EmployeeId = (long)employeeEntity.Id!, FirstName = employeeEntity.FirstName,
+                    EmployeeId = (Guid)employeeEntity.Id!, FirstName = employeeEntity.FirstName,
                     LastName = employeeEntity.LastName, CompanyId = employeeEntity.CompanyId
                 }
             )

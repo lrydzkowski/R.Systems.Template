@@ -24,12 +24,10 @@ namespace R.Systems.Template.Infrastructure.SqlServerDb.Migrations
 
             modelBuilder.Entity("R.Systems.Template.Infrastructure.SqlServerDb.Common.Entities.CompanyEntity", b =>
                 {
-                    b.Property<long?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("Id"), 3L);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -47,24 +45,22 @@ namespace R.Systems.Template.Infrastructure.SqlServerDb.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
+                            Id = new Guid("9e27c3b4-bf21-4ffe-bdbb-919a2fc9e2cc"),
                             Name = "Meta"
                         },
                         new
                         {
-                            Id = 2L,
+                            Id = new Guid("636786f1-e5aa-4a87-9c7d-e604a92f08f5"),
                             Name = "Google"
                         });
                 });
 
             modelBuilder.Entity("R.Systems.Template.Infrastructure.SqlServerDb.Common.Entities.ElementEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<int?>("AdditionalValue")
                         .HasColumnType("int")
@@ -132,15 +128,13 @@ namespace R.Systems.Template.Infrastructure.SqlServerDb.Migrations
 
             modelBuilder.Entity("R.Systems.Template.Infrastructure.SqlServerDb.Common.Entities.EmployeeEntity", b =>
                 {
-                    b.Property<long?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("Id"), 4L);
-
-                    b.Property<long?>("CompanyId")
-                        .HasColumnType("bigint")
+                    b.Property<Guid?>("CompanyId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("company_id");
 
                     b.Property<string>("FirstName")
@@ -164,22 +158,22 @@ namespace R.Systems.Template.Infrastructure.SqlServerDb.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
-                            CompanyId = 1L,
+                            Id = new Guid("424c6d87-3c97-4eb9-9a3e-0abbc7547683"),
+                            CompanyId = new Guid("9e27c3b4-bf21-4ffe-bdbb-919a2fc9e2cc"),
                             FirstName = "John",
                             LastName = "Doe"
                         },
                         new
                         {
-                            Id = 2L,
-                            CompanyId = 2L,
+                            Id = new Guid("878ae60f-c657-4465-8920-9d7d34f757ed"),
+                            CompanyId = new Guid("636786f1-e5aa-4a87-9c7d-e604a92f08f5"),
                             FirstName = "Will",
                             LastName = "Smith"
                         },
                         new
                         {
-                            Id = 3L,
-                            CompanyId = 2L,
+                            Id = new Guid("194ac2c8-72e3-4c63-8302-0217b9cc86b6"),
+                            CompanyId = new Guid("636786f1-e5aa-4a87-9c7d-e604a92f08f5"),
                             FirstName = "Jack",
                             LastName = "Parker"
                         });

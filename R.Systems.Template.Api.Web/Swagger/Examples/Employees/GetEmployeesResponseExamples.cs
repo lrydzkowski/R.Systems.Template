@@ -18,24 +18,24 @@ public class GetEmployeesResponseExamples : IMultipleExamplesProvider<ListInfo<E
                 [
                     new Employee
                     {
-                        EmployeeId = 1,
+                        EmployeeId = new Guid("7382fb37-c489-4791-9c20-77b4f477a672"),
                         FirstName = "Will",
                         LastName = "Smith",
-                        CompanyId = 5
+                        CompanyId = new Guid("ab659d2d-2df5-40be-b8ea-26fadad67d6a")
                     },
                     new Employee
                     {
-                        EmployeeId = 2,
+                        EmployeeId = new Guid("0cb75c06-b7db-4efd-9362-9d33ab064e96"),
                         FirstName = "Jack",
                         LastName = "Parker",
-                        CompanyId = 7
+                        CompanyId = new Guid("6b771327-c664-4d70-8893-ecceb2c9a9ba")
                     },
                     new Employee
                     {
-                        EmployeeId = 3,
+                        EmployeeId = new Guid("b18310d8-da77-4739-b013-41622b7816a3"),
                         FirstName = "Justyn",
                         LastName = "Ruecker",
-                        CompanyId = 9
+                        CompanyId = new Guid("6b771327-c664-4d70-8893-ecceb2c9a9ba")
                     }
                 ]
             }

@@ -29,7 +29,7 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
 
     public async Task<ListInfo<Employee>> GetEmployeesAsync(
         ListParameters listParameters,
-        long companyId,
+        Guid companyId,
         CancellationToken cancellationToken
     )
     {
@@ -49,7 +49,7 @@ internal class GetEmployeesRepository : IGetEmployeesRepository
         IQueryable<Employee> query = _dbContext.Employees.Select(
                 employeeEntity => new Employee
                 {
-                    EmployeeId = (long)employeeEntity.Id!,
+                    EmployeeId = (Guid)employeeEntity.Id!,
                     FirstName = employeeEntity.FirstName,
                     LastName = employeeEntity.LastName,
                     CompanyId = employeeEntity.CompanyId

@@ -6,8 +6,6 @@ namespace R.Systems.Template.Infrastructure.SqlServerDb.Common.Configurations;
 
 internal class CompanyEntityTypeConfiguration : IEntityTypeConfiguration<CompanyEntity>
 {
-    public static readonly int FirstAvailableId = 3;
-
     public void Configure(EntityTypeBuilder<CompanyEntity> builder)
     {
         SetTableName(builder);
@@ -28,14 +26,16 @@ internal class CompanyEntityTypeConfiguration : IEntityTypeConfiguration<Company
 
     private void ConfigureColumns(EntityTypeBuilder<CompanyEntity> builder)
     {
-        builder.Property(company => company.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property(company => company.Id).HasColumnName("id").IsRequired();
         builder.Property(company => company.Name).HasColumnName("name").IsRequired().HasMaxLength(200);
         builder.HasIndex(company => company.Name).IsUnique();
     }
 
     private void InitData(EntityTypeBuilder<CompanyEntity> builder)
     {
-        builder.HasData(new CompanyEntity { Id = 1, Name = "Meta" }, new CompanyEntity { Id = 2, Name = "Google" });
-        builder.Property(user => user.Id).UseIdentityColumn(FirstAvailableId);
+        builder.HasData(
+            new CompanyEntity { Id = new Guid("9e27c3b4-bf21-4ffe-bdbb-919a2fc9e2cc"), Name = "Meta" },
+            new CompanyEntity { Id = new Guid("636786f1-e5aa-4a87-9c7d-e604a92f08f5"), Name = "Google" }
+        );
     }
 }

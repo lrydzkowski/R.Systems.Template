@@ -59,7 +59,7 @@ public class UpdateCompanyTests
         {
             Company = new Company
             {
-                CompanyId = command.CompanyId,
+                CompanyId = Guid.Parse(command.CompanyId),
                 Name = command.Name!
             }
         };

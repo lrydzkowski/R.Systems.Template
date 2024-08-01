@@ -26,7 +26,7 @@ public class GetEmployeesInCompanyTests
     [Fact]
     public async Task GetEmployeesInCompany_ShouldReturnEmployees_WhenEmployeesExist()
     {
-        long companyId = IdGenerator.GetCompanyId(1);
+        Guid companyId = IdGenerator.GetCompanyId(1);
         IQueryable<Employee> expectedEmployees =
             EmployeesSampleData.Employees.Where(x => x.CompanyId == companyId).AsQueryable();
         ListInfo<Employee> expectedResponse = new()
@@ -49,7 +49,7 @@ public class GetEmployeesInCompanyTests
         int pageSize
     )
     {
-        long companyId = IdGenerator.GetCompanyId(2);
+        Guid companyId = IdGenerator.GetCompanyId(2);
         IQueryable<Employee> expectedEmployees = EmployeesSampleData.Employees.Where(x => x.CompanyId == companyId)
             .OrderBy(x => x.EmployeeId)
             .AsQueryable();
@@ -77,7 +77,7 @@ public class GetEmployeesInCompanyTests
         string sortingOrder
     )
     {
-        long companyId = IdGenerator.GetCompanyId(2);
+        Guid companyId = IdGenerator.GetCompanyId(2);
         IQueryable<Employee> expectedEmployees = EmployeesSampleData.Employees.AsQueryable()
             .Where(x => x.CompanyId == companyId)
             .OrderBy($"{sortingFieldName} {sortingOrder}")
@@ -106,7 +106,7 @@ public class GetEmployeesInCompanyTests
         string searchQuery
     )
     {
-        long companyId = IdGenerator.GetCompanyId(2);
+        Guid companyId = IdGenerator.GetCompanyId(2);
         IQueryable<Employee> expectedEmployees = EmployeesSampleData.Employees.Where(
                 x => x.CompanyId == companyId
                      && (x.FirstName.Contains(searchQuery, StringComparison.InvariantCultureIgnoreCase)
@@ -129,7 +129,7 @@ public class GetEmployeesInCompanyTests
     [Fact]
     public async Task GetEmployees_ShouldReturnCorrectEmployees_WhenParametersArePassed()
     {
-        long companyId = IdGenerator.GetCompanyId(2);
+        Guid companyId = IdGenerator.GetCompanyId(2);
         int page = 1;
         int pageSize = 2;
         string sortingFieldName = "firstName";

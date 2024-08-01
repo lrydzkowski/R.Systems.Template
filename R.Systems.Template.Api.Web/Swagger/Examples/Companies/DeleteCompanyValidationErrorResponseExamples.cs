@@ -15,8 +15,8 @@ public class DeleteCompanyValidationErrorResponseExamples : IMultipleExamplesPro
                 new()
                 {
                     PropertyName = "Company",
-                    ErrorMessage = "Company with the given id doesn't exist ('51111').",
-                    AttemptedValue = "51111",
+                    ErrorMessage = "Company with the given id doesn't exist ('f639a54b-b4d0-41bf-bb1d-5d5e724cd8c0').",
+                    AttemptedValue = "f639a54b-b4d0-41bf-bb1d-5d5e724cd8c0",
                     ErrorCode = "NotExist"
                 }
             }

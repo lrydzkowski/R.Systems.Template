@@ -8,7 +8,7 @@ public class CreateEmployeeCommand : IContextRequest, IRequest<CreateEmployeeRes
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public long? CompanyId { get; set; }
+    public string? CompanyId { get; set; }
     public ApplicationContext AppContext { get; set; } = new();
 }
 
@@ -32,6 +32,7 @@ public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeComman
         CreateEmployeeCommandMapper mapper = new();
         EmployeeToCreate employeeToCreate = mapper.ToEmployeeToCreate(command);
         Employee createdEmployee = await repository.CreateEmployeeAsync(employeeToCreate);
+
         return new CreateEmployeeResult
         {
             CreatedEmployee = createdEmployee

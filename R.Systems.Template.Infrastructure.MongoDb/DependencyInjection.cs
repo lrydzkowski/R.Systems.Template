@@ -13,7 +13,6 @@ using R.Systems.Template.Core.Employees.Queries.GetEmployee;
 using R.Systems.Template.Core.Employees.Queries.GetEmployees;
 using R.Systems.Template.Infrastructure.MongoDb.Common.Mappers;
 using R.Systems.Template.Infrastructure.MongoDb.Common.Options;
-using R.Systems.Template.Infrastructure.MongoDb.Common.Services;
 using R.Systems.Template.Infrastructure.MongoDb.Companies.Commands;
 using R.Systems.Template.Infrastructure.MongoDb.Companies.Queries;
 using R.Systems.Template.Infrastructure.MongoDb.Employees.Commands;
@@ -60,7 +59,6 @@ public static class DependencyInjection
         services.AddScoped<ICreateEmployeeRepository, EmployeeRepository>();
         services.AddScoped<IUpdateEmployeeRepository, EmployeeRepository>();
         services.AddScoped<IDeleteEmployeeRepository, EmployeeRepository>();
-        services.AddScoped<IUniqueIdGenerator, UniqueIdGenerator>();
         services.AddScoped<ICompanyMapper, CompanyMapper>();
         services.AddScoped<IEmployeeMapper, EmployeeMapper>();
     }

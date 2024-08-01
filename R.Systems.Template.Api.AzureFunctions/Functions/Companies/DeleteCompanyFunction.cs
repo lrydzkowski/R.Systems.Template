@@ -21,13 +21,13 @@ public class DeleteCompanyFunction : FunctionBase<DeleteCompanyFunction>
     }
 
     [OpenApiOperation(nameof(DeleteCompany), Summary = nameof(DeleteCompany), Description = "It deletes a company.")]
-    [OpenApiParameter(nameof(companyId), Type = typeof(long), Required = true)]
+    [OpenApiParameter(nameof(companyId), Type = typeof(string), Required = true)]
     [OpenApiResponseWithoutBody(HttpStatusCode.NoContent, Description = "Company deleted")]
     [Function(nameof(DeleteCompany))]
     public async Task<HttpResponseData> DeleteCompany(
-        [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "companies/{companyId:long}")]
+        [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "companies/{companyId}")]
         HttpRequestData requestData,
-        long companyId
+        string companyId
     )
     {
         Logger.LogInformation("C# Start processing {FunctionName} function.", nameof(DeleteCompany));

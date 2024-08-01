@@ -33,7 +33,7 @@ public class CreateEmployeeBenchmark
         {
             FirstName = Guid.NewGuid().ToString(),
             LastName = Guid.NewGuid().ToString(),
-            CompanyId = 10
+            CompanyId = "31b04626-ed12-4d79-b3d6-1430a72000d5"
         };
         RestRequest restRequest = new(_endpointUrlPath, Method.Post);
         restRequest.AddJsonBody(request);
@@ -56,7 +56,7 @@ public class CreateEmployeeBenchmark
         {
             FirstName = Guid.NewGuid().ToString(),
             LastName = Guid.NewGuid().ToString(),
-            CompanyId = 10
+            CompanyId = "9e27c3b4-bf21-4ffe-bdbb-919a2fc9e2cc"
         };
         RestRequest restRequest = new(_endpointUrlPath, Method.Post);
         restRequest.AddJsonBody(request);

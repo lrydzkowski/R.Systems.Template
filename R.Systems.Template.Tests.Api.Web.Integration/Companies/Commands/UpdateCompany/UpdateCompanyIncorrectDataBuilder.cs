@@ -12,7 +12,8 @@ internal static class UpdateCompanyIncorrectDataBuilder
     public static IEnumerable<object[]> Build()
     {
         Faker faker = new();
-        long companyId = (long)CompaniesSampleData.Data["Meta"].Id!;
+        string companyId = CompaniesSampleData.Data["Meta"].Id.ToString()!;
+
         string? nameAttemptedValue = "";
         yield return BuildParameters(
             1,
@@ -22,6 +23,7 @@ internal static class UpdateCompanyIncorrectDataBuilder
             new List<ValidationFailure>
                 { ValidationFailureBuilder.BuildEmptyFieldValidationError("Name", nameAttemptedValue) }
         );
+
         nameAttemptedValue = "  ";
         yield return BuildParameters(
             2,
@@ -31,6 +33,7 @@ internal static class UpdateCompanyIncorrectDataBuilder
             new List<ValidationFailure>
                 { ValidationFailureBuilder.BuildEmptyFieldValidationError("Name", nameAttemptedValue) }
         );
+
         nameAttemptedValue = null;
         yield return BuildParameters(
             3,
@@ -40,6 +43,7 @@ internal static class UpdateCompanyIncorrectDataBuilder
             new List<ValidationFailure>
                 { ValidationFailureBuilder.BuildEmptyFieldValidationError("Name", nameAttemptedValue) }
         );
+
         nameAttemptedValue = faker.Random.String2(201);
         yield return BuildParameters(
             4,
@@ -49,7 +53,8 @@ internal static class UpdateCompanyIncorrectDataBuilder
             new List<ValidationFailure>
                 { ValidationFailureBuilder.BuildTooLongFieldValidationError("Name", 200, nameAttemptedValue) }
         );
-        long companyIdAttemptedValue = 999;
+
+        string companyIdAttemptedValue = "7944917a-b626-465e-b8be-6aa50a6fd9fa";
         yield return BuildParameters(
             5,
             companyIdAttemptedValue,
@@ -69,7 +74,7 @@ internal static class UpdateCompanyIncorrectDataBuilder
 
     private static object[] BuildParameters(
         int id,
-        long companyId,
+        string companyId,
         UpdateCompanyRequest data,
         HttpStatusCode expectedHttpStatus,
         List<ValidationFailure> validationFailures

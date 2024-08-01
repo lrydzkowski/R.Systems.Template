@@ -19,7 +19,7 @@ internal static class UpdateEmployeeCorrectDataBuilder
         };
     }
 
-    private static object[] BuildParameters(int id, long companyId, UpdateCompanyRequest data)
+    private static object[] BuildParameters(int id, Guid companyId, UpdateCompanyRequest data)
     {
         return new object[]
         {

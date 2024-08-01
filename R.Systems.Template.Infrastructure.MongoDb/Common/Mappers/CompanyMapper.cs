@@ -1,7 +1,6 @@
 ﻿using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Infrastructure.MongoDb.Common.Documents;
-using R.Systems.Template.Infrastructure.MongoDb.Common.Services;
 
 namespace R.Systems.Template.Infrastructure.MongoDb.Common.Mappers;
 
@@ -15,18 +14,11 @@ internal interface ICompanyMapper
 internal class CompanyMapper
     : ICompanyMapper
 {
-    private readonly IUniqueIdGenerator _uniqueIdGenerator;
-
-    public CompanyMapper(IUniqueIdGenerator uniqueIdGenerator)
-    {
-        _uniqueIdGenerator = uniqueIdGenerator;
-    }
-
     public CompanyDocument Map(CompanyToCreate companyToCreate)
     {
         CompanyDocument companyDocument = new()
         {
-            Id = _uniqueIdGenerator.Generate(),
+            Id = Guid.NewGuid(),
             Name = companyToCreate.Name
         };
 

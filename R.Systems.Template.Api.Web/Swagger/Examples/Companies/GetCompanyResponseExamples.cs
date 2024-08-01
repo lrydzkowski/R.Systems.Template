@@ -12,7 +12,7 @@ public class GetCompanyResponseExamples : IMultipleExamplesProvider<Company>
             "Example 1",
             new Company
             {
-                CompanyId = 1,
+                CompanyId = new Guid("917b01e7-9f15-440a-830f-e384da4df97b"),
                 Name = "Meta"
             }
         );

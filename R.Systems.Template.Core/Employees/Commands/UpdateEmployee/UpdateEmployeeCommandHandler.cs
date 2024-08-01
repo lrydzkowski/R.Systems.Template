@@ -6,10 +6,10 @@ namespace R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
 
 public class UpdateEmployeeCommand : IContextRequest, IRequest<UpdateEmployeeResult>
 {
-    public long EmployeeId { get; set; }
+    public string EmployeeId { get; set; } = "";
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public long? CompanyId { get; set; }
+    public string? CompanyId { get; set; }
     public ApplicationContext AppContext { get; set; } = new();
 }
 
@@ -33,6 +33,7 @@ public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeComman
         UpdateEmployeeCommandMapper mapper = new();
         EmployeeToUpdate employeeToUpdate = mapper.ToEmployeeToUpdate(command);
         Employee updatedEmployee = await repository.UpdateEmployeeAsync(employeeToUpdate);
+
         return new UpdateEmployeeResult
         {
             UpdatedEmployee = updatedEmployee

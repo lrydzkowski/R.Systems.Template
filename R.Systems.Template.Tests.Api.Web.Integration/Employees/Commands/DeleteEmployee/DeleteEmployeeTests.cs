@@ -3,9 +3,9 @@ using FluentAssertions;
 using FluentValidation.Results;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
-using R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Configurations;
 using R.Systems.Template.Tests.Api.Web.Integration.Common;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.Db;
+using R.Systems.Template.Tests.Api.Web.Integration.Common.Db.SampleData;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 using RestSharp;
@@ -28,9 +28,9 @@ public class DeleteEmployeeTests
     [Fact]
     public async Task DeleteEmployee_ShouldReturnValidationError_WhenEmployeeNotExist()
     {
-        long employeeId = long.MaxValue;
-        List<ValidationFailure> expectedValidationFailures = new()
-        {
+        string employeeId = "a9bf2fc8-1a10-454e-a803-617a5d8aaf65";
+        List<ValidationFailure> expectedValidationFailures =
+        [
             new ValidationFailure
             {
                 PropertyName = "Employee",
@@ -38,7 +38,7 @@ public class DeleteEmployeeTests
                 AttemptedValue = employeeId,
                 ErrorCode = "NotExist"
             }
-        };
+        ];
         string url = $"{_endpointUrlPath}/{employeeId}";
         RestRequest deleteRequest = new(url, Method.Delete);
         RestResponse<List<ValidationFailure>> deleteResponse =
@@ -54,7 +54,7 @@ public class DeleteEmployeeTests
     {
         CreateEmployeeCommand createEmployeeCommand = new()
         {
-            CompanyId = CompanyEntityTypeConfiguration.FirstAvailableId,
+            CompanyId = IdGenerator.GetCompanyId(1).ToString(),
             FirstName = "John",
             LastName = "Smith"
         };
@@ -75,7 +75,7 @@ public class DeleteEmployeeTests
                 new Employee
                 {
                     FirstName = createEmployeeCommand.FirstName, LastName = createEmployeeCommand.LastName,
-                    CompanyId = createEmployeeCommand.CompanyId
+                    CompanyId = Guid.Parse(createEmployeeCommand.CompanyId)
                 },
                 options => options.Excluding(x => x.EmployeeId)
             );

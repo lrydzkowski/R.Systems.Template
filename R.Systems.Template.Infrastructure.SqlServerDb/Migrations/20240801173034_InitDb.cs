@@ -17,8 +17,7 @@ namespace R.Systems.Template.Infrastructure.SqlServerDb.Migrations
                 name: "company",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "3, 1"),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
@@ -30,8 +29,7 @@ namespace R.Systems.Template.Infrastructure.SqlServerDb.Migrations
                 name: "element",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     value = table.Column<int>(type: "int", nullable: false),
@@ -56,11 +54,10 @@ namespace R.Systems.Template.Infrastructure.SqlServerDb.Migrations
                 name: "employee",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "4, 1"),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     first_name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     last_name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    company_id = table.Column<long>(type: "bigint", nullable: true)
+                    company_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,8 +75,8 @@ namespace R.Systems.Template.Infrastructure.SqlServerDb.Migrations
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { 1L, "Meta" },
-                    { 2L, "Google" }
+                    { new Guid("636786f1-e5aa-4a87-9c7d-e604a92f08f5"), "Google" },
+                    { new Guid("9e27c3b4-bf21-4ffe-bdbb-919a2fc9e2cc"), "Meta" }
                 });
 
             migrationBuilder.InsertData(
@@ -87,9 +84,9 @@ namespace R.Systems.Template.Infrastructure.SqlServerDb.Migrations
                 columns: new[] { "id", "company_id", "first_name", "last_name" },
                 values: new object[,]
                 {
-                    { 1L, 1L, "John", "Doe" },
-                    { 2L, 2L, "Will", "Smith" },
-                    { 3L, 2L, "Jack", "Parker" }
+                    { new Guid("194ac2c8-72e3-4c63-8302-0217b9cc86b6"), new Guid("636786f1-e5aa-4a87-9c7d-e604a92f08f5"), "Jack", "Parker" },
+                    { new Guid("424c6d87-3c97-4eb9-9a3e-0abbc7547683"), new Guid("9e27c3b4-bf21-4ffe-bdbb-919a2fc9e2cc"), "John", "Doe" },
+                    { new Guid("878ae60f-c657-4465-8920-9d7d34f757ed"), new Guid("636786f1-e5aa-4a87-9c7d-e604a92f08f5"), "Will", "Smith" }
                 });
 
             migrationBuilder.CreateIndex(

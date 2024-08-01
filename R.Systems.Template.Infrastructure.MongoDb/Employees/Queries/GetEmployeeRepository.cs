@@ -20,7 +20,7 @@ internal class GetEmployeeRepository : IGetEmployeeRepository
 
     public string Version { get; } = Versions.V2;
 
-    public async Task<Employee?> GetEmployeeAsync(long employeeId, CancellationToken cancellationToken)
+    public async Task<Employee?> GetEmployeeAsync(Guid employeeId, CancellationToken cancellationToken)
     {
         FilterDefinition<EmployeeDocument> filter = Builders<EmployeeDocument>.Filter.Eq(x => x.Id, employeeId);
         Employee? employee = await GetEmployeeAsync(filter, cancellationToken);
@@ -28,7 +28,7 @@ internal class GetEmployeeRepository : IGetEmployeeRepository
         return employee;
     }
 
-    public async Task<Employee?> GetEmployeeAsync(long companyId, long employeeId, CancellationToken cancellationToken)
+    public async Task<Employee?> GetEmployeeAsync(Guid companyId, Guid employeeId, CancellationToken cancellationToken)
     {
         FilterDefinitionBuilder<EmployeeDocument>? filterDefinitionBuilder = Builders<EmployeeDocument>.Filter;
         FilterDefinition<EmployeeDocument> filter = filterDefinitionBuilder.And(

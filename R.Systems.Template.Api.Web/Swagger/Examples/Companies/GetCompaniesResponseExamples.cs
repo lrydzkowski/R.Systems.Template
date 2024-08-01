@@ -18,17 +18,17 @@ public class GetCompaniesResponseExamples : IMultipleExamplesProvider<ListInfo<C
                 [
                     new Company
                     {
-                        CompanyId = 1,
+                        CompanyId = new Guid("ab311d67-207a-4464-a542-913357b5a0ac"),
                         Name = "Meta"
                     },
                     new Company
                     {
-                        CompanyId = 2,
+                        CompanyId = new Guid("9099497f-70e8-4c7c-888d-d90e208fb58d"),
                         Name = "Google"
                     },
                     new Company
                     {
-                        CompanyId = 9,
+                        CompanyId = new Guid("cdc8b73f-707e-4db2-bfda-85abf9fa54a4"),
                         Name = "Stiedemann LLC"
                     }
                 ]

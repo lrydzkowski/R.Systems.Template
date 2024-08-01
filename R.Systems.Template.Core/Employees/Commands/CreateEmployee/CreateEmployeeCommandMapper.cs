@@ -6,4 +6,9 @@ namespace R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 internal partial class CreateEmployeeCommandMapper
 {
     public partial EmployeeToCreate ToEmployeeToCreate(CreateEmployeeCommand command);
+
+    public Guid MapCompanyId(string companyId)
+    {
+        return Guid.Parse(companyId);
+    }
 }

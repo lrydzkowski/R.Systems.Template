@@ -12,10 +12,10 @@ public class UpdateEmployeeResponseExamples : IMultipleExamplesProvider<Employee
             "Example 1",
             new Employee
             {
-                EmployeeId = 4,
+                EmployeeId = new Guid("a57616a7-4055-4d94-8a9d-25522e0f4004"),
                 FirstName = "Joe",
                 LastName = "Doe",
-                CompanyId = 1
+                CompanyId = new Guid("5fc71929-f34b-44c6-829a-96225949bf44")
             }
         );
     }

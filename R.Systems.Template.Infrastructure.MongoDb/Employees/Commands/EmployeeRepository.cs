@@ -31,7 +31,7 @@ internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRe
         return createdEmployee;
     }
 
-    public async Task DeleteEmployeeAsync(long employeeId)
+    public async Task DeleteEmployeeAsync(Guid employeeId)
     {
         FilterDefinition<EmployeeDocument>? filter = Builders<EmployeeDocument>.Filter.Eq(x => x.Id, employeeId);
         await _appDbContext.Employees.DeleteOneAsync(filter);

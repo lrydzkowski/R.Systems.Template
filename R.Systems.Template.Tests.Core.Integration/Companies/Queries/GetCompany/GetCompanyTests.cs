@@ -23,17 +23,18 @@ public class GetCompanyTests
     [Fact]
     public async Task GetCompany_ShouldReturnCompany_WhenCompanyExists()
     {
+        string companyId = CompaniesSampleData.Companies.First().CompanyId.ToString();
         GetCompanyResult expectedResult = new()
         {
             Company = new Company
             {
-                CompanyId = 3,
+                CompanyId = new Guid(companyId),
                 Name = "Meta"
             }
         };
         GetCompanyQuery query = new()
         {
-            CompanyId = 3
+            CompanyId = companyId
         };
         GetCompanyResult result = await _mediator.Send(query);
         result.Should().BeEquivalentTo(expectedResult);
@@ -48,7 +49,7 @@ public class GetCompanyTests
         };
         GetCompanyQuery query = new()
         {
-            CompanyId = 10
+            CompanyId = "1801444e-fcf7-48c4-b115-3eb495dfc320"
         };
         GetCompanyResult result = await _mediator.Send(query);
         result.Should().BeEquivalentTo(expectedResult);

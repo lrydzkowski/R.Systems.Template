@@ -20,7 +20,7 @@ internal class GetCompanyRepository : IGetCompanyRepository
 
     public string Version { get; } = Versions.V2;
 
-    public async Task<Company?> GetCompanyAsync(long companyId, CancellationToken cancellationToken)
+    public async Task<Company?> GetCompanyAsync(Guid companyId, CancellationToken cancellationToken)
     {
         FilterDefinition<CompanyDocument>? filter = Builders<CompanyDocument>.Filter.Eq(x => x.Id, companyId);
         CompanyDocument? document = await _appDbContext.Companies.Find(filter).FirstOrDefaultAsync(cancellationToken);

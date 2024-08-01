@@ -5,7 +5,7 @@ namespace R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 
 public class DeleteCompanyCommand : IContextRequest, IRequest
 {
-    public long CompanyId { get; init; }
+    public string CompanyId { get; init; } = "";
     public ApplicationContext AppContext { get; set; } = new();
 }
 
@@ -21,6 +21,12 @@ public class DeleteCompanyCommandHandler : IRequestHandler<DeleteCompanyCommand>
     public async Task Handle(DeleteCompanyCommand command, CancellationToken cancellationToken)
     {
         IDeleteCompanyRepository repository = _repositoryFactory.GetRepository(command.AppContext);
-        await repository.DeleteAsync(command.CompanyId);
+        bool parsingResult = Guid.TryParse(command.CompanyId, out Guid companyId);
+        if (!parsingResult)
+        {
+            return;
+        }
+
+        await repository.DeleteAsync(companyId);
     }
 }

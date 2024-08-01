@@ -79,7 +79,7 @@ internal static class EmployeesSampleData
             return Data.Select(
                     x => new Employee
                     {
-                        EmployeeId = (long)x.Id!, FirstName = x.FirstName, LastName = x.LastName,
+                        EmployeeId = (Guid)x.Id!, FirstName = x.FirstName, LastName = x.LastName,
                         CompanyId = x.CompanyId
                     }
                 )
@@ -91,6 +91,7 @@ internal static class EmployeesSampleData
     {
         return new EmployeeEntity
         {
+            Id = employeeEntity.Id,
             FirstName = employeeEntity.FirstName,
             LastName = employeeEntity.LastName,
             CompanyId = employeeEntity.CompanyId

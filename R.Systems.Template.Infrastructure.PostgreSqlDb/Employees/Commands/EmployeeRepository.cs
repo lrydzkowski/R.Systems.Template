@@ -30,12 +30,13 @@ internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRe
         await _employeeValidator.VerifyCompanyExistenceAsync(employeeToCreate.CompanyId);
         EmployeeEntityMapper mapper = new();
         EmployeeEntity employeeEntity = mapper.ToEmployeeEntity(employeeToCreate);
+        employeeEntity.Id = Guid.NewGuid();
         await _dbContext.Employees.AddAsync(employeeEntity);
         await _dbContext.SaveChangesAsync();
         return mapper.ToEmployee(employeeEntity);
     }
 
-    public async Task DeleteEmployeeAsync(long employeeId)
+    public async Task DeleteEmployeeAsync(Guid employeeId)
     {
         EmployeeEntity employeeEntity = await GetEmployeeEntityAsync(employeeId);
         _dbContext.Employees.Remove(employeeEntity);
@@ -55,7 +56,7 @@ internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRe
         return employee;
     }
 
-    private async Task<EmployeeEntity> GetEmployeeEntityAsync(long employeeId)
+    private async Task<EmployeeEntity> GetEmployeeEntityAsync(Guid employeeId)
     {
         EmployeeEntity? employeeEntity =
             await _dbContext.Employees.Where(x => x.Id == employeeId).FirstOrDefaultAsync();

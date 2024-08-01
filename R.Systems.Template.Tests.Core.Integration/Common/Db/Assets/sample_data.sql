@@ -2,11 +2,11 @@
 DELETE FROM company;
 
 INSERT INTO
-    company (name)
+    company (id, name)
 VALUES
-    ('Meta'),
-    ('Google'),
-    ('Microsoft'),
-    ('Amazon'),
-    ('Alior'),
-    ('Starbucks');
+    ('01910F2B-6097-BE74-8EEC-5A3F0D44249A', 'Meta'),
+    ('01910F2B-8D9C-FD65-F87B-8CF4812779A0', 'Google'),
+    ('01910F2B-9C9E-A9FB-9057-FEE6FA9EEE07', 'Microsoft'),
+    ('01910F2B-ABCC-7D1C-65ED-7AEBE225742F', 'Amazon'),
+    ('01910F2B-BC3F-8E60-72D9-6B6AB71EF1DB', 'Alior'),
+    ('01910F2B-CD41-6842-ADDD-7D9357541D55', 'Starbucks');

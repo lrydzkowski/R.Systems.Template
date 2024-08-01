@@ -16,7 +16,7 @@ internal static class CreateEmployeeCorrectDataBuilder
                 new CreateEmployeeCommand
                 {
                     FirstName = faker.Name.FirstName(), LastName = faker.Name.LastName(),
-                    CompanyId = CompaniesSampleData.Data["Meta"].Id
+                    CompanyId = CompaniesSampleData.Data["Meta"].Id?.ToString()
                 }
             )
         };

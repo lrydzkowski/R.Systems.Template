@@ -6,7 +6,7 @@ namespace R.Systems.Template.Core.Companies.Queries.GetCompany;
 
 public class GetCompanyQuery : IContextRequest, IRequest<GetCompanyResult>
 {
-    public long CompanyId { get; init; }
+    public string CompanyId { get; init; } = "";
     public ApplicationContext AppContext { get; set; } = new();
 }
 
@@ -27,7 +27,13 @@ public class GetCompanyQueryHandler : IRequestHandler<GetCompanyQuery, GetCompan
     public async Task<GetCompanyResult> Handle(GetCompanyQuery query, CancellationToken cancellationToken)
     {
         IGetCompanyRepository repository = _repositoryFactory.GetRepository(query.AppContext);
-        Company? company = await repository.GetCompanyAsync(query.CompanyId, cancellationToken);
+        bool parsingResult = Guid.TryParse(query.CompanyId, out Guid parsedCompanyId);
+        if (!parsingResult)
+        {
+            return new GetCompanyResult();
+        }
+
+        Company? company = await repository.GetCompanyAsync(parsedCompanyId, cancellationToken);
         return new GetCompanyResult
         {
             Company = company

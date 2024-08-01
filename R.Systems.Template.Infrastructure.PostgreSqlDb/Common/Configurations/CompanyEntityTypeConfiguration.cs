@@ -6,8 +6,6 @@ namespace R.Systems.Template.Infrastructure.PostgreSqlDb.Common.Configurations;
 
 internal class CompanyEntityTypeConfiguration : IEntityTypeConfiguration<CompanyEntity>
 {
-    public static readonly int FirstAvailableId = 3;
-
     public void Configure(EntityTypeBuilder<CompanyEntity> builder)
     {
         SetTableName(builder);
@@ -28,14 +26,17 @@ internal class CompanyEntityTypeConfiguration : IEntityTypeConfiguration<Company
 
     private void ConfigureColumns(EntityTypeBuilder<CompanyEntity> builder)
     {
-        builder.Property(company => company.Id).HasColumnName("id").ValueGeneratedOnAdd().IsRequired();
+        builder.Property(company => company.Id).HasColumnName("id").IsRequired();
         builder.Property(company => company.Name).HasColumnName("name").IsRequired().HasMaxLength(200);
         builder.HasIndex(company => company.Name).IsUnique();
     }
 
     private void InitData(EntityTypeBuilder<CompanyEntity> builder)
     {
-        builder.HasData(new CompanyEntity { Id = 1, Name = "Meta" }, new CompanyEntity { Id = 2, Name = "Google" });
-        builder.Property(user => user.Id).HasIdentityOptions(FirstAvailableId);
+        builder.HasData(
+            new CompanyEntity { Id = new Guid("31b04626-ed12-4d79-b3d6-1430a72000d5"), Name = "Meta" },
+            new CompanyEntity { Id = new Guid("9427a96c-a0b6-461c-814c-9c3c2bb6ff80"), Name = "Google" }
+        );
+        builder.Property(user => user.Id);
     }
 }
