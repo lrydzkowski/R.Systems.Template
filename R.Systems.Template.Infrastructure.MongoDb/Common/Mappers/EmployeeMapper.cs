@@ -20,7 +20,7 @@ internal class EmployeeMapper
     {
         EmployeeDocument employeeDocument = new()
         {
-            Id = Guid.NewGuid(),
+            Id = Ulid.NewUlid().ToGuid(),
             FirstName = employeeToCreate.FirstName,
             LastName = employeeToCreate.LastName,
             CompanyId = employeeToCreate.CompanyId

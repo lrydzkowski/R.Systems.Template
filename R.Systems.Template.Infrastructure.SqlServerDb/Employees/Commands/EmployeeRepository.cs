@@ -30,7 +30,7 @@ internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRe
         await _employeeValidator.VerifyCompanyExistenceAsync(employeeToCreate.CompanyId);
         EmployeeEntityMapper mapper = new();
         EmployeeEntity employeeEntity = mapper.ToEmployeeEntity(employeeToCreate);
-        employeeEntity.Id = Guid.NewGuid();
+        employeeEntity.Id = Ulid.NewUlid().ToGuid();
         await _dbContext.Employees.AddAsync(employeeEntity);
         await _dbContext.SaveChangesAsync();
         return mapper.ToEmployee(employeeEntity);

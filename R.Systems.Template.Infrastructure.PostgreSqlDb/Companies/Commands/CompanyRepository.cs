@@ -28,7 +28,7 @@ internal class CompanyRepository : ICreateCompanyRepository, IUpdateCompanyRepos
     {
         CompanyEntityMapper mapper = new();
         CompanyEntity companyEntity = mapper.ToCompanyEntity(companyToCreate);
-        companyEntity.Id = Guid.NewGuid();
+        companyEntity.Id = Ulid.NewUlid().ToGuid();
         await _dbContext.Companies.AddAsync(companyEntity);
         try
         {

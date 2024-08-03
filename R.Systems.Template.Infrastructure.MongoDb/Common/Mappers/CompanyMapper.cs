@@ -18,7 +18,7 @@ internal class CompanyMapper
     {
         CompanyDocument companyDocument = new()
         {
-            Id = Guid.NewGuid(),
+            Id = Ulid.NewUlid().ToGuid(),
             Name = companyToCreate.Name
         };
 
