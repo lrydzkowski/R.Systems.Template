@@ -8,6 +8,7 @@ internal class AzureAdOptionsValidator : AbstractValidator<AzureAdOptions>
     {
         DefineInstanceValidator();
         DefineClientIdValidator();
+        DefineClientSecretValidator();
         DefineTenantIdValidator();
         DefineAudienceValidator();
     }
@@ -26,6 +27,14 @@ internal class AzureAdOptionsValidator : AbstractValidator<AzureAdOptions>
             .NotEmpty()
             .WithName(nameof(AzureAdOptions.ClientId))
             .OverridePropertyName($"{AzureAdOptions.Position}.{nameof(AzureAdOptions.ClientId)}");
+    }
+
+    private void DefineClientSecretValidator()
+    {
+        RuleFor(x => x.ClientSecret)
+            .NotEmpty()
+            .WithName(nameof(AzureAdOptions.ClientSecret))
+            .OverridePropertyName($"{AzureAdOptions.Position}.{nameof(AzureAdOptions.ClientSecret)}");
     }
 
     private void DefineTenantIdValidator()

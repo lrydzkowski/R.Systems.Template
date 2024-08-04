@@ -1,11 +1,16 @@
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Identity.Web;
 using R.Systems.Template.Core;
+using R.Systems.Template.Infrastructure.Azure.Authentication;
 using R.Systems.Template.Infrastructure.Azure.Options;
+using R.Systems.Template.Infrastructure.Azure.Services;
 
 namespace R.Systems.Template.Infrastructure.Azure;
 
@@ -18,6 +23,8 @@ public static class DependencyInjection
     {
         services.ConfigureOptions(configuration);
         services.ConfigureAuthentication(configuration);
+        services.ConfigureServices();
+        services.ConfigureBlobServiceClient();
     }
 
     private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
@@ -29,6 +36,10 @@ public static class DependencyInjection
         services.ConfigureOptionsWithValidation<AzureAdB2COptions, AzureAdB2COptionsValidator>(
             configuration,
             AzureAdB2COptions.Position
+        );
+        services.ConfigureOptionsWithValidation<AzureStorageAccountOptions, AzureStorageAccountOptionsValidator>(
+            configuration,
+            AzureStorageAccountOptions.Position
         );
     }
 
@@ -66,5 +77,36 @@ public static class DependencyInjection
                 },
                 AuthenticationSchemes.AzureAdForSignalR
             );
+    }
+
+    private static void ConfigureServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
+        services.AddSingleton<IStorageAccountContainerClient, StorageAccountContainerClient>();
+    }
+
+    private static void ConfigureBlobServiceClient(this IServiceCollection services)
+    {
+        services.AddAzureClients(
+            azureClientFactoryBuilder =>
+            {
+                azureClientFactoryBuilder.AddClient<BlobServiceClient, BlobClientOptions>(
+                    (_, serviceProvider) =>
+                    {
+                        AzureStorageAccountOptions options = serviceProvider
+                            .GetRequiredService<IOptions<AzureStorageAccountOptions>>()
+                            .Value;
+                        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+
+                        BlobServiceClient client = new(
+                            new Uri($"https://{options.Name}.blob.core.windows.net"),
+                            TokenCredentialProvider.Provide(configuration)
+                        );
+
+                        return client;
+                    }
+                );
+            }
+        );
     }
 }

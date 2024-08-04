@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -9,6 +9,11 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="R.Systems.Template.Tests.Api.Web.Integration" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.21.1" />
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.7.4" />
   </ItemGroup>
 
   <ItemGroup>

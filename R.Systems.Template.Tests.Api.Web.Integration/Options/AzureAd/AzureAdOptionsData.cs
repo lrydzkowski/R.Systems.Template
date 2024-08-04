@@ -9,6 +9,7 @@ internal class AzureAdOptionsData : AzureAdOptions, IOptionsData
     {
         Instance = "https://login.microsoftonline.com/";
         ClientId = "D6F94D05-BA99-4752-824E-B068F8DE9A15";
+        ClientSecret = "test-secret";
         TenantId = "5B684592-06A9-42C4-A65C-2AA19DE3F3B3";
         Audience = "https://lrspaceb2c.onmicrosoft.com/D6F94D05-BA99-4752-824E-B068F8DE9A15";
     }
@@ -19,6 +20,7 @@ internal class AzureAdOptionsData : AzureAdOptions, IOptionsData
         {
             [$"{Position}:{nameof(Instance)}"] = Instance,
             [$"{Position}:{nameof(ClientId)}"] = ClientId,
+            [$"{Position}:{nameof(ClientSecret)}"] = ClientSecret,
             [$"{Position}:{nameof(TenantId)}"] = TenantId,
             [$"{Position}:{nameof(Audience)}"] = Audience
         };

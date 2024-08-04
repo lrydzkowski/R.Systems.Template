@@ -45,6 +45,7 @@ public class AppController : ApiControllerBase
             await _mediator.Send(new GetAppInfoQuery { AppAssembly = Assembly.GetExecutingAssembly() });
         GetAppInfoMapper mapper = new();
         GetAppInfoResponse response = mapper.ToResponse(result);
+
         return Ok(response);
     }
 
@@ -65,6 +66,7 @@ public class AppController : ApiControllerBase
     public async Task<IActionResult> Get()
     {
         HealthReport report = await _healthCheckService.CheckHealthAsync();
+
         return report.Status == HealthStatus.Healthy
             ? Ok(report)
             : StatusCode(StatusCodes.Status503ServiceUnavailable, report);
