@@ -16,4 +16,8 @@
     <ProjectReference Include="..\R.Systems.Template.Infrastructure.Azure\R.Systems.Template.Infrastructure.Azure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="R.Systems.Template.Tests.Api.Web.Integration" />
+  </ItemGroup>
+
 </Project>
