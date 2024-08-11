@@ -2,6 +2,7 @@ using R.Systems.Template.Api.Web.Hubs;
 using R.Systems.Template.Api.Web.Middleware;
 using R.Systems.Template.Core;
 using R.Systems.Template.Infrastructure.Azure;
+using R.Systems.Template.Infrastructure.CosmosDb;
 using R.Systems.Template.Infrastructure.MongoDb;
 using R.Systems.Template.Infrastructure.Notifications;
 using R.Systems.Template.Infrastructure.PostgreSqlDb;
@@ -48,6 +49,7 @@ public class Program
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);
         builder.Services.ConfigureNotificationsServices();
+        builder.Services.ConfigureInfrastructureCosmosDbServices(builder.Configuration);
     }
 
     private static void ConfigureLogging(WebApplicationBuilder builder)

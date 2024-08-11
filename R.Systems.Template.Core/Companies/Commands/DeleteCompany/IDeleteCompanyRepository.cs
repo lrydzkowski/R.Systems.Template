@@ -4,5 +4,5 @@ namespace R.Systems.Template.Core.Companies.Commands.DeleteCompany;
 
 public interface IDeleteCompanyRepository : IVersionedRepository
 {
-    Task DeleteAsync(long companyId);
+    Task DeleteCompanyAsync(long companyId);
 }

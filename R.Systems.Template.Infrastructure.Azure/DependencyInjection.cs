@@ -1,3 +1,4 @@
+using Azure.Core;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -96,12 +97,12 @@ public static class DependencyInjection
                         AzureStorageAccountOptions options = serviceProvider
                             .GetRequiredService<IOptions<AzureStorageAccountOptions>>()
                             .Value;
-                        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+                        Uri blobUri = new($"https://{options.Name}.blob.core.windows.net");
 
-                        BlobServiceClient client = new(
-                            new Uri($"https://{options.Name}.blob.core.windows.net"),
-                            TokenCredentialProvider.Provide(configuration)
-                        );
+                        IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
+                        TokenCredential? tokenCredential = TokenCredentialProvider.Provide(configuration);
+
+                        BlobServiceClient client = new(blobUri, tokenCredential);
 
                         return client;
                     }

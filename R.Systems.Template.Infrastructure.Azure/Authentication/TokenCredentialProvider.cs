@@ -5,7 +5,7 @@ using R.Systems.Template.Infrastructure.Azure.Options;
 
 namespace R.Systems.Template.Infrastructure.Azure.Authentication;
 
-internal static class TokenCredentialProvider
+public static class TokenCredentialProvider
 {
     private static TokenCredential? _tokenCredential;
 

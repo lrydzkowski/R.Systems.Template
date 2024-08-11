@@ -21,6 +21,6 @@ public class DeleteCompanyCommandHandler : IRequestHandler<DeleteCompanyCommand>
     public async Task Handle(DeleteCompanyCommand command, CancellationToken cancellationToken)
     {
         IDeleteCompanyRepository repository = _repositoryFactory.GetRepository(command.AppContext);
-        await repository.DeleteAsync(command.CompanyId);
+        await repository.DeleteCompanyAsync(command.CompanyId);
     }
 }

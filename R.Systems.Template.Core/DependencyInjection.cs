@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Common.Lists;
+using R.Systems.Template.Core.Common.Services;
 using R.Systems.Template.Core.Common.Validation;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
 using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
@@ -76,5 +77,6 @@ public static class DependencyInjection
     {
         services.AddScoped(typeof(IVersionedRepositoryFactory<>), typeof(VersionedRepositoryFactory<>));
         services.AddScoped<IListParametersMapper, ListParametersMapper>();
+        services.AddScoped<IUniqueIdGenerator, UniqueIdGenerator>();
     }
 }
