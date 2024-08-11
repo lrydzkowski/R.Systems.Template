@@ -1,31 +1,70 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using System.Net;
+using Microsoft.Azure.Cosmos;
 using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Employees.Queries.GetEmployee;
+using R.Systems.Template.Infrastructure.CosmosDb.Common.Items;
 using R.Systems.Template.Infrastructure.CosmosDb.Common.Mappers;
+using R.Systems.Template.Infrastructure.CosmosDb.Common.Services;
 
 namespace R.Systems.Template.Infrastructure.CosmosDb.Employees.Queries;
 
 internal class GetEmployeeRepository : IGetEmployeeRepository
 {
-    private readonly CosmosClient _cosmosClient;
+    private readonly AppDbContext _appDbContext;
     private readonly IEmployeeMapper _employeeMapper;
 
-    public GetEmployeeRepository(CosmosClient cosmosClient, IEmployeeMapper employeeMapper)
+    public GetEmployeeRepository(AppDbContext appDbContext, IEmployeeMapper employeeMapper)
     {
-        _cosmosClient = cosmosClient;
+        _appDbContext = appDbContext;
         _employeeMapper = employeeMapper;
     }
 
     public string Version { get; } = Versions.V4;
 
-    public Task<Employee?> GetEmployeeAsync(long employeeId, CancellationToken cancellationToken)
+    public async Task<Employee?> GetEmployeeAsync(long employeeId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        using ResponseMessage responseMessage = await _appDbContext.EmployeesContainers.ReadItemStreamAsync(
+            employeeId.ToString(),
+            new PartitionKey(employeeId.ToString()),
+            cancellationToken: cancellationToken
+        );
+        if (responseMessage.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+
+        responseMessage.EnsureSuccessStatusCode();
+
+        CosmosSystemTextJsonSerializer serializer = new();
+        EmployeeItem employeeItem = serializer.FromStream<EmployeeItem>(responseMessage.Content);
+
+        Employee employee = _employeeMapper.Map(employeeItem);
+
+        return employee;
     }
 
     public Task<Employee?> GetEmployeeAsync(long companyId, long employeeId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        IOrderedQueryable<EmployeeItem> queryable =
+            _appDbContext.EmployeesContainers.GetItemLinqQueryable<EmployeeItem>(
+                linqSerializerOptions: new CosmosLinqSerializerOptions
+                {
+                    PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
+                }
+            );
+        //IQueryable<EmployeeItem> matches = queryable.Where(x => x.CompanyId == companyId && x.Id == employeeId);
+        //using FeedIterator<EmployeeItem> feedIterator = matches.ToFeedIterator();
+
+        EmployeeItem? employeeItem =
+            queryable.FirstOrDefault(x => x.CompanyId == companyId && x.Id == employeeId.ToString());
+        if (employeeItem is null)
+        {
+            return Task.FromResult((Employee?)null);
+        }
+
+        Employee employee = _employeeMapper.Map(employeeItem);
+
+        return Task.FromResult((Employee?)employee);
     }
 }

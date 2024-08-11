@@ -1,6 +1,7 @@
 ﻿using R.Systems.Template.Core.Common.Domain;
 using R.Systems.Template.Core.Common.Services;
 using R.Systems.Template.Core.Companies.Commands.CreateCompany;
+using R.Systems.Template.Core.Companies.Commands.UpdateCompany;
 using R.Systems.Template.Infrastructure.CosmosDb.Common.Items;
 
 namespace R.Systems.Template.Infrastructure.CosmosDb.Common.Mappers;
@@ -8,6 +9,7 @@ namespace R.Systems.Template.Infrastructure.CosmosDb.Common.Mappers;
 internal interface ICompanyMapper
 {
     CompanyItem Map(CompanyToCreate companyToCreate);
+    CompanyItem Map(CompanyToUpdate companyToUpdate);
     List<Company> Map(List<CompanyItem> companyItems);
     Company Map(CompanyItem companyItem);
 }
@@ -26,8 +28,19 @@ internal class CompanyMapper
     {
         CompanyItem companyItem = new()
         {
-            Id = _uniqueIdGenerator.Generate(),
+            Id = _uniqueIdGenerator.Generate().ToString(),
             Name = companyToCreate.Name
+        };
+
+        return companyItem;
+    }
+
+    public CompanyItem Map(CompanyToUpdate companyToUpdate)
+    {
+        CompanyItem companyItem = new()
+        {
+            Id = companyToUpdate.CompanyId.ToString(),
+            Name = companyToUpdate.Name
         };
 
         return companyItem;
@@ -42,7 +55,7 @@ internal class CompanyMapper
     {
         Company company = new()
         {
-            CompanyId = companyItem.Id,
+            CompanyId = long.Parse(companyItem.Id),
             Name = companyItem.Name
         };
 

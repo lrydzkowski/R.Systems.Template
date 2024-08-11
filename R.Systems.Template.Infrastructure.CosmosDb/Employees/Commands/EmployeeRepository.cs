@@ -4,35 +4,68 @@ using R.Systems.Template.Core.Common.Infrastructure;
 using R.Systems.Template.Core.Employees.Commands.CreateEmployee;
 using R.Systems.Template.Core.Employees.Commands.DeleteEmployee;
 using R.Systems.Template.Core.Employees.Commands.UpdateEmployee;
+using R.Systems.Template.Core.Employees.Queries.GetEmployee;
+using R.Systems.Template.Infrastructure.CosmosDb.Common.Items;
 using R.Systems.Template.Infrastructure.CosmosDb.Common.Mappers;
 
 namespace R.Systems.Template.Infrastructure.CosmosDb.Employees.Commands;
 
 internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRepository, IDeleteEmployeeRepository
 {
-    private readonly CosmosClient _cosmosClient;
+    private readonly AppDbContext _appDbContext;
     private readonly IEmployeeMapper _employeeMapper;
+    private readonly IGetEmployeeRepository _getEmployeeRepository;
 
-    public EmployeeRepository(CosmosClient cosmosClient, IEmployeeMapper employeeMapper)
+    public EmployeeRepository(
+        AppDbContext appDbContext,
+        IEmployeeMapper employeeMapper,
+        IGetEmployeeRepository getEmployeeRepository
+    )
     {
-        _cosmosClient = cosmosClient;
+        _appDbContext = appDbContext;
         _employeeMapper = employeeMapper;
+        _getEmployeeRepository = getEmployeeRepository;
     }
 
     public string Version { get; } = Versions.V4;
 
-    public Task<Employee> CreateEmployeeAsync(EmployeeToCreate employeeToCreate)
+    public async Task<Employee> CreateEmployeeAsync(EmployeeToCreate employeeToCreate)
     {
-        throw new NotImplementedException();
+        EmployeeItem employeeItem = _employeeMapper.Map(employeeToCreate);
+        EmployeeItem createdEmployeeItem = await _appDbContext.EmployeesContainers.CreateItemAsync(
+            employeeItem,
+            new PartitionKey(employeeItem.CompanyId.ToString())
+        );
+
+        Employee createdEmployee = _employeeMapper.Map(createdEmployeeItem);
+
+        return createdEmployee;
     }
 
-    public Task DeleteEmployeeAsync(long employeeId)
+    public async Task DeleteEmployeeAsync(long employeeId)
     {
-        throw new NotImplementedException();
+        Employee? employee = await _getEmployeeRepository.GetEmployeeAsync(employeeId, CancellationToken.None);
+        if (employee is null)
+        {
+            return;
+        }
+
+        await _appDbContext.EmployeesContainers.DeleteItemAsync<EmployeeItem>(
+            employeeId.ToString(),
+            new PartitionKey(employee.CompanyId.ToString())
+        );
     }
 
-    public Task<Employee> UpdateEmployeeAsync(EmployeeToUpdate employeeToUpdate)
+    public async Task<Employee> UpdateEmployeeAsync(EmployeeToUpdate employeeToUpdate)
     {
-        throw new NotImplementedException();
+        EmployeeItem employeeItem = _employeeMapper.Map(employeeToUpdate);
+        EmployeeItem updatedEmployeeItem = await _appDbContext.EmployeesContainers.UpsertItemAsync(
+            employeeItem,
+            new PartitionKey(employeeItem.CompanyId.ToString())
+        );
+
+        Employee updatedEmployee = _employeeMapper.Map(updatedEmployeeItem);
+
+        return updatedEmployee;
     }
 }

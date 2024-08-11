@@ -25,9 +25,9 @@ internal class CompanyRepository : ICreateCompanyRepository, IUpdateCompanyRepos
 
     public string Version { get; } = Versions.V2;
 
-    public async Task<Company> CreateCompanyAsync(CompanyToCreate company)
+    public async Task<Company> CreateCompanyAsync(CompanyToCreate companyToCreate)
     {
-        CompanyDocument companyDocument = _companyMapper.Map(company);
+        CompanyDocument companyDocument = _companyMapper.Map(companyToCreate);
         await _appDbContext.Companies.InsertOneAsync(companyDocument);
         Company createdCompany = _companyMapper.Map(companyDocument);
 

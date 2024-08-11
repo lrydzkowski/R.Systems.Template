@@ -4,7 +4,7 @@ internal class CompanyItem
 {
     public const string ContainerName = "companies";
 
-    public long Id { get; set; }
+    public string Id { get; set; } = "";
 
     public string Name { get; set; } = "";
 }

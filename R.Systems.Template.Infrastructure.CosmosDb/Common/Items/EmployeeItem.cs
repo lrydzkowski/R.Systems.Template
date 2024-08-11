@@ -4,7 +4,7 @@ internal class EmployeeItem
 {
     public const string ContainerName = "employees";
 
-    public long Id { get; set; }
+    public string Id { get; set; } = "";
 
     public string FirstName { get; set; } = "";
 

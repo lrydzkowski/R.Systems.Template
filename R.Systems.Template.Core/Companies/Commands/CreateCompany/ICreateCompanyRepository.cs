@@ -5,5 +5,5 @@ namespace R.Systems.Template.Core.Companies.Commands.CreateCompany;
 
 public interface ICreateCompanyRepository : IVersionedRepository
 {
-    Task<Company> CreateCompanyAsync(CompanyToCreate company);
+    Task<Company> CreateCompanyAsync(CompanyToCreate companyToCreate);
 }

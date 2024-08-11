@@ -1,4 +1,7 @@
-﻿using Azure.Core;
+﻿using System.Net.Http;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Azure.Core;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +21,7 @@ using R.Systems.Template.Core.Employees.Queries.GetEmployees;
 using R.Systems.Template.Infrastructure.Azure.Authentication;
 using R.Systems.Template.Infrastructure.CosmosDb.Common.Mappers;
 using R.Systems.Template.Infrastructure.CosmosDb.Common.Options;
+using R.Systems.Template.Infrastructure.CosmosDb.Common.Services;
 using R.Systems.Template.Infrastructure.CosmosDb.Companies.Commands;
 using R.Systems.Template.Infrastructure.CosmosDb.Companies.Queries;
 using R.Systems.Template.Infrastructure.CosmosDb.Employees.Commands;
@@ -63,7 +67,13 @@ public static class DependencyInjection
                         IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
                         TokenCredential? tokenCredential = TokenCredentialProvider.Provide(configuration);
 
-                        CosmosClient client = new(options.AccountUri, tokenCredential);
+
+                        CosmosClientOptions cosmosClientOptions = new()
+                        {
+                            Serializer = new CosmosSystemTextJsonSerializer()
+                        };
+
+                        CosmosClient client = new(options.AccountUri, tokenCredential, cosmosClientOptions);
 
                         return client;
                     }

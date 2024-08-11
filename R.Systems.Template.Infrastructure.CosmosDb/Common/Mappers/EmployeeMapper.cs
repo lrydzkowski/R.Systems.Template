@@ -28,7 +28,7 @@ internal class EmployeeMapper
     {
         EmployeeItem employeeItem = new()
         {
-            Id = _uniqueIdGenerator.Generate(),
+            Id = _uniqueIdGenerator.Generate().ToString(),
             FirstName = employeeToCreate.FirstName,
             LastName = employeeToCreate.LastName,
             CompanyId = employeeToCreate.CompanyId
@@ -41,7 +41,7 @@ internal class EmployeeMapper
     {
         EmployeeItem employeeItem = new()
         {
-            Id = employeeToUpdate.EmployeeId,
+            Id = employeeToUpdate.EmployeeId.ToString(),
             FirstName = employeeToUpdate.FirstName,
             LastName = employeeToUpdate.LastName,
             CompanyId = employeeToUpdate.CompanyId
@@ -59,7 +59,7 @@ internal class EmployeeMapper
     {
         Employee employee = new()
         {
-            EmployeeId = employeeItem.Id,
+            EmployeeId = long.Parse(employeeItem.Id),
             FirstName = employeeItem.FirstName,
             LastName = employeeItem.LastName,
             CompanyId = employeeItem.CompanyId

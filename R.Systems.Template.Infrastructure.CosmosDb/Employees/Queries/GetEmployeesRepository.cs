@@ -8,11 +8,11 @@ namespace R.Systems.Template.Infrastructure.CosmosDb.Employees.Queries;
 
 internal class GetEmployeesRepository : IGetEmployeesRepository
 {
-    private readonly CosmosClient _cosmosClient;
+    private readonly AppDbContext _appDbContext;
 
-    public GetEmployeesRepository(CosmosClient cosmosClient)
+    public GetEmployeesRepository(AppDbContext appDbContext)
     {
-        _cosmosClient = cosmosClient;
+        _appDbContext = appDbContext;
     }
 
     public string Version { get; } = Versions.V4;
