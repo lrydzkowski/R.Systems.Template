@@ -10,5 +10,5 @@ internal class EmployeeItem
 
     public string LastName { get; set; } = "";
 
-    public long CompanyId { get; set; }
+    public string CompanyId { get; set; } = "";
 }

@@ -34,7 +34,7 @@ internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRe
         EmployeeItem employeeItem = _employeeMapper.Map(employeeToCreate);
         EmployeeItem createdEmployeeItem = await _appDbContext.EmployeesContainers.CreateItemAsync(
             employeeItem,
-            new PartitionKey(employeeItem.CompanyId.ToString())
+            new PartitionKey(employeeItem.Id)
         );
 
         Employee createdEmployee = _employeeMapper.Map(createdEmployeeItem);
@@ -52,7 +52,7 @@ internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRe
 
         await _appDbContext.EmployeesContainers.DeleteItemAsync<EmployeeItem>(
             employeeId.ToString(),
-            new PartitionKey(employee.CompanyId.ToString())
+            new PartitionKey(employeeId.ToString())
         );
     }
 
@@ -61,7 +61,7 @@ internal class EmployeeRepository : ICreateEmployeeRepository, IUpdateEmployeeRe
         EmployeeItem employeeItem = _employeeMapper.Map(employeeToUpdate);
         EmployeeItem updatedEmployeeItem = await _appDbContext.EmployeesContainers.UpsertItemAsync(
             employeeItem,
-            new PartitionKey(employeeItem.CompanyId.ToString())
+            new PartitionKey(employeeItem.Id)
         );
 
         Employee updatedEmployee = _employeeMapper.Map(updatedEmployeeItem);

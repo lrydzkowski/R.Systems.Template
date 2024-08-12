@@ -31,7 +31,7 @@ internal class EmployeeMapper
             Id = _uniqueIdGenerator.Generate().ToString(),
             FirstName = employeeToCreate.FirstName,
             LastName = employeeToCreate.LastName,
-            CompanyId = employeeToCreate.CompanyId
+            CompanyId = employeeToCreate.CompanyId.ToString()
         };
 
         return employeeItem;
@@ -44,7 +44,7 @@ internal class EmployeeMapper
             Id = employeeToUpdate.EmployeeId.ToString(),
             FirstName = employeeToUpdate.FirstName,
             LastName = employeeToUpdate.LastName,
-            CompanyId = employeeToUpdate.CompanyId
+            CompanyId = employeeToUpdate.CompanyId.ToString()
         };
 
         return employeeItem;
@@ -62,7 +62,7 @@ internal class EmployeeMapper
             EmployeeId = long.Parse(employeeItem.Id),
             FirstName = employeeItem.FirstName,
             LastName = employeeItem.LastName,
-            CompanyId = employeeItem.CompanyId
+            CompanyId = long.Parse(employeeItem.CompanyId)
         };
 
         return employee;

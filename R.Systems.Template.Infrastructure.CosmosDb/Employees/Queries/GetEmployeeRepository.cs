@@ -47,17 +47,10 @@ internal class GetEmployeeRepository : IGetEmployeeRepository
     public Task<Employee?> GetEmployeeAsync(long companyId, long employeeId, CancellationToken cancellationToken)
     {
         IOrderedQueryable<EmployeeItem> queryable =
-            _appDbContext.EmployeesContainers.GetItemLinqQueryable<EmployeeItem>(
-                linqSerializerOptions: new CosmosLinqSerializerOptions
-                {
-                    PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
-                }
-            );
-        //IQueryable<EmployeeItem> matches = queryable.Where(x => x.CompanyId == companyId && x.Id == employeeId);
-        //using FeedIterator<EmployeeItem> feedIterator = matches.ToFeedIterator();
+            _appDbContext.EmployeesContainers.GetItemLinqQueryable<EmployeeItem>();
 
         EmployeeItem? employeeItem =
-            queryable.FirstOrDefault(x => x.CompanyId == companyId && x.Id == employeeId.ToString());
+            queryable.Where(x => x.CompanyId == companyId.ToString() && x.Id == employeeId.ToString()).FirstOrDefault();
         if (employeeItem is null)
         {
             return Task.FromResult((Employee?)null);
