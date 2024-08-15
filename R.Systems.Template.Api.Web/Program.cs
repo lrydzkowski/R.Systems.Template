@@ -62,10 +62,11 @@ public class Program
     {
         app.UseHttpLogging();
         app.UseMiddleware<ExceptionMiddleware>();
-        app.UseSwagger();
         app.UseCors(DependencyInjection.CorsPolicy);
         if (app.Environment.IsDevelopment())
         {
+            app.UseMiddleware<SwaggerBasicAuthMiddleware>();
+            app.UseSwagger();
             app.UseSwaggerUI();
         }
 

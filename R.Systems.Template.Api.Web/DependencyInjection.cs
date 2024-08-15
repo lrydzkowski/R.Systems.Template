@@ -148,6 +148,10 @@ public static class DependencyInjection
             configuration,
             HealthCheckOptions.Position
         );
+        services.ConfigureOptionsWithValidation<SwaggerOptions, SwaggerOptionsValidator>(
+            configuration,
+            SwaggerOptions.Position
+        );
     }
 
     private static void ConfigureAuth(this IServiceCollection services)

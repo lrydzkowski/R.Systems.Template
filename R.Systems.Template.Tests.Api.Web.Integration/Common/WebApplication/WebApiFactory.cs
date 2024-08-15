@@ -29,6 +29,7 @@ using MongoDbConnectionStringsOptions =
     R.Systems.Template.Infrastructure.MongoDb.Common.Options.ConnectionStringsOptions;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.AzureStorageAccount;
 using R.Systems.Template.Tests.Api.Web.Integration.Options.CosmosDb;
+using R.Systems.Template.Tests.Api.Web.Integration.Options.Swagger;
 
 namespace R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 
@@ -40,7 +41,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     [
         new AzureAdOptionsData(), new AzureStorageAccountOptionsData(), new AzureAdB2COptionsData(),
         new ConnectionStringsOptionsData(), new WordnikOptionsData(), new HealthCheckOptionsData(),
-        new SerilogOptionsData(), new CosmosDbOptionsData()
+        new SerilogOptionsData(), new CosmosDbOptionsData(), new SwaggerOptionsData()
     ];
 
     private readonly MongoDbContainer _mongoDbContainer = new MongoDbBuilder().WithImage("mongo:6.0").Build();

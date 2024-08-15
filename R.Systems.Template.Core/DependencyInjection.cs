@@ -34,6 +34,16 @@ public static class DependencyInjection
         where TOptions : class where TValidator : class, IValidator<TOptions>, new()
     {
         services.AddSingleton<IValidator<TOptions>, TValidator>();
+        services.ConfigureOptions<TOptions>(configuration, configurationPosition);
+    }
+
+    public static void ConfigureOptions<TOptions>(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        string configurationPosition
+    )
+        where TOptions : class
+    {
         services.AddOptions<TOptions>()
             .Bind(configuration.GetSection(configurationPosition))
             .ValidateFluently()
