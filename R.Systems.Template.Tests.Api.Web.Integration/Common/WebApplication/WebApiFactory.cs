@@ -35,8 +35,6 @@ namespace R.Systems.Template.Tests.Api.Web.Integration.Common.WebApplication;
 
 public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private const string MongoDbName = "admin";
-
     private readonly List<IOptionsData> _defaultOptionsData =
     [
         new AzureAdOptionsData(), new AzureStorageAccountOptionsData(), new AzureAdB2COptionsData(),
@@ -130,7 +128,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
                 [$"{SqlServerDbConnectionStringsOptions.Position}:{nameof(SqlServerDbConnectionStringsOptions.AppSqlServerDb)}"] =
                     _sqlServerContainer.GetConnectionString(),
                 [$"{MongoDbConnectionStringsOptions.Position}:{nameof(MongoDbConnectionStringsOptions.MongoDb)}"] =
-                    _mongoDbContainer.GetConnectionString() + MongoDbName
+                    _mongoDbContainer.GetConnectionString()
             }
         );
     }

@@ -12,7 +12,7 @@ internal class AppDbContext
     {
         MongoUrl mongoUrl = new(options.Value.MongoDb);
         MongoClient client = new(mongoUrl);
-        IMongoDatabase database = client.GetDatabase(mongoUrl.DatabaseName);
+        IMongoDatabase database = client.GetDatabase(mongoUrl.DatabaseName ?? "admin");
 
         Companies = database.GetCollection<CompanyDocument>(Consts.Collections.Companies);
         Employees = database.GetCollection<EmployeeDocument>(Consts.Collections.Employees);
