@@ -89,6 +89,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
             {
                 SetDefaultOptions(configBuilder);
                 SetDatabaseConnectionString(configBuilder);
+                DisableLogging(configBuilder);
             }
         );
     }
@@ -106,7 +107,22 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     private void DisableLogging(IWebHostBuilder builder)
     {
         builder.ConfigureLogging(
-            x => x.ClearProviders()
+            x =>
+            {
+                x.ClearProviders();
+            }
+        );
+    }
+
+    private void DisableLogging(IConfigurationBuilder configBuilder)
+    {
+        configBuilder.AddInMemoryCollection(
+            new Dictionary<string, string?>
+            {
+                ["Serilog:MinimumLevel:Default"] = "Fatal",
+                ["Serilog:MinimumLevel:Override:Microsoft"] = "Fatal",
+                ["Serilog:MinimumLevel:Override:System"] = "Fatal"
+            }
         );
     }
 
